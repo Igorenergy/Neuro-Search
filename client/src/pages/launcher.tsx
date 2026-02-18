@@ -1045,6 +1045,13 @@ export default function Launcher() {
                 ))}
               </div>
             </div>
+            <button
+              className="border border-[#008DA8] rounded-sm px-3 py-1 text-xs font-medium text-[#008DA8] hover:bg-blue-50 transition-colors"
+              onClick={() => setIsAddFileModalOpen(true)}
+              data-testid="button-attached-files"
+            >
+              Attached files: {uploadedFiles.length}
+            </button>
           </div>
 
           <div className="border border-gray-200 rounded-md overflow-hidden">
