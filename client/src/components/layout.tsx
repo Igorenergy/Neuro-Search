@@ -208,6 +208,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                <span className="font-bold">Smart Search:</span> {
                  location === "/" ? "Dashboard" : 
                  location.includes("dashboard") ? "Overview" :
+                 location.includes("assets") ? "Assets Repository" :
                  location.includes("search") ? "Repository" : 
                  location.includes("new") ? "Launcher" : "Page"}
              </h1>
