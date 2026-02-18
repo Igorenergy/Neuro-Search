@@ -603,6 +603,7 @@ export default function Launcher() {
                                 <SelectContent>
                                    <SelectItem value="auto">Auto Detect</SelectItem>
                                    <SelectItem value="en">English (En)</SelectItem>
+                                   <SelectItem value="ge">Germany (Ge)</SelectItem>
                                    <SelectItem value="es">Spanish (Es)</SelectItem>
                                    <SelectItem value="zh">Chinese (Zh)</SelectItem>
                                    <SelectItem value="hi">Hindi (Hi)</SelectItem>
@@ -611,7 +612,6 @@ export default function Launcher() {
                                    <SelectItem value="bn">Bengali (Bn)</SelectItem>
                                    <SelectItem value="ru">Russian (Ru)</SelectItem>
                                    <SelectItem value="ja">Japanese (Ja)</SelectItem>
-                                   <SelectItem value="de">German (De)</SelectItem>
                                    <SelectItem value="fr">French (Fr)</SelectItem>
                                    <SelectItem value="ua">Ukrainian (Ua)</SelectItem>
                                 </SelectContent>
