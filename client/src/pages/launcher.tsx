@@ -165,18 +165,18 @@ export default function Launcher() {
 
           {/* File Previews Row */}
           {(files.length > 0 || isScanning) && (
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mt-2 px-1">
+            <div className="flex flex-wrap gap-2 mt-2 px-1">
               {files.map((file, i) => (
-                <div key={i} className="flex items-center justify-between bg-[#9E9E9E] text-white px-3 py-2 rounded-md shadow-sm relative overflow-hidden group">
+                <div key={i} className="flex items-center justify-between bg-[#D4A5C1] text-white px-3 py-1.5 rounded-sm shadow-sm relative overflow-hidden group min-w-[200px] max-w-[240px]">
                   <div className="flex items-center gap-2 min-w-0">
-                    <FileText className="w-5 h-5 text-white shrink-0" strokeWidth={1.5} />
+                    <FileText className="w-4 h-4 text-white shrink-0" strokeWidth={1.5} />
                     <div className="flex flex-col min-w-0">
-                      <span className="text-[10px] font-medium leading-tight">File Preview (name,</span>
-                      <span className="text-[10px] font-medium leading-tight">type, etc.)</span>
+                      <span className="text-[10px] font-medium leading-tight truncate">File Preview (name,</span>
+                      <span className="text-[10px] font-medium leading-tight truncate">type, etc.)</span>
                     </div>
                   </div>
-                  <button onClick={() => removeFile(i)} className="text-red-600 hover:text-red-700 ml-1 shrink-0">
-                    <X className="w-6 h-6 stroke-[3]" />
+                  <button onClick={() => removeFile(i)} className="text-pink-700 hover:text-pink-900 ml-2 shrink-0">
+                    <X className="w-4 h-4 stroke-[3]" />
                   </button>
                 </div>
               ))}
@@ -184,17 +184,17 @@ export default function Launcher() {
               {/* Mock previews to match image if no files uploaded yet for demo */}
               {files.length === 0 && (
                 <>
-                  {[1, 2, 3, 4].map((_, i) => (
-                    <div key={i} className="flex items-center justify-between bg-[#9E9E9E] text-white px-3 py-2 rounded-md shadow-sm relative overflow-hidden">
+                  {[1, 2, 3].map((_, i) => (
+                    <div key={i} className="flex items-center justify-between bg-[#D4A5C1] text-white px-3 py-1.5 rounded-sm shadow-sm relative overflow-hidden min-w-[200px] max-w-[240px]">
                       <div className="flex items-center gap-2 min-w-0">
-                        <FileText className="w-5 h-5 text-white shrink-0" strokeWidth={1.5} />
+                        <FileText className="w-4 h-4 text-white shrink-0" strokeWidth={1.5} />
                         <div className="flex flex-col min-w-0">
-                          <span className="text-[10px] font-medium leading-tight">File Preview (name,</span>
-                          <span className="text-[10px] font-medium leading-tight">type, etc.)</span>
+                          <span className="text-[10px] font-medium leading-tight truncate">File Preview (name,</span>
+                          <span className="text-[10px] font-medium leading-tight truncate">type, etc.)</span>
                         </div>
                       </div>
-                      <button className="text-red-600 hover:text-red-700 ml-1 shrink-0">
-                        <X className="w-6 h-6 stroke-[3]" />
+                      <button className="text-pink-700 hover:text-pink-900 ml-2 shrink-0">
+                        <X className="w-4 h-4 stroke-[3]" />
                       </button>
                     </div>
                   ))}
