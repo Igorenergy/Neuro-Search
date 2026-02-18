@@ -656,16 +656,16 @@ export default function Launcher() {
 
                             <div className="flex gap-4">
                                <div 
-                                 className={`flex-1 h-20 border ${isDragging ? 'border-blue-500 bg-blue-50' : 'border-gray-400 bg-gray-50'} relative transition-colors duration-200`}
+                                 className={`flex-1 h-20 border-2 border-dashed ${isDragging ? 'border-blue-500 bg-blue-50' : 'border-gray-300 bg-gray-50 hover:bg-gray-100'} rounded-lg relative transition-all duration-200 cursor-pointer`}
                                  onDragOver={handleDragOver}
                                  onDragLeave={handleDragLeave}
                                  onDrop={handleDrop}
+                                 onClick={() => fileInputRef.current?.click()}
                                >
-                                  <div className="absolute inset-0 flex items-center justify-center overflow-hidden pointer-events-none">
-                                     <div className="w-[120%] h-px bg-gray-400 rotate-[15deg] absolute"></div>
-                                     <div className="w-[120%] h-px bg-gray-400 -rotate-[15deg] absolute"></div>
-                                     <span className="bg-gray-50 px-2 z-10 text-xs text-gray-600 font-medium">
-                                       {isDragging ? "DROP FILES HERE" : "DRAG and DROP"}
+                                  <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none gap-1">
+                                     <Upload className={`w-6 h-6 ${isDragging ? 'text-blue-500' : 'text-gray-400'}`} />
+                                     <span className={`px-2 z-10 text-xs ${isDragging ? 'text-blue-600' : 'text-gray-500'} font-medium`}>
+                                       {isDragging ? "DROP FILES HERE" : "DRAG & DROP FILES HERE"}
                                      </span>
                                   </div>
                                </div>
