@@ -218,9 +218,6 @@ export default function Launcher() {
                 <button className="text-red-600 hover:text-red-700">
                   <XCircle className="w-6 h-6 fill-white" />
                 </button>
-                <button className="text-green-600 hover:text-green-700 mx-2">
-                  <RotateCw className="w-6 h-6 stroke-[2.5]" />
-                </button>
              </div>
 
              <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-2">
