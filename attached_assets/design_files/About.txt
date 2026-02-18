@@ -1,0 +1,73 @@
+🚀 Project Name: Acuras Pro — Intelligent Deep Search Agent
+1. Project Overview & Core Mission
+Acuras Pro is a high-end B2B SaaS application designed for Deep Research and Strategic Intelligence. unlike standard search engines, Acuras Pro uses multi-agent AI to conduct comprehensive investigations, verify data sources, and synthesize complex answers from the web and internal repositories.
+
+The core philosophy of the UX is "Evidence Over Noise" and "No Dead Ends." The interface is built to guide the user from a vague query to a verified, data-backed report, ensuring that every search yields a result—either from the live web or the internal archives.
+
+Key Vibe: Precision-focused, data-dense, "Cyber-Corporate," and high-trust.
+
+2. Application Architecture (Page Tree)
+The application is streamlined into four interconnected search & analysis modules:
+
+Research Mode (Dashboard): The command center for monitoring active agents, viewing the "Research Log," and managing costs/tokens.
+
+Smart Search (The Core Engine): A hybrid search interface (Semantic + Keywords) for launching new operations. It supports "Contextual Injection" via file uploads.
+
+Deep Search & Extract: The verification layer. It allows users to manage sources, parse complex documents (PDFs, Tables), and calculate "Confidence Scores."
+
+Assets Repository: The system's "Long-term Memory." A searchable library of all previously scraped files, reports, and extracted datasets.
+
+3. Core Functional Logic (The "Brains")
+A. Smart Search & Contextual Intelligence
+Hybrid Logic: The search bar features a toggle between "Keyword Match" (Exact technical search) and "Semantic Search" (AI concept matching).
+
+Contextual Reveal (Deep Linking):
+
+Users can upload "Grounding Files" (PDF/DOCX) to guide the search.
+
+Logic: Upon upload, the system scans the file for external URLs. If links are found, a hidden toggle "Deep Linked Research" appears, offering to crawl those specific sources for a deeper analysis.
+
+"No Dead Ends" Pattern: If a live web search returns 0 results or fails, the system automatically suggests searching the Assets Repository instead, preventing a "blank screen" experience.
+
+B. The "Confidence Score" System (Trust Ring)
+Visual: Represented as a Donut Chart in search results and reports.
+
+Logic: The score (e.g., 70%) is a composite metric:
+
+AI Relevance (Blue): How well the text answers the query.
+
+Domain Authority (Purple): The reputation of the source (Tier 1 Media vs. Blogs).
+
+Data Verification (Ghost/Green): A potential score boost (+25%) that is only unlocked if the user runs Deep Extract.
+
+C. Deep Extract & Verification Bridge
+Concept: The transition from "Reading text" to "Verifying facts."
+
+UI: A horizontal "Verification Bridge" diagram visualizing the process: Preliminary Search -> Extraction -> Verified Accuracy.
+
+Capabilities: The agent goes beyond HTML text; it extracts structured data (CSV tables), financial grids, and embedded PDF content to validate the "Confidence Score."
+
+Source Management: Users can toggle individual sources as "Included" or "Excluded" from the final calculation.
+
+D. Budget & Token Control
+Logic: Deep Research is expensive. The UI tracks real-time costs (e.g., "$1.20 per run").
+
+State: When the user's token limit is reached, input fields are disabled, and a "Top Up" modal is triggered.
+
+4. Design System & UI Components
+Navigation: A Wide Drawer (Slide-over) is used for viewing search details, configuring extraction settings, and previewing files. It slides from the right.
+
+Status Indicators:
+
+Spinners: Blue for "Agents Working."
+
+Toggles: Used for "Include/Exclude" source logic.
+
+Modals:
+
+Overlay Click: Disabled for "Deep Extract" configuration and payment windows (to prevent data loss). Enabled for quick file previews.
+
+Visual Hierarchy: The interface prioritizes readability of text and clarity of data tables.
+
+Instruction to AI:
+"Use this project overview as the global context. Focus entirely on the Search and Verification workflows. Do not generate any code or pages related to 'Smart Sheet', 'Canvas', or 'Data Hydration'. All logic must revolve around finding, extracting, and verifying information."

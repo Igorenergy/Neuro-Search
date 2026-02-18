@@ -1,0 +1,106 @@
+### **Page Specification: Research Mode - Dashboard**
+
+**Route:** `/research/dashboard`
+**Role:** The "Mission Control" center. This is the landing page where the user gets a high-level overview of active operations, system status, and recent history. It must feel "alive" and data-dense.
+
+#### **1. Layout & Grid Structure**
+
+* **Container:** Fluid width with a max-width constraint (e.g., `max-w-7xl`).
+* **Grid:** A bento-box style asymmetric grid:
+* **Top Row:** "Latest News Banner" (Full width).
+* **Main Row (Left, 66%):** "Active Operations" & "Quick Launch" area.
+* **Main Row (Right, 33%):** "System Status" & "Budget/Token Health".
+* **Bottom Row:** "Recent Research Log" (Data Table).
+
+
+
+#### **2. Key Components & Logic**
+
+**A. The "Latest News" Banner (Component 30)**
+
+* **Visual:** A dismissible, high-contrast strip (gradient background or solid accent color) appearing at the very top.
+* **Content:** Marketing updates or system notifications (e.g., *"New Deep Extract Model v2.1 is now live! +25% faster parsing."*).
+* **Interaction:** Clicking "Dismiss" saves the state to `localStorage` so it doesn't reappear for the session.
+* **Vibe:** Professional, unobtrusive but noticeable.
+
+**B. Quick Launch Widget (The "Hero" Action)**
+
+* **Purpose:** The primary entry point for new tasks.
+* **Elements:**
+* Two large, distinct cards/buttons:
+1. **"Start New Deep Research":** Primary action (Solid fill, Icon: Radar/Globe).
+2. **"Smart Search Repository":** Secondary action (Outline/Ghost, Icon: Magnifying Glass).
+
+
+
+
+* **Micro-copy:** "Launch a new multi-agent investigation" vs "Find existing assets."
+
+**C. Active Operations (Live Status)**
+
+* **Logic:** Connects to the backend websocket/polling to show currently running tasks.
+* **Empty State:** If no tasks are running, show a subtle "System Idle" graphic with a pulse animation.
+* **Active State:** Display "Operation Cards" showing:
+* **Task Name:** (e.g., "Competitor Analysis: Acme Corp").
+* **Stage:** "Hydrating Contacts" or "Deep Extracting Tables".
+* **Progress Bar:** animated strip.
+* **Action:** A "Stop/Abort" button (Triggering a confirmation modal).
+
+
+
+**D. Recent Research Log (The History Table)**
+
+* **Component:** `Widget Table` (Unified Delta Grid).
+* **Columns:**
+1. **Project Name** (Clickable -> Opens Details Drawer).
+2. **Date** (Relative, e.g., "2 hours ago").
+3. **Status Badge:**
+* `Completed` (Green, solid).
+* `Failed` (Red, with a tooltip explaining the error).
+* `Draft` (Gray, dashed border).
+
+
+4. **Confidence Score:** A mini "Donut Chart" icon showing the score (e.g., 82%).
+5. **Cost:** (e.g., "$1.20").
+6. **Actions:** `⋮` Menu (Restart, Export, Archive).
+
+
+* **"No Dead Ends" Logic:** If the log is empty, display a placeholder: *"No research history found. Start your first investigation above."*
+
+**E. Budget & System Health (Right Sidebar Widget)**
+
+* **Visual:** A card resembling a financial ticker or server status panel.
+* **Data Points:**
+* **Current Balance:** Large typography (e.g., "$124.00").
+* **Token Usage:** A mini sparkline graph showing usage over the last 24h.
+* **Plan Tier:** "Pro Plan" badge.
+
+
+* **CTA:** A small "Top Up" or "Manage Subscription" link.
+
+#### **3. Interaction Patterns**
+
+* **Drill-Down:** Clicking on any row in the "Recent Research Log" does **not** navigate away. Instead, it opens the **Wide Drawer (Right-to-Left)** containing the full report and "Artifacts".
+* **Hover Effects:**
+* Hovering over the **Confidence Score** in the table triggers the "Trust Ring" breakdown tooltip (AI Relevance / Authority / Verification).
+* Hovering over "Status" shows detailed stage info.
+
+
+
+#### **4. Text & Microcopy (English)**
+
+* **Headline:** "Dashboard"
+* **Sub-headline:** "Overview of your research operations and credit usage."
+* **Banner Text:** "System Update: Deep Extract now supports embedded PDF tables."
+* **Button 1:** "New Investigation"
+* **Button 2:** "Search Assets"
+* **Table Headers:** Name, Date, Status, Confidence, Cost, Actions.
+
+---
+
+### **Implementation Instructions for AI:**
+
+1. **Construct** the page using the grid layout described.
+2. **Mock Data:** generate 3-5 rows of "Recent Research" data to populate the table (mix of "Success", "Processing", and one "Failed" state to show error handling).
+3. **Style:** Use the "Cyber-Corporate" aesthetic — clean lines, subtle borders (`border-gray-200` light / `border-gray-800` dark), and inter-font typography.
+4. **Strictly enforce** the "No Dead Ends" rule on the table empty state.

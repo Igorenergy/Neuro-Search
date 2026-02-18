@@ -1,0 +1,88 @@
+### **Page Specification: Research Mode - Search Page**
+
+**Route:** `/research/search`
+**Role:** The primary discovery interface. Unlike the Dashboard (which shows *recent* activity), this page is for finding specific deep research projects, historical logs, and drafted reports. It functions as the "Internal Search Engine" of the platform.
+
+#### **1. Layout & Structure**
+
+* **Header:** Minimalist. Contains only the "Search Hero" section to keep focus.
+* **Body:** A split view:
+* **Left Sidebar (Filters):** Collapsible faceted search controls (Date range, Status, Tags, Author).
+* **Main Content (Results):** A responsive grid or list view of research cards.
+
+
+* **Footer:** Pagination or "Load More" infinite scroll trigger.
+
+#### **2. Key Components & Logic**
+
+**A. The "Search Hero" Input (Central Component)**
+
+* **Visual:** A large, centered input field (height: 64px) with a "glassmorphism" effect.
+* **Features:**
+* **Mode Toggle:** A switch inside the bar: **"Keyword Match"** (Exact) vs. **"Semantic"** (AI-driven concept match).
+* **History Chips:** When focused, a dropdown appears showing "Recent Queries" as clickable tags.
+* **Keyboard Shortcut:** Pressing `/` (Slash) focuses the input.
+
+
+* **Animation:** The placeholder text should cycle through examples: *"Try 'Competitor Analysis for SaaS'...", "Search for 'Q3 Financial Reports'..."*.
+
+**B. The "No Dead Ends" Empty State (CRITICAL LOGIC)**
+
+* **Condition:** Triggered when `searchResults.length === 0`.
+* **Behavior:** instead of a generic "No results found", the system **MUST** display a "Smart Redirection Card".
+* **UI Content:**
+* **Headline:** *"No active research found for '[Query]'."*
+* **Sub-text:** *"However, we found 3 matching files in the Assets Repository."* (Mock logic).
+* **Primary Action:** A button **"Search in Assets & Archives"**.
+* **Secondary Action:** **"Start New Research"** with this query pre-filled.
+
+
+* **Why:** To prevent user frustration and guide them to alternative data sources (Assets Repository).
+
+**C. Result Cards (The Grid)**
+
+* Each result is a card displaying:
+1. **Project Title:** (e.g., "Global Logistics Trends 2024").
+2. **Snippet/Summary:** 2 lines of text highlighting *why* this result matched (keyword highlighting).
+3. **Meta Row:**
+* **Date:** "Oct 12, 2023".
+* **Status:** Badge (`Completed`, `In Progress`, `Archived`).
+* **Confidence Score:** Small "Trust Ring" icon (e.g., 92% Verified).
+
+
+4. **Action Area:** `View Details` (Primary) and `Export` (Secondary icon).
+
+
+
+**D. Filter Sidebar**
+
+* **Type:** Accordion-style filters.
+* **Facets:**
+* **Status:** [x] Completed, [ ] Draft, [ ] Failed.
+* **Timeframe:** "Last 7 days", "Last Month", "Custom Range".
+* **Source Count:** Slider (e.g., "Min 10 sources").
+
+
+
+#### **3. Interaction Patterns**
+
+* **Live Filtering:** Changing a sidebar filter updates the results grid instantly (client-side if <100 items, server-side if >100).
+* **View Toggle:** A button to switch between **Grid View** (Cards) and **Table View** (Dense rows for bulk operations).
+* **Contextual Menu:** Right-clicking a result card opens a context menu: *Open in New Tab, Archive, Delete, Clone Config*.
+
+#### **4. Text & Microcopy (English)**
+
+* **Search Placeholder:** "Search projects, logs, or definitions..."
+* **Toggle Labels:** "Exact" / "Smart AI"
+* **Empty State Header:** "We couldn't find a project, but..."
+* **Empty State Button:** "Check Archives"
+* **Sidebar Header:** "Refine Results"
+
+---
+
+### **Implementation Instructions for AI:**
+
+1. **State Management:** Use a reactive state for the `query` string and `filter` object.
+2. **Mock Data:** Generate 8 dummy research projects. One should have a "Low Confidence" score (red ring) to demonstrate variety.
+3. **Empty State Simulation:** If the user types "void" or "empty" into the search bar, strictly trigger the **"No Dead Ends"** component to demonstrate the redirection logic.
+4. **Visual Style:** High contrast. The search bar should be the most prominent element on the screen (Concept: "The glowing portal to knowledge").
