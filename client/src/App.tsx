@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 import Layout from "@/components/layout";
 import Dashboard from "@/pages/dashboard";
+import Dashboard2 from "@/pages/dashboard2";
 import Launcher from "@/pages/launcher";
 import SearchPage from "@/pages/search";
 import { useEffect } from "react";
@@ -23,6 +24,7 @@ function Router() {
     <Layout>
       <Switch>
         <Route path="/research/dashboard" component={Dashboard} />
+        <Route path="/research/dashboard2" component={Dashboard2} />
         <Route path="/smart-search/new" component={Launcher} />
         <Route path="/research/search" component={SearchPage} />
         {/* Fallback to 404 */}
