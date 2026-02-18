@@ -884,7 +884,7 @@ export default function Launcher() {
                              animate={{ opacity: 1, y: 0, scale: 1 }}
                              exit={{ opacity: 0, y: 10, scale: 0.95 }}
                              transition={{ duration: 0.2 }}
-                             className="absolute bottom-full right-0 mb-2 w-[520px] bg-white rounded-lg shadow-xl border border-gray-200 z-50 overflow-hidden text-left"
+                             className="absolute bottom-full right-0 mb-2 w-[580px] bg-white rounded-lg shadow-xl border border-gray-200 z-50 overflow-hidden text-left"
                            >
                              <div className="flex">
                              {/* Left Column: Breakdown */}
@@ -920,7 +920,7 @@ export default function Launcher() {
                              </div>
 
                              {/* Right Column: Budget Control */}
-                             <div className="w-[180px] p-4 bg-gray-50">
+                             <div className="w-[240px] p-4 bg-gray-50">
                                <div className="flex justify-between items-start mb-2">
                                  <h4 className="text-xs font-bold text-gray-900">Budget Control</h4>
                                  <button onClick={() => setShowCostBreakdown(false)} className="text-gray-400 hover:text-gray-600">
