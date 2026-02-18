@@ -602,12 +602,18 @@ export default function Launcher() {
                                 </SelectTrigger>
                                 <SelectContent>
                                    <SelectItem value="auto">Auto Detect</SelectItem>
-                                   <SelectItem value="en">English</SelectItem>
-                                   <SelectItem value="es">Spanish</SelectItem>
-                                   <SelectItem value="fr">French</SelectItem>
-                                   <SelectItem value="de">German</SelectItem>
-                                   <SelectItem value="ua">Ukrainian</SelectItem>
-                                   <SelectItem value="ru">Russian</SelectItem>
+                                   <SelectItem value="en">English (En)</SelectItem>
+                                   <SelectItem value="es">Spanish (Es)</SelectItem>
+                                   <SelectItem value="zh">Chinese (Zh)</SelectItem>
+                                   <SelectItem value="hi">Hindi (Hi)</SelectItem>
+                                   <SelectItem value="ar">Arabic (Ar)</SelectItem>
+                                   <SelectItem value="pt">Portuguese (Pt)</SelectItem>
+                                   <SelectItem value="bn">Bengali (Bn)</SelectItem>
+                                   <SelectItem value="ru">Russian (Ru)</SelectItem>
+                                   <SelectItem value="ja">Japanese (Ja)</SelectItem>
+                                   <SelectItem value="de">German (De)</SelectItem>
+                                   <SelectItem value="fr">French (Fr)</SelectItem>
+                                   <SelectItem value="ua">Ukrainian (Ua)</SelectItem>
                                 </SelectContent>
                              </Select>
 
