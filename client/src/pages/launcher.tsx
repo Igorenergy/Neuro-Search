@@ -1055,7 +1055,25 @@ export default function Launcher() {
               data-testid="button-toggle-plan"
             >
               <span className="text-xs font-bold text-gray-600">Details: {planStepCount} Steps</span>
-              <ChevronDown className={cn("w-4 h-4 text-gray-500 transition-transform duration-200", !isPlanCollapsed && "rotate-180")} />
+              <div className="flex items-center gap-2">
+                {totalVersions > 1 && (
+                  <Trash2
+                    className="w-3.5 h-3.5 text-gray-400 hover:text-red-500 transition-colors"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (totalVersions > 1) {
+                        const newTotal = totalVersions - 1;
+                        setTotalVersions(newTotal);
+                        if (planVersion > newTotal) {
+                          setPlanVersion(newTotal);
+                        }
+                      }
+                    }}
+                    data-testid="button-delete-version"
+                  />
+                )}
+                <ChevronDown className={cn("w-4 h-4 text-gray-500 transition-transform duration-200", !isPlanCollapsed && "rotate-180")} />
+              </div>
             </button>
 
             {!isPlanCollapsed && (
