@@ -391,7 +391,7 @@ export default function Launcher() {
                          )}
                          onClick={() => setScope("assets")}
                        >
-                         Local Documents
+                         Files
                        </button>
                     </div>
                  </div>
