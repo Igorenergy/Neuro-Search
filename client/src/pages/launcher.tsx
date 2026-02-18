@@ -609,12 +609,12 @@ export default function Launcher() {
                                     <div className="flex items-center gap-2 min-w-0">
                                       <FileText className="w-5 h-5 text-white/80 shrink-0" strokeWidth={1.5} />
                                       <div className="flex flex-col min-w-0">
-                                        <span className="text-[10px] font-medium leading-tight">File Preview (name,</span>
-                                        <span className="text-[10px] font-medium leading-tight">type, etc.)</span>
+                                        <span className="text-[10px] font-medium leading-tight truncate">Mock File {id}.pdf</span>
+                                        <span className="text-[10px] font-medium leading-tight opacity-80">150.5 KB</span>
                                       </div>
                                     </div>
                                     <button 
-                                      className="text-pink-700 hover:text-pink-900 ml-1 shrink-0"
+                                      className="text-pink-200 hover:text-white ml-1 shrink-0"
                                       onClick={() => {
                                         setStep1Files(prev => prev.filter(item => item !== id));
                                       }}
