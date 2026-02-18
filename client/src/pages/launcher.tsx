@@ -87,6 +87,8 @@ export default function Launcher() {
     }
   };
 
+  const [selectedLanguages, setSelectedLanguages] = useState<string[]>(["en"]);
+
   const languages = [
     { value: "auto", label: "Auto Detect" },
     { value: "en", label: "English (En)" },
