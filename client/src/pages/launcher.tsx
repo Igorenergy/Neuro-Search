@@ -244,40 +244,40 @@ export default function Launcher() {
         </div>
       </div>
 
-      {/* Step 1: Questionnaire (Pink/Purple Block) */}
-      <div className="w-full bg-[#E5B8D9] border border-[#D4A5C7] rounded-md shadow-sm overflow-hidden font-sans">
+      {/* Step 1: Questionnaire (Clean White/Gray/Blue Theme) */}
+      <div className="w-full bg-white border border-gray-200 rounded-md shadow-sm overflow-hidden font-sans">
         {/* Step Header */}
-        <div className="flex border-b border-[#D4A5C7]">
-          <button className="flex items-center gap-1 px-4 py-2 bg-[#E5B8D9] text-[#7A4A6A] hover:bg-[#D9A3C2] text-xs font-bold border-r border-[#D4A5C7]">
+        <div className="flex border-b border-gray-200">
+          <button className="flex items-center gap-1 px-4 py-2 bg-gray-50 text-gray-500 hover:bg-gray-100 text-xs font-bold border-r border-gray-200">
             <ArrowLeft className="w-3 h-3" /> Prev. step
           </button>
-          <div className="px-6 py-2 bg-[#6B8CCF] text-white text-xs font-bold flex items-center justify-center">
+          <div className="px-6 py-2 bg-[#008DA8] text-white text-xs font-bold flex items-center justify-center">
             STEP #1
           </div>
-          <div className="px-6 py-2 bg-[#BC8FAD] text-[#6A405C] text-xs font-bold flex items-center justify-center border-r border-[#D4A5C7]">
+          <div className="px-6 py-2 bg-gray-100 text-gray-500 text-xs font-bold flex items-center justify-center border-r border-gray-200">
             REASONING
           </div>
         </div>
 
         <div className="p-4 space-y-4">
           {/* Tip */}
-          <div className="bg-[#E5B8D9] text-[#2E7D32] flex items-center gap-2 text-sm font-medium px-1">
+          <div className="bg-blue-50 text-blue-700 flex items-center gap-2 text-sm font-medium px-1 rounded-sm py-1">
             <Lightbulb className="w-4 h-4" />
-            <span className="text-green-700">Just a few questions to make your research perfect</span>
+            <span>Just a few questions to make your research perfect</span>
           </div>
 
           {/* Question */}
           <div className="space-y-3">
             <div className="flex gap-2">
-              <div className="bg-[#6B8CCF] text-white w-6 h-6 flex items-center justify-center rounded-sm text-xs font-bold shrink-0 mt-0.5">1</div>
-              <p className="text-sm font-medium text-[#4A2A3F]">
+              <div className="bg-[#008DA8] text-white w-6 h-6 flex items-center justify-center rounded-sm text-xs font-bold shrink-0 mt-0.5">1</div>
+              <p className="text-sm font-medium text-gray-800">
                 <span className="font-bold">Geographic Scope.</span> Should we focus only on founders in Ukraine or include the diaspora abroad?
               </p>
             </div>
 
             {/* Answer Input */}
             <div className="space-y-1">
-              <div className="flex justify-between text-xs font-bold text-[#4A2A3F] px-1">
+              <div className="flex justify-between text-xs font-bold text-gray-600 px-1">
                 <span>Your answers</span>
                 <span>{questionAnswer.length}/500</span>
               </div>
@@ -285,7 +285,7 @@ export default function Launcher() {
                 value={questionAnswer}
                 onChange={(e) => setQuestionAnswer(e.target.value)}
                 placeholder="Answers to the question"
-                className="bg-[#EBCBDD] border-[#D4A5C7] placeholder:text-[#9C758D] text-[#4A2A3F] min-h-[60px] resize-none focus-visible:ring-[#6B8CCF]"
+                className="bg-white border-gray-300 placeholder:text-gray-400 text-gray-800 min-h-[60px] resize-none focus-visible:ring-[#008DA8]"
               />
             </div>
 
@@ -295,8 +295,8 @@ export default function Launcher() {
                 className={cn(
                   "px-3 py-1 text-xs font-medium border rounded-sm flex items-center gap-1 transition-colors",
                   geoScope === "global" 
-                    ? "bg-[#D9A3C2] border-[#9C758D] text-[#4A2A3F] shadow-inner" 
-                    : "bg-[#E5B8D9] border-[#9C758D] text-[#4A2A3F] hover:bg-[#D9A3C2]"
+                    ? "bg-blue-100 border-blue-200 text-blue-800 shadow-inner" 
+                    : "bg-gray-50 border-gray-200 text-gray-600 hover:bg-gray-100"
                 )}
                 onClick={() => setGeoScope("global")}
               >
@@ -306,8 +306,8 @@ export default function Launcher() {
                 className={cn(
                   "px-3 py-1 text-xs font-medium border rounded-sm transition-colors",
                   geoScope === "ukraine" 
-                    ? "bg-[#D9A3C2] border-[#9C758D] text-[#4A2A3F] shadow-inner" 
-                    : "bg-[#E5B8D9] border-[#9C758D] text-[#4A2A3F] hover:bg-[#D9A3C2]"
+                    ? "bg-blue-100 border-blue-200 text-blue-800 shadow-inner" 
+                    : "bg-gray-50 border-gray-200 text-gray-600 hover:bg-gray-100"
                 )}
                 onClick={() => setGeoScope("ukraine")}
               >
@@ -317,8 +317,8 @@ export default function Launcher() {
                 className={cn(
                   "px-3 py-1 text-xs font-medium border rounded-sm transition-colors",
                   geoScope === "eu" 
-                    ? "bg-[#D9A3C2] border-[#9C758D] text-[#4A2A3F] shadow-inner" 
-                    : "bg-[#E5B8D9] border-[#9C758D] text-[#4A2A3F] hover:bg-[#D9A3C2]"
+                    ? "bg-blue-100 border-blue-200 text-blue-800 shadow-inner" 
+                    : "bg-gray-50 border-gray-200 text-gray-600 hover:bg-gray-100"
                 )}
                 onClick={() => setGeoScope("eu")}
               >
@@ -330,38 +330,38 @@ export default function Launcher() {
             <div className="flex items-center justify-between pt-2">
               <Button 
                 variant="outline" 
-                className="bg-[#E5B8D9] text-[#6B8CCF] border-[#6B8CCF] hover:bg-[#D9A3C2] h-8 text-xs font-bold px-6"
+                className="bg-white text-[#008DA8] border-[#008DA8] hover:bg-blue-50 h-8 text-xs font-bold px-6"
               >
                 Next Question (2/5)
               </Button>
               
               <Button 
-                className="bg-[#8E5E7E] hover:bg-[#7A4A6A] text-white h-8 text-xs font-bold px-8 shadow-sm"
+                className="bg-gray-500 hover:bg-gray-600 text-white h-8 text-xs font-bold px-8 shadow-sm"
               >
                 Skip & Continue
               </Button>
             </div>
 
             {/* Footer Text */}
-            <p className="text-[10px] text-[#7A4A6A] italic leading-tight pt-1">
+            <p className="text-[10px] text-gray-500 italic leading-tight pt-1">
               Proceed with AI defaults. The system will use its best judgment to define the research scope, though results may be less tailored to your specific needs.
             </p>
           </div>
         </div>
       </div>
       
-      {/* Configuration Accordion - Now Step 2 */}
+      {/* Configuration Accordion - Now Step 2 (Clean White/Gray/Blue Theme) */}
       <Accordion type="single" collapsible defaultValue="options" className="w-full bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
         <AccordionItem value="options" className="border-b-0">
           <AccordionTrigger className="px-0 py-0 hover:no-underline bg-white">
-            <div className="w-full flex border-b border-[#D4A5C7] font-sans">
-              <div className="flex items-center gap-1 px-4 py-2 bg-[#E5B8D9] text-[#7A4A6A] hover:bg-[#D9A3C2] text-xs font-bold border-r border-[#D4A5C7]">
+            <div className="w-full flex border-b border-gray-200 font-sans">
+              <div className="flex items-center gap-1 px-4 py-2 bg-gray-50 text-gray-500 hover:bg-gray-100 text-xs font-bold border-r border-gray-200">
                 <ArrowLeft className="w-3 h-3" /> Prev. step
               </div>
-              <div className="px-6 py-2 bg-[#6B8CCF] text-white text-xs font-bold flex items-center justify-center">
+              <div className="px-6 py-2 bg-[#008DA8] text-white text-xs font-bold flex items-center justify-center">
                 STEP #2
               </div>
-              <div className="px-6 py-2 bg-[#BC8FAD] text-[#6A405C] text-xs font-bold flex items-center justify-center border-r border-[#D4A5C7]">
+              <div className="px-6 py-2 bg-gray-100 text-gray-500 text-xs font-bold flex items-center justify-center border-r border-gray-200">
                 REASONING
               </div>
             </div>
