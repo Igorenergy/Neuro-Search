@@ -769,16 +769,19 @@ export default function Launcher() {
               <h2 className="text-base font-bold text-gray-900">Add Files</h2>
               <div className="flex items-center gap-2 text-xs text-gray-600">
                 <span className="text-orange-400">📂</span>
-                <span>Context window</span>
-                <div className="w-32 h-4 bg-white border border-green-500 rounded-sm relative overflow-hidden group cursor-help">
-                    <div className="absolute inset-y-0 left-0 bg-green-500 w-[20%]"></div>
-                    <span className="absolute inset-0 flex items-center justify-center text-[10px] font-medium text-gray-700 z-10">Usage: 20%</span>
-                    
-                    {/* Tooltip */}
-                    <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-48 bg-gray-900 text-white text-[10px] p-2 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 text-center">
+                
+                <div className="group relative">
+                    <span className="cursor-help border-b border-dotted border-gray-400">Context window</span>
+                    {/* Tooltip for text */}
+                    <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-max max-w-[200px] bg-gray-900 text-white text-[10px] p-2 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 text-center">
                         Available space in context window
                         <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-gray-900 rotate-45"></div>
                     </div>
+                </div>
+
+                <div className="w-32 h-4 bg-white border border-green-500 rounded-sm relative overflow-hidden">
+                    <div className="absolute inset-y-0 left-0 bg-green-500 w-[20%]"></div>
+                    <span className="absolute inset-0 flex items-center justify-center text-[10px] font-medium text-gray-700 z-10">Usage: 20%</span>
                 </div>
               </div>
             </div>
