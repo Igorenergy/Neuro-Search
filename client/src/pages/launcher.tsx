@@ -6,7 +6,8 @@ import {
   Globe, 
   Database, 
   Mic, 
-  ChevronDown, 
+  ChevronDown,
+  ChevronUp, 
   Settings2, 
   Zap, 
   Info,
@@ -96,6 +97,8 @@ export default function Launcher() {
 (12) For each selected project, gather precise details on their AI component's mechanics, algorithms, data sources, and user benefits, then compare these services with sepalai.com in terms of functionality, AI sophistication, and target audience demographics...`
   );
   const [isPlanCollapsed, setIsPlanCollapsed] = useState(false);
+  const [showRefinePlan, setShowRefinePlan] = useState(false);
+  const [refinePrompt, setRefinePrompt] = useState("");
   const [showVersionHistory, setShowVersionHistory] = useState(false);
   const totalVersions = 4;
   const planStepCount = planText.split('\n').filter(l => l.trim()).length;
@@ -1062,29 +1065,54 @@ export default function Launcher() {
           </div>
 
           <div className="flex items-center justify-between pt-2">
-            <div className="flex items-center gap-2 text-xs text-gray-500">
-              <Clock className="w-3.5 h-3.5" />
-              <span>Est. time: 3-5 min</span>
-              <span className="text-gray-300">|</span>
-              <span>Est. cost: <span className="font-bold text-[#008DA8]">$15.40 - $18.40</span></span>
-            </div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
               <Button 
                 variant="outline" 
-                className="border-gray-300 text-gray-600 hover:bg-gray-50 h-8 text-xs font-bold px-6"
-                data-testid="button-edit-plan"
+                className={cn(
+                  "border-green-600 text-green-700 hover:bg-green-50 h-8 text-xs font-bold px-4 gap-1.5",
+                  showRefinePlan && "bg-green-50"
+                )}
+                onClick={() => setShowRefinePlan(!showRefinePlan)}
+                data-testid="button-refine-plan"
               >
-                Edit Plan
+                Refine Plan
+                <ChevronUp className={cn("w-3.5 h-3.5 transition-transform duration-200", !showRefinePlan && "rotate-180")} />
               </Button>
-              <Button 
-                className="bg-[#00802b] hover:bg-[#006622] text-white h-8 text-xs font-bold px-8 shadow-sm gap-1.5"
-                onClick={handleLaunch}
-                data-testid="button-start-research"
-              >
-                <Play className="w-3.5 h-3.5 fill-white" /> Start Research
-              </Button>
+              <span className="text-xs font-medium text-green-700">Refinements used: 0/5</span>
             </div>
+            <Button 
+              className="bg-[#00802b] hover:bg-[#006622] text-white h-8 text-xs font-bold px-8 shadow-sm gap-1.5"
+              onClick={handleLaunch}
+              data-testid="button-start-research"
+            >
+              <Play className="w-3.5 h-3.5 fill-white" /> Start Research
+            </Button>
           </div>
+
+          {showRefinePlan && (
+            <div className="border-2 border-green-600 rounded-md overflow-hidden" data-testid="refine-plan-input">
+              <div className="relative">
+                <Textarea
+                  value={refinePrompt}
+                  onChange={(e) => setRefinePrompt(e.target.value)}
+                  placeholder="Enter text prompt"
+                  className="min-h-[80px] text-sm p-3 pr-16 resize-none bg-white border-0 rounded-none placeholder:text-gray-400 focus-visible:ring-0 focus-visible:ring-offset-0"
+                  data-testid="input-refine-prompt"
+                />
+                <button
+                  className="absolute bottom-3 right-3 flex flex-col items-center gap-0.5"
+                  onClick={() => {
+                    setRefinePrompt("");
+                    setShowRefinePlan(false);
+                  }}
+                  data-testid="button-send-refinement"
+                >
+                  <Zap className="w-5 h-5 text-yellow-500 fill-yellow-400" />
+                  <span className="text-[10px] font-bold text-[#008DA8]">send</span>
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
