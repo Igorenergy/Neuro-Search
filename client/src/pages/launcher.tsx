@@ -1025,32 +1025,22 @@ export default function Launcher() {
               <h3 className="text-sm font-bold text-gray-800" data-testid="text-plan-title">Research Plan</h3>
               <span className="text-xs text-gray-500">Version {planVersion} of {totalVersions}</span>
             </div>
-            <div className="flex items-center gap-2">
-              <Button 
-                variant="outline" 
-                size="sm"
-                className="h-7 text-xs font-medium border-gray-300 text-gray-600 hover:bg-gray-50 gap-1"
-                onClick={() => {
-                  if (planVersion > 1) setPlanVersion(planVersion - 1);
-                }}
-                disabled={planVersion <= 1}
-                data-testid="button-prev-version"
-              >
-                <ArrowLeft className="w-3 h-3" />
-              </Button>
-              <span className="text-xs font-bold text-[#008DA8] min-w-[40px] text-center">v{planVersion}</span>
-              <Button 
-                variant="outline" 
-                size="sm"
-                className="h-7 text-xs font-medium border-gray-300 text-gray-600 hover:bg-gray-50 gap-1"
-                onClick={() => {
-                  if (planVersion < totalVersions) setPlanVersion(planVersion + 1);
-                }}
-                disabled={planVersion >= totalVersions}
-                data-testid="button-next-version"
-              >
-                <ArrowRight className="w-3 h-3" />
-              </Button>
+            <div className="flex items-center gap-1">
+              {Array.from({ length: totalVersions }, (_, i) => i + 1).map((v) => (
+                <button
+                  key={v}
+                  className={cn(
+                    "w-7 h-7 text-xs font-bold rounded-sm transition-colors",
+                    v === planVersion
+                      ? "bg-[#008DA8] text-white"
+                      : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                  )}
+                  onClick={() => setPlanVersion(v)}
+                  data-testid={`button-version-tab-${v}`}
+                >
+                  {v}
+                </button>
+              ))}
             </div>
           </div>
 
