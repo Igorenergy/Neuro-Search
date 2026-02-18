@@ -1,303 +1,344 @@
 import { useState } from "react";
-import { Link, useLocation } from "wouter";
-import { 
-  ArrowRight, 
-  Activity, 
-  Globe, 
-  Search, 
-  Clock, 
-  AlertCircle, 
-  CheckCircle2, 
+import { Link } from "wouter";
+import {
+  Plus,
   MoreVertical,
+  Paperclip,
+  Rocket,
+  DollarSign,
+  Book,
+  Bot,
+  TrendingUp,
+  Building2,
   Zap,
   FileText,
-  ShieldCheck
+  X,
+  ChevronDown,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
-import { Separator } from "@/components/ui/separator";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { cn } from "@/lib/utils";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
-export default function Dashboard() {
-  const [, setLocation] = useLocation();
-  const [bannerVisible, setBannerVisible] = useState(true);
+export default function Dashboard2() {
+  const [showBanner, setShowBanner] = useState(true);
 
-  // Mock Data
-  const recentResearch = [
+  const searches = [
     {
-      id: "R-1024",
-      name: "Global Logistics Trends 2024",
-      date: "2 hours ago",
-      status: "Completed",
-      confidence: 92,
-      cost: 1.20,
+      id: 1,
+      title: "Американская Фабрика...",
+      date: "5 дек. 2025 г.",
+      sources: 4,
+      icon: Rocket,
+      color: "bg-cyan-100",
+      iconColor: "text-red-500",
+      iconBg: "bg-white",
+      hasAttachment: true,
     },
     {
-      id: "R-1025",
-      name: "Competitor Analysis: Acme Corp",
-      date: "Active now",
-      status: "In Progress",
-      confidence: 0,
-      cost: 0.45,
+      id: 2,
+      title: "Startup: AI Deep Research",
+      date: "2 дек. 2025 г.",
+      sources: 51,
+      icon: DollarSign,
+      color: "bg-purple-100",
+      iconColor: "text-yellow-600",
+      iconBg: "bg-yellow-100",
+      hasAttachment: true,
     },
     {
-      id: "R-1023",
-      name: "Q3 Financial Reports - Tech Sector",
-      date: "Yesterday",
-      status: "Failed",
-      confidence: 0,
-      cost: 0.10,
+      id: 3,
+      title: "Untitled notebook",
+      date: "5 дек. 2025 г.",
+      sources: 0,
+      icon: Book,
+      color: "bg-purple-50",
+      iconColor: "text-orange-400",
+      iconBg: "bg-white",
+      hasAttachment: true,
     },
     {
-      id: "R-1022",
-      name: "AI Regulation Frameworks EU",
-      date: "2 days ago",
-      status: "Completed",
-      confidence: 88,
-      cost: 2.50,
+      id: 4,
+      title: "Abacus.AI: Корпоративный...",
+      date: "2 дек. 2025 г.",
+      sources: 61,
+      icon: Bot,
+      color: "bg-yellow-50",
+      iconColor: "text-gray-700",
+      iconBg: "bg-gray-200",
+      hasAttachment: false,
+    },
+    {
+      id: 5,
+      title: "Инновации, Капитал и...",
+      date: "2 дек. 2025 г.",
+      sources: 25,
+      icon: TrendingUp,
+      color: "bg-red-50",
+      iconColor: "text-red-500",
+      iconBg: "bg-white",
+      hasAttachment: true,
+    },
+    {
+      id: 6,
+      title: "Реестр 492 Компаний",
+      date: "2 дек. 2025 г.",
+      sources: 2,
+      icon: Building2,
+      color: "bg-cyan-50",
+      iconColor: "text-blue-500",
+      iconBg: "bg-white",
+      hasAttachment: false,
+    },
+    {
+      id: 7,
+      title: "Untitled notebook",
+      date: "30 нояб. 2025 г.",
+      sources: 0,
+      icon: Book,
+      color: "bg-purple-50",
+      iconColor: "text-orange-400",
+      iconBg: "bg-white",
+      hasAttachment: false,
+    },
+    {
+      id: 8,
+      title: "Потеря $1,8 млн на крипте: уроки...",
+      date: "24 нояб. 2025 г.",
+      sources: 1,
+      icon: TrendingUp, // Using TrendingUp as a graph placeholder
+      color: "bg-indigo-50",
+      iconColor: "text-blue-600",
+      iconBg: "bg-white",
+      hasAttachment: false,
+    },
+    {
+      id: 9,
+      title: "Мемуары Криптана: Ретродропи,...",
+      date: "23 нояб. 2025 г.",
+      sources: 1,
+      icon: Zap, // Using Zap for racing car placeholder equivalent
+      color: "bg-green-50",
+      iconColor: "text-red-500",
+      iconBg: "bg-white",
+      hasAttachment: false,
+    },
+    {
+      id: 10,
+      title: "Искусственный Интеллект и...",
+      date: "17 нояб. 2025 г.",
+      sources: 24,
+      icon: FileText, // Placeholder
+      color: "bg-orange-50",
+      iconColor: "text-red-600",
+      iconBg: "bg-white",
+      hasAttachment: false,
+    },
+    {
+      id: 11,
+      title: "15 Жестоких Правд о Неконкурентно...",
+      date: "16 нояб. 2025 г.",
+      sources: 1,
+      icon: Zap, // Placeholder for flexing arm
+      color: "bg-cyan-50",
+      iconColor: "text-yellow-600",
+      iconBg: "bg-white",
+      hasAttachment: false,
     },
   ];
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto animate-in fade-in duration-500">
-      
+    <div className="max-w-[1600px] mx-auto space-y-6 font-sans">
       {/* Latest News Banner */}
-      {bannerVisible && (
-        <div className="bg-gradient-to-r from-primary/10 via-accent/5 to-background border border-primary/20 rounded-lg p-4 flex items-center justify-between relative overflow-hidden">
-          <div className="absolute inset-0 bg-grid-white/5 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))]" />
-          <div className="flex items-center gap-3 relative z-10">
-            <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20">New</Badge>
-            <p className="text-sm font-medium text-foreground">
-              Deep Extract Model v2.1 is now live! <span className="text-muted-foreground ml-1">+25% faster parsing.</span>
-            </p>
+      {showBanner && (
+        <div className="bg-[#EBEBEB] border border-gray-300 rounded-sm relative overflow-hidden">
+          <div className="flex items-center justify-between p-3 border-b border-gray-200 bg-[#E0E0E0]">
+            <div className="flex items-center gap-2">
+              <FileText className="w-5 h-5 text-gray-700" />
+              <h2 className="font-bold text-gray-800 text-sm">
+                Our Latest News
+              </h2>
+            </div>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-6 text-xs border-gray-400 text-[#006E7D] bg-white hover:bg-gray-50"
+              >
+                See all
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-6 w-6 text-[#006E7D] hover:bg-transparent"
+                onClick={() => setShowBanner(false)}
+              >
+                <X className="w-5 h-5 stroke-[3]" />
+              </Button>
+            </div>
           </div>
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            className="h-8 w-8 p-0 text-muted-foreground hover:text-foreground relative z-10"
-            onClick={() => setBannerVisible(false)}
-          >
-            ×
-          </Button>
+          <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2 bg-[#EBEBEB]">
+            <div>
+              <a
+                href="#"
+                className="block text-sm font-medium text-gray-800 hover:underline decoration-gray-400 underline-offset-2 mb-0.5"
+              >
+                Introducing research models with Basis for the Parallel Chat API
+              </a>
+              <p className="text-[10px] text-gray-500 font-bold uppercase tracking-wide">
+                PRODUCT UPDATE • 4 DAYS AGO
+              </p>
+            </div>
+            <div>
+              <a
+                href="#"
+                className="block text-sm font-medium text-gray-800 hover:underline decoration-gray-400 underline-offset-2 mb-0.5"
+              >
+                How Amp's coding agents build better software with ...
+              </a>
+              <p className="text-[10px] text-gray-500 font-bold uppercase tracking-wide">
+                PRODUCT UPDATE • 4 DAYS AGO
+              </p>
+            </div>
+            <div>
+              <a
+                href="#"
+                className="block text-sm font-medium text-gray-800 hover:underline decoration-gray-400 underline-offset-2 mb-0.5"
+              >
+                Build a real-time fact checker with Acuras Proand Cerebras
+              </a>
+              <p className="text-[10px] text-gray-500 font-bold uppercase tracking-wide">
+                PRODUCT UPDATE • 4 DAYS AGO
+              </p>
+            </div>
+            <div>
+              <a
+                href="#"
+                className="block text-sm font-medium text-gray-800 hover:underline decoration-gray-400 underline-offset-2 mb-0.5"
+              >
+                Latency improvements on the Acuras ProTask API
+              </a>
+              <p className="text-[10px] text-gray-500 font-bold uppercase tracking-wide">
+                PRODUCT UPDATE • 4 DAYS AGO
+              </p>
+            </div>
+          </div>
         </div>
       )}
 
-      {/* Main Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        
-        {/* Left Column (Active Ops & Quick Launch) */}
-        <div className="lg:col-span-2 space-y-6">
-          
-          {/* Quick Launch */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Card className="bg-primary/5 border-primary/20 hover:bg-primary/10 transition-colors cursor-pointer group" onClick={() => setLocation("/smart-search/new")}>
-              <CardContent className="p-6 flex flex-col items-start justify-between h-40">
-                <div className="p-3 rounded-full bg-primary/20 text-primary mb-4 group-hover:scale-110 transition-transform">
-                  <Globe className="w-6 h-6" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-bold text-foreground group-hover:text-primary transition-colors">Start New Deep Research</h3>
-                  <p className="text-sm text-muted-foreground mt-1">Launch a multi-agent investigation</p>
-                </div>
-              </CardContent>
-            </Card>
+      {/* Main Content Header */}
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+        <h1 className="text-xl font-bold text-gray-900">Your Searches (20)</h1>
 
-            <Card className="hover:bg-accent/5 transition-colors cursor-pointer group" onClick={() => setLocation("/research/search")}>
-              <CardContent className="p-6 flex flex-col items-start justify-between h-40">
-                <div className="p-3 rounded-full bg-secondary text-secondary-foreground mb-4 group-hover:scale-110 transition-transform">
-                  <Search className="w-6 h-6" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-bold text-foreground">Smart Search Repository</h3>
-                  <p className="text-sm text-muted-foreground mt-1">Find existing assets & reports</p>
-                </div>
-              </CardContent>
-            </Card>
+        <div className="flex items-center gap-2">
+          <span className="text-sm font-bold text-gray-800">Research type</span>
+          <Button
+            variant="outline"
+            className="h-8 bg-white border-gray-300 text-sm font-normal min-w-[100px] justify-between"
+          >
+            All: 20
+            <ChevronDown className="w-4 h-4 opacity-50" />
+          </Button>
+        </div>
+      </div>
+
+      {/* Cards Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        {/* Create Research Card */}
+        <div className="bg-white rounded-xl border border-gray-100 p-6 flex flex-col items-center justify-center text-center shadow-sm hover:shadow-md transition-shadow min-h-[220px]">
+          <div className="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center mb-4">
+            <Plus className="w-8 h-8 text-blue-500" />
           </div>
+          <h3 className="text-lg font-bold text-gray-900 mb-4">
+            Create research
+          </h3>
+          <div className="space-y-2 w-full">
+            <Link href="/smart-search/new">
+              <a className="block text-sm font-bold text-[#008DA8] hover:underline mb-2">
+                SMART SEARCH
+              </a>
+            </Link>
+            <Link href="#">
+              <a className="block text-sm font-bold text-[#008DA8] hover:underline">
+                SMART SHEET
+              </a>
+            </Link>
+          </div>
+        </div>
 
-          {/* Active Operations */}
-          <Card className="border-border/50 bg-card/50 backdrop-blur-sm">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <div className="space-y-1">
-                <CardTitle className="text-lg font-medium">Active Operations</CardTitle>
-                <CardDescription>Live tasks running on the agent swarm</CardDescription>
+        {/* Project Cards */}
+        {searches.map((item) => (
+          <div
+            key={item.id}
+            className={cn(
+              "rounded-xl p-5 relative group flex flex-col min-h-[220px] transition-all hover:shadow-md",
+              item.color,
+            )}
+          >
+            <div className="flex justify-between items-start mb-4">
+              <div
+                className={cn(
+                  "w-12 h-12 rounded-lg flex items-center justify-center border-2 border-black/5",
+                  item.iconBg,
+                )}
+              >
+                <item.icon
+                  className={cn("w-7 h-7 stroke-[1.5]", item.iconColor)}
+                />
               </div>
-              <Badge variant="outline" className="animate-pulse bg-green-500/10 text-green-500 border-green-500/20">
-                1 Active
-              </Badge>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="p-4 border border-border rounded-lg bg-background/50 relative overflow-hidden group">
-                {/* Progress Bar Background */}
-                <div className="absolute bottom-0 left-0 h-1 bg-primary/20 w-full">
-                  <div className="h-full bg-primary w-[45%] animate-[pulse_2s_ease-in-out_infinite]" />
-                </div>
-                
-                <div className="flex justify-between items-start mb-2">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 rounded bg-primary/10 text-primary">
-                      <Activity className="w-4 h-4 animate-spin-slow" />
-                    </div>
-                    <div>
-                      <h4 className="font-medium text-foreground">Competitor Analysis: Acme Corp</h4>
-                      <p className="text-xs text-primary font-mono mt-0.5">Hydrating Contacts...</p>
-                    </div>
-                  </div>
-                  <Button variant="ghost" size="sm" className="text-destructive hover:bg-destructive/10 hover:text-destructive h-8">
-                    Abort
+              <div className="flex items-center gap-1">
+                {item.hasAttachment && (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-8 w-8 text-gray-500 hover:bg-black/5 rounded-full"
+                  >
+                    <Paperclip className="w-4 h-4 rotate-45" />
                   </Button>
-                </div>
+                )}
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 text-gray-500 hover:bg-black/5 rounded-full"
+                    >
+                      <MoreVertical className="w-4 h-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuItem>Open</DropdownMenuItem>
+                    <DropdownMenuItem>Rename</DropdownMenuItem>
+                    <DropdownMenuItem className="text-red-600">
+                      Delete
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
-            </CardContent>
-          </Card>
+            </div>
 
-          {/* Recent Research Log */}
-          <Card className="border-border/50 bg-card/50 backdrop-blur-sm">
-             <CardHeader className="pb-2">
-              <CardTitle className="text-lg font-medium">Recent Research Log</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow className="hover:bg-transparent border-border/50">
-                    <TableHead>Project Name</TableHead>
-                    <TableHead className="w-[120px]">Date</TableHead>
-                    <TableHead className="w-[100px]">Status</TableHead>
-                    <TableHead className="w-[100px] text-right">Confidence</TableHead>
-                    <TableHead className="w-[80px] text-right">Cost</TableHead>
-                    <TableHead className="w-[50px]"></TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {recentResearch.map((item) => (
-                    <TableRow key={item.id} className="cursor-pointer hover:bg-muted/50 border-border/50">
-                      <TableCell className="font-medium">
-                        <div className="flex items-center gap-2">
-                          <FileText className="w-4 h-4 text-muted-foreground" />
-                          {item.name}
-                        </div>
-                      </TableCell>
-                      <TableCell className="text-muted-foreground text-sm">{item.date}</TableCell>
-                      <TableCell>
-                        <StatusBadge status={item.status} />
-                      </TableCell>
-                      <TableCell className="text-right">
-                        {item.confidence > 0 ? (
-                           <div className="flex items-center justify-end gap-1.5 text-xs font-mono text-muted-foreground" title="AI Confidence Score">
-                             <ShieldCheck className={cn("w-3.5 h-3.5", item.confidence > 90 ? "text-green-500" : "text-yellow-500")} />
-                             {item.confidence}%
-                           </div>
-                        ) : (
-                          <span className="text-xs text-muted-foreground">-</span>
-                        )}
-                      </TableCell>
-                      <TableCell className="text-right font-mono text-xs text-muted-foreground">
-                        ${item.cost.toFixed(2)}
-                      </TableCell>
-                      <TableCell>
-                        <Button variant="ghost" size="icon" className="h-8 w-8">
-                          <MoreVertical className="w-4 h-4" />
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </CardContent>
-          </Card>
-        </div>
+            <div className="mt-auto">
+              <h3 className="text-xl font-normal text-gray-800 leading-tight mb-3 line-clamp-2">
+                {item.title}
+              </h3>
+              <p className="text-sm text-gray-500 font-medium">
+                {item.date} • {item.sources} источников
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
 
-        {/* Right Column (System Health) */}
-        <div className="lg:col-span-1 space-y-6">
-          <Card className="bg-sidebar border-sidebar-border shadow-lg">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Budget & System</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div>
-                <p className="text-sm text-muted-foreground mb-1">Current Balance</p>
-                <div className="flex items-end gap-2">
-                  <span className="text-4xl font-mono font-light text-foreground">$124.00</span>
-                  <Badge variant="outline" className="mb-1.5 border-primary/20 text-primary">Pro Plan</Badge>
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <div className="flex justify-between text-xs text-muted-foreground">
-                  <span>Token Usage (24h)</span>
-                  <span>1.2M / 2.0M</span>
-                </div>
-                <Progress value={60} className="h-2 bg-muted/50" />
-                <div className="flex justify-between text-[10px] text-muted-foreground/50 font-mono">
-                  <span>00:00</span>
-                  <span>12:00</span>
-                  <span>23:59</span>
-                </div>
-              </div>
-
-              <Separator className="bg-border/50" />
-
-              <div className="space-y-3">
-                <div className="flex items-center justify-between text-sm">
-                  <span className="flex items-center gap-2 text-muted-foreground">
-                    <Zap className="w-4 h-4" /> System Status
-                  </span>
-                  <span className="flex items-center gap-1.5 text-green-500 text-xs font-medium">
-                    <span className="relative flex h-2 w-2">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-                    </span>
-                    Operational
-                  </span>
-                </div>
-                <div className="flex items-center justify-between text-sm">
-                  <span className="flex items-center gap-2 text-muted-foreground">
-                    <Globe className="w-4 h-4" /> Proxy Network
-                  </span>
-                  <span className="text-xs text-muted-foreground">98% Success Rate</span>
-                </div>
-              </div>
-
-              <Button className="w-full mt-4" variant="outline">Manage Subscription</Button>
-            </CardContent>
-          </Card>
-        </div>
+      <div className="flex justify-center pt-8 pb-12">
+        <Button className="bg-[#008DA8] hover:bg-[#007A92] text-white px-8 h-10 rounded-sm font-medium">
+          Show more (20)
+        </Button>
       </div>
     </div>
   );
-}
-
-function StatusBadge({ status }: { status: string }) {
-  if (status === "Completed") {
-    return (
-      <Badge variant="outline" className="bg-green-500/5 text-green-500 border-green-500/20 hover:bg-green-500/10">
-        <CheckCircle2 className="w-3 h-3 mr-1" /> Completed
-      </Badge>
-    );
-  }
-  if (status === "In Progress") {
-    return (
-      <Badge variant="outline" className="bg-blue-500/5 text-blue-500 border-blue-500/20 hover:bg-blue-500/10 animate-pulse">
-        <Activity className="w-3 h-3 mr-1" /> Processing
-      </Badge>
-    );
-  }
-  if (status === "Failed") {
-    return (
-      <Badge variant="outline" className="bg-red-500/5 text-red-500 border-red-500/20 hover:bg-red-500/10">
-        <AlertCircle className="w-3 h-3 mr-1" /> Failed
-      </Badge>
-    );
-  }
-  return <Badge variant="secondary">{status}</Badge>;
 }
