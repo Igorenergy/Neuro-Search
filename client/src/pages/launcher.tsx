@@ -1110,7 +1110,7 @@ export default function Launcher() {
                 data-testid="button-refine-plan"
               >
                 Refine Plan
-                <ChevronUp className={cn("w-3.5 h-3.5 transition-transform duration-200", !showRefinePlan && "rotate-180")} />
+                <ChevronUp className={cn("w-3.5 h-3.5 transition-transform duration-200", showRefinePlan && "rotate-180")} />
               </Button>
               <Button 
                 className="bg-[#00802b] hover:bg-[#006622] text-white h-8 text-xs font-bold px-6 shadow-sm gap-1.5"
