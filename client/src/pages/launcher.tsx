@@ -331,9 +331,9 @@ export default function Launcher() {
                   </DialogContent>
                 </Dialog>
 
-                <button className="text-red-600 hover:text-red-700 relative">
+                <button className="text-red-600 hover:text-red-700 relative ml-1">
                   <XCircle className="w-6 h-6 fill-white" />
-                  <span className="absolute -top-2 -right-1 bg-yellow-400 text-black text-[10px] font-bold px-1 rounded-sm border border-white shadow-sm">2</span>
+                  <span className="absolute -top-1.5 -right-1 bg-yellow-400 text-black text-[9px] font-bold px-1 rounded-sm border border-white shadow-sm leading-tight min-w-[14px] text-center">2</span>
                 </button>
              </div>
 
