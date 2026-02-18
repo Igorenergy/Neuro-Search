@@ -1058,13 +1058,13 @@ export default function Launcher() {
               data-testid="button-toggle-plan"
             >
               <span className="text-xs font-bold text-gray-600">Details: {planStepCount} Steps</span>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-7">
                 <Trash2
                   className={cn(
-                    "w-3.5 h-3.5 transition-colors",
+                    "w-5 h-5 transition-colors",
                     totalVersions > 1
-                      ? "text-gray-400 hover:text-red-500 cursor-pointer"
-                      : "text-gray-200 cursor-not-allowed"
+                      ? "text-red-500 hover:text-red-700 cursor-pointer"
+                      : "text-red-300 cursor-not-allowed"
                   )}
                   onClick={(e) => {
                     e.stopPropagation();
