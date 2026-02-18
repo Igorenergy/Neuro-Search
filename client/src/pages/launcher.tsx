@@ -848,13 +848,13 @@ export default function Launcher() {
                                 {dataEngine === "ultimate" && <Zap className="w-3 h-3 text-yellow-500 fill-yellow-500" />}
                                 {dataEngine === "pro" && <Zap className="w-3 h-3 text-blue-500 fill-blue-500" />}
                                 {dataEngine === "fast" && <Zap className="w-3 h-3 text-green-500 fill-green-500" />}
-                                <span className="capitalize">{dataEngine}</span>
+                                <span className="capitalize">{dataEngine === 'fast' ? 'Standard' : dataEngine === 'pro' ? 'Advanced' : dataEngine}</span>
                              </div>
                           </SelectTrigger>
                           <SelectContent>
                              <SelectItem value="ultimate">Ultimate</SelectItem>
-                             <SelectItem value="pro">Pro</SelectItem>
-                             <SelectItem value="fast">Fast</SelectItem>
+                             <SelectItem value="pro">Advanced</SelectItem>
+                             <SelectItem value="fast">Standard</SelectItem>
                           </SelectContent>
                        </Select>
                        <span className="text-xs text-[#008DA8] ml-2">{getDataEngineDescription(dataEngine)}</span>
