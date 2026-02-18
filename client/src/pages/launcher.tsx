@@ -27,7 +27,8 @@ import {
   Trash2,
   GripVertical,
   History,
-  RefreshCw
+  RefreshCw,
+  Search
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -1064,55 +1065,56 @@ export default function Launcher() {
             )}
           </div>
 
-          <div className="flex items-center gap-3 pt-2">
-            <div className="flex items-center gap-2 shrink-0">
-              <Button 
-                variant="outline" 
-                className={cn(
-                  "border-green-600 text-green-700 hover:bg-green-50 h-8 text-xs font-bold px-4 gap-1.5",
-                  showRefinePlan && "bg-green-50"
-                )}
-                onClick={() => setShowRefinePlan(!showRefinePlan)}
-                data-testid="button-refine-plan"
-              >
-                Refine Plan
-                <ChevronUp className={cn("w-3.5 h-3.5 transition-transform duration-200", !showRefinePlan && "rotate-180")} />
-              </Button>
-              <span className="text-xs font-medium text-green-700 whitespace-nowrap">Refinements used: 0/5</span>
+          <div className="space-y-2 pt-2">
+            <span className="text-xs font-medium text-green-700">Refinements used: 0/5</span>
+
+            <div className="border-2 border-green-600 rounded-md overflow-hidden" data-testid="refine-plan-input">
+              <div className="relative">
+                <Textarea
+                  value={refinePrompt}
+                  onChange={(e) => setRefinePrompt(e.target.value)}
+                  placeholder="Enter text prompt"
+                  className="min-h-[80px] text-sm p-3 pr-16 resize-none bg-white border-0 rounded-none placeholder:text-gray-400 focus-visible:ring-0 focus-visible:ring-offset-0"
+                  data-testid="input-refine-prompt"
+                />
+                <button
+                  className="absolute bottom-3 right-3 flex flex-col items-center gap-0.5"
+                  onClick={() => {
+                    setRefinePrompt("");
+                  }}
+                  data-testid="button-send-refinement"
+                >
+                  <Zap className="w-5 h-5 text-yellow-500 fill-yellow-400" />
+                  <span className="text-[10px] font-bold text-[#008DA8]">send</span>
+                </button>
+              </div>
             </div>
 
-            {showRefinePlan && (
-              <div className="flex-1 border-2 border-green-600 rounded-md overflow-hidden" data-testid="refine-plan-input">
-                <div className="relative">
-                  <Textarea
-                    value={refinePrompt}
-                    onChange={(e) => setRefinePrompt(e.target.value)}
-                    placeholder="Enter text prompt"
-                    className="min-h-[60px] text-sm p-2 pr-14 resize-none bg-white border-0 rounded-none placeholder:text-gray-400 focus-visible:ring-0 focus-visible:ring-offset-0"
-                    data-testid="input-refine-prompt"
-                  />
-                  <button
-                    className="absolute bottom-2 right-2 flex flex-col items-center gap-0.5"
-                    onClick={() => {
-                      setRefinePrompt("");
-                      setShowRefinePlan(false);
-                    }}
-                    data-testid="button-send-refinement"
-                  >
-                    <Zap className="w-5 h-5 text-yellow-500 fill-yellow-400" />
-                    <span className="text-[10px] font-bold text-[#008DA8]">send</span>
-                  </button>
-                </div>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2 text-xs text-gray-600">
+                <span className="text-green-700 font-bold">$</span>
+                <span className="font-medium">Estimated Cost:</span>
+                <span className="font-bold text-[#008DA8]">$15.4 - $18.4</span>
               </div>
-            )}
-
-            <Button 
-              className="bg-[#00802b] hover:bg-[#006622] text-white h-8 text-xs font-bold px-8 shadow-sm gap-1.5 shrink-0 ml-auto"
-              onClick={handleLaunch}
-              data-testid="button-start-research"
-            >
-              <Play className="w-3.5 h-3.5 fill-white" /> Start Research
-            </Button>
+              <div className="flex items-center gap-3">
+                <Button 
+                  variant="outline" 
+                  className="border-green-600 text-green-700 hover:bg-green-50 h-8 text-xs font-bold px-6 gap-1.5"
+                  onClick={() => setIsPlanCollapsed(!isPlanCollapsed)}
+                  data-testid="button-refine-plan"
+                >
+                  Refine Plan
+                  <ChevronUp className={cn("w-3.5 h-3.5 transition-transform duration-200", isPlanCollapsed && "rotate-180")} />
+                </Button>
+                <Button 
+                  className="bg-[#00802b] hover:bg-[#006622] text-white h-8 text-xs font-bold px-6 shadow-sm gap-1.5"
+                  onClick={handleLaunch}
+                  data-testid="button-start-research"
+                >
+                  <Search className="w-3.5 h-3.5" /> Launch Research
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
