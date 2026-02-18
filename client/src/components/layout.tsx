@@ -65,7 +65,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           className="h-8 w-8 text-black hover:bg-black/5"
           onClick={() => setIsCollapsed(!isCollapsed)}
         >
-          {collapsed ? <PanelLeftOpen className="w-6 h-6" /> : <Menu className="w-8 h-8 stroke-[3]" />}
+          <Menu className="w-8 h-8 stroke-[3]" />
         </Button>
       </div>
 
