@@ -222,7 +222,7 @@ export default function Launcher() {
                     <button 
                       className="bg-white border border-green-600 rounded-md px-4 py-1 text-sm font-medium shadow-sm hover:bg-gray-50 flex items-center justify-center min-w-[100px]"
                     >
-                      selected: {files.length > 0 ? files.length : 4}
+                      selected: {files.length > 0 ? files.length : 0}
                     </button>
                   </DialogTrigger>
                   <DialogContent className="max-w-xl p-0 gap-0 bg-[#F8F9FA] overflow-hidden">
