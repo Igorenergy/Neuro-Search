@@ -101,7 +101,8 @@ export default function Launcher() {
   };
 
   return (
-    <div className="max-w-[1000px] mx-auto py-6 px-4 space-y-6 font-sans text-gray-800 animate-in fade-in duration-500">
+    <div className="min-h-screen bg-white font-sans text-gray-800 animate-in fade-in duration-500">
+      <div className="max-w-[1000px] mx-auto py-6 px-4 space-y-6">
       
       {/* Header & Type Selection */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -244,19 +245,20 @@ export default function Launcher() {
         </div>
       </div>
 
-      {/* Step 1: Questionnaire (Clean White/Gray/Blue Theme) */}
+      {/* Step 1: Questionnaire (Dark Header Theme) */}
       <div className="w-full bg-white border border-gray-200 rounded-md shadow-sm overflow-hidden font-sans">
         {/* Step Header */}
-        <div className="flex border-b border-gray-200">
-          <button className="flex items-center gap-1 px-4 py-2 bg-gray-50 text-gray-500 hover:bg-gray-100 text-xs font-bold border-r border-gray-200">
+        <div className="flex border-b border-gray-200 bg-[#5A6B7C]">
+          <button className="flex items-center gap-1 px-4 py-2 bg-[#F0F2F5] text-[#5A6B7C] hover:bg-white text-xs font-bold border-r border-gray-300">
             <ArrowLeft className="w-3 h-3" /> Prev. step
           </button>
-          <div className="px-6 py-2 bg-[#008DA8] text-white text-xs font-bold flex items-center justify-center">
+          <div className="px-6 py-2 bg-[#0097B2] text-white text-xs font-bold flex items-center justify-center">
             STEP #1
           </div>
-          <div className="px-6 py-2 bg-gray-100 text-gray-500 text-xs font-bold flex items-center justify-center border-r border-gray-200">
+          <div className="px-6 py-2 bg-[#F0F2F5] text-[#5A6B7C] text-xs font-bold flex items-center justify-center border-r border-gray-300">
             REASONING
           </div>
+          {/* Spacer to fill the rest of the header with dark color if needed, or just keep it minimal like the image */}
         </div>
 
         <div className="p-4 space-y-4">
@@ -350,18 +352,18 @@ export default function Launcher() {
         </div>
       </div>
       
-      {/* Configuration Accordion - Now Step 2 (Clean White/Gray/Blue Theme) */}
+      {/* Configuration Accordion - Now Step 2 (Dark Header Theme) */}
       <div className="w-full bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
         <div>
           <div className="px-0 py-0 bg-white">
-            <div className="w-full flex border-b border-gray-200 font-sans">
-              <div className="flex items-center gap-1 px-4 py-2 bg-gray-50 text-gray-500 hover:bg-gray-100 text-xs font-bold border-r border-gray-200">
+            <div className="w-full flex border-b border-gray-200 font-sans bg-[#5A6B7C]">
+              <div className="flex items-center gap-1 px-4 py-2 bg-[#F0F2F5] text-[#5A6B7C] hover:bg-white text-xs font-bold border-r border-gray-300">
                 <ArrowLeft className="w-3 h-3" /> Prev. step
               </div>
-              <div className="px-6 py-2 bg-[#008DA8] text-white text-xs font-bold flex items-center justify-center">
+              <div className="px-6 py-2 bg-[#0097B2] text-white text-xs font-bold flex items-center justify-center">
                 STEP #2
               </div>
-              <div className="px-6 py-2 bg-gray-100 text-gray-500 text-xs font-bold flex items-center justify-center border-r border-gray-200">
+              <div className="px-6 py-2 bg-[#F0F2F5] text-[#5A6B7C] text-xs font-bold flex items-center justify-center border-r border-gray-300">
                 REASONING
               </div>
             </div>
@@ -484,6 +486,7 @@ export default function Launcher() {
         </div>
       </div>
 
+    </div>
     </div>
   );
 }
