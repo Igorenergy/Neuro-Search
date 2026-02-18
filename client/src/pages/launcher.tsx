@@ -351,9 +351,9 @@ export default function Launcher() {
       </div>
       
       {/* Configuration Accordion - Now Step 2 (Clean White/Gray/Blue Theme) */}
-      <Accordion type="single" collapsible defaultValue="options" className="w-full bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-        <AccordionItem value="options" className="border-b-0">
-          <AccordionTrigger className="px-0 py-0 hover:no-underline bg-white">
+      <div className="w-full bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+        <div>
+          <div className="px-0 py-0 bg-white">
             <div className="w-full flex border-b border-gray-200 font-sans">
               <div className="flex items-center gap-1 px-4 py-2 bg-gray-50 text-gray-500 hover:bg-gray-100 text-xs font-bold border-r border-gray-200">
                 <ArrowLeft className="w-3 h-3" /> Prev. step
@@ -365,8 +365,8 @@ export default function Launcher() {
                 REASONING
               </div>
             </div>
-          </AccordionTrigger>
-          <AccordionContent className="px-6 pb-6 pt-6">
+          </div>
+          <div className="px-6 pb-6 pt-6">
             <div className="space-y-6">
               <p className="text-sm text-gray-500">
                 At this stage, you choose the depth of analysis and data sources. This will help the system to optimize your budget and ensure maximum accuracy of research for a specific task.
@@ -480,9 +480,9 @@ export default function Launcher() {
               </div>
 
             </div>
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion>
+          </div>
+        </div>
+      </div>
 
     </div>
   );
