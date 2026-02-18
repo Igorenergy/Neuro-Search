@@ -682,7 +682,7 @@ export default function Launcher() {
                                   <Button 
                                     variant="outline" 
                                     className="w-full border-green-600 text-green-700 hover:bg-green-50 h-8 text-xs font-medium"
-                                    onClick={() => fileInputRef.current?.click()}
+                                    onClick={() => setIsAddFileModalOpen(true)}
                                   >
                                     Upload files
                                   </Button>
