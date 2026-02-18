@@ -66,6 +66,7 @@ export default function Launcher() {
   const [questionAnswer, setQuestionAnswer] = useState("");
   const [geoScope, setGeoScope] = useState("global");
   const [isAddFileModalOpen, setIsAddFileModalOpen] = useState(false);
+  const [confirmExitStep, setConfirmExitStep] = useState<string | null>(null); // State for exit confirmation modal
 
   // Cost calculation
   const baseCost = 0.45;
@@ -362,7 +363,10 @@ export default function Launcher() {
       <div className="w-full bg-white border border-gray-200 rounded-md shadow-sm overflow-hidden font-sans">
         {/* Step Header */}
         <div className="flex border-b border-gray-200 bg-[#5A6B7C] min-h-[34px]">
-          <button className="flex items-center gap-1 px-4 py-2 hover:bg-gray-50 text-xs font-bold border-r border-gray-300 bg-[#546c7c] text-[#ffffff]">
+          <button 
+            className="flex items-center gap-1 px-4 py-2 hover:bg-[#4a5b6c] transition-colors text-xs font-bold border-r border-gray-300 bg-[#546c7c] text-[#ffffff]"
+            onClick={() => setConfirmExitStep("Launcher")}
+          >
             <ArrowLeft className="w-3 h-3" /> Prev. step
           </button>
           <div className="px-6 py-2 bg-[#0097B2] text-white text-xs font-bold flex items-center justify-center">
@@ -470,9 +474,12 @@ export default function Launcher() {
         <div>
           <div className="px-0 py-0 bg-white">
             <div className="w-full flex border-b border-gray-200 font-sans bg-[#5A6B7C] min-h-[34px]">
-              <div className="flex items-center gap-1 px-4 py-2 hover:bg-gray-50 text-xs font-bold border-r border-gray-300 bg-[#546c7c] text-[#ffffff]">
+              <button 
+                className="flex items-center gap-1 px-4 py-2 hover:bg-[#4a5b6c] transition-colors text-xs font-bold border-r border-gray-300 bg-[#546c7c] text-[#ffffff]"
+                onClick={() => setConfirmExitStep("Step #1")}
+              >
                 <ArrowLeft className="w-3 h-3" /> Prev. step
-              </div>
+              </button>
               <div className="px-6 py-2 bg-[#0097B2] text-white text-xs font-bold flex items-center justify-center">
                 STEP #2
               </div>
@@ -644,6 +651,51 @@ export default function Launcher() {
           </div>
         </div>
       </div>
+
+      {/* Confirm Exit Modal */}
+      <Dialog open={!!confirmExitStep} onOpenChange={(open) => !open && setConfirmExitStep(null)}>
+        <DialogContent className="max-w-[400px] p-0 gap-0 bg-white overflow-hidden border border-gray-200 shadow-xl rounded-md">
+          <div className="flex items-center justify-between p-3 border-b border-gray-100">
+            <h2 className="text-base font-bold text-gray-900">Confirm</h2>
+            {/* Standard close button is suppressed by p-0 or we can rely on default Dialog behavior if we don't custom build header completely. 
+                But to match the image exactly (black X), let's hide default and add custom if possible, 
+                or just let the default one exist if it looks okay. 
+                The shadcn DialogContent usually has a Close button. 
+                Let's use a custom close button matching the design.
+            */}
+          </div>
+          
+          <div className="p-5 space-y-4">
+            <p className="text-sm font-medium text-gray-800">
+              Return to step "{confirmExitStep}"?
+            </p>
+            
+            <p className="text-sm text-[#0097B2] font-medium leading-relaxed">
+              Your progress on the current step (e.g., your Research Plan and all 5 versions) will be lost. You will need to generate it again.
+            </p>
+            
+            <div className="flex items-center justify-between pt-4">
+              <button 
+                className="text-xs font-medium text-gray-900 underline hover:text-gray-700"
+                onClick={() => setConfirmExitStep(null)}
+              >
+                Cancel (Stay here)
+              </button>
+              
+              <Button 
+                variant="outline"
+                className="border-[#D4A373] text-[#D4A373] hover:bg-[#FFF8F0] hover:text-[#C59262] h-9 px-6 text-xs font-bold bg-white"
+                onClick={() => {
+                   setConfirmExitStep(null);
+                   // Mock navigation logic would go here
+                }}
+              >
+                Yes, Go Back
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
 
     </div>
     </div>
