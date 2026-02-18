@@ -273,7 +273,6 @@ export default function Launcher() {
                         className="bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold px-3 py-1 h-7 flex items-center gap-1 shadow-sm"
                     >
                         <Zap className="w-3 h-3 text-yellow-300 fill-yellow-300" />
-                        Improve prompt
                     </Button>
                  </div>
              )}
