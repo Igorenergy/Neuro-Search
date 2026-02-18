@@ -72,6 +72,47 @@ export default function Launcher() {
   const [step2Files, setStep2Files] = useState<File[]>([]);
   const [activeUploadTab, setActiveUploadTab] = useState<"upload" | "repository">("upload");
   const [selectedRepoFiles, setSelectedRepoFiles] = useState<string[]>([]);
+  const [selectedLanguages, setSelectedLanguages] = useState<string[]>(["ua", "ru"]);
+
+  const languages = [
+    { value: "auto", label: "Auto Detect" },
+    { value: "en", label: "English (En)" },
+    { value: "ge", label: "Germany (Ge)" },
+    { value: "es", label: "Spanish (Es)" },
+    { value: "zh", label: "Chinese (Zh)" },
+    { value: "hi", label: "Hindi (Hi)" },
+    { value: "ar", label: "Arabic (Ar)" },
+    { value: "pt", label: "Portuguese (Pt)" },
+    { value: "bn", label: "Bengali (Bn)" },
+    { value: "ru", label: "Russian (Ru)" },
+    { value: "ja", label: "Japanese (Ja)" },
+    { value: "fr", label: "French (Fr)" },
+    { value: "ua", label: "Ukrainian (Ua)" },
+  ];
+
+  const handleLanguageSelect = (value: string) => {
+    if (value === "auto") {
+        // If auto is selected, maybe clear others? Or just set as auto? 
+        // For now, let's assume 'auto' clears specific selections or is just a reset.
+        // But the UI shows chips next to "Auto Detect".
+        // If "Auto Detect" is the *value* of the select box, and chips are separate.
+        // Let's just add the language if it's not 'auto', or if 'auto' is treated as a language.
+        // However, 'auto' usually means "don't filter". 
+        // If the user selects a language, we add it. 
+        if (!selectedLanguages.includes(value)) {
+            setSelectedLanguages([...selectedLanguages, value]);
+        }
+    } else {
+        if (!selectedLanguages.includes(value)) {
+            setSelectedLanguages([...selectedLanguages, value]);
+        }
+    }
+  };
+
+  const removeLanguage = (lang: string) => {
+    setSelectedLanguages(selectedLanguages.filter(l => l !== lang));
+  };
+
 
   const repoFiles = [
     "Market Analysis Q3.pdf",
@@ -596,34 +637,37 @@ export default function Launcher() {
                                 <Info className="w-4 h-4 text-[#0097B2]" />
                              </div>
                              
-                             <Select defaultValue="auto">
+                             <Select value="auto" onValueChange={handleLanguageSelect}>
                                 <SelectTrigger className="h-8 w-[140px] bg-white border-gray-300 text-xs">
                                    <SelectValue placeholder="Auto Detect" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                   <SelectItem value="auto">Auto Detect</SelectItem>
-                                   <SelectItem value="en">English (En)</SelectItem>
-                                   <SelectItem value="ge">Germany (Ge)</SelectItem>
-                                   <SelectItem value="es">Spanish (Es)</SelectItem>
-                                   <SelectItem value="zh">Chinese (Zh)</SelectItem>
-                                   <SelectItem value="hi">Hindi (Hi)</SelectItem>
-                                   <SelectItem value="ar">Arabic (Ar)</SelectItem>
-                                   <SelectItem value="pt">Portuguese (Pt)</SelectItem>
-                                   <SelectItem value="bn">Bengali (Bn)</SelectItem>
-                                   <SelectItem value="ru">Russian (Ru)</SelectItem>
-                                   <SelectItem value="ja">Japanese (Ja)</SelectItem>
-                                   <SelectItem value="fr">French (Fr)</SelectItem>
-                                   <SelectItem value="ua">Ukrainian (Ua)</SelectItem>
+                                   {languages.map((lang) => (
+                                      <SelectItem key={lang.value} value={lang.value}>
+                                        {lang.label}
+                                      </SelectItem>
+                                   ))}
                                 </SelectContent>
                              </Select>
 
-                             <div className="flex items-center gap-2">
-                                <div className="bg-[#A0A0A0] text-black text-xs font-bold px-2 py-1 rounded-sm flex items-center gap-1">
-                                   Ua <X className="w-3 h-3 text-red-600 cursor-pointer" />
-                                </div>
-                                <div className="bg-[#A0A0A0] text-black text-xs font-bold px-2 py-1 rounded-sm flex items-center gap-1">
-                                   Ru <X className="w-3 h-3 text-red-600 cursor-pointer" />
-                                </div>
+                             <div className="flex items-center gap-2 flex-wrap">
+                                {selectedLanguages.filter(l => l !== 'auto').map(langCode => {
+                                    const lang = languages.find(l => l.value === langCode);
+                                    // Extract just the code from the label "Language (Code)" -> "Code"
+                                    // Or just use the code from value? The mockup shows "Ua", "Ru". 
+                                    // If label is "Ukrainian (Ua)", we want "Ua".
+                                    // Let's parse it or use a mapping. 
+                                    // For simplicity and matching the exact string "Ua", "Ru" from the label parenthesis:
+                                    const label = lang?.label || langCode;
+                                    const match = label.match(/\(([^)]+)\)/);
+                                    const shortCode = match ? match[1] : langCode;
+                                    
+                                    return (
+                                        <div key={langCode} className="bg-[#A0A0A0] text-black text-xs font-bold px-2 py-1 rounded-sm flex items-center gap-1">
+                                           {shortCode} <X className="w-3 h-3 text-red-600 cursor-pointer" onClick={() => removeLanguage(langCode)} />
+                                        </div>
+                                    );
+                                })}
                              </div>
                          </div>
                       </div>
