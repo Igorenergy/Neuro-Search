@@ -1025,7 +1025,7 @@ export default function Launcher() {
         <div className="p-4 space-y-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <h3 className="text-sm font-bold text-gray-800" data-testid="text-plan-title">Research Details</h3>
+              <h3 className="text-sm font-bold text-gray-800" data-testid="text-plan-title">Research Plan</h3>
               <span className="text-xs text-gray-500">Version {planVersion} of {totalVersions}</span>
             </div>
             <div className="flex items-center gap-1">
