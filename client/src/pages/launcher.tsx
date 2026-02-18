@@ -366,7 +366,7 @@ export default function Launcher() {
       </Accordion>
 
       {/* Launch Footer (Sticky) */}
-      <div className="sticky bottom-6 z-10">
+      {/* <div className="sticky bottom-6 z-10">
         <div className="bg-white/90 backdrop-blur-lg border border-gray-200 rounded-xl p-4 shadow-2xl flex items-center justify-between gap-4">
           <div className="flex items-center gap-6 px-2">
             <div>
@@ -408,7 +408,7 @@ export default function Launcher() {
             </Button>
           </div>
         </div>
-      </div>
+      </div> */}
 
     </div>
   );
