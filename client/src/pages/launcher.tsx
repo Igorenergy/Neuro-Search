@@ -896,7 +896,7 @@ export default function Launcher() {
               </div>
 
               <div className="flex items-center justify-between border-t border-gray-100 pt-4 mt-2">
-                 <div className="flex items-center gap-4 ml-auto">
+                 <div className="flex items-center gap-4">
                     <div className="text-right relative">
                        <span className="text-xs text-gray-500 font-medium mr-2">Estimated Cost:</span>
                        <span 
