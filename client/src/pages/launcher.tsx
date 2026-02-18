@@ -881,7 +881,7 @@ export default function Launcher() {
                     </label>
                 )}
                 
-                <div className="flex items-center justify-between w-full">
+                <div className="flex items-center justify-center gap-6 w-full">
                     <Button variant="ghost" size="sm" className="text-[#008DA8] hover:text-[#007A92] hover:bg-transparent font-bold underline h-8 text-xs" onClick={() => setIsAddFileModalOpen(false)}>
                       CANCEL
                     </Button>
