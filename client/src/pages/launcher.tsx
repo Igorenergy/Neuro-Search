@@ -877,9 +877,16 @@ export default function Launcher() {
                          ${totalCost.toFixed(2)} - ${(totalCost * 1.2).toFixed(2)}
                        </span>
                        
-                       {showCostBreakdown && (
-                         <div className="absolute bottom-full right-0 mb-2 w-[520px] bg-white rounded-lg shadow-xl border border-gray-200 z-50 overflow-hidden animate-in fade-in zoom-in-95 duration-200 text-left">
-                           <div className="flex">
+                       <AnimatePresence>
+                         {showCostBreakdown && (
+                           <motion.div 
+                             initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                             animate={{ opacity: 1, y: 0, scale: 1 }}
+                             exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                             transition={{ duration: 0.2 }}
+                             className="absolute bottom-full right-0 mb-2 w-[520px] bg-white rounded-lg shadow-xl border border-gray-200 z-50 overflow-hidden text-left"
+                           >
+                             <div className="flex">
                              {/* Left Column: Breakdown */}
                              <div className="flex-1 p-4 border-r border-gray-100">
                                <h4 className="text-xs font-bold text-gray-900 mb-3">Cost Breakdown</h4>
@@ -941,8 +948,9 @@ export default function Launcher() {
                                </div>
                              </div>
                            </div>
-                         </div>
-                       )}
+                           </motion.div>
+                         )}
+                       </AnimatePresence>
                     </div>
                     <Button className="bg-[#008DA8] hover:bg-[#007A92] text-white font-bold px-6 shadow-md">
                        Create a plan
