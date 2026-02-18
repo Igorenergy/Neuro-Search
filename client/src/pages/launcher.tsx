@@ -674,7 +674,7 @@ export default function Launcher() {
                                    <SelectValue placeholder="Auto Detect" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                   {languages.map((lang) => (
+                                   {languages.filter(lang => lang.value === "auto" || !selectedLanguages.includes(lang.value)).map((lang) => (
                                       <SelectItem key={lang.value} value={lang.value}>
                                         {lang.label}
                                       </SelectItem>
