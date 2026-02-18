@@ -196,16 +196,16 @@ export default function Launcher() {
           {(files.length > 0 || isScanning) && (
             <div className="flex flex-wrap gap-2 mt-2 px-1">
               {files.map((file, i) => (
-                <div key={i} className="flex items-center justify-between bg-[#008DA8] text-white px-3 py-1.5 rounded-sm shadow-sm relative overflow-hidden group min-w-[200px] max-w-[240px]">
+                <div key={i} className="flex items-center justify-between bg-[#A0A0A0] text-white px-3 py-1.5 rounded-sm shadow-sm relative overflow-hidden group min-w-[200px] max-w-[240px]">
                   <div className="flex items-center gap-2 min-w-0">
-                    <FileText className="w-5 h-5 text-white/80 shrink-0" strokeWidth={1.5} />
+                    <FileText className="w-5 h-5 text-white shrink-0" strokeWidth={1.5} />
                     <div className="flex flex-col min-w-0">
-                      <span className="text-[10px] font-medium leading-tight truncate">{file.name}</span>
-                      <span className="text-[10px] font-medium leading-tight truncate opacity-80">{(file.size / 1024).toFixed(1)} KB</span>
+                      <span className="text-[10px] font-medium leading-tight truncate">File Preview (name,</span>
+                      <span className="text-[10px] font-medium leading-tight truncate">type, etc.)</span>
                     </div>
                   </div>
-                  <button onClick={() => removeFile(i)} className="text-cyan-200 hover:text-white ml-2 shrink-0">
-                    <XCircle className="w-5 h-5 stroke-[1.5]" />
+                  <button onClick={() => removeFile(i)} className="text-red-600 hover:text-red-700 ml-2 shrink-0">
+                    <X className="w-6 h-6 stroke-[4]" />
                   </button>
                 </div>
               ))}
@@ -214,16 +214,16 @@ export default function Launcher() {
               {files.length === 0 && (
                 <>
                   {[1, 2, 3, 4].map((_, i) => (
-                    <div key={i} className="flex items-center justify-between bg-[#008DA8] text-white px-3 py-1.5 rounded-sm shadow-sm relative overflow-hidden group min-w-[200px] max-w-[240px]">
+                    <div key={i} className="flex items-center justify-between bg-[#A0A0A0] text-white px-3 py-1.5 rounded-sm shadow-sm relative overflow-hidden min-w-[200px] max-w-[240px]">
                       <div className="flex items-center gap-2 min-w-0">
-                        <FileText className="w-5 h-5 text-white/80 shrink-0" strokeWidth={1.5} />
+                        <FileText className="w-5 h-5 text-white shrink-0" strokeWidth={1.5} />
                         <div className="flex flex-col min-w-0">
                           <span className="text-[10px] font-medium leading-tight truncate">File Preview (name,</span>
-                          <span className="text-[10px] font-medium leading-tight truncate opacity-80">type, etc.)</span>
+                          <span className="text-[10px] font-medium leading-tight truncate">type, etc.)</span>
                         </div>
                       </div>
-                      <button className="text-cyan-200 hover:text-white ml-2 shrink-0">
-                        <XCircle className="w-5 h-5 stroke-[1.5]" />
+                      <button className="text-red-600 hover:text-red-700 ml-2 shrink-0">
+                        <X className="w-6 h-6 stroke-[4]" />
                       </button>
                     </div>
                   ))}
