@@ -357,7 +357,7 @@ export default function Launcher() {
                       selected: {files.length > 0 ? files.length : 0}
                     </button>
                   </DialogTrigger>
-                  <DialogContent className="max-w-xl p-0 gap-0 bg-[#F8F9FA] overflow-hidden">
+                  <DialogContent className="max-w-xl p-0 gap-0 bg-[#F8F9FA] overflow-hidden data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-1/2 data-[state=open]:zoom-in-90 duration-300">
                     <div className="flex items-center justify-between p-3 border-b border-gray-200 bg-white">
                       <div className="flex items-center gap-3">
                         <h2 className="text-base font-bold text-gray-900">Add Files</h2>
@@ -1108,7 +1108,7 @@ export default function Launcher() {
 
       {/* Confirm Exit Modal */}
       <Dialog open={!!confirmExitStep} onOpenChange={(open) => !open && setConfirmExitStep(null)}>
-        <DialogContent className="max-w-[400px] p-0 gap-0 bg-white overflow-hidden border border-gray-200 shadow-xl rounded-md">
+        <DialogContent className="max-w-[400px] p-0 gap-0 bg-white overflow-hidden border border-gray-200 shadow-xl rounded-md data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-1/2 data-[state=open]:zoom-in-90 duration-300">
           <div className="flex items-center justify-between p-3 border-b border-gray-100">
             <h2 className="text-base font-bold text-gray-900">Confirm</h2>
             {/* Standard close button is suppressed by p-0 or we can rely on default Dialog behavior if we don't custom build header completely. 
