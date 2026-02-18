@@ -376,73 +376,141 @@ export default function Launcher() {
               </p>
               
               <div className="space-y-4">
-                 <div className="flex items-center gap-2 text-sm font-medium text-gray-700">
-                    SOURCES:
-                    <div className="flex items-center bg-gray-100 rounded-md p-1 ml-2">
-                       <Button 
-                         variant="ghost" 
-                         size="sm" 
+                 <div className="flex items-center gap-2 text-sm font-medium text-gray-700 border-b border-gray-200">
+                    <span className="py-2">SOURCES</span>
+                    <div className="flex items-center">
+                       <button 
                          className={cn(
-                           "h-6 text-xs px-3 rounded-sm",
-                           scope !== "assets" ? "bg-white text-[#008DA8] shadow-sm" : "text-gray-500 hover:text-gray-900"
+                           "h-9 text-xs font-medium px-4 border-b-2 transition-colors",
+                           scope !== "assets" ? "border-green-500 text-green-700 bg-green-50/50" : "border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50"
                          )}
                          onClick={() => setScope("web")}
                        >
                          Web Network
-                       </Button>
-                       <Button 
-                         variant="ghost" 
-                         size="sm" 
+                       </button>
+                       <button 
                          className={cn(
-                           "h-6 text-xs px-3 rounded-sm",
-                           scope === "assets" ? "bg-white text-[#008DA8] shadow-sm" : "text-gray-500 hover:text-gray-900"
+                           "h-9 text-xs font-medium px-4 border-b-2 transition-colors",
+                           scope === "assets" ? "border-green-500 text-green-700 bg-green-50/50" : "border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50"
                          )}
                          onClick={() => setScope("assets")}
                        >
                          Local Documents
-                       </Button>
+                       </button>
                     </div>
                  </div>
                  
-                 <div className="border border-gray-200 rounded-lg p-4 bg-gray-50/30 space-y-4">
-                    <div className="flex items-center gap-2 mb-2">
-                       <Globe className="w-4 h-4 text-gray-500" />
-                       <span className="text-sm font-bold text-gray-800">Web Pages & Websites: <span className="text-gray-400 font-normal">All</span></span>
-                    </div>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                       <div className="space-y-2">
-                          <label className="text-xs font-bold text-gray-700 flex items-center gap-1">
-                            Search Language <Info className="w-3 h-3 text-gray-400" />
-                          </label>
-                          <Select value={language} onValueChange={setLanguage}>
-                            <SelectTrigger className="h-9 bg-white border-gray-300">
-                              <SelectValue placeholder="Select language" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="auto">Auto Detect</SelectItem>
-                              <SelectItem value="en">English (US)</SelectItem>
-                              <SelectItem value="ru">Russian</SelectItem>
-                              <SelectItem value="uk">Ukrainian</SelectItem>
-                            </SelectContent>
-                          </Select>
-                          <div className="flex gap-2 mt-2">
-                             <Badge variant="secondary" className="bg-gray-200 text-gray-600 hover:bg-gray-300 rounded-sm font-normal text-xs gap-1 pr-1">
-                               Ua <X className="w-3 h-3" />
-                             </Badge>
-                             <Badge variant="secondary" className="bg-gray-200 text-gray-600 hover:bg-gray-300 rounded-sm font-normal text-xs gap-1 pr-1">
-                               Ru <X className="w-3 h-3" />
-                             </Badge>
-                          </div>
-                       </div>
-                       
-                       <div className="space-y-2 relative">
-                          <div className="absolute inset-0 bg-gray-50/50 backdrop-blur-[1px] flex items-center justify-center border border-gray-200 border-dashed rounded-md">
-                             <span className="text-xs text-gray-400 font-medium">OTHER SETTINGS</span>
-                          </div>
-                       </div>
-                    </div>
-                 </div>
+                 {scope === "web" ? (
+                   <div className="border-2 border-[#0097B2] rounded-sm p-4 bg-white space-y-4 shadow-sm relative">
+                      <div className="flex items-center gap-2 mb-2">
+                         <div className="font-serif italic font-bold text-2xl">e</div>
+                         <Switch checked={true} className="scale-75 data-[state=checked]:bg-green-600" />
+                         <span className="text-sm text-gray-700">Web Pages & Websites: <span className="font-mono">∞</span></span>
+                      </div>
+                      
+                      <div className="space-y-4">
+                         <div className="flex items-center gap-4">
+                            <label className="text-xs font-medium text-gray-700 flex items-center gap-1">
+                              Search Language <Info className="w-3 h-3 text-[#0097B2]" />
+                            </label>
+                            <Select value={language} onValueChange={setLanguage}>
+                              <SelectTrigger className="h-8 w-[180px] bg-white border-gray-300 rounded-sm text-xs">
+                                <SelectValue placeholder="Select language" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="auto">Auto Detect</SelectItem>
+                                <SelectItem value="en">English (US)</SelectItem>
+                                <SelectItem value="ru">Russian</SelectItem>
+                                <SelectItem value="uk">Ukrainian</SelectItem>
+                              </SelectContent>
+                            </Select>
+                            
+                            <div className="flex gap-2">
+                               <Badge variant="secondary" className="bg-gray-400 text-black hover:bg-gray-500 rounded-sm font-normal text-xs gap-1 pr-1 h-6">
+                                 Ua <X className="w-3 h-3 text-red-600 fill-red-600" />
+                               </Badge>
+                               <Badge variant="secondary" className="bg-gray-400 text-black hover:bg-gray-500 rounded-sm font-normal text-xs gap-1 pr-1 h-6">
+                                 Ru <X className="w-3 h-3 text-red-600 fill-red-600" />
+                               </Badge>
+                            </div>
+                         </div>
+                         
+                         <div className="h-24 w-full border border-gray-400 relative">
+                            <div className="absolute inset-0 flex items-center justify-center">
+                               <div className="w-full h-px bg-gray-400 rotate-12 absolute"></div>
+                               <div className="w-full h-px bg-gray-400 -rotate-12 absolute"></div>
+                               <span className="bg-white px-2 z-10 text-xs text-gray-600 font-medium">OTHER SETTINGS</span>
+                            </div>
+                         </div>
+                      </div>
+                   </div>
+                 ) : (
+                   <div className="border border-green-600 rounded-sm p-0 bg-white shadow-sm overflow-hidden">
+                      <div className="flex items-center justify-between p-2 border-b border-gray-200">
+                        <div className="flex items-center gap-2">
+                           <FileText className="w-5 h-5" strokeWidth={1.5} />
+                           <span className="text-sm font-medium">Files & Assets: 3/10</span>
+                        </div>
+                        <div className="flex items-center gap-2 w-1/2">
+                           <span className="text-xs text-gray-500 flex items-center gap-1"><span className="text-pink-600">📂</span> Context window</span>
+                           <div className="h-4 flex-1 bg-gray-200 rounded-sm overflow-hidden flex">
+                              <div className="w-[20%] bg-green-600/50"></div>
+                              <div className="w-[30%] bg-pink-400 text-[10px] text-center text-white font-medium leading-4">Usage: 20%</div>
+                           </div>
+                        </div>
+                      </div>
+
+                      <div className="p-3 bg-white">
+                         <div className="mb-4">
+                            <div className="flex items-center justify-between mb-2">
+                               <span className="text-xs font-bold">Added at Step1: 3 <span className="text-red-600 underline cursor-pointer ml-1 font-normal">remove all</span></span>
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+                               {[1, 2, 3].map((_, i) => (
+                                  <div key={i} className="flex items-center justify-between bg-[#C894B6] text-white px-3 py-2 rounded-sm relative overflow-hidden">
+                                    <div className="flex items-center gap-2 min-w-0">
+                                      <FileText className="w-5 h-5 text-white/80 shrink-0" strokeWidth={1.5} />
+                                      <div className="flex flex-col min-w-0">
+                                        <span className="text-[10px] font-medium leading-tight">File Preview (name,</span>
+                                        <span className="text-[10px] font-medium leading-tight">type, etc.)</span>
+                                      </div>
+                                    </div>
+                                    <button className="text-pink-700 hover:text-pink-900 ml-1 shrink-0">
+                                      <X className="w-5 h-5 stroke-[3]" />
+                                    </button>
+                                  </div>
+                               ))}
+                            </div>
+                         </div>
+
+                         <div>
+                            <span className="text-xs font-bold block mb-2">Added at this step: 0</span>
+                            <div className="flex gap-4">
+                               <div className="flex-1 h-20 border border-gray-400 relative bg-gray-50">
+                                  <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
+                                     <div className="w-[120%] h-px bg-gray-400 rotate-[15deg] absolute"></div>
+                                     <div className="w-[120%] h-px bg-gray-400 -rotate-[15deg] absolute"></div>
+                                     <span className="bg-gray-50 px-2 z-10 text-xs text-gray-600 font-medium">DRAG and DROP</span>
+                                  </div>
+                               </div>
+                               <div className="w-40 flex flex-col justify-center items-center gap-2">
+                                  <span className="text-xs text-gray-500 uppercase">OR SELECT</span>
+                                  <Button variant="outline" className="w-full border-green-600 text-green-700 hover:bg-green-50 h-8 text-xs font-medium">
+                                    Upload files
+                                  </Button>
+                               </div>
+                            </div>
+                         </div>
+                      </div>
+
+                      <div className="bg-gray-50 p-2 border-t border-gray-200 flex items-center gap-2">
+                         <Switch className="scale-75 data-[state=checked]:bg-green-600" />
+                         <span className="text-xs font-medium flex items-center gap-1">
+                           <LinkIcon className="w-3 h-3" /> Extract & Research Embedded URLs <Info className="w-3 h-3 text-[#0097B2]" />
+                         </span>
+                      </div>
+                   </div>
+                 )}
 
                  <div className="flex items-center justify-between pt-2">
                     <div className="flex items-center gap-2">
