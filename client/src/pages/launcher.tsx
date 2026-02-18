@@ -18,7 +18,9 @@ import {
   Play,
   RotateCw,
   XCircle,
-  ToggleRight
+  ToggleRight,
+  ArrowLeft,
+  Lightbulb
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -54,6 +56,10 @@ export default function Launcher() {
   const [researchType, setResearchType] = useState<"search" | "sheet">("search");
   const [language, setLanguage] = useState("auto");
   const [showReasoning, setShowReasoning] = useState(true);
+  
+  // Step State
+  const [questionAnswer, setQuestionAnswer] = useState("");
+  const [geoScope, setGeoScope] = useState("global");
 
   // Cost calculation
   const baseCost = 0.45;
@@ -237,13 +243,119 @@ export default function Launcher() {
 
         </div>
       </div>
+
+      {/* Step 1: Questionnaire (Pink/Purple Block) */}
+      <div className="w-full bg-[#E5B8D9] border border-[#D4A5C7] rounded-md shadow-sm overflow-hidden font-sans">
+        {/* Step Header */}
+        <div className="flex border-b border-[#D4A5C7]">
+          <button className="flex items-center gap-1 px-4 py-2 bg-[#E5B8D9] text-[#7A4A6A] hover:bg-[#D9A3C2] text-xs font-bold border-r border-[#D4A5C7]">
+            <ArrowLeft className="w-3 h-3" /> Prev. step
+          </button>
+          <div className="px-6 py-2 bg-[#6B8CCF] text-white text-xs font-bold flex items-center justify-center">
+            STEP #1
+          </div>
+          <div className="px-6 py-2 bg-[#BC8FAD] text-[#6A405C] text-xs font-bold flex items-center justify-center border-r border-[#D4A5C7]">
+            REASONING
+          </div>
+        </div>
+
+        <div className="p-4 space-y-4">
+          {/* Tip */}
+          <div className="bg-[#E5B8D9] text-[#2E7D32] flex items-center gap-2 text-sm font-medium px-1">
+            <Lightbulb className="w-4 h-4" />
+            <span className="text-green-700">Just a few questions to make your research perfect</span>
+          </div>
+
+          {/* Question */}
+          <div className="space-y-3">
+            <div className="flex gap-2">
+              <div className="bg-[#6B8CCF] text-white w-6 h-6 flex items-center justify-center rounded-sm text-xs font-bold shrink-0 mt-0.5">1</div>
+              <p className="text-sm font-medium text-[#4A2A3F]">
+                <span className="font-bold">Geographic Scope.</span> Should we focus only on founders in Ukraine or include the diaspora abroad?
+              </p>
+            </div>
+
+            {/* Answer Input */}
+            <div className="space-y-1">
+              <div className="flex justify-between text-xs font-bold text-[#4A2A3F] px-1">
+                <span>Your answers</span>
+                <span>{questionAnswer.length}/500</span>
+              </div>
+              <Textarea 
+                value={questionAnswer}
+                onChange={(e) => setQuestionAnswer(e.target.value)}
+                placeholder="Answers to the question"
+                className="bg-[#EBCBDD] border-[#D4A5C7] placeholder:text-[#9C758D] text-[#4A2A3F] min-h-[60px] resize-none focus-visible:ring-[#6B8CCF]"
+              />
+            </div>
+
+            {/* Selection Pills */}
+            <div className="flex flex-wrap gap-2">
+              <button 
+                className={cn(
+                  "px-3 py-1 text-xs font-medium border rounded-sm flex items-center gap-1 transition-colors",
+                  geoScope === "global" 
+                    ? "bg-[#D9A3C2] border-[#9C758D] text-[#4A2A3F] shadow-inner" 
+                    : "bg-[#E5B8D9] border-[#9C758D] text-[#4A2A3F] hover:bg-[#D9A3C2]"
+                )}
+                onClick={() => setGeoScope("global")}
+              >
+                <Globe className="w-3 h-3" /> Global
+              </button>
+              <button 
+                className={cn(
+                  "px-3 py-1 text-xs font-medium border rounded-sm transition-colors",
+                  geoScope === "ukraine" 
+                    ? "bg-[#D9A3C2] border-[#9C758D] text-[#4A2A3F] shadow-inner" 
+                    : "bg-[#E5B8D9] border-[#9C758D] text-[#4A2A3F] hover:bg-[#D9A3C2]"
+                )}
+                onClick={() => setGeoScope("ukraine")}
+              >
+                [ UA Ukraine Only ]
+              </button>
+              <button 
+                className={cn(
+                  "px-3 py-1 text-xs font-medium border rounded-sm transition-colors",
+                  geoScope === "eu" 
+                    ? "bg-[#D9A3C2] border-[#9C758D] text-[#4A2A3F] shadow-inner" 
+                    : "bg-[#E5B8D9] border-[#9C758D] text-[#4A2A3F] hover:bg-[#D9A3C2]"
+                )}
+                onClick={() => setGeoScope("eu")}
+              >
+                [ EU EU ]
+              </button>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex items-center justify-between pt-2">
+              <Button 
+                variant="outline" 
+                className="bg-[#E5B8D9] text-[#6B8CCF] border-[#6B8CCF] hover:bg-[#D9A3C2] h-8 text-xs font-bold px-6"
+              >
+                Next Question (2/5)
+              </Button>
+              
+              <Button 
+                className="bg-[#8E5E7E] hover:bg-[#7A4A6A] text-white h-8 text-xs font-bold px-8 shadow-sm"
+              >
+                Skip & Continue
+              </Button>
+            </div>
+
+            {/* Footer Text */}
+            <p className="text-[10px] text-[#7A4A6A] italic leading-tight pt-1">
+              Proceed with AI defaults. The system will use its best judgment to define the research scope, though results may be less tailored to your specific needs.
+            </p>
+          </div>
+        </div>
+      </div>
       
-      {/* Configuration Accordion */}
+      {/* Configuration Accordion - Now Step 2 */}
       <Accordion type="single" collapsible defaultValue="options" className="w-full bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
         <AccordionItem value="options" className="border-b-0">
           <AccordionTrigger className="px-6 py-4 hover:no-underline hover:bg-gray-50 bg-gray-50/50">
             <div className="flex items-center gap-2">
-              <div className="bg-black text-white text-[10px] font-bold px-1.5 py-0.5 rounded-sm">STEP #1</div>
+              <div className="bg-black text-white text-[10px] font-bold px-1.5 py-0.5 rounded-sm">STEP #2</div>
               <span className="text-sm font-bold text-gray-800">Research Options</span>
             </div>
           </AccordionTrigger>
@@ -364,51 +476,6 @@ export default function Launcher() {
           </AccordionContent>
         </AccordionItem>
       </Accordion>
-
-      {/* Launch Footer (Sticky) */}
-      {/* <div className="sticky bottom-6 z-10">
-        <div className="bg-white/90 backdrop-blur-lg border border-gray-200 rounded-xl p-4 shadow-2xl flex items-center justify-between gap-4">
-          <div className="flex items-center gap-6 px-2">
-            <div>
-               <p className="text-[10px] text-gray-500 uppercase tracking-wider font-bold">Est. Time</p>
-               <p className="font-mono font-bold text-gray-800 text-sm">2-4 min</p>
-            </div>
-            <div className="h-8 w-px bg-gray-200"></div>
-            <div>
-               <p className="text-[10px] text-gray-500 uppercase tracking-wider font-bold">Est. Cost</p>
-               <div className="flex items-baseline gap-1">
-                 <p className="font-mono font-bold text-gray-800 text-sm">${totalCost.toFixed(2)}</p>
-                 {deepCrawlEnabled && <span className="text-[10px] text-[#008DA8] font-medium">(Adjusted)</span>}
-               </div>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <Button variant="ghost" className="text-gray-500 font-medium" disabled={isLaunching}>Save Draft</Button>
-            <Button 
-              size="lg" 
-              className={cn(
-                "min-w-[180px] bg-gradient-to-r from-[#008DA8] to-[#006E7D] hover:from-[#007A92] hover:to-[#005a66] text-white shadow-lg shadow-cyan-900/10 transition-all font-bold",
-                isLaunching && "opacity-90 cursor-wait"
-              )}
-              onClick={handleLaunch}
-              disabled={isLaunching || !query}
-            >
-              {isLaunching ? (
-                <>
-                  <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2" />
-                  Initializing...
-                </>
-              ) : (
-                <>
-                  <Play className="w-4 h-4 mr-2 fill-current" />
-                  Launch Operation
-                </>
-              )}
-            </Button>
-          </div>
-        </div>
-      </div> */}
 
     </div>
   );
