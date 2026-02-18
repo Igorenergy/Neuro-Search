@@ -1051,15 +1051,6 @@ export default function Launcher() {
               >
                 <ArrowRight className="w-3 h-3" />
               </Button>
-              <div className="w-px h-5 bg-gray-200 mx-1" />
-              <Button 
-                variant="outline" 
-                size="sm"
-                className="h-7 text-xs font-medium border-[#008DA8] text-[#008DA8] hover:bg-blue-50 gap-1"
-                data-testid="button-regenerate-plan"
-              >
-                <RefreshCw className="w-3 h-3" /> Regenerate
-              </Button>
             </div>
           </div>
 
