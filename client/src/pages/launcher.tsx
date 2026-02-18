@@ -747,7 +747,7 @@ export default function Launcher() {
       <Dialog open={isAddFileModalOpen} onOpenChange={setIsAddFileModalOpen}>
         <DialogContent className="max-w-[500px] p-0 gap-0 bg-white overflow-hidden border border-gray-200 shadow-xl rounded-md">
           <div className="flex items-center justify-between p-3 border-b border-gray-100">
-            <h2 className="text-base font-bold text-gray-900">Add Files</h2>
+            <h2 className="text-base font-bold text-gray-900">Add Files2</h2>
             <button 
                 onClick={() => setIsAddFileModalOpen(false)}
                 className="text-gray-400 hover:text-gray-600"
