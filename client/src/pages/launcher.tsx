@@ -249,7 +249,7 @@ export default function Launcher() {
       <div className="w-full bg-white border border-gray-200 rounded-md shadow-sm overflow-hidden font-sans">
         {/* Step Header */}
         <div className="flex border-b border-gray-200 bg-[#5A6B7C] min-h-[34px]">
-          <button className="flex items-center gap-1 px-4 py-2 bg-white text-[#5A6B7C] hover:bg-gray-50 text-xs font-bold border-r border-gray-300">
+          <button className="flex items-center gap-1 px-4 py-2 hover:bg-gray-50 text-xs font-bold border-r border-gray-300 bg-[#546c7c] text-[#ffffff]">
             <ArrowLeft className="w-3 h-3" /> Prev. step
           </button>
           <div className="px-6 py-2 bg-[#0097B2] text-white text-xs font-bold flex items-center justify-center">
