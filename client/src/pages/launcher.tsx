@@ -629,7 +629,14 @@ export default function Launcher() {
                          </div>
 
                          <div>
-                            <span className="text-xs font-bold block mb-2">Added at this step: {step2Files.length}</span>
+                            <div className="flex items-center justify-between mb-2">
+                               <span className="text-xs font-bold">
+                                 Added at this step: {step2Files.length}
+                                 {step2Files.length > 0 && (
+                                   <span className="text-red-600 underline cursor-pointer ml-1 font-normal" onClick={() => setStep2Files([])}>remove all</span>
+                                 )}
+                               </span>
+                            </div>
                             
                             {/* Display added files for step 2 */}
                             {step2Files.length > 0 && (
