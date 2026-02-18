@@ -101,7 +101,8 @@ export default function Launcher() {
   const [showRefinePlan, setShowRefinePlan] = useState(false);
   const [refinePrompt, setRefinePrompt] = useState("");
   const [showVersionHistory, setShowVersionHistory] = useState(false);
-  const totalVersions = 4;
+  const maxVersions = 5;
+  const [totalVersions, setTotalVersions] = useState(1);
   const planStepCount = planText.split('\n').filter(l => l.trim()).length;
 
   const getDataEngineDescription = (engine: string) => {
@@ -1066,29 +1067,40 @@ export default function Launcher() {
 
           {showRefinePlan && (
             <div className="space-y-2 pt-2">
-              <span className="text-xs font-medium text-green-700">Refinements used: 0/5</span>
+              <span className="text-xs font-medium text-green-700">Refinements used: {totalVersions - 1}/{maxVersions - 1}</span>
 
-              <div className="border-2 border-green-600 rounded-md overflow-hidden" data-testid="refine-plan-input">
-                <div className="relative">
-                  <Textarea
-                    value={refinePrompt}
-                    onChange={(e) => setRefinePrompt(e.target.value)}
-                    placeholder="Enter text prompt"
-                    className="min-h-[80px] text-sm p-3 pr-16 resize-none bg-white border-0 rounded-none placeholder:text-gray-400 focus-visible:ring-0 focus-visible:ring-offset-0"
-                    data-testid="input-refine-prompt"
-                  />
-                  <button
-                    className="absolute bottom-3 right-3 flex flex-col items-center gap-0.5"
-                    onClick={() => {
-                      setRefinePrompt("");
-                    }}
-                    data-testid="button-send-refinement"
-                  >
-                    <Zap className="w-5 h-5 text-yellow-500 fill-yellow-400" />
-                    <span className="text-[10px] font-bold text-[#008DA8]">send</span>
-                  </button>
+              {totalVersions >= maxVersions ? (
+                <div className="border-2 border-orange-400 rounded-md p-4 bg-orange-50" data-testid="text-max-refinements">
+                  <p className="text-sm font-medium text-orange-700 text-center">You have reached the maximum number of Refinements</p>
                 </div>
-              </div>
+              ) : (
+                <div className="border-2 border-green-600 rounded-md overflow-hidden" data-testid="refine-plan-input">
+                  <div className="relative">
+                    <Textarea
+                      value={refinePrompt}
+                      onChange={(e) => setRefinePrompt(e.target.value)}
+                      placeholder="Enter text prompt"
+                      className="min-h-[80px] text-sm p-3 pr-16 resize-none bg-white border-0 rounded-none placeholder:text-gray-400 focus-visible:ring-0 focus-visible:ring-offset-0"
+                      data-testid="input-refine-prompt"
+                    />
+                    <button
+                      className="absolute bottom-3 right-3 flex flex-col items-center gap-0.5"
+                      onClick={() => {
+                        if (refinePrompt.trim() && totalVersions < maxVersions) {
+                          const newVersion = totalVersions + 1;
+                          setTotalVersions(newVersion);
+                          setPlanVersion(newVersion);
+                          setRefinePrompt("");
+                        }
+                      }}
+                      data-testid="button-send-refinement"
+                    >
+                      <Zap className="w-5 h-5 text-yellow-500 fill-yellow-400" />
+                      <span className="text-[10px] font-bold text-[#008DA8]">send</span>
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           )}
 
