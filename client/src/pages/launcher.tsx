@@ -1047,6 +1047,8 @@ export default function Launcher() {
                   </button>
                 ))}
               </div>
+            </div>
+            <div className="flex items-center">
               {totalVersions > 1 && (
                 <button
                   className="p-1 rounded-sm hover:bg-red-50 transition-colors"
