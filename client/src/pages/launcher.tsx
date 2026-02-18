@@ -20,7 +20,13 @@ import {
   XCircle,
   ToggleRight,
   ArrowLeft,
-  Lightbulb
+  Lightbulb,
+  Clock,
+  Edit3,
+  Trash2,
+  GripVertical,
+  History,
+  RefreshCw
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -73,7 +79,27 @@ export default function Launcher() {
   const [activeUploadTab, setActiveUploadTab] = useState<"upload" | "repository">("upload");
   const [selectedRepoFiles, setSelectedRepoFiles] = useState<string[]>([]);
   const [dataEngine, setDataEngine] = useState("ultimate");
-  
+
+  const [planVersion, setPlanVersion] = useState(1);
+  const [planSteps, setPlanSteps] = useState([
+    "(1) Conduct a detailed analysis of the functionality of the website sepalai.com, focusing on its core operations and user interface.",
+    "(2) Examine the business model of sepalai.com, including revenue streams such as subscriptions, commissions, or freemium elements.",
+    "(3) Highlight the key features of sepalai.com's AI technology specifically designed to connect startups with investors.",
+    "(4) Emphasize how sepalai.com's AI facilitates matchmaking, investor recommendations, and deal flow optimization.",
+    "(5) Perform a comprehensive search for platforms and tools that offer AI-based matching for startups and investors.",
+    "(6) Identify tools providing AI-driven scoring systems to evaluate startup potential and investor compatibility.",
+    "(7) Explore solutions that automate the investor search process for startups using artificial intelligence.",
+    "(8) From the discovered solutions, filter and identify projects founded by immigrants from Ukraine.",
+    "(9) Utilize targeted search queries to uncover additional platforms created by Ukrainian diaspora entrepreneurs.",
+    "(10) Verify the biographies of founders from potentially suitable platforms, such as Unicorn Nest and similar analogues.",
+    "(11) Confirm the Ukrainian origin of founders through reliable sources like LinkedIn profiles, company about pages, or public records.",
+    "(12) For each selected project, gather precise details on their AI component's mechanics, algorithms, data sources, and user benefits, then compare these services with sepalai.com in terms of functionality, AI sophistication, and target audience demographics...",
+  ]);
+  const [editingStepIndex, setEditingStepIndex] = useState<number | null>(null);
+  const [editingStepText, setEditingStepText] = useState("");
+  const [showVersionHistory, setShowVersionHistory] = useState(false);
+  const totalVersions = 4;
+
   const getDataEngineDescription = (engine: string) => {
     switch(engine) {
       case "fast":
@@ -962,6 +988,262 @@ export default function Launcher() {
           </div>
         </div>
       </div>
+
+      {/* Step 3: Research Plan */}
+      <div className="w-full bg-white border border-gray-200 rounded-md shadow-sm overflow-hidden font-sans">
+        <div className="flex border-b border-gray-200 bg-[#5A6B7C] min-h-[34px]">
+          <button 
+            className="flex items-center gap-1 px-4 py-2 hover:bg-[#4a5b6c] transition-colors text-xs font-bold border-r border-gray-300 bg-[#546c7c] text-[#ffffff]"
+            onClick={() => setConfirmExitStep("Step #2")}
+            data-testid="button-prev-step3"
+          >
+            <ArrowLeft className="w-3 h-3" /> Prev. step
+          </button>
+          <div className="px-6 py-2 bg-[#0097B2] text-white text-xs font-bold flex items-center justify-center">
+            STEP #3
+          </div>
+          <div className="px-6 py-2 bg-[#F0F2F5] text-[#5A6B7C] text-xs font-bold flex items-center justify-center border-r border-gray-300">
+            RESEARCH PLAN
+          </div>
+          <div className="flex-1 bg-[#5A6B7C] flex items-center justify-end px-4">
+            <div className="flex items-center gap-2">
+              <button
+                className="flex items-center gap-1 text-xs text-white/80 hover:text-white transition-colors"
+                onClick={() => setShowVersionHistory(!showVersionHistory)}
+                data-testid="button-version-history"
+              >
+                <History className="w-3.5 h-3.5" />
+                <span>v{planVersion}/{totalVersions}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div className="p-4 space-y-3">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <h3 className="text-sm font-bold text-gray-800" data-testid="text-plan-title">Research Plan</h3>
+              <span className="text-xs text-gray-500">Version {planVersion} of {totalVersions}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Button 
+                variant="outline" 
+                size="sm"
+                className="h-7 text-xs font-medium border-gray-300 text-gray-600 hover:bg-gray-50 gap-1"
+                onClick={() => {
+                  if (planVersion > 1) setPlanVersion(planVersion - 1);
+                }}
+                disabled={planVersion <= 1}
+                data-testid="button-prev-version"
+              >
+                <ArrowLeft className="w-3 h-3" />
+              </Button>
+              <span className="text-xs font-bold text-[#008DA8] min-w-[40px] text-center">v{planVersion}</span>
+              <Button 
+                variant="outline" 
+                size="sm"
+                className="h-7 text-xs font-medium border-gray-300 text-gray-600 hover:bg-gray-50 gap-1"
+                onClick={() => {
+                  if (planVersion < totalVersions) setPlanVersion(planVersion + 1);
+                }}
+                disabled={planVersion >= totalVersions}
+                data-testid="button-next-version"
+              >
+                <ArrowRight className="w-3 h-3" />
+              </Button>
+              <div className="w-px h-5 bg-gray-200 mx-1" />
+              <Button 
+                variant="outline" 
+                size="sm"
+                className="h-7 text-xs font-medium border-[#008DA8] text-[#008DA8] hover:bg-blue-50 gap-1"
+                data-testid="button-regenerate-plan"
+              >
+                <RefreshCw className="w-3 h-3" /> Regenerate
+              </Button>
+            </div>
+          </div>
+
+          <div className="border border-gray-200 rounded-md overflow-hidden">
+            <div className="bg-gray-50 px-3 py-2 border-b border-gray-200 flex items-center justify-between">
+              <span className="text-xs font-bold text-gray-600">{planSteps.length} Steps</span>
+              <div className="flex items-center gap-3">
+                <button className="text-xs text-[#008DA8] hover:underline font-medium" data-testid="button-expand-all">Expand All</button>
+                <button className="text-xs text-gray-500 hover:underline font-medium" data-testid="button-collapse-all">Collapse All</button>
+              </div>
+            </div>
+
+            <div className="divide-y divide-gray-100">
+              {planSteps.map((step, index) => (
+                <div 
+                  key={index} 
+                  className="group flex items-start gap-3 px-3 py-2.5 hover:bg-blue-50/30 transition-colors"
+                  data-testid={`row-plan-step-${index}`}
+                >
+                  <div className="flex items-center gap-1 mt-0.5 shrink-0">
+                    <GripVertical className="w-3.5 h-3.5 text-gray-300 opacity-0 group-hover:opacity-100 transition-opacity cursor-grab" />
+                    <div className={cn(
+                      "w-5 h-5 flex items-center justify-center rounded-sm text-[10px] font-bold shrink-0",
+                      index < 4 ? "bg-[#008DA8] text-white" : 
+                      index < 8 ? "bg-[#5A6B7C] text-white" : 
+                      "bg-gray-300 text-gray-700"
+                    )}>
+                      {index + 1}
+                    </div>
+                  </div>
+
+                  {editingStepIndex === index ? (
+                    <div className="flex-1 flex items-start gap-2">
+                      <Textarea 
+                        value={editingStepText}
+                        onChange={(e) => setEditingStepText(e.target.value)}
+                        className="flex-1 min-h-[60px] text-xs resize-none border-[#008DA8] focus-visible:ring-[#008DA8]"
+                        autoFocus
+                      />
+                      <div className="flex flex-col gap-1">
+                        <button 
+                          className="text-green-600 hover:text-green-700"
+                          onClick={() => {
+                            const updated = [...planSteps];
+                            updated[index] = editingStepText;
+                            setPlanSteps(updated);
+                            setEditingStepIndex(null);
+                          }}
+                        >
+                          <Check className="w-4 h-4" />
+                        </button>
+                        <button 
+                          className="text-gray-400 hover:text-gray-600"
+                          onClick={() => setEditingStepIndex(null)}
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex-1 flex items-start justify-between gap-2">
+                      <p className="text-xs text-gray-700 leading-relaxed flex-1">{step}</p>
+                      <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
+                        <button 
+                          className="text-gray-400 hover:text-[#008DA8] p-0.5"
+                          onClick={() => {
+                            setEditingStepIndex(index);
+                            setEditingStepText(step);
+                          }}
+                          data-testid={`button-edit-step-${index}`}
+                        >
+                          <Edit3 className="w-3.5 h-3.5" />
+                        </button>
+                        <button 
+                          className="text-gray-400 hover:text-red-500 p-0.5"
+                          onClick={() => {
+                            setPlanSteps(planSteps.filter((_, i) => i !== index));
+                          }}
+                          data-testid={`button-delete-step-${index}`}
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            <div className="px-3 py-2 border-t border-gray-200 bg-gray-50">
+              <button 
+                className="flex items-center gap-1.5 text-xs text-[#008DA8] hover:text-[#007A92] font-medium"
+                onClick={() => {
+                  setPlanSteps([...planSteps, `(${planSteps.length + 1}) New research step...`]);
+                }}
+                data-testid="button-add-step"
+              >
+                <Plus className="w-3.5 h-3.5" /> Add Step
+              </button>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between pt-2">
+            <div className="flex items-center gap-2 text-xs text-gray-500">
+              <Clock className="w-3.5 h-3.5" />
+              <span>Est. time: 3-5 min</span>
+              <span className="text-gray-300">|</span>
+              <span>Est. cost: <span className="font-bold text-[#008DA8]">$15.40 - $18.40</span></span>
+            </div>
+            <div className="flex items-center gap-3">
+              <Button 
+                variant="outline" 
+                className="border-gray-300 text-gray-600 hover:bg-gray-50 h-8 text-xs font-bold px-6"
+                data-testid="button-edit-plan"
+              >
+                Edit Plan
+              </Button>
+              <Button 
+                className="bg-[#00802b] hover:bg-[#006622] text-white h-8 text-xs font-bold px-8 shadow-sm gap-1.5"
+                onClick={handleLaunch}
+                data-testid="button-start-research"
+              >
+                <Play className="w-3.5 h-3.5 fill-white" /> Start Research
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Version History Panel */}
+      <AnimatePresence>
+        {showVersionHistory && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.2 }}
+            className="overflow-hidden"
+          >
+            <div className="w-full bg-white border border-gray-200 rounded-md shadow-sm p-4 space-y-3">
+              <div className="flex items-center justify-between">
+                <h4 className="text-sm font-bold text-gray-800">Plan Version History</h4>
+                <button onClick={() => setShowVersionHistory(false)} className="text-gray-400 hover:text-gray-600">
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+              <div className="space-y-2">
+                {Array.from({ length: totalVersions }, (_, i) => i + 1).reverse().map((v) => (
+                  <div 
+                    key={v}
+                    className={cn(
+                      "flex items-center justify-between px-3 py-2 rounded-sm border cursor-pointer transition-colors",
+                      v === planVersion 
+                        ? "border-[#008DA8] bg-blue-50/50" 
+                        : "border-gray-100 hover:bg-gray-50"
+                    )}
+                    onClick={() => {
+                      setPlanVersion(v);
+                      setShowVersionHistory(false);
+                    }}
+                    data-testid={`card-version-${v}`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <span className={cn(
+                        "text-xs font-bold",
+                        v === planVersion ? "text-[#008DA8]" : "text-gray-600"
+                      )}>
+                        Version {v}
+                      </span>
+                      {v === planVersion && (
+                        <span className="text-[10px] font-medium text-[#008DA8] bg-blue-100 px-1.5 py-0.5 rounded-sm">Current</span>
+                      )}
+                      {v === 1 && (
+                        <span className="text-[10px] font-medium text-green-700 bg-green-100 px-1.5 py-0.5 rounded-sm">Active</span>
+                      )}
+                    </div>
+                    <span className="text-[10px] text-gray-400">12 steps</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Add Files Modal */}
       <Dialog open={isAddFileModalOpen} onOpenChange={setIsAddFileModalOpen}>
