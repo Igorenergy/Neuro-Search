@@ -615,11 +615,13 @@ export default function Launcher() {
                                     </div>
                                     <button 
                                       className="text-cyan-200 hover:text-white ml-1 shrink-0"
-                                      onClick={() => {
+                                      onClick={(e) => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
                                         setStep1Files(prev => prev.filter(item => item !== id));
                                       }}
                                     >
-                                      <X className="w-5 h-5 stroke-[3]" />
+                                      <XCircle className="w-5 h-5 stroke-[1.5]" />
                                     </button>
                                   </div>
                                ))}
