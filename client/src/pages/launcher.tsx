@@ -1029,22 +1029,39 @@ export default function Launcher() {
               <h3 className="text-sm font-bold text-gray-800" data-testid="text-plan-title">Research Plan</h3>
               <span className="text-xs text-gray-500">Version {planVersion} of {totalVersions}</span>
             </div>
-            <div className="flex items-center gap-1">
-              {Array.from({ length: totalVersions }, (_, i) => i + 1).map((v) => (
+            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1">
+                {Array.from({ length: totalVersions }, (_, i) => i + 1).map((v) => (
+                  <button
+                    key={v}
+                    className={cn(
+                      "w-7 h-7 text-xs font-bold rounded-sm transition-colors",
+                      v === planVersion
+                        ? "bg-[#008DA8] text-white"
+                        : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                    )}
+                    onClick={() => setPlanVersion(v)}
+                    data-testid={`button-version-tab-${v}`}
+                  >
+                    {v}
+                  </button>
+                ))}
+              </div>
+              {totalVersions > 1 && (
                 <button
-                  key={v}
-                  className={cn(
-                    "w-7 h-7 text-xs font-bold rounded-sm transition-colors",
-                    v === planVersion
-                      ? "bg-[#008DA8] text-white"
-                      : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                  )}
-                  onClick={() => setPlanVersion(v)}
-                  data-testid={`button-version-tab-${v}`}
+                  className="p-1 rounded-sm hover:bg-red-50 transition-colors"
+                  onClick={() => {
+                    const newTotal = totalVersions - 1;
+                    setTotalVersions(newTotal);
+                    if (planVersion > newTotal) {
+                      setPlanVersion(newTotal);
+                    }
+                  }}
+                  data-testid="button-delete-version"
                 >
-                  {v}
+                  <Trash2 className="w-3.5 h-3.5 text-gray-400 hover:text-red-500 transition-colors" />
                 </button>
-              ))}
+              )}
             </div>
           </div>
 
@@ -1055,25 +1072,7 @@ export default function Launcher() {
               data-testid="button-toggle-plan"
             >
               <span className="text-xs font-bold text-gray-600">Details: {planStepCount} Steps</span>
-              <div className="flex items-center gap-2">
-                {totalVersions > 1 && (
-                  <Trash2
-                    className="w-3.5 h-3.5 text-gray-400 hover:text-red-500 transition-colors"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      if (totalVersions > 1) {
-                        const newTotal = totalVersions - 1;
-                        setTotalVersions(newTotal);
-                        if (planVersion > newTotal) {
-                          setPlanVersion(newTotal);
-                        }
-                      }
-                    }}
-                    data-testid="button-delete-version"
-                  />
-                )}
-                <ChevronDown className={cn("w-4 h-4 text-gray-500 transition-transform duration-200", !isPlanCollapsed && "rotate-180")} />
-              </div>
+              <ChevronDown className={cn("w-4 h-4 text-gray-500 transition-transform duration-200", !isPlanCollapsed && "rotate-180")} />
             </button>
 
             {!isPlanCollapsed && (
