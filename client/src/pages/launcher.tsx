@@ -198,7 +198,7 @@ export default function Launcher() {
           )}
 
           {/* Controls Footer */}
-          <div className="flex flex-wrap items-center gap-4 mt-4 px-2 pb-2">
+          <div className="flex flex-wrap items-center justify-between gap-4 mt-4 px-2 pb-2 relative">
              
              <div className="flex items-center gap-2">
                 <span className="text-sm font-bold text-black">Add files</span>
@@ -218,19 +218,12 @@ export default function Launcher() {
                 <button className="text-red-600 hover:text-red-700">
                   <XCircle className="w-6 h-6 fill-white" />
                 </button>
+                <button className="text-green-600 hover:text-green-700 mx-2">
+                  <RotateCw className="w-6 h-6 stroke-[2.5]" />
+                </button>
              </div>
 
-             <button className="text-green-600 hover:text-green-700 mx-2">
-               <RotateCw className="w-6 h-6 stroke-[2.5]" />
-             </button>
-             
-             <Button 
-               className="bg-[#D0D0D0] hover:bg-[#C0C0C0] text-black border border-gray-400 font-medium px-8 h-9 shadow-sm mx-auto"
-             >
-               Send Request
-             </Button>
-
-             <div className="flex items-center gap-2 ml-auto">
+             <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-2">
                <Switch 
                  checked={showReasoning} 
                  onCheckedChange={setShowReasoning}
@@ -239,6 +232,12 @@ export default function Launcher() {
                <span className="text-xs font-bold text-black">Show Steps' Reasoning</span>
                <Info className="w-4 h-4 text-black fill-black" />
              </div>
+             
+             <Button 
+               className="bg-[#D0D0D0] hover:bg-[#C0C0C0] text-black border border-gray-400 font-medium px-8 h-9 shadow-sm"
+             >
+               Send Request
+             </Button>
 
           </div>
 
