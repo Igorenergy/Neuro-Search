@@ -1089,6 +1089,7 @@ export default function Launcher() {
                       data-testid="input-refine-prompt"
                     />
                     <span className="absolute bottom-2 right-14 text-[10px] text-gray-400" data-testid="text-refine-char-count">{refinePrompt.length}/500</span>
+                    {refinePrompt.length > 10 && (
                     <button
                       className="absolute bottom-3 right-3 flex flex-col items-center gap-0.5"
                       onClick={() => {
@@ -1104,6 +1105,7 @@ export default function Launcher() {
                       <Zap className="w-5 h-5 text-yellow-500 fill-yellow-400" />
                       <span className="text-[10px] font-bold text-[#008DA8]">send</span>
                     </button>
+                    )}
                   </div>
                 </div>
               )}
