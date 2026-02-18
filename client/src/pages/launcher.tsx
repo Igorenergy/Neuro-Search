@@ -67,6 +67,7 @@ export default function Launcher() {
   const [geoScope, setGeoScope] = useState("global");
   const [isAddFileModalOpen, setIsAddFileModalOpen] = useState(false);
   const [confirmExitStep, setConfirmExitStep] = useState<string | null>(null); // State for exit confirmation modal
+  const [step1Files, setStep1Files] = useState<number[]>([1, 2, 3]); // Mock files for step 1
 
   // Cost calculation
   const baseCost = 0.45;
@@ -568,12 +569,11 @@ export default function Launcher() {
                       <div className="p-3 bg-white">
                          <div className="mb-4">
                             <div className="flex items-center justify-between mb-2">
-                               <span className="text-xs font-bold">Added at Step1: 3 <span className="text-red-600 underline cursor-pointer ml-1 font-normal">remove all</span></span>
+                               <span className="text-xs font-bold">Added at Step1: {step1Files.length} <span className="text-red-600 underline cursor-pointer ml-1 font-normal" onClick={() => setStep1Files([])}>remove all</span></span>
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
-                               {/* Mock data for step 2 specific files */}
-                               {[1, 2, 3].map((id, i) => (
-                                  <div key={i} className="flex items-center justify-between bg-[#C894B6] text-white px-3 py-2 rounded-sm relative overflow-hidden group">
+                               {step1Files.map((id, i) => (
+                                  <div key={id} className="flex items-center justify-between bg-[#C894B6] text-white px-3 py-2 rounded-sm relative overflow-hidden group">
                                     <div className="flex items-center gap-2 min-w-0">
                                       <FileText className="w-5 h-5 text-white/80 shrink-0" strokeWidth={1.5} />
                                       <div className="flex flex-col min-w-0">
@@ -583,8 +583,8 @@ export default function Launcher() {
                                     </div>
                                     <button 
                                       className="text-pink-700 hover:text-pink-900 ml-1 shrink-0"
-                                      onClick={(e) => {
-                                        e.currentTarget.parentElement?.remove();
+                                      onClick={() => {
+                                        setStep1Files(prev => prev.filter(item => item !== id));
                                       }}
                                     >
                                       <X className="w-5 h-5 stroke-[3]" />
