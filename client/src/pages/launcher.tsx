@@ -407,31 +407,6 @@ export default function Launcher() {
                       </div>
                       
                       <div className="space-y-4">
-                         <div className="flex items-center gap-4">
-                            <label className="text-xs font-medium text-gray-700 flex items-center gap-1">
-                              Search Language <Info className="w-3 h-3 text-[#0097B2]" />
-                            </label>
-                            <Select value={language} onValueChange={setLanguage}>
-                              <SelectTrigger className="h-8 w-[180px] bg-white border-gray-300 rounded-sm text-xs">
-                                <SelectValue placeholder="Select language" />
-                              </SelectTrigger>
-                              <SelectContent>
-                                <SelectItem value="auto">Auto Detect</SelectItem>
-                                <SelectItem value="en">English (US)</SelectItem>
-                                <SelectItem value="ru">Russian</SelectItem>
-                                <SelectItem value="uk">Ukrainian</SelectItem>
-                              </SelectContent>
-                            </Select>
-                            
-                            <div className="flex gap-2">
-                               <Badge variant="secondary" className="bg-gray-400 text-black hover:bg-gray-500 rounded-sm font-normal text-xs gap-1 pr-1 h-6">
-                                 Ua <X className="w-3 h-3 text-red-600 fill-red-600" />
-                               </Badge>
-                               <Badge variant="secondary" className="bg-gray-400 text-black hover:bg-gray-500 rounded-sm font-normal text-xs gap-1 pr-1 h-6">
-                                 Ru <X className="w-3 h-3 text-red-600 fill-red-600" />
-                               </Badge>
-                            </div>
-                         </div>
                          
                          <div className="h-24 w-full border border-gray-400 relative">
                             <div className="absolute inset-0 flex items-center justify-center">
