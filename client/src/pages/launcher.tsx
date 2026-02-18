@@ -72,7 +72,20 @@ export default function Launcher() {
   const [step2Files, setStep2Files] = useState<File[]>([]);
   const [activeUploadTab, setActiveUploadTab] = useState<"upload" | "repository">("upload");
   const [selectedRepoFiles, setSelectedRepoFiles] = useState<string[]>([]);
-  const [selectedLanguages, setSelectedLanguages] = useState<string[]>(["en"]);
+  const [dataEngine, setDataEngine] = useState("ultimate");
+  
+  const getDataEngineDescription = (engine: string) => {
+    switch(engine) {
+      case "fast":
+        return "Optimized for speed. Best for quick fact-checking and surface scans.";
+      case "pro":
+        return "Balanced depth. Ideal for comprehensive market research and reports.";
+      case "ultimate":
+        return "Deepest analysis. Uncovers hidden patterns using multi-step reasoning.";
+      default:
+        return "Deepest analysis. Uncovers hidden patterns using multi-step reasoning.";
+    }
+  };
 
   const languages = [
     { value: "auto", label: "Auto Detect" },
@@ -829,11 +842,13 @@ export default function Launcher() {
                     <div className="flex items-center gap-2">
                        <span className="text-sm font-bold text-gray-700">Data Engine</span>
                        <Info className="w-3.5 h-3.5 text-gray-400" />
-                       <Select defaultValue="ultimate">
+                       <Select value={dataEngine} onValueChange={setDataEngine}>
                           <SelectTrigger className="h-8 w-[140px] bg-white border-gray-300 text-xs font-bold">
                              <div className="flex items-center gap-1.5">
-                                <Zap className="w-3 h-3 text-yellow-500 fill-yellow-500" />
-                                <span>Ultimate</span>
+                                {dataEngine === "ultimate" && <Zap className="w-3 h-3 text-yellow-500 fill-yellow-500" />}
+                                {dataEngine === "pro" && <Zap className="w-3 h-3 text-blue-500 fill-blue-500" />}
+                                {dataEngine === "fast" && <Zap className="w-3 h-3 text-green-500 fill-green-500" />}
+                                <span className="capitalize">{dataEngine}</span>
                              </div>
                           </SelectTrigger>
                           <SelectContent>
@@ -842,7 +857,7 @@ export default function Launcher() {
                              <SelectItem value="fast">Fast</SelectItem>
                           </SelectContent>
                        </Select>
-                       <span className="text-xs text-[#008DA8] ml-2">Reduces wait time by ~50%. Good for quick insights.</span>
+                       <span className="text-xs text-[#008DA8] ml-2">{getDataEngineDescription(dataEngine)}</span>
                     </div>
                  </div>
               </div>
