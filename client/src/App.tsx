@@ -25,6 +25,7 @@ function Router() {
       <Switch>
         <Route path="/research/dashboard" component={Dashboard} />
         <Route path="/smart-search/new" component={Launcher} />
+        <Route path="/research/launcher" component={Launcher} />
         <Route path="/research/search" component={SearchPage} />
         <Route path="/assets" component={AssetsRepository} />
         {/* Fallback to 404 */}
