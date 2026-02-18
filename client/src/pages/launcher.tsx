@@ -1050,7 +1050,7 @@ export default function Launcher() {
               onClick={() => setIsAddFileModalOpen(true)}
               data-testid="button-attached-files"
             >
-              Attached files: {uploadedFiles.length}
+              Attached files: {files.length}
             </button>
           </div>
 
