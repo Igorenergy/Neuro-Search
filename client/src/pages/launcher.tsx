@@ -155,53 +155,53 @@ export default function Launcher() {
              <Textarea 
                placeholder="Enter text prompt" 
                className={cn(
-                 "min-h-[160px] text-lg p-4 resize-none bg-white border-2 border-yellow-400 focus-visible:ring-0 focus-visible:border-yellow-500 rounded-md shadow-sm placeholder:text-gray-400 w-full",
+                 "min-h-[160px] text-lg p-4 resize-none bg-white border-2 border-yellow-400 focus-visible:ring-0 focus-visible:border-yellow-500 rounded-md shadow-sm placeholder:text-gray-400 w-full mb-0",
                  !query && isLaunching && "animate-shake"
                )}
                value={query}
                onChange={(e) => setQuery(e.target.value)}
              />
+             
+             {/* File Previews Row inside Textarea container */}
+             {(files.length > 0 || isScanning) && (
+               <div className="flex flex-wrap gap-2 px-1 pb-1 absolute bottom-2 left-2 right-2">
+                 {files.map((file, i) => (
+                   <div key={i} className="flex items-center justify-between bg-[#A0A0A0] text-white px-3 py-1.5 rounded-sm shadow-sm relative overflow-hidden group min-w-[200px] max-w-[240px]">
+                     <div className="flex items-center gap-2 min-w-0">
+                       <FileText className="w-5 h-5 text-white shrink-0" strokeWidth={1.5} />
+                       <div className="flex flex-col min-w-0">
+                         <span className="text-[10px] font-medium leading-tight truncate">File Preview (name,</span>
+                         <span className="text-[10px] font-medium leading-tight truncate">type, etc.)</span>
+                       </div>
+                     </div>
+                     <button onClick={() => removeFile(i)} className="text-red-600 hover:text-red-700 ml-2 shrink-0">
+                       <X className="w-6 h-6 stroke-[4]" />
+                     </button>
+                   </div>
+                 ))}
+                 
+                 {/* Mock previews to match image if no files uploaded yet for demo */}
+                 {files.length === 0 && (
+                   <>
+                     {[1, 2, 3, 4].map((_, i) => (
+                       <div key={i} className="flex items-center justify-between bg-[#A0A0A0] text-white px-3 py-1.5 rounded-sm shadow-sm relative overflow-hidden min-w-[200px] max-w-[240px]">
+                         <div className="flex items-center gap-2 min-w-0">
+                           <FileText className="w-5 h-5 text-white shrink-0" strokeWidth={1.5} />
+                           <div className="flex flex-col min-w-0">
+                             <span className="text-[10px] font-medium leading-tight truncate">File Preview (name,</span>
+                             <span className="text-[10px] font-medium leading-tight truncate">type, etc.)</span>
+                           </div>
+                         </div>
+                         <button className="text-red-600 hover:text-red-700 ml-2 shrink-0">
+                           <X className="w-6 h-6 stroke-[4]" />
+                         </button>
+                       </div>
+                     ))}
+                   </>
+                 )}
+               </div>
+             )}
           </div>
-
-          {/* File Previews Row */}
-          {(files.length > 0 || isScanning) && (
-            <div className="flex flex-wrap gap-2 mt-2 px-1">
-              {files.map((file, i) => (
-                <div key={i} className="flex items-center justify-between bg-[#A0A0A0] text-white px-3 py-1.5 rounded-sm shadow-sm relative overflow-hidden group min-w-[200px] max-w-[240px]">
-                  <div className="flex items-center gap-2 min-w-0">
-                    <FileText className="w-5 h-5 text-white shrink-0" strokeWidth={1.5} />
-                    <div className="flex flex-col min-w-0">
-                      <span className="text-[10px] font-medium leading-tight truncate">File Preview (name,</span>
-                      <span className="text-[10px] font-medium leading-tight truncate">type, etc.)</span>
-                    </div>
-                  </div>
-                  <button onClick={() => removeFile(i)} className="text-red-600 hover:text-red-700 ml-2 shrink-0">
-                    <X className="w-6 h-6 stroke-[4]" />
-                  </button>
-                </div>
-              ))}
-              
-              {/* Mock previews to match image if no files uploaded yet for demo */}
-              {files.length === 0 && (
-                <>
-                  {[1, 2, 3, 4].map((_, i) => (
-                    <div key={i} className="flex items-center justify-between bg-[#A0A0A0] text-white px-3 py-1.5 rounded-sm shadow-sm relative overflow-hidden min-w-[200px] max-w-[240px]">
-                      <div className="flex items-center gap-2 min-w-0">
-                        <FileText className="w-5 h-5 text-white shrink-0" strokeWidth={1.5} />
-                        <div className="flex flex-col min-w-0">
-                          <span className="text-[10px] font-medium leading-tight truncate">File Preview (name,</span>
-                          <span className="text-[10px] font-medium leading-tight truncate">type, etc.)</span>
-                        </div>
-                      </div>
-                      <button className="text-red-600 hover:text-red-700 ml-2 shrink-0">
-                        <X className="w-6 h-6 stroke-[4]" />
-                      </button>
-                    </div>
-                  ))}
-                </>
-              )}
-            </div>
-          )}
 
           {/* Controls Footer */}
           <div className="flex flex-wrap items-center justify-between gap-4 mt-4 px-2 pb-2 relative">
