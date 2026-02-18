@@ -230,7 +230,22 @@ export default function Launcher() {
       {/* Main Input Card */}
       <div className="bg-[#A0A0A0] rounded-xl shadow-md overflow-hidden p-1">
         {/* Card Header */}
-        <div className="flex justify-end px-3 py-1">
+        <div className="flex justify-between items-center px-3 py-1 min-h-[28px]">
+          {/* Left Side: Context Window Indicator */}
+          <div className="flex items-center">
+            {query.length > 200 && (
+                <div className="flex items-center gap-2 text-xs text-gray-800 font-bold animate-in fade-in slide-in-from-bottom-1 duration-300">
+                  <span className="text-orange-400">📂</span>
+                  <span>Context window</span>
+                  <div className="w-32 h-4 bg-white border border-green-500 rounded-sm relative overflow-hidden">
+                      <div className="absolute inset-y-0 left-0 bg-green-500 w-[20%]"></div>
+                      <span className="absolute inset-0 flex items-center justify-center text-[10px] font-medium text-gray-700 z-10">Usage: 20%</span>
+                  </div>
+                </div>
+            )}
+          </div>
+
+          {/* Right Side: Account Balance */}
           <div className="flex items-center gap-2 text-xs font-bold text-gray-800">
             <span className="opacity-70">💳</span> Account Balance: $1,250.00
           </div>
@@ -241,20 +256,6 @@ export default function Launcher() {
           
           {/* Omni-Input Area */}
           <div className="relative">
-             <div className="flex justify-between items-center mb-1 px-1">
-                <span className="text-xs font-bold text-gray-500"></span>
-                {query.length > 200 && (
-                    <div className="flex items-center gap-2 text-xs text-gray-600 animate-in fade-in slide-in-from-bottom-1 duration-300">
-                      <span className="text-orange-400">📂</span>
-                      <span>Context window</span>
-                      <div className="w-32 h-4 bg-white border border-green-500 rounded-sm relative overflow-hidden">
-                         <div className="absolute inset-y-0 left-0 bg-green-500 w-[20%]"></div>
-                         <span className="absolute inset-0 flex items-center justify-center text-[10px] font-medium text-gray-700 z-10">Usage: 20%</span>
-                      </div>
-                    </div>
-                )}
-             </div>
-
              <Textarea 
                placeholder="Enter text prompt" 
                className={cn(
