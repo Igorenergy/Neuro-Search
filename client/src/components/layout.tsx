@@ -28,6 +28,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import rocketIcon from "@assets/image_1771405092616.png";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
@@ -109,6 +110,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <div className="divide-y divide-gray-200/50">
                 {researchItems.map((item) => (
                   <div key={item.id} className="flex items-start gap-2 p-3 hover:bg-white/50 cursor-pointer group transition-colors">
+                    <img src={rocketIcon} alt="Rocket" className="w-4 h-4 mt-0.5 shrink-0 opacity-70" />
                     <p className="text-[13px] leading-tight text-gray-800 line-clamp-3 font-medium flex-1">
                       {item.title}
                     </p>
@@ -142,11 +144,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <Search className="w-6 h-6" />
           </Button>
           <div className="w-8 h-[1px] bg-gray-300" />
-          {researchItems.slice(0, 5).map(item => (
-             <div key={item.id} className="w-8 h-8 rounded-full bg-[#E6E1EF] flex items-center justify-center text-gray-600 hover:bg-gray-200 cursor-pointer" title={item.title}>
-               <item.icon className="w-4 h-4" />
-             </div>
-          ))}
+          <ScrollArea className="flex-1 w-full px-2">
+            <div className="flex flex-col items-center gap-3">
+              {researchItems.map(item => (
+                <div key={item.id} className="w-8 h-8 rounded-full bg-[#E6E1EF] flex items-center justify-center hover:bg-gray-200 cursor-pointer" title={item.title}>
+                  <img src={rocketIcon} alt="Rocket" className="w-4 h-4 opacity-70" />
+                </div>
+              ))}
+            </div>
+          </ScrollArea>
           <div className="mt-auto pb-4">
             <div className="bg-[#FFD700] p-2 rounded-sm">
               <Zap className="w-5 h-5 text-black fill-current" />
