@@ -95,6 +95,7 @@ export default function Launcher() {
     if (e.target.files && e.target.files.length > 0) {
       const newFiles = Array.from(e.target.files);
       setStep2Files(prev => [...prev, ...newFiles]);
+      setIsAddFileModalOpen(false);
     }
   };
   const baseCost = 0.45;
@@ -677,7 +678,7 @@ export default function Launcher() {
                                   <Button 
                                     variant="outline" 
                                     className="w-full border-green-600 text-green-700 hover:bg-green-50 h-8 text-xs font-medium"
-                                    onClick={() => fileInputRef.current?.click()}
+                                    onClick={() => setIsAddFileModalOpen(true)}
                                   >
                                     Upload files
                                   </Button>
@@ -737,6 +738,52 @@ export default function Launcher() {
           </div>
         </div>
       </div>
+
+      {/* Add Files Modal */}
+      <Dialog open={isAddFileModalOpen} onOpenChange={setIsAddFileModalOpen}>
+        <DialogContent className="max-w-[500px] p-0 gap-0 bg-white overflow-hidden border border-gray-200 shadow-xl rounded-md">
+          <div className="flex items-center justify-between p-3 border-b border-gray-100">
+            <h2 className="text-base font-bold text-gray-900">Add Files</h2>
+            <button 
+                onClick={() => setIsAddFileModalOpen(false)}
+                className="text-gray-400 hover:text-gray-600"
+            >
+                <X className="w-5 h-5" />
+            </button>
+          </div>
+          
+          <div className="p-5">
+            <div 
+                className={`h-40 border-2 border-dashed ${isDragging ? 'border-blue-500 bg-blue-50' : 'border-gray-300 bg-gray-50 hover:bg-gray-100'} rounded-lg relative transition-all duration-200 cursor-pointer flex flex-col items-center justify-center gap-2`}
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={(e) => {
+                    handleDrop(e);
+                    setIsAddFileModalOpen(false);
+                }}
+                onClick={() => fileInputRef.current?.click()}
+            >
+                <Upload className={`w-8 h-8 ${isDragging ? 'text-blue-500' : 'text-gray-400'}`} />
+                <div className="text-center">
+                    <p className={`text-sm ${isDragging ? 'text-blue-600' : 'text-gray-600'} font-medium`}>
+                        {isDragging ? "Drop files here" : "Drag & drop files here"}
+                    </p>
+                    <p className="text-xs text-gray-400 mt-1">or click to browse</p>
+                </div>
+            </div>
+            
+            <div className="mt-4 flex justify-end">
+                <Button 
+                    variant="outline" 
+                    onClick={() => setIsAddFileModalOpen(false)}
+                    className="mr-2"
+                >
+                    Cancel
+                </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {/* Confirm Exit Modal */}
       <Dialog open={!!confirmExitStep} onOpenChange={(open) => !open && setConfirmExitStep(null)}>
