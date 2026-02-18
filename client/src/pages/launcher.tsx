@@ -67,9 +67,35 @@ export default function Launcher() {
   const [geoScope, setGeoScope] = useState("global");
   const [isAddFileModalOpen, setIsAddFileModalOpen] = useState(false);
   const [confirmExitStep, setConfirmExitStep] = useState<string | null>(null); // State for exit confirmation modal
-  const [step1Files, setStep1Files] = useState<number[]>([1, 2, 3]); // Mock files for step 1
+  const [isDragging, setIsDragging] = useState(false);
+  const [step2Files, setStep2Files] = useState<File[]>([]);
 
-  // Cost calculation
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+    
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      const newFiles = Array.from(e.dataTransfer.files);
+      setStep2Files(prev => [...prev, ...newFiles]);
+    }
+  };
+
+  const handleStep2FileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const newFiles = Array.from(e.target.files);
+      setStep2Files(prev => [...prev, ...newFiles]);
+    }
+  };
   const baseCost = 0.45;
   const deepCrawlCost = deepCrawlEnabled ? 0.50 : 0;
   const totalCost = baseCost + deepCrawlCost;
@@ -600,21 +626,61 @@ export default function Launcher() {
                          </div>
 
                          <div>
-                            <span className="text-xs font-bold block mb-2">Added at this step: 0</span>
+                            <span className="text-xs font-bold block mb-2">Added at this step: {step2Files.length}</span>
+                            
+                            {/* Display added files for step 2 */}
+                            {step2Files.length > 0 && (
+                               <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-4">
+                                  {step2Files.map((file, i) => (
+                                     <div key={i} className="flex items-center justify-between bg-[#008DA8] text-white px-3 py-2 rounded-sm relative overflow-hidden group">
+                                       <div className="flex items-center gap-2 min-w-0">
+                                         <FileText className="w-5 h-5 text-white/80 shrink-0" strokeWidth={1.5} />
+                                         <div className="flex flex-col min-w-0">
+                                           <span className="text-[10px] font-medium leading-tight truncate">{file.name}</span>
+                                           <span className="text-[10px] font-medium leading-tight opacity-80">{(file.size / 1024).toFixed(1)} KB</span>
+                                         </div>
+                                       </div>
+                                       <button 
+                                         className="text-cyan-200 hover:text-white ml-1 shrink-0"
+                                         onClick={() => {
+                                           setStep2Files(prev => prev.filter((_, idx) => idx !== i));
+                                         }}
+                                       >
+                                         <X className="w-5 h-5 stroke-[3]" />
+                                       </button>
+                                     </div>
+                                  ))}
+                               </div>
+                            )}
+
                             <div className="flex gap-4">
-                               <div className="flex-1 h-20 border border-gray-400 relative bg-gray-50">
-                                  <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
+                               <div 
+                                 className={`flex-1 h-20 border ${isDragging ? 'border-blue-500 bg-blue-50' : 'border-gray-400 bg-gray-50'} relative transition-colors duration-200`}
+                                 onDragOver={handleDragOver}
+                                 onDragLeave={handleDragLeave}
+                                 onDrop={handleDrop}
+                               >
+                                  <div className="absolute inset-0 flex items-center justify-center overflow-hidden pointer-events-none">
                                      <div className="w-[120%] h-px bg-gray-400 rotate-[15deg] absolute"></div>
                                      <div className="w-[120%] h-px bg-gray-400 -rotate-[15deg] absolute"></div>
-                                     <span className="bg-gray-50 px-2 z-10 text-xs text-gray-600 font-medium">DRAG and DROP</span>
+                                     <span className="bg-gray-50 px-2 z-10 text-xs text-gray-600 font-medium">
+                                       {isDragging ? "DROP FILES HERE" : "DRAG and DROP"}
+                                     </span>
                                   </div>
                                </div>
                                <div className="w-40 flex flex-col justify-center items-center gap-2">
                                   <span className="text-xs text-gray-500 uppercase">OR SELECT</span>
+                                  <input 
+                                    type="file" 
+                                    multiple 
+                                    className="hidden" 
+                                    ref={fileInputRef}
+                                    onChange={handleStep2FileUpload}
+                                  />
                                   <Button 
                                     variant="outline" 
                                     className="w-full border-green-600 text-green-700 hover:bg-green-50 h-8 text-xs font-medium"
-                                    onClick={() => setIsAddFileModalOpen(true)}
+                                    onClick={() => fileInputRef.current?.click()}
                                   >
                                     Upload files
                                   </Button>
