@@ -332,10 +332,17 @@ export default function Launcher() {
                   </DialogContent>
                 </Dialog>
 
-                <button className={cn(
-                  "text-red-600 hover:text-red-700 relative ml-1 transition-opacity",
-                  files.length === 0 ? "opacity-0 pointer-events-none" : "opacity-100"
-                )}>
+                <button 
+                  className={cn(
+                    "text-red-600 hover:text-red-700 relative ml-1 transition-opacity",
+                    files.length === 0 ? "opacity-0 pointer-events-none" : "opacity-100"
+                  )}
+                  onClick={() => {
+                    setFiles([]);
+                    setDeepLinksFound(false);
+                    setDeepCrawlEnabled(false);
+                  }}
+                >
                   <XCircle className="w-6 h-6 fill-white" />
                   <span className="absolute -top-1.5 -right-1 bg-yellow-400 text-black text-[9px] font-bold px-1 rounded-sm border border-white shadow-sm leading-tight min-w-[14px] text-center">
                     {files.length}
