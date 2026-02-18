@@ -584,8 +584,8 @@ export default function Launcher() {
                       <div className="flex items-center justify-between mb-2">
                          <span className="text-sm text-gray-700">Web Pages & Websites: <span className="font-mono">∞</span></span>
                          <div className="flex items-center gap-2">
-                            {/* <span className="text-xs text-gray-500 font-medium">Deep Research</span>
-                            <Switch checked={true} className="scale-75 data-[state=checked]:bg-[#0097B2]" /> */}
+                            <span className="text-xs text-gray-500 font-medium">Deep Research</span>
+                            <Switch checked={deepCrawlEnabled} onCheckedChange={setDeepCrawlEnabled} className="scale-75 data-[state=checked]:bg-[#0097B2]" />
                          </div>
                       </div>
                       
