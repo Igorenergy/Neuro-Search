@@ -95,7 +95,7 @@ export default function Launcher() {
 (11) Confirm the Ukrainian origin of founders through reliable sources like LinkedIn profiles, company about pages, or public records.
 (12) For each selected project, gather precise details on their AI component's mechanics, algorithms, data sources, and user benefits, then compare these services with sepalai.com in terms of functionality, AI sophistication, and target audience demographics...`
   );
-  const [isEditingPlan, setIsEditingPlan] = useState(false);
+  const [isPlanCollapsed, setIsPlanCollapsed] = useState(false);
   const [showVersionHistory, setShowVersionHistory] = useState(false);
   const totalVersions = 4;
   const planStepCount = planText.split('\n').filter(l => l.trim()).length;
@@ -1055,13 +1055,20 @@ export default function Launcher() {
           </div>
 
           <div className="border border-gray-200 rounded-md overflow-hidden">
-            <div className="bg-gray-50 px-3 py-2 border-b border-gray-200">
+            <button 
+              className="w-full bg-gray-50 px-3 py-2 border-b border-gray-200 flex items-center justify-between cursor-pointer hover:bg-gray-100 transition-colors"
+              onClick={() => setIsPlanCollapsed(!isPlanCollapsed)}
+              data-testid="button-toggle-plan"
+            >
               <span className="text-xs font-bold text-gray-600">{planStepCount} Steps</span>
-            </div>
+              <ChevronDown className={cn("w-4 h-4 text-gray-500 transition-transform duration-200", isPlanCollapsed && "-rotate-90")} />
+            </button>
 
-            <div className="p-4" data-testid="text-plan-content">
-              <p className="text-xs text-gray-700 leading-[1.8] whitespace-pre-line">{planText}</p>
-            </div>
+            {!isPlanCollapsed && (
+              <div className="p-4" data-testid="text-plan-content">
+                <p className="text-xs text-gray-700 leading-[1.8] whitespace-pre-line">{planText}</p>
+              </div>
+            )}
           </div>
 
           <div className="flex items-center justify-between pt-2">
