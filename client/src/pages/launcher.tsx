@@ -1054,7 +1054,7 @@ export default function Launcher() {
               onClick={() => setIsPlanCollapsed(!isPlanCollapsed)}
               data-testid="button-toggle-plan"
             >
-              <span className="text-xs font-bold text-gray-600">{planStepCount} Steps</span>
+              <span className="text-xs font-bold text-gray-600">Details: {planStepCount} Steps</span>
               <ChevronDown className={cn("w-4 h-4 text-gray-500 transition-transform duration-200", isPlanCollapsed && "-rotate-90")} />
             </button>
 
