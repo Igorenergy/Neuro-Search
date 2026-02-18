@@ -897,7 +897,7 @@ export default function Launcher() {
 
               <div className="flex items-center justify-between border-t border-gray-100 pt-4 mt-2">
                  <div className="flex items-center gap-4">
-                    <div className="text-right relative">
+                    <div className="text-left relative">
                        <span className="text-xs text-gray-500 font-medium mr-2">Estimated Cost:</span>
                        <span 
                          className="text-sm font-bold text-[#008DA8] border-b border-[#008DA8] border-dashed cursor-pointer"
@@ -913,7 +913,7 @@ export default function Launcher() {
                              animate={{ opacity: 1, y: 0, scale: 1 }}
                              exit={{ opacity: 0, y: 10, scale: 0.95 }}
                              transition={{ duration: 0.2 }}
-                             className="absolute bottom-full right-0 mb-2 w-[580px] bg-white rounded-lg shadow-xl border border-gray-200 z-50 overflow-hidden text-left"
+                             className="absolute bottom-full left-0 mb-2 w-[580px] bg-white rounded-lg shadow-xl border border-gray-200 z-50 overflow-hidden text-left"
                            >
                              <div className="flex">
                              {/* Left Column: Breakdown */}
@@ -981,10 +981,10 @@ export default function Launcher() {
                          )}
                        </AnimatePresence>
                     </div>
-                    <Button className="bg-[#008DA8] hover:bg-[#007A92] text-white font-bold px-6 shadow-md">
-                       Create a plan
-                    </Button>
                  </div>
+                 <Button className="bg-[#008DA8] hover:bg-[#007A92] text-white font-bold px-6 shadow-md">
+                    Create a plan
+                 </Button>
               </div>
 
             </div>
