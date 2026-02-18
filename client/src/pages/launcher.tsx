@@ -767,7 +767,7 @@ export default function Launcher() {
           <div className="flex items-center justify-between p-3 border-b border-gray-200 bg-white">
             <div className="flex items-center gap-3">
               <h2 className="text-base font-bold text-gray-900">Add Files</h2>
-              <div className="flex items-center gap-2 text-xs text-gray-600 hidden">
+              <div className="flex items-center gap-2 text-xs text-gray-600">
                 <span className="text-orange-400">📂</span>
                 <span>Context window</span>
                 <div className="w-32 h-4 bg-white border border-green-500 rounded-sm relative overflow-hidden">
