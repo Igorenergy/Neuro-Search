@@ -195,25 +195,74 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         )}
       >
         {/* Top Header - Contextual to the page */}
-        <header className="h-14 border-b border-gray-200 bg-white sticky top-0 z-40 px-6 flex items-center justify-between shadow-sm">
-          <div className="flex items-center gap-2 text-sm text-gray-500">
-            <span className="font-medium text-gray-900">
-              {location === "/" ? "Dashboard" : 
-               location.includes("dashboard") ? "Dashboard" :
-               location.includes("search") ? "Search" : 
-               location.includes("new") ? "New Operation" : "Page"}
-            </span>
+        <header className="h-16 border-b border-gray-300 bg-[#F5F5F7] sticky top-0 z-40 px-4 flex items-center justify-between shadow-sm">
+          <div className="flex items-center gap-4">
+             <Link href="/research/dashboard">
+               <Button variant="outline" className="h-9 gap-2 bg-white border-gray-400 text-[#006E7D] hover:text-[#005a66] hover:bg-gray-50 px-3 shadow-sm rounded-sm">
+                 <LayoutDashboard className="w-4 h-4" />
+                 Dashboard
+               </Button>
+             </Link>
+             
+             <h1 className="text-sm font-medium text-gray-800">
+               <span className="font-bold">Smart Search:</span> {
+                 location === "/" ? "Dashboard" : 
+                 location.includes("dashboard") ? "Overview" :
+                 location.includes("search") ? "Repository" : 
+                 location.includes("new") ? "Launcher" : "Page"}
+             </h1>
           </div>
           
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2 px-3 py-1.5 bg-gray-100 rounded-full border border-gray-200">
-              <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-              <span className="text-xs font-medium text-gray-600">System Online</span>
-            </div>
-            <Button variant="ghost" size="icon" className="text-gray-500 hover:text-gray-900">
-              <Bell className="w-5 h-5" />
+          <div className="flex items-center gap-3">
+            <Button size="icon" className="h-9 w-9 bg-[#00802b] hover:bg-[#006622] rounded-md shadow-sm border border-[#006622]">
+              <Search className="w-5 h-5 text-white stroke-[2.5]" />
             </Button>
-            <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-500 to-purple-500 border-2 border-white shadow-sm" />
+            
+            <div className="relative">
+              <Button variant="outline" size="icon" className="h-9 w-12 bg-white border-gray-400 text-gray-600 hover:bg-gray-50 rounded-md gap-1 px-2 w-auto">
+                <Bell className="w-5 h-5 fill-current" />
+                <span className="text-xs font-bold text-[#00802b]">+3</span>
+              </Button>
+            </div>
+
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" className="h-10 pl-2 pr-3 gap-2 bg-white border-gray-400 hover:bg-gray-50 rounded-md text-left flex items-center">
+                  <div className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center">
+                    <User className="w-5 h-5" />
+                  </div>
+                  <div className="flex flex-col items-start leading-none gap-0.5">
+                    <span className="text-xs font-bold text-gray-900">Ivan Petrov</span>
+                    <span className="text-[10px] text-gray-500">Company/Team name</span>
+                  </div>
+                  <ChevronDown className="w-4 h-4 text-black ml-1 fill-black" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-64 p-0 rounded-md border-gray-300 shadow-xl bg-[#F5F5F7]">
+                <div className="p-3 border-b border-gray-200 bg-white rounded-t-md">
+                   <p className="text-xs text-center font-semibold text-gray-500 mb-1">Balance</p>
+                   <div className="bg-[#E8F5E9] border border-[#C8E6C9] rounded-md p-2 text-center">
+                     <span className="text-[#2E7D32] font-bold text-sm">5.8K available</span>
+                     <span className="text-gray-500 text-xs mx-1">[10K]</span>
+                     <a href="#" className="text-[#008DA8] text-xs underline font-medium">buy more</a>
+                   </div>
+                </div>
+                <div className="p-1 space-y-0.5 bg-[#F5F5F7]">
+                  {[
+                    { label: "Profile & Settings", icon: User },
+                    { label: "Integrations", icon: Zap },
+                    { label: "Billing & Usage", icon: MoreVertical }, // Using MoreVertical as placeholder for card/wallet
+                    { label: "Export Hub: 26", icon: Search }, // Using Search as placeholder
+                    { label: "Log out", icon: PanelLeftClose } // Using PanelLeftClose as placeholder
+                  ].map((item, idx) => (
+                    <DropdownMenuItem key={idx} className="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 focus:bg-gray-200 focus:text-black cursor-pointer rounded-sm">
+                      <item.icon className="w-4 h-4 text-gray-500" />
+                      {item.label}
+                    </DropdownMenuItem>
+                  ))}
+                </div>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </header>
 
