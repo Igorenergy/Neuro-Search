@@ -357,7 +357,7 @@ export default function Launcher() {
         <div>
           <div className="px-0 py-0 bg-white">
             <div className="w-full flex border-b border-gray-200 font-sans bg-[#5A6B7C] min-h-[34px]">
-              <div className="flex items-center gap-1 px-4 py-2 bg-white text-[#5A6B7C] hover:bg-gray-50 text-xs font-bold border-r border-gray-300">
+              <div className="flex items-center gap-1 px-4 py-2 hover:bg-gray-50 text-xs font-bold border-r border-gray-300 bg-[#546c7c] text-[#ffffff]">
                 <ArrowLeft className="w-3 h-3" /> Prev. step
               </div>
               <div className="px-6 py-2 bg-[#0097B2] text-white text-xs font-bold flex items-center justify-center">
