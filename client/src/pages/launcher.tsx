@@ -353,13 +353,20 @@ export default function Launcher() {
       {/* Configuration Accordion - Now Step 2 */}
       <Accordion type="single" collapsible defaultValue="options" className="w-full bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
         <AccordionItem value="options" className="border-b-0">
-          <AccordionTrigger className="px-6 py-4 hover:no-underline hover:bg-gray-50 bg-gray-50/50">
-            <div className="flex items-center gap-2">
-              <div className="bg-black text-white text-[10px] font-bold px-1.5 py-0.5 rounded-sm">STEP #2</div>
-              <span className="text-sm font-bold text-gray-800">Research Options</span>
+          <AccordionTrigger className="px-0 py-0 hover:no-underline bg-white">
+            <div className="w-full flex border-b border-[#D4A5C7] font-sans">
+              <div className="flex items-center gap-1 px-4 py-2 bg-[#E5B8D9] text-[#7A4A6A] hover:bg-[#D9A3C2] text-xs font-bold border-r border-[#D4A5C7]">
+                <ArrowLeft className="w-3 h-3" /> Prev. step
+              </div>
+              <div className="px-6 py-2 bg-[#6B8CCF] text-white text-xs font-bold flex items-center justify-center">
+                STEP #2
+              </div>
+              <div className="px-6 py-2 bg-[#BC8FAD] text-[#6A405C] text-xs font-bold flex items-center justify-center border-r border-[#D4A5C7]">
+                REASONING
+              </div>
             </div>
           </AccordionTrigger>
-          <AccordionContent className="px-6 pb-6 pt-2">
+          <AccordionContent className="px-6 pb-6 pt-6">
             <div className="space-y-6">
               <p className="text-sm text-gray-500">
                 At this stage, you choose the depth of analysis and data sources. This will help the system to optimize your budget and ensure maximum accuracy of research for a specific task.
