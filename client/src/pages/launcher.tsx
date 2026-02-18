@@ -788,7 +788,7 @@ export default function Launcher() {
                 </label>
                 <label className="flex items-center gap-2 cursor-pointer" onClick={() => setActiveUploadTab("repository")}>
                     <div className={cn("w-3 h-3 rounded-full border bg-white flex items-center justify-center", activeUploadTab === "repository" ? "border-[4px] border-gray-500 ring-1 ring-gray-500" : "border-gray-300")}></div>
-                    <span className={cn(activeUploadTab === "repository" ? "text-gray-900 font-bold" : "text-gray-500")}>SelectFrom <span className="text-blue-700">Assets Repository (100)</span></span>
+                    <span className={cn(activeUploadTab === "repository" ? "text-gray-900 font-bold" : "text-gray-500")}>SelectFrom <span className="text-blue-700 underline" onClick={(e) => { e.stopPropagation(); setLocation("/research/Assets_Repository"); }}>Assets Repository (100)</span></span>
                 </label>
               </div>
 
