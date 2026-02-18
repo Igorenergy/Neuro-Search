@@ -569,7 +569,12 @@ export default function Launcher() {
                       <div className="p-3 bg-white">
                          <div className="mb-4">
                             <div className="flex items-center justify-between mb-2">
-                               <span className="text-xs font-bold">Added at Step1: {step1Files.length} <span className="text-red-600 underline cursor-pointer ml-1 font-normal" onClick={() => setStep1Files([])}>remove all</span></span>
+                               <span className="text-xs font-bold">
+                                 Added at Step1: {step1Files.length} 
+                                 {step1Files.length > 0 && (
+                                   <span className="text-red-600 underline cursor-pointer ml-1 font-normal" onClick={() => setStep1Files([])}>remove all</span>
+                                 )}
+                               </span>
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
                                {step1Files.map((id, i) => (
