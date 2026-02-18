@@ -873,23 +873,19 @@ export default function Launcher() {
               )}
 
               {/* Footer Actions */}
-              <div className="flex items-center justify-between pt-1 relative">
-                <div className="flex-1 flex justify-start">
-                    {activeUploadTab === "upload" && (
-                        <label className="flex items-center gap-2 cursor-pointer select-none">
-                            <input type="checkbox" className="w-3.5 h-3.5 rounded border-gray-300 text-green-600 focus:ring-green-500" />
-                            <span className="text-xs font-medium text-black">Save 5 files to <span className="text-blue-800">Assets Repository (100)</span></span>
-                        </label>
-                    )}
-                </div>
+              <div className="flex flex-col items-center gap-4 pt-2">
+                {activeUploadTab === "upload" && (
+                    <label className="flex items-center gap-2 cursor-pointer select-none">
+                        <input type="checkbox" className="w-3.5 h-3.5 rounded border-gray-300 text-green-600 focus:ring-green-500" />
+                        <span className="text-xs font-medium text-black">Save 5 files to <span className="text-blue-800">Assets Repository (100)</span></span>
+                    </label>
+                )}
                 
-                <div className="absolute left-1/2 -translate-x-1/2">
+                <div className="flex items-center justify-between w-full">
                     <Button variant="ghost" size="sm" className="text-[#008DA8] hover:text-[#007A92] hover:bg-transparent font-bold underline h-8 text-xs" onClick={() => setIsAddFileModalOpen(false)}>
                       CANCEL
                     </Button>
-                </div>
 
-                <div className="flex-1 flex justify-end">
                     <Button size="sm" className="bg-[#00802b] hover:bg-[#006622] text-white font-bold px-6 h-8 text-xs" onClick={() => setIsAddFileModalOpen(false)}>
                       Save & Add
                     </Button>
