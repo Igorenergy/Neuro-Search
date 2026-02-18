@@ -67,6 +67,7 @@ export default function Launcher() {
   const [geoScope, setGeoScope] = useState("global");
   const [isAddFileModalOpen, setIsAddFileModalOpen] = useState(false);
   const [confirmExitStep, setConfirmExitStep] = useState<string | null>(null); // State for exit confirmation modal
+  const [step1Files, setStep1Files] = useState<number[]>([1, 2, 3]); // Mock files for step 1
   const [isDragging, setIsDragging] = useState(false);
   const [step2Files, setStep2Files] = useState<File[]>([]);
 
