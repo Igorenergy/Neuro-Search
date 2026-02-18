@@ -1,0 +1,99 @@
+### **Page Specification: Smart Search - Launcher**
+
+**Route:** `/smart-search/new`
+**Role:** The dedicated configuration wizard for initiating a new, targeted search task. Unlike the Dashboard, this page is focused entirely on **Input & Configuration**. It allows the user to define *what* to search, *where* to look (Web vs. Local), and *how deep* to go.
+
+#### **1. Layout & "Focus Mode"**
+
+* **Container:** Centered layout (max-width: 900px).
+* **Visual Style:** Distraction-free. The sidebar should be collapsed or minimized by default to keep the user focused on the query.
+* **Header:** "New Smart Search Operation".
+* **Background:** Clean, perhaps with a subtle grid pattern to denote a "technical workspace."
+
+#### **2. Core Components & Logic**
+
+**A. The "Omni-Input" Field (Primary Component)**
+
+* **Visual:** Large, multi-line text area (textarea) that auto-expands.
+* **Placeholder:** *"Describe your research goal (e.g., 'Find all Series A SaaS startups in Berlin focusing on AI')..."*
+* **Features:**
+* **Auto-Complete:** Suggests recently used search operators (e.g., `site:`, `filetype:pdf`).
+* **Voice Input:** A small microphone icon for dictation.
+
+
+
+**B. Search Scope Toggles (Source Selection)**
+
+* **Component:** A segmented control or pill selector.
+* **Options:**
+1. **Global Web:** (Default) Live internet search.
+2. **Assets Repository:** Search only within previously saved files/reports.
+3. **Hybrid:** Combines Web + Internal Assets.
+
+
+
+**C. Contextual File Uploader & "Deep Linked Research" (CRITICAL LOGIC)**
+
+* **Reference:** *Based on Specification Note #2 (Contextual Reveal Pattern).*
+* **Default State:** A drag-and-drop zone labeled *"Upload context files (PDF, DOCX) to guide the agent."*
+* **Logic (The "Magic" Step):**
+1. **Event:** User uploads a file (e.g., `competitors.pdf`).
+2. **State 1 (Scanning):** The UI shows a loader with text *"Scanning document for external links..."*.
+3. **State 2 (Contextual Reveal):**
+* **If links are found (>0):** A **hidden toggle** dynamically appears below the file:
+* **Label:** *"Deep Linked Research"*
+* **Badge:** *"12 external sources detected"*
+* **Action:** If the user enables this toggle, the system must **recalculate the cost** (e.g., +$0.50) and time estimate, as the agent will now crawl those 12 links.
+
+
+* **If no links:** Display a passive status text *"No external links found. Using file for context only."*
+
+
+
+
+
+**D. Configuration Panel (Accordion)**
+
+* **Visual:** Collapsible section named "Advanced Parameters".
+* **Controls:**
+* **Depth Level:** Slider [Fast (Surface) <---> Deep (Comprehensive)].
+* **Language:** Dropdown (Auto-detect / English / Russian / etc.).
+* **Output Format:** [Summary Report] / [Raw Data Table] / [Visual Map].
+
+
+
+**E. Cost & Time Estimation (Real-time Footer)**
+
+* **Position:** Sticky at the bottom of the viewport or form.
+* **Content:**
+* **Est. Time:** "2-4 minutes".
+* **Est. Cost:** "$0.45" (Updates dynamically if 'Deep Linked Research' is toggled ON).
+
+
+* **Primary Action:** Large button **"Launch Operation"** (Gradient fill).
+* **Secondary Action:** "Save Draft".
+
+#### **3. Interaction Patterns**
+
+* **Validation:** If the user clicks "Launch" without a query, the input field shakes (error animation) and focuses.
+* **Transition:** Upon clicking "Launch":
+* The button changes state to "Initializing Agents...".
+* The user is redirected to the `/smart-search/in-progress` page.
+
+
+
+#### **4. Text & Microcopy (English)**
+
+* **Headline:** "Define Search Parameters"
+* **Upload Area:** "Drop files here to ground the AI in your specific context."
+* **Deep Link Toggle:** "Follow 12 detected links? (Deep Crawl)"
+* **Cost Disclaimer:** "Final cost may vary based on actual data volume processed."
+
+---
+
+### **Implementation Instructions for AI:**
+
+1. **Logic Priority:** The most important feature to implement is the **Contextual Reveal** of the "Deep Linked Research" toggle. Do not show this toggle by default. It must only appear *after* a mock file upload event simulates finding links.
+2. **State Management:** Create a reactive state object `searchConfig` that tracks: `{ query: "", files: [], deepLinksEnabled: false, scope: "web" }`.
+3. **Visual Hierarchy:** The "Launch" button must be visually distinct from the configuration options.
+4. **Vibe:** Technical, precise, professional. Use high-contrast borders for active input fields.
