@@ -591,12 +591,35 @@ export default function Launcher() {
                       
                       <div className="space-y-4">
                          
-                         <div className="h-24 w-full border border-gray-400 relative">
-                            <div className="absolute inset-0 flex items-center justify-center">
-                               <div className="w-full h-px bg-gray-400 rotate-12 absolute"></div>
-                               <div className="w-full h-px bg-gray-400 -rotate-12 absolute"></div>
-                               <span className="bg-white px-2 z-10 text-xs text-gray-600 font-medium">OTHER SETTINGS</span>
-                            </div>
+                         <div className="flex items-center gap-2">
+                             <div className="flex items-center gap-1">
+                                <span className="text-sm font-medium text-gray-700">Search Language</span>
+                                <Info className="w-4 h-4 text-[#0097B2]" />
+                             </div>
+                             
+                             <Select defaultValue="auto">
+                                <SelectTrigger className="h-8 w-[140px] bg-white border-gray-300 text-xs">
+                                   <SelectValue placeholder="Auto Detect" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                   <SelectItem value="auto">Auto Detect</SelectItem>
+                                   <SelectItem value="en">English</SelectItem>
+                                   <SelectItem value="es">Spanish</SelectItem>
+                                   <SelectItem value="fr">French</SelectItem>
+                                   <SelectItem value="de">German</SelectItem>
+                                   <SelectItem value="ua">Ukrainian</SelectItem>
+                                   <SelectItem value="ru">Russian</SelectItem>
+                                </SelectContent>
+                             </Select>
+
+                             <div className="flex items-center gap-2">
+                                <div className="bg-[#A0A0A0] text-black text-xs font-bold px-2 py-1 rounded-sm flex items-center gap-1">
+                                   Ua <X className="w-3 h-3 text-red-600 cursor-pointer" />
+                                </div>
+                                <div className="bg-[#A0A0A0] text-black text-xs font-bold px-2 py-1 rounded-sm flex items-center gap-1">
+                                   Ru <X className="w-3 h-3 text-red-600 cursor-pointer" />
+                                </div>
+                             </div>
                          </div>
                       </div>
                    </div>
