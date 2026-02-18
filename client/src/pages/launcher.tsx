@@ -667,7 +667,6 @@ export default function Launcher() {
 
                             <div className="flex gap-4">
                                <div className="w-40 flex flex-col justify-center items-center gap-2">
-                                  <span className="text-xs text-gray-500 uppercase">OR SELECT</span>
                                   <input 
                                     type="file" 
                                     multiple 
