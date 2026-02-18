@@ -72,7 +72,7 @@ export default function Launcher() {
   const [step2Files, setStep2Files] = useState<File[]>([]);
   const [activeUploadTab, setActiveUploadTab] = useState<"upload" | "repository">("upload");
   const [selectedRepoFiles, setSelectedRepoFiles] = useState<string[]>([]);
-  const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
+  const [selectedLanguages, setSelectedLanguages] = useState<string[]>(["en"]);
 
   const languages = [
     { value: "auto", label: "Auto Detect" },
