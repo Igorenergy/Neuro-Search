@@ -1027,9 +1027,6 @@ export default function Launcher() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <h3 className="text-sm font-bold text-gray-800" data-testid="text-plan-title">Research Plan</h3>
-              <span className="text-xs text-gray-500">Version {planVersion} of {totalVersions}</span>
-            </div>
-            <div className="flex items-center gap-2">
               <div className="flex items-center gap-1">
                 {Array.from({ length: totalVersions }, (_, i) => i + 1).map((v) => (
                   <button
@@ -1048,7 +1045,6 @@ export default function Launcher() {
                 ))}
               </div>
             </div>
-            <div className="w-[1px]" />
           </div>
 
           <div className="border border-gray-200 rounded-md overflow-hidden">
