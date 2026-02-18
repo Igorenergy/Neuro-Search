@@ -884,7 +884,7 @@ export default function Launcher() {
                              animate={{ opacity: 1, y: 0, scale: 1 }}
                              exit={{ opacity: 0, y: 10, scale: 0.95 }}
                              transition={{ duration: 0.2 }}
-                             className="absolute bottom-full right-0 mb-2 w-[520px] bg-white rounded-lg shadow-xl border border-gray-200 z-50 overflow-hidden text-left"
+                             className="absolute bottom-full right-0 mb-2 w-[580px] bg-white rounded-lg shadow-xl border border-gray-200 z-50 overflow-hidden text-left"
                            >
                              <div className="flex">
                              {/* Left Column: Breakdown */}
