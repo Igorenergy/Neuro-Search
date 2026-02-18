@@ -88,6 +88,8 @@ export default function Launcher() {
   };
 
   const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
+  const [showCostBreakdown, setShowCostBreakdown] = useState(false);
+  const [budgetCap, setBudgetCap] = useState(true);
 
   const languages = [
     { value: "auto", label: "Auto Detect" },
@@ -866,9 +868,81 @@ export default function Launcher() {
 
               <div className="flex items-center justify-between border-t border-gray-100 pt-4 mt-2">
                  <div className="flex items-center gap-4 ml-auto">
-                    <div className="text-right">
+                    <div className="text-right relative">
                        <span className="text-xs text-gray-500 font-medium mr-2">Estimated Cost:</span>
-                       <span className="text-sm font-bold text-[#008DA8]">${totalCost.toFixed(2)} - ${(totalCost * 1.2).toFixed(2)}</span>
+                       <span 
+                         className="text-sm font-bold text-[#008DA8] border-b border-[#008DA8] border-dashed cursor-pointer"
+                         onClick={() => setShowCostBreakdown(!showCostBreakdown)}
+                       >
+                         ${totalCost.toFixed(2)} - ${(totalCost * 1.2).toFixed(2)}
+                       </span>
+                       
+                       {showCostBreakdown && (
+                         <div className="absolute bottom-full right-0 mb-2 w-[400px] bg-white rounded-lg shadow-xl border border-gray-200 z-50 overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+                           <div className="flex">
+                             {/* Left Column: Breakdown */}
+                             <div className="flex-1 p-4 border-r border-gray-100">
+                               <h4 className="text-xs font-bold text-gray-900 mb-3">Cost Breakdown</h4>
+                               <div className="space-y-2 text-xs">
+                                 <div className="flex justify-between text-gray-600">
+                                   <span>Fixed cost for Core generator:</span>
+                                   <span>$2.00</span>
+                                 </div>
+                                 <div className="flex justify-between text-gray-600">
+                                   <span>Matches cost (10 × $0.15):</span>
+                                   <span>$1.50</span>
+                                 </div>
+                                 <div className="space-y-1">
+                                   <div className="flex justify-between text-gray-600">
+                                     <span>Enrichment Cost:</span>
+                                     <span>$0.50</span>
+                                   </div>
+                                   <div className="flex justify-between text-gray-400 pl-2 text-[10px]">
+                                     <span>Core2x (10 × $0.050):</span>
+                                     <span>$0.50</span>
+                                   </div>
+                                   <div className="text-gray-300 pl-2 text-[10px]">
+                                     company_summary
+                                   </div>
+                                 </div>
+                                 <div className="flex justify-between font-bold text-gray-900 pt-2 border-t border-gray-100 mt-2">
+                                   <span>Total:</span>
+                                   <span>$4.00</span>
+                                 </div>
+                               </div>
+                             </div>
+
+                             {/* Right Column: Budget Control */}
+                             <div className="w-[180px] p-4 bg-gray-50">
+                               <div className="flex justify-between items-start mb-2">
+                                 <h4 className="text-xs font-bold text-gray-900">Budget Control</h4>
+                                 <button onClick={() => setShowCostBreakdown(false)} className="text-gray-400 hover:text-gray-600">
+                                   <X className="w-4 h-4" />
+                                 </button>
+                               </div>
+                               
+                               <div className="space-y-3 text-xs">
+                                 <div>
+                                   <div className="text-gray-600 mb-1">Available Balance: <span className="font-bold text-black">$124.50</span></div>
+                                 </div>
+                                 <div>
+                                   <div className="text-gray-600 mb-2">Current research: <span className="font-bold text-black">$15.4 - $18.4</span></div>
+                                 </div>
+                                 
+                                 <div className="flex items-center gap-2">
+                                   <Switch 
+                                     checked={budgetCap} 
+                                     onCheckedChange={setBudgetCap}
+                                     className="scale-75 data-[state=checked]:bg-green-600" 
+                                   />
+                                   <span className="text-orange-400 font-medium">Strict Budget Cap</span>
+                                   <Info className="w-3 h-3 text-orange-400" />
+                                 </div>
+                               </div>
+                             </div>
+                           </div>
+                         </div>
+                       )}
                     </div>
                     <Button className="bg-[#008DA8] hover:bg-[#007A92] text-white font-bold px-6 shadow-md">
                        Create a plan
