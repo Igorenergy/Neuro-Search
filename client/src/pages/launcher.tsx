@@ -571,8 +571,9 @@ export default function Launcher() {
                                <span className="text-xs font-bold">Added at Step1: 3 <span className="text-red-600 underline cursor-pointer ml-1 font-normal">remove all</span></span>
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
-                               {[1, 2, 3].map((_, i) => (
-                                  <div key={i} className="flex items-center justify-between bg-[#C894B6] text-white px-3 py-2 rounded-sm relative overflow-hidden">
+                               {/* Mock data for step 2 specific files */}
+                               {[1, 2, 3].map((id, i) => (
+                                  <div key={i} className="flex items-center justify-between bg-[#C894B6] text-white px-3 py-2 rounded-sm relative overflow-hidden group">
                                     <div className="flex items-center gap-2 min-w-0">
                                       <FileText className="w-5 h-5 text-white/80 shrink-0" strokeWidth={1.5} />
                                       <div className="flex flex-col min-w-0">
@@ -580,7 +581,12 @@ export default function Launcher() {
                                         <span className="text-[10px] font-medium leading-tight">type, etc.)</span>
                                       </div>
                                     </div>
-                                    <button className="text-pink-700 hover:text-pink-900 ml-1 shrink-0">
+                                    <button 
+                                      className="text-pink-700 hover:text-pink-900 ml-1 shrink-0"
+                                      onClick={(e) => {
+                                        e.currentTarget.parentElement?.remove();
+                                      }}
+                                    >
                                       <X className="w-5 h-5 stroke-[3]" />
                                     </button>
                                   </div>
