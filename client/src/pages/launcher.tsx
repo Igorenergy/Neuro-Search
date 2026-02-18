@@ -167,16 +167,16 @@ export default function Launcher() {
           {(files.length > 0 || isScanning) && (
             <div className="flex flex-wrap gap-2 mt-2 px-1">
               {files.map((file, i) => (
-                <div key={i} className="flex items-center justify-between bg-[#D4A5C1] text-white px-3 py-1.5 rounded-sm shadow-sm relative overflow-hidden group min-w-[200px] max-w-[240px]">
+                <div key={i} className="flex items-center justify-between bg-[#A0A0A0] text-white px-3 py-1.5 rounded-sm shadow-sm relative overflow-hidden group min-w-[200px] max-w-[240px]">
                   <div className="flex items-center gap-2 min-w-0">
-                    <FileText className="w-4 h-4 text-white shrink-0" strokeWidth={1.5} />
+                    <FileText className="w-5 h-5 text-white shrink-0" strokeWidth={1.5} />
                     <div className="flex flex-col min-w-0">
                       <span className="text-[10px] font-medium leading-tight truncate">File Preview (name,</span>
                       <span className="text-[10px] font-medium leading-tight truncate">type, etc.)</span>
                     </div>
                   </div>
-                  <button onClick={() => removeFile(i)} className="text-pink-700 hover:text-pink-900 ml-2 shrink-0">
-                    <X className="w-4 h-4 stroke-[3]" />
+                  <button onClick={() => removeFile(i)} className="text-red-600 hover:text-red-700 ml-2 shrink-0">
+                    <X className="w-6 h-6 stroke-[4]" />
                   </button>
                 </div>
               ))}
@@ -184,17 +184,17 @@ export default function Launcher() {
               {/* Mock previews to match image if no files uploaded yet for demo */}
               {files.length === 0 && (
                 <>
-                  {[1, 2, 3].map((_, i) => (
-                    <div key={i} className="flex items-center justify-between bg-[#D4A5C1] text-white px-3 py-1.5 rounded-sm shadow-sm relative overflow-hidden min-w-[200px] max-w-[240px]">
+                  {[1, 2, 3, 4].map((_, i) => (
+                    <div key={i} className="flex items-center justify-between bg-[#A0A0A0] text-white px-3 py-1.5 rounded-sm shadow-sm relative overflow-hidden min-w-[200px] max-w-[240px]">
                       <div className="flex items-center gap-2 min-w-0">
-                        <FileText className="w-4 h-4 text-white shrink-0" strokeWidth={1.5} />
+                        <FileText className="w-5 h-5 text-white shrink-0" strokeWidth={1.5} />
                         <div className="flex flex-col min-w-0">
                           <span className="text-[10px] font-medium leading-tight truncate">File Preview (name,</span>
                           <span className="text-[10px] font-medium leading-tight truncate">type, etc.)</span>
                         </div>
                       </div>
-                      <button className="text-pink-700 hover:text-pink-900 ml-2 shrink-0">
-                        <X className="w-4 h-4 stroke-[3]" />
+                      <button className="text-red-600 hover:text-red-700 ml-2 shrink-0">
+                        <X className="w-6 h-6 stroke-[4]" />
                       </button>
                     </div>
                   ))}
@@ -331,8 +331,9 @@ export default function Launcher() {
                   </DialogContent>
                 </Dialog>
 
-                <button className="text-red-600 hover:text-red-700">
+                <button className="text-red-600 hover:text-red-700 relative">
                   <XCircle className="w-6 h-6 fill-white" />
+                  <span className="absolute -top-2 -right-1 bg-yellow-400 text-black text-[10px] font-bold px-1 rounded-sm border border-white shadow-sm">2</span>
                 </button>
              </div>
 
