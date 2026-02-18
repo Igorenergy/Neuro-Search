@@ -25,7 +25,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-export default function Dashboard2() {
+export default function Dashboard() {
   const [showBanner, setShowBanner] = useState(true);
 
   const searches = [

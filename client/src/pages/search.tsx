@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 
-export default function SearchPage2() {
+export default function SearchPage() {
   const [query, setQuery] = useState("");
   const [isSemantic, setIsSemantic] = useState(true);
 

@@ -96,7 +96,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
             {/* Navigation Links */}
             <div className="flex gap-1 px-1">
-              <Link href="/research/dashboard2">
+              <Link href="/research/dashboard">
                 <Button variant="ghost" className={cn("h-8 px-2 text-xs font-semibold text-gray-600 hover:text-black hover:bg-black/5", location.includes("dashboard") && "bg-black/5 text-black")}>
                   Dashboard
                 </Button>
