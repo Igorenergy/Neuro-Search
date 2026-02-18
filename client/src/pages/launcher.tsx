@@ -241,15 +241,42 @@ export default function Launcher() {
           
           {/* Omni-Input Area */}
           <div className="relative">
+             <div className="flex justify-between items-center mb-1 px-1">
+                <span className="text-xs font-bold text-gray-500"></span>
+                {query.length > 200 && (
+                    <div className="flex items-center gap-2 text-xs text-gray-600 animate-in fade-in slide-in-from-bottom-1 duration-300">
+                      <span className="text-orange-400">📂</span>
+                      <span>Context window</span>
+                      <div className="w-32 h-4 bg-white border border-green-500 rounded-sm relative overflow-hidden">
+                         <div className="absolute inset-y-0 left-0 bg-green-500 w-[20%]"></div>
+                         <span className="absolute inset-0 flex items-center justify-center text-[10px] font-medium text-gray-700 z-10">Usage: 20%</span>
+                      </div>
+                    </div>
+                )}
+             </div>
+
              <Textarea 
                placeholder="Enter text prompt" 
                className={cn(
-                 "min-h-[160px] text-lg p-4 resize-none bg-white border-2 border-yellow-400 focus-visible:ring-0 focus-visible:border-yellow-500 rounded-md shadow-sm placeholder:text-gray-400 w-full mb-0",
+                 "min-h-[160px] text-lg p-4 resize-none bg-white border-2 rounded-md shadow-sm placeholder:text-gray-400 w-full mb-0 transition-colors duration-300",
+                 query.length > 200 ? "border-green-500 focus-visible:border-green-600 focus-visible:ring-green-600" : "border-yellow-400 focus-visible:ring-0 focus-visible:border-yellow-500",
                  !query && isLaunching && "animate-shake"
                )}
                value={query}
                onChange={(e) => setQuery(e.target.value)}
              />
+             
+             {query.length > 200 && (
+                 <div className="absolute bottom-4 right-4 animate-in fade-in zoom-in duration-300">
+                    <Button 
+                        size="sm" 
+                        className="bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold px-3 py-1 h-7 flex items-center gap-1 shadow-sm"
+                    >
+                        <Zap className="w-3 h-3 text-yellow-300 fill-yellow-300" />
+                        Improve prompt
+                    </Button>
+                 </div>
+             )}
           </div>
 
           {/* File Previews Row - Moved outside Textarea container */}
@@ -449,7 +476,12 @@ export default function Launcher() {
              </div>
              
              <Button 
-               className="bg-[#D0D0D0] hover:bg-[#C0C0C0] text-black border border-gray-400 font-medium px-8 h-9 shadow-sm"
+               className={cn(
+                 "text-black border border-gray-400 font-medium px-8 h-9 shadow-sm transition-colors duration-300",
+                 query.length > 200 
+                    ? "bg-[#00802b] hover:bg-[#006622] text-white border-green-600" 
+                    : "bg-[#D0D0D0] hover:bg-[#C0C0C0]"
+               )}
              >
                Send Request
              </Button>
