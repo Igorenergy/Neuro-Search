@@ -1078,11 +1078,17 @@ export default function Launcher() {
                   <div className="relative">
                     <Textarea
                       value={refinePrompt}
-                      onChange={(e) => setRefinePrompt(e.target.value)}
+                      onChange={(e) => {
+                        if (e.target.value.length <= 500) {
+                          setRefinePrompt(e.target.value);
+                        }
+                      }}
                       placeholder="Enter text prompt"
-                      className="min-h-[80px] text-sm p-3 pr-16 resize-none bg-white border-0 rounded-none placeholder:text-gray-400 focus-visible:ring-0 focus-visible:ring-offset-0"
+                      className="min-h-[80px] text-sm p-3 pr-16 pb-6 resize-none bg-white border-0 rounded-none placeholder:text-gray-400 focus-visible:ring-0 focus-visible:ring-offset-0"
+                      maxLength={500}
                       data-testid="input-refine-prompt"
                     />
+                    <span className="absolute bottom-2 right-14 text-[10px] text-gray-400" data-testid="text-refine-char-count">{refinePrompt.length}/500</span>
                     <button
                       className="absolute bottom-3 right-3 flex flex-col items-center gap-0.5"
                       onClick={() => {
