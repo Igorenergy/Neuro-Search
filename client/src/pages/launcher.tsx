@@ -403,7 +403,6 @@ export default function Launcher() {
                  {scope === "web" ? (
                    <div className="border-2 border-[#0097B2] rounded-sm p-4 bg-white space-y-4 shadow-sm relative">
                       <div className="flex items-center gap-2 mb-2">
-                         <div className="font-serif italic font-bold text-2xl">e</div>
                          <span className="text-sm text-gray-700">Web Pages & Websites: <span className="font-mono">∞</span></span>
                       </div>
                       
