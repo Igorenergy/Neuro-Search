@@ -1055,7 +1055,7 @@ export default function Launcher() {
               data-testid="button-toggle-plan"
             >
               <span className="text-xs font-bold text-gray-600">Details: {planStepCount} Steps</span>
-              <ChevronUp className={cn("w-4 h-4 text-gray-500 transition-transform duration-200", !isPlanCollapsed && "rotate-180")} />
+              <ChevronDown className={cn("w-4 h-4 text-gray-500 transition-transform duration-200", !isPlanCollapsed && "rotate-180")} />
             </button>
 
             {!isPlanCollapsed && (
