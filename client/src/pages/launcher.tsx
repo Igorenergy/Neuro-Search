@@ -1064,31 +1064,13 @@ export default function Launcher() {
           </div>
 
           <div className="border border-gray-200 rounded-md overflow-hidden">
-            <div className="bg-gray-50 px-3 py-2 border-b border-gray-200 flex items-center justify-between">
+            <div className="bg-gray-50 px-3 py-2 border-b border-gray-200">
               <span className="text-xs font-bold text-gray-600">{planStepCount} Steps</span>
-              <button 
-                className="text-xs text-[#008DA8] hover:underline font-medium flex items-center gap-1"
-                onClick={() => setIsEditingPlan(!isEditingPlan)}
-                data-testid="button-toggle-edit-plan"
-              >
-                <Edit3 className="w-3 h-3" /> {isEditingPlan ? "Done Editing" : "Edit Plan"}
-              </button>
             </div>
 
-            {isEditingPlan ? (
-              <div className="p-3">
-                <Textarea
-                  value={planText}
-                  onChange={(e) => setPlanText(e.target.value)}
-                  className="w-full min-h-[340px] text-xs text-gray-700 leading-relaxed resize-none border-[#008DA8] focus-visible:ring-[#008DA8] font-mono"
-                  data-testid="textarea-plan-edit"
-                />
-              </div>
-            ) : (
-              <div className="p-4" data-testid="text-plan-content">
-                <p className="text-xs text-gray-700 leading-[1.8] whitespace-pre-line">{planText}</p>
-              </div>
-            )}
+            <div className="p-4" data-testid="text-plan-content">
+              <p className="text-xs text-gray-700 leading-[1.8] whitespace-pre-line">{planText}</p>
+            </div>
           </div>
 
           <div className="flex items-center justify-between pt-2">
