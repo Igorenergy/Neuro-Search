@@ -775,16 +775,6 @@ export default function Launcher() {
                     <p className="text-xs text-gray-400 mt-1">or click to browse</p>
                 </div>
             </div>
-            
-            <div className="mt-4 flex justify-end">
-                <Button 
-                    variant="outline" 
-                    onClick={() => setIsAddFileModalOpen(false)}
-                    className="mr-2"
-                >
-                    Cancel
-                </Button>
-            </div>
           </div>
         </DialogContent>
       </Dialog>
