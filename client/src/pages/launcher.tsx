@@ -248,7 +248,7 @@ export default function Launcher() {
       {/* Step 1: Questionnaire (Dark Header Theme) */}
       <div className="w-full bg-white border border-gray-200 rounded-md shadow-sm overflow-hidden font-sans">
         {/* Step Header */}
-        <div className="flex border-b border-gray-200 bg-[#5A6B7C]">
+        <div className="flex border-b border-gray-200 bg-[#5A6B7C] min-h-[34px]">
           <button className="flex items-center gap-1 px-4 py-2 bg-[#F0F2F5] text-[#5A6B7C] hover:bg-white text-xs font-bold border-r border-gray-300">
             <ArrowLeft className="w-3 h-3" /> Prev. step
           </button>
@@ -258,7 +258,7 @@ export default function Launcher() {
           <div className="px-6 py-2 bg-[#F0F2F5] text-[#5A6B7C] text-xs font-bold flex items-center justify-center border-r border-gray-300">
             REASONING
           </div>
-          {/* Spacer to fill the rest of the header with dark color if needed, or just keep it minimal like the image */}
+          <div className="flex-1 bg-[#5A6B7C]"></div>
         </div>
 
         <div className="p-4 space-y-4">
@@ -356,7 +356,7 @@ export default function Launcher() {
       <div className="w-full bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
         <div>
           <div className="px-0 py-0 bg-white">
-            <div className="w-full flex border-b border-gray-200 font-sans bg-[#5A6B7C]">
+            <div className="w-full flex border-b border-gray-200 font-sans bg-[#5A6B7C] min-h-[34px]">
               <div className="flex items-center gap-1 px-4 py-2 bg-[#F0F2F5] text-[#5A6B7C] hover:bg-white text-xs font-bold border-r border-gray-300">
                 <ArrowLeft className="w-3 h-3" /> Prev. step
               </div>
@@ -366,6 +366,7 @@ export default function Launcher() {
               <div className="px-6 py-2 bg-[#F0F2F5] text-[#5A6B7C] text-xs font-bold flex items-center justify-center border-r border-gray-300">
                 REASONING
               </div>
+              <div className="flex-1 bg-[#5A6B7C]"></div>
             </div>
           </div>
           <div className="px-6 pb-6 pt-6">
