@@ -605,7 +605,7 @@ export default function Launcher() {
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
                                {step1Files.map((id, i) => (
-                                  <div key={id} className="flex items-center justify-between bg-[#C894B6] text-white px-3 py-2 rounded-sm relative overflow-hidden group">
+                                  <div key={id} className="flex items-center justify-between bg-[#008DA8] text-white px-3 py-2 rounded-sm relative overflow-hidden group">
                                     <div className="flex items-center gap-2 min-w-0">
                                       <FileText className="w-5 h-5 text-white/80 shrink-0" strokeWidth={1.5} />
                                       <div className="flex flex-col min-w-0">
@@ -614,7 +614,7 @@ export default function Launcher() {
                                       </div>
                                     </div>
                                     <button 
-                                      className="text-pink-200 hover:text-white ml-1 shrink-0"
+                                      className="text-cyan-200 hover:text-white ml-1 shrink-0"
                                       onClick={() => {
                                         setStep1Files(prev => prev.filter(item => item !== id));
                                       }}
