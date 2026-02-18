@@ -813,11 +813,7 @@ export default function Launcher() {
               </div>
 
               <div className="flex items-center justify-between border-t border-gray-100 pt-4 mt-2">
-                 <Button variant="ghost" size="icon" className="text-gray-400 hover:text-gray-900">
-                    <ArrowRight className="w-5 h-5 rotate-180" />
-                 </Button>
-                 
-                 <div className="flex items-center gap-4">
+                 <div className="flex items-center gap-4 ml-auto">
                     <div className="text-right">
                        <span className="text-xs text-gray-500 font-medium mr-2">Estimated Cost:</span>
                        <span className="text-sm font-bold text-[#008DA8]">${totalCost.toFixed(2)} - ${(totalCost * 1.2).toFixed(2)}</span>
