@@ -878,7 +878,7 @@ export default function Launcher() {
                        </span>
                        
                        {showCostBreakdown && (
-                         <div className="absolute bottom-0 right-full mr-2 w-[400px] bg-white rounded-lg shadow-xl border border-gray-200 z-50 overflow-hidden animate-in fade-in zoom-in-95 duration-200 text-left">
+                         <div className="absolute bottom-0 right-full mr-2 w-[460px] bg-white rounded-lg shadow-xl border border-gray-200 z-50 overflow-hidden animate-in fade-in zoom-in-95 duration-200 text-left">
                            <div className="flex">
                              {/* Left Column: Breakdown */}
                              <div className="flex-1 p-4 border-r border-gray-100">
