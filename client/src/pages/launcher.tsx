@@ -119,6 +119,7 @@ export default function Launcher() {
 
   const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
   const [showCostBreakdown, setShowCostBreakdown] = useState(false);
+  const [showStep3CostBreakdown, setShowStep3CostBreakdown] = useState(false);
   const [budgetCap, setBudgetCap] = useState(true);
 
   const languages = [
@@ -1094,10 +1095,88 @@ export default function Launcher() {
           )}
 
           <div className="flex items-center justify-between pt-2">
-            <div className="flex items-center gap-2 text-xs text-gray-600">
-              <span className="text-green-700 font-bold">$</span>
-              <span className="font-medium">Estimated Cost:</span>
-              <span className="font-bold text-[#008DA8]">$15.4 - $18.4</span>
+            <div className="flex items-center gap-2 text-xs text-gray-600 relative">
+              <span className="text-xs text-gray-500 font-medium">Estimated Cost:</span>
+              <span 
+                className="text-sm font-bold text-[#008DA8] border-b border-[#008DA8] border-dashed cursor-pointer"
+                onClick={() => setShowStep3CostBreakdown(!showStep3CostBreakdown)}
+                data-testid="text-step3-cost"
+              >
+                $15.4 - $18.4
+              </span>
+
+              <AnimatePresence>
+                {showStep3CostBreakdown && (
+                  <motion.div 
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute bottom-full left-0 mb-2 w-[580px] bg-white rounded-lg shadow-xl border border-gray-200 z-50 overflow-hidden text-left"
+                  >
+                    <div className="flex">
+                      <div className="flex-1 p-4 border-r border-gray-100">
+                        <h4 className="text-xs font-bold text-gray-900 mb-3">Cost Breakdown</h4>
+                        <div className="space-y-2 text-xs">
+                          <div className="flex justify-between text-gray-600">
+                            <span>Fixed cost for Core generator:</span>
+                            <span>$2.00</span>
+                          </div>
+                          <div className="flex justify-between text-gray-600">
+                            <span>Matches cost (10 × $0.15):</span>
+                            <span>$1.50</span>
+                          </div>
+                          <div className="space-y-1">
+                            <div className="flex justify-between text-gray-600">
+                              <span>Enrichment Cost:</span>
+                              <span>$0.50</span>
+                            </div>
+                            <div className="flex justify-between text-gray-400 pl-2 text-[10px]">
+                              <span>Core2x (10 × $0.050):</span>
+                              <span>$0.50</span>
+                            </div>
+                            <div className="text-gray-300 pl-2 text-[10px]">
+                              company_summary
+                            </div>
+                          </div>
+                          <div className="flex justify-between font-bold text-gray-900 pt-2 border-t border-gray-100 mt-2">
+                            <span>Total:</span>
+                            <span>$4.00</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="w-[240px] p-4 bg-gray-50">
+                        <div className="flex justify-between items-start mb-2">
+                          <h4 className="text-xs font-bold text-gray-900">Budget Control</h4>
+                          <button onClick={() => setShowStep3CostBreakdown(false)} className="text-gray-400 hover:text-gray-600">
+                            <X className="w-4 h-4" />
+                          </button>
+                        </div>
+                        
+                        <div className="space-y-3 text-xs">
+                          <div>
+                            <div className="text-gray-600 mb-1">Available Balance: <span className="font-bold text-black">$124.50</span></div>
+                          </div>
+                          <div>
+                            <div className="text-gray-600 mb-2">Current research: <span className="font-bold text-black">$15.4 - $18.4</span></div>
+                          </div>
+                          
+                          <div className="flex items-center gap-2">
+                            <Switch 
+                              checked={budgetCap} 
+                              onCheckedChange={setBudgetCap}
+                              className="scale-75 data-[state=checked]:bg-green-600" 
+                            />
+                            <span className="text-orange-400 font-medium">Strict Budget Cap</span>
+                            <Info className="w-3 h-3 text-orange-400" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
             <div className="flex items-center gap-3">
               <Button 
