@@ -15,7 +15,10 @@ import {
   X,
   Plus,
   ArrowRight,
-  Play
+  Play,
+  RotateCw,
+  XCircle,
+  ToggleRight
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -50,6 +53,7 @@ export default function Launcher() {
   const [isLaunching, setIsLaunching] = useState(false);
   const [researchType, setResearchType] = useState<"search" | "sheet">("search");
   const [language, setLanguage] = useState("auto");
+  const [showReasoning, setShowReasoning] = useState(true);
 
   // Cost calculation
   const baseCost = 0.45;
@@ -91,167 +95,148 @@ export default function Launcher() {
   };
 
   return (
-    <div className="max-w-[900px] mx-auto py-6 px-4 space-y-6 font-sans text-gray-800 animate-in fade-in duration-500">
+    <div className="max-w-[1000px] mx-auto py-6 px-4 space-y-6 font-sans text-gray-800 animate-in fade-in duration-500">
       
       {/* Header & Type Selection */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div className="flex items-center gap-1 bg-gray-100 p-1 rounded-md w-fit">
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            className={cn(
-              "text-sm font-medium rounded-sm px-4 h-8", 
-              researchType === "search" ? "bg-white text-[#008DA8] shadow-sm" : "text-gray-500 hover:text-gray-900"
-            )}
-            onClick={() => setResearchType("search")}
-          >
-            Smart Search
-          </Button>
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            className={cn(
-              "text-sm font-medium rounded-sm px-4 h-8", 
-              researchType === "sheet" ? "bg-white text-[#008DA8] shadow-sm" : "text-gray-500 hover:text-gray-900"
-            )}
-            onClick={() => setResearchType("sheet")}
-          >
-            Smart Sheet
-          </Button>
+        <div className="flex items-center gap-4">
+          <span className="font-bold text-sm tracking-wide text-gray-800">RESEARCH TYPE</span>
+          <div className="flex items-center border border-gray-400 rounded-sm overflow-hidden shadow-sm">
+            <button 
+              className={cn(
+                "text-sm font-medium px-6 py-1.5 transition-colors", 
+                researchType === "search" ? "bg-[#00A0D1] text-white" : "bg-white text-gray-700 hover:bg-gray-50"
+              )}
+              onClick={() => setResearchType("search")}
+            >
+              Smart Search
+            </button>
+            <div className="w-px h-full bg-gray-300"></div>
+            <button 
+              className={cn(
+                "text-sm font-medium px-6 py-1.5 transition-colors", 
+                researchType === "sheet" ? "bg-[#00A0D1] text-white" : "bg-white text-gray-700 hover:bg-gray-50"
+              )}
+              onClick={() => setResearchType("sheet")}
+            >
+              Smart Sheet
+            </button>
+          </div>
         </div>
-        
-        {/* <div className="bg-[#E8F5E9] border border-[#C8E6C9] rounded-md px-3 py-1.5 text-center flex items-center gap-2">
-           <span className="text-gray-500 text-xs">Account Balance:</span>
-           <span className="text-[#2E7D32] font-bold text-sm">$5,250.00</span>
-        </div> */}
       </div>
 
       {/* Main Input Card */}
-      <Card className="border-gray-200 shadow-sm bg-white overflow-hidden rounded-xl">
-        <CardContent className="p-0">
+      <div className="bg-[#A0A0A0] rounded-xl shadow-md overflow-hidden p-1">
+        {/* Card Header */}
+        <div className="flex justify-end px-3 py-1">
+          <div className="flex items-center gap-2 text-xs font-bold text-gray-800">
+            <span className="opacity-70">💳</span> Account Balance: $1,250.00
+          </div>
+        </div>
+
+        {/* Inner White Container */}
+        <div className="bg-white rounded-lg m-1 mt-0 p-1">
           
           {/* Omni-Input Area */}
-          <div className="p-1">
-             <div className="relative bg-[#F9FAFB] border border-gray-200 rounded-lg m-4 transition-all focus-within:ring-2 focus-within:ring-[#008DA8]/20 focus-within:border-[#008DA8]">
-                <div className="absolute top-2 right-2 text-xs font-medium text-gray-400 bg-white px-2 py-0.5 rounded border border-gray-100 shadow-sm">
-                   Account Balance: <span className="text-gray-700">$5,250.00</span>
-                </div>
-                
-                <Textarea 
-                  placeholder="Describe your research goal (e.g., 'Find all Series A SaaS startups in Berlin focusing on AI')..." 
-                  className={cn(
-                    "min-h-[160px] text-lg p-4 resize-none bg-transparent border-none focus-visible:ring-0 shadow-none placeholder:text-gray-400",
-                    !query && isLaunching && "animate-shake"
-                  )}
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                />
-
-                {/* File Chips */}
-                {files.length > 0 && (
-                  <div className="px-4 pb-2 flex flex-wrap gap-2">
-                    {files.map((file, i) => (
-                      <div key={i} className="flex items-center gap-2 bg-white border border-gray-200 text-gray-700 text-xs px-2 py-1.5 rounded-md shadow-sm">
-                        <div className="bg-red-50 p-1 rounded text-red-500">
-                          <FileText className="w-3 h-3" />
-                        </div>
-                        <span className="max-w-[120px] truncate" title={file.name}>{file.name}</span>
-                        <button onClick={() => removeFile(i)} className="text-gray-400 hover:text-red-500">
-                          <X className="w-3 h-3" />
-                        </button>
-                      </div>
-                    ))}
-                    {isScanning && (
-                       <div className="flex items-center gap-2 text-xs text-[#008DA8] animate-pulse px-2 py-1.5">
-                         <span className="w-2 h-2 rounded-full bg-[#008DA8] animate-ping" />
-                         Scanning files...
-                       </div>
-                    )}
-                  </div>
-                )}
-                
-                {/* Input Actions Bar */}
-                <div className="flex items-center justify-between px-3 py-2 border-t border-gray-100 bg-white rounded-b-lg">
-                   <div className="flex items-center gap-2">
-                      <input 
-                        type="file" 
-                        multiple 
-                        className="hidden" 
-                        ref={fileInputRef}
-                        onChange={handleFileUpload}
-                      />
-                      <Button 
-                        variant="ghost" 
-                        size="sm" 
-                        className="h-8 text-xs font-medium text-gray-600 hover:text-black hover:bg-gray-100 gap-1.5"
-                        onClick={() => fileInputRef.current?.click()}
-                      >
-                        <Plus className="w-3.5 h-3.5" />
-                        Add files
-                        {files.length > 0 && <Badge variant="secondary" className="ml-1 h-4 px-1 text-[9px] min-w-[16px] justify-center">{files.length}</Badge>}
-                      </Button>
-                      
-                      <Button variant="ghost" size="sm" className="h-8 text-xs font-medium text-gray-600 hover:text-black hover:bg-gray-100 gap-1.5">
-                        <Mic className="w-3.5 h-3.5" />
-                      </Button>
-                   </div>
-                   
-                   <div className="flex items-center gap-3">
-                      <div className="flex items-center gap-2">
-                        <Switch id="reasoning" className="h-4 w-7" />
-                        <label htmlFor="reasoning" className="text-xs font-medium text-gray-600 cursor-pointer select-none">Show Steps / Reasoning</label>
-                      </div>
-                      <Button 
-                        size="sm" 
-                        className="h-8 bg-[#E0E0E0] text-gray-400 hover:bg-[#E0E0E0] hover:text-gray-500 cursor-not-allowed font-medium text-xs px-4"
-                      >
-                        Send Request
-                      </Button>
-                   </div>
-                </div>
-             </div>
+          <div className="relative">
+             <Textarea 
+               placeholder="Enter text prompt" 
+               className={cn(
+                 "min-h-[160px] text-lg p-4 resize-none bg-white border-2 border-yellow-400 focus-visible:ring-0 focus-visible:border-yellow-500 rounded-md shadow-sm placeholder:text-gray-400 w-full",
+                 !query && isLaunching && "animate-shake"
+               )}
+               value={query}
+               onChange={(e) => setQuery(e.target.value)}
+             />
           </div>
 
-          {/* Deep Link Contextual Reveal */}
-          <AnimatePresence>
-            {deepLinksFound && (
-              <motion.div 
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                exit={{ opacity: 0, height: 0 }}
-                className="px-6 pb-4"
-              >
-                <div className="bg-blue-50/50 border border-blue-100 rounded-lg p-4 flex items-center justify-between">
-                  <div className="flex items-start gap-3">
-                    <div className="bg-blue-100 p-2 rounded-full text-blue-600 mt-0.5">
-                      <LinkIcon className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <h4 className="text-sm font-bold text-gray-900">Deep Linked Research Available</h4>
-                      <p className="text-xs text-gray-600 mt-1 max-w-md">
-                        We detected <span className="font-bold">12 external links</span> in your uploaded files. 
-                        Enable deep crawling to verify these sources?
-                      </p>
+          {/* File Previews Row */}
+          {(files.length > 0 || isScanning) && (
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mt-2 px-1">
+              {files.map((file, i) => (
+                <div key={i} className="flex items-center justify-between bg-[#9E9E9E] text-white px-3 py-2 rounded-md shadow-sm relative overflow-hidden group">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <FileText className="w-5 h-5 text-white shrink-0" strokeWidth={1.5} />
+                    <div className="flex flex-col min-w-0">
+                      <span className="text-[10px] font-medium leading-tight">File Preview (name,</span>
+                      <span className="text-[10px] font-medium leading-tight">type, etc.)</span>
                     </div>
                   </div>
-                  <div className="flex items-center gap-4">
-                    <div className="text-right">
-                       <span className="block text-xs font-bold text-gray-900">Include Links</span>
-                       <span className="block text-[10px] text-gray-500">+${deepCrawlCost.toFixed(2)} est.</span>
-                    </div>
-                    <Switch 
-                      checked={deepCrawlEnabled} 
-                      onCheckedChange={setDeepCrawlEnabled}
-                      className="data-[state=checked]:bg-[#008DA8]"
-                    />
-                  </div>
+                  <button onClick={() => removeFile(i)} className="text-red-600 hover:text-red-700 ml-1 shrink-0">
+                    <X className="w-6 h-6 stroke-[3]" />
+                  </button>
                 </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+              ))}
+              
+              {/* Mock previews to match image if no files uploaded yet for demo */}
+              {files.length === 0 && (
+                <>
+                  {[1, 2, 3, 4].map((_, i) => (
+                    <div key={i} className="flex items-center justify-between bg-[#9E9E9E] text-white px-3 py-2 rounded-md shadow-sm relative overflow-hidden">
+                      <div className="flex items-center gap-2 min-w-0">
+                        <FileText className="w-5 h-5 text-white shrink-0" strokeWidth={1.5} />
+                        <div className="flex flex-col min-w-0">
+                          <span className="text-[10px] font-medium leading-tight">File Preview (name,</span>
+                          <span className="text-[10px] font-medium leading-tight">type, etc.)</span>
+                        </div>
+                      </div>
+                      <button className="text-red-600 hover:text-red-700 ml-1 shrink-0">
+                        <X className="w-6 h-6 stroke-[3]" />
+                      </button>
+                    </div>
+                  ))}
+                </>
+              )}
+            </div>
+          )}
 
-        </CardContent>
-      </Card>
+          {/* Controls Footer */}
+          <div className="flex flex-wrap items-center gap-4 mt-4 px-2 pb-2">
+             
+             <div className="flex items-center gap-2">
+                <span className="text-sm font-bold text-black">Add files</span>
+                <input 
+                  type="file" 
+                  multiple 
+                  className="hidden" 
+                  ref={fileInputRef}
+                  onChange={handleFileUpload}
+                />
+                <button 
+                  className="bg-white border border-green-600 rounded-md px-4 py-1 text-sm font-medium shadow-sm hover:bg-gray-50 flex items-center justify-center min-w-[100px]"
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  selected: {files.length > 0 ? files.length : 4}
+                </button>
+                <button className="text-red-600 hover:text-red-700">
+                  <XCircle className="w-6 h-6 fill-white" />
+                </button>
+             </div>
+
+             <button className="text-green-600 hover:text-green-700 mx-2">
+               <RotateCw className="w-6 h-6 stroke-[2.5]" />
+             </button>
+             
+             <Button 
+               className="bg-[#D0D0D0] hover:bg-[#C0C0C0] text-black border border-gray-400 font-medium px-8 h-9 shadow-sm mx-auto"
+             >
+               Send Request
+             </Button>
+
+             <div className="flex items-center gap-2 ml-auto">
+               <Switch 
+                 checked={showReasoning} 
+                 onCheckedChange={setShowReasoning}
+                 className="data-[state=checked]:bg-green-600 data-[state=unchecked]:bg-gray-300"
+               />
+               <span className="text-xs font-bold text-black">Show Steps' Reasoning</span>
+               <Info className="w-4 h-4 text-black fill-black" />
+             </div>
+
+          </div>
+
+        </div>
+      </div>
       
       {/* Configuration Accordion */}
       <Accordion type="single" collapsible defaultValue="options" className="w-full bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
