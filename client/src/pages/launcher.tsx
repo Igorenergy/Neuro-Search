@@ -234,7 +234,7 @@ export default function Launcher() {
           {/* Left Side: Context Window Indicator */}
           <div className="flex items-center">
             {query.length > 200 && (
-                <div className="flex items-center gap-2 text-xs text-gray-800 font-bold animate-in fade-in slide-in-from-bottom-1 duration-300">
+                <div className="flex items-center gap-2 text-xs text-gray-600 animate-in fade-in slide-in-from-bottom-1 duration-300">
                   <span className="text-orange-400">📂</span>
                   <span>Context window</span>
                   <div className="w-32 h-4 bg-white border border-green-500 rounded-sm relative overflow-hidden">
