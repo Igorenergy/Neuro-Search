@@ -711,11 +711,14 @@ export default function Launcher() {
                            <FileText className="w-5 h-5" strokeWidth={1.5} />
                            <span className="text-sm font-medium">Files & Assets: 3/10</span>
                         </div>
-                        <div className="flex items-center gap-2 w-1/2">
-                           <span className="text-xs text-gray-500 flex items-center gap-1"><span className="text-pink-600">📂</span> Context window</span>
-                           <div className="h-4 flex-1 bg-gray-200 rounded-sm overflow-hidden flex">
-                              <div className="w-[20%] bg-green-600/50"></div>
-                              <div className="w-[30%] bg-pink-400 text-[10px] text-center text-white font-medium leading-4">Usage: 20%</div>
+                        <div className="flex items-center gap-2 w-auto">
+                           <div className="flex items-center gap-2 text-xs text-gray-600">
+                              <span className="text-orange-400">📂</span>
+                              <span>Context window</span>
+                              <div className="w-32 h-4 bg-white border border-green-500 rounded-sm relative overflow-hidden">
+                                 <div className="absolute inset-y-0 left-0 bg-green-500 w-[20%]"></div>
+                                 <span className="absolute inset-0 flex items-center justify-center text-[10px] font-medium text-gray-700 z-10">Usage: 20%</span>
+                              </div>
                            </div>
                         </div>
                       </div>
