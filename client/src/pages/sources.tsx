@@ -199,7 +199,7 @@ export default function SourcesPage() {
         <div className="w-px h-5 bg-gray-300" />
 
         <div className="flex items-center gap-1.5">
-          {[
+          {selectedIds.size > 0 && [
             { icon: Globe, color: "text-green-600", bg: "bg-green-100" },
             { icon: Settings2, color: "text-blue-600", bg: "bg-blue-100" },
             { icon: Shield, color: "text-orange-600", bg: "bg-orange-100" },
