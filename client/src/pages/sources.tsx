@@ -331,11 +331,19 @@ export default function SourcesPage() {
                   )}
                 </button>
 
-                {source.included ? (
-                  <CheckCircle className="w-5 h-5 text-[#00802b] shrink-0" />
-                ) : (
-                  <XCircle className="w-5 h-5 text-orange-400 shrink-0" />
-                )}
+                <div className="flex items-center gap-1 shrink-0">
+                  {source.included ? (
+                    <>
+                      <CheckCircle className="w-5 h-5 text-[#00802b]" />
+                      <span className="text-[11px] font-medium text-[#00802b]">Include</span>
+                    </>
+                  ) : (
+                    <>
+                      <XCircle className="w-5 h-5 text-orange-400" />
+                      <span className="text-[11px] font-medium text-orange-400">Exclude</span>
+                    </>
+                  )}
+                </div>
 
                 <span className="text-sm font-medium text-gray-800 truncate flex-1 min-w-0 max-w-[360px]" data-testid={`text-source-title-${source.id}`}>
                   {source.title}
@@ -423,11 +431,19 @@ export default function SourcesPage() {
                         <Square className="w-4 h-4 text-gray-300" />
                       )}
                     </button>
-                    {source.included ? (
-                      <CheckCircle className="w-4 h-4 text-[#00802b]" />
-                    ) : (
-                      <XCircle className="w-4 h-4 text-orange-400" />
-                    )}
+                    <div className="flex items-center gap-1">
+                      {source.included ? (
+                        <>
+                          <CheckCircle className="w-4 h-4 text-[#00802b]" />
+                          <span className="text-[10px] font-medium text-[#00802b]">Include</span>
+                        </>
+                      ) : (
+                        <>
+                          <XCircle className="w-4 h-4 text-orange-400" />
+                          <span className="text-[10px] font-medium text-orange-400">Exclude</span>
+                        </>
+                      )}
+                    </div>
                   </div>
                   <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
                     <button className="p-1 hover:bg-gray-200 rounded transition-colors" data-testid={`button-tile-open-${source.id}`}>
