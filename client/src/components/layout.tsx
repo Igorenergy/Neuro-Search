@@ -40,7 +40,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Switch as ToggleSwitch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { Trash2, FileText } from "lucide-react";
+import { Trash2, FileText, Copy } from "lucide-react";
 import rocketIcon from "@assets/image_1771405092616.png";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -186,6 +186,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                             Details
                           </DropdownMenuItem>
                           <DropdownMenuItem
+                            className="flex items-center gap-2 text-sm cursor-pointer"
+                            onClick={(e) => { e.preventDefault(); }}
+                            data-testid={`clone-${item.id}`}
+                          >
+                            <Copy className="w-4 h-4 text-gray-500" />
+                            Clone & Restart
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
                             className="flex items-center gap-2 text-sm text-red-600 focus:text-red-600 cursor-pointer"
                             onClick={(e) => { e.preventDefault(); setSelectedItem(item); setDeleteOpen(true); }}
                             data-testid={`delete-${item.id}`}
@@ -230,6 +238,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                           >
                             <FileText className="w-4 h-4 text-gray-500" />
                             Details
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            className="flex items-center gap-2 text-sm cursor-pointer"
+                            onClick={(e) => { e.preventDefault(); }}
+                            data-testid={`clone-${item.id}`}
+                          >
+                            <Copy className="w-4 h-4 text-gray-500" />
+                            Clone & Restart
                           </DropdownMenuItem>
                           <DropdownMenuItem
                             className="flex items-center gap-2 text-sm text-red-600 focus:text-red-600 cursor-pointer"
