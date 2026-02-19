@@ -230,9 +230,8 @@ export default function Dashboard() {
           </div>
         </div>
       )}
-
       {/* Main Content Header */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-[13px]">
         <h1 className="text-xl font-bold text-gray-900">Your Searches (20)</h1>
 
         <div className="flex items-center gap-2">
@@ -246,7 +245,6 @@ export default function Dashboard() {
           </Button>
         </div>
       </div>
-
       {/* Cards Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {/* Create Research Card */}
@@ -333,7 +331,6 @@ export default function Dashboard() {
           </div>
         ))}
       </div>
-
       <div className="flex justify-center pt-8 pb-12">
         <Button className="bg-[#008DA8] hover:bg-[#007A92] text-white px-8 h-10 rounded-sm font-medium">
           Show more (20)
