@@ -6,6 +6,7 @@ import {
   Download,
   MoreVertical,
   ChevronDown,
+  ChevronRight,
   FileText,
   Globe,
   Copy,
@@ -17,6 +18,7 @@ import {
   Calendar,
   Link as LinkIcon,
   Tag,
+  Sparkles,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -146,9 +148,18 @@ export function SourceDetailsDrawer({ source, open, onClose }: SourceDetailsDraw
     return "auto";
   });
   const [activeTab, setActiveTab] = useState("preview");
-  const [contentSwitcher, setContentSwitcher] = useState("summary");
+  const [openAccordions, setOpenAccordions] = useState<Set<string>>(new Set(["summary"]));
   const [showSearch, setShowSearch] = useState(false);
   const [searchText, setSearchText] = useState("");
+
+  const toggleAccordion = (key: string) => {
+    setOpenAccordions(prev => {
+      const next = new Set(prev);
+      if (next.has(key)) next.delete(key);
+      else next.add(key);
+      return next;
+    });
+  };
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -284,24 +295,7 @@ export function SourceDetailsDrawer({ source, open, onClose }: SourceDetailsDraw
           </div>
         )}
 
-        {/* 3. Content Switcher */}
-        <div className="px-4 py-2 border-b border-gray-200 bg-white shrink-0">
-          <div className="relative">
-            <select
-              value={contentSwitcher}
-              onChange={(e) => setContentSwitcher(e.target.value)}
-              className="w-full text-sm border border-gray-300 rounded px-3 py-2 bg-white text-gray-700 appearance-none cursor-pointer pr-8"
-              data-testid="select-content-switcher"
-            >
-              <option value="summary">Summary of the source</option>
-              <option value="full">Full Extracted Text</option>
-              <option value="json">Structured JSON Data</option>
-            </select>
-            <ChevronDown className="w-4 h-4 text-[#008DA8] absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
-          </div>
-        </div>
-
-        {/* 4. Navigation Tabs */}
+        {/* 3. Navigation Tabs */}
         <div className="flex items-center gap-1 px-4 py-1.5 border-b border-gray-200 bg-white shrink-0 overflow-x-auto">
           {tabs.map((tab) => (
             <button
@@ -320,40 +314,76 @@ export function SourceDetailsDrawer({ source, open, onClose }: SourceDetailsDraw
           ))}
         </div>
 
-        {/* 5. Main Content Area */}
+        {/* 4. Main Content Area */}
         <div className="flex-1 overflow-y-auto" data-testid="drawer-content-area">
           {activeTab === "preview" && (
-            <div className="p-6 relative">
-              <button
-                className="absolute top-4 right-4 p-2 hover:bg-gray-100 rounded transition-colors"
-                title="Copy content"
-                data-testid="button-copy-content"
-              >
-                <Copy className="w-4 h-4 text-gray-400" />
-              </button>
+            <div className="divide-y divide-gray-200">
+              <div data-testid="accordion-summary">
+                <button
+                  className="w-full flex items-center gap-2.5 px-4 py-3 text-left hover:bg-gray-50 transition-colors"
+                  onClick={() => toggleAccordion("summary")}
+                  data-testid="button-accordion-summary"
+                >
+                  <Sparkles className="w-4 h-4 text-gray-500 shrink-0" />
+                  <span className="text-sm font-semibold text-gray-800 flex-1">Summary of the source</span>
+                  <ChevronDown className={cn("w-4 h-4 text-gray-400 transition-transform", openAccordions.has("summary") ? "" : "-rotate-90")} />
+                </button>
+                {openAccordions.has("summary") && (
+                  <div className="px-4 pb-4">
+                    <div className="prose prose-sm max-w-none text-gray-800 leading-relaxed">
+                      {mockPreviewContent.split("\n\n").map((paragraph, i) => {
+                        if (i === 0) {
+                          return <h3 key={i} className="text-base font-bold text-gray-900 mb-1">{paragraph}</h3>;
+                        }
+                        if (paragraph.startsWith("Founding") || paragraph.startsWith("Features") || paragraph.startsWith("Challenges") || paragraph.startsWith("Co-Founders") || paragraph.startsWith("Initial Funding") || paragraph.startsWith("Platform Availability") || paragraph.startsWith("User Adoption") || paragraph.startsWith("Competitive Market") || paragraph.startsWith("Business Model") || paragraph.startsWith("Technological")) {
+                          return <h4 key={i} className="text-sm font-bold text-gray-900 mt-4 mb-1">{paragraph}</h4>;
+                        }
+                        return <p key={i} className="text-sm text-gray-700 mb-3 leading-relaxed">{paragraph}</p>;
+                      })}
+                    </div>
+                    <div className="flex flex-wrap gap-2 mt-4">
+                      {["Startup Analysis", "Location Services", "Venture Capital", "Mobile Networking"].map((tag) => (
+                        <span key={tag} className="px-3 py-1.5 bg-gray-100 text-gray-600 rounded-full text-xs font-medium truncate max-w-[180px]" data-testid={`tag-summary-${tag}`}>
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
 
-              {contentSwitcher === "summary" && (
-                <div className="prose prose-sm max-w-none text-gray-800 leading-relaxed">
-                  {mockPreviewContent.split("\n\n").map((paragraph, i) => {
-                    if (i === 0) {
-                      return <h3 key={i} className="text-base font-bold text-gray-900 mb-1">{paragraph}</h3>;
-                    }
-                    if (paragraph.startsWith("Founding") || paragraph.startsWith("Features") || paragraph.startsWith("Challenges") || paragraph.startsWith("Co-Founders") || paragraph.startsWith("Initial Funding") || paragraph.startsWith("Platform Availability") || paragraph.startsWith("User Adoption") || paragraph.startsWith("Competitive Market") || paragraph.startsWith("Business Model") || paragraph.startsWith("Technological")) {
-                      return <h4 key={i} className="text-sm font-bold text-gray-900 mt-4 mb-1">{paragraph}</h4>;
-                    }
-                    return <p key={i} className="text-sm text-gray-700 mb-3 leading-relaxed">{paragraph}</p>;
-                  })}
-                </div>
-              )}
+              <div data-testid="accordion-full">
+                <button
+                  className="w-full flex items-center gap-2.5 px-4 py-3 text-left hover:bg-gray-50 transition-colors"
+                  onClick={() => toggleAccordion("full")}
+                  data-testid="button-accordion-full"
+                >
+                  <FileText className="w-4 h-4 text-gray-500 shrink-0" />
+                  <span className="text-sm font-semibold text-gray-800 flex-1">Full Extracted Text</span>
+                  <ChevronDown className={cn("w-4 h-4 text-gray-400 transition-transform", openAccordions.has("full") ? "" : "-rotate-90")} />
+                </button>
+                {openAccordions.has("full") && (
+                  <div className="px-4 pb-4">
+                    <div className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap font-mono">
+                      {mockPreviewContent}
+                    </div>
+                  </div>
+                )}
+              </div>
 
-              {contentSwitcher === "full" && (
-                <div className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap font-mono">
-                  {mockPreviewContent}
-                </div>
-              )}
-
-              {contentSwitcher === "json" && (
-                <pre className="text-xs text-gray-700 leading-relaxed bg-gray-50 p-4 rounded-md overflow-x-auto font-mono">
+              <div data-testid="accordion-json">
+                <button
+                  className="w-full flex items-center gap-2.5 px-4 py-3 text-left hover:bg-gray-50 transition-colors"
+                  onClick={() => toggleAccordion("json")}
+                  data-testid="button-accordion-json"
+                >
+                  <Copy className="w-4 h-4 text-gray-500 shrink-0" />
+                  <span className="text-sm font-semibold text-gray-800 flex-1">Structured JSON Data</span>
+                  <ChevronDown className={cn("w-4 h-4 text-gray-400 transition-transform", openAccordions.has("json") ? "" : "-rotate-90")} />
+                </button>
+                {openAccordions.has("json") && (
+                  <div className="px-4 pb-4">
+                    <pre className="text-xs text-gray-700 leading-relaxed bg-gray-50 p-4 rounded-md overflow-x-auto font-mono">
 {JSON.stringify({
   title: source.title,
   domain: source.domain,
@@ -368,8 +398,10 @@ export function SourceDetailsDrawer({ source, open, onClose }: SourceDetailsDraw
   extracted_entities: ["Sam Altman", "Loopt", "Y Combinator", "Sequoia Capital", "Stanford University"],
   topics: ["startup", "location-based services", "mobile networking", "venture capital"]
 }, null, 2)}
-                </pre>
-              )}
+                    </pre>
+                  </div>
+                )}
+              </div>
             </div>
           )}
 
