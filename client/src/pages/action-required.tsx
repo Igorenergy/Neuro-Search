@@ -76,6 +76,8 @@ Enterprise automation platforms focus on workflow optimization and process intel
 export default function ActionRequired() {
   const params = useParams<{ id: string }>();
   const [leftExpanded, setLeftExpanded] = useState(false);
+  const [briefingExpanded, setBriefingExpanded] = useState(false);
+  const [queryExpanded, setQueryExpanded] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = 20;
   const [searchQuery, setSearchQuery] = useState("");
@@ -114,30 +116,79 @@ export default function ActionRequired() {
         </button>
 
         {leftExpanded && (
-          <div className="p-4 space-y-3">
-            <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider">History</h3>
-            <div className="space-y-1">
-              {mockBriefingHistory.map((item) => (
-                <div
-                  key={item.id}
-                  className="flex items-start gap-2 p-2 rounded-md hover:bg-gray-50 cursor-pointer transition-colors group"
-                  data-testid={`card-history-${item.id}`}
-                >
-                  <item.icon className="w-3.5 h-3.5 text-gray-400 mt-0.5 shrink-0" />
-                  <span className="text-xs text-gray-600 line-clamp-2 leading-relaxed">{item.title}</span>
+          <div className="flex flex-col h-full bg-[#f8f9fa]">
+            <div className="p-4 bg-[#E5E7EB] border-b border-gray-200">
+              <h2 className="text-base font-bold text-[#1a2b3b]">Research Briefing</h2>
+            </div>
+            
+            <div className="flex-1 overflow-y-auto">
+              {/* Query Section */}
+              <div className="p-4 border-b border-gray-100">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">QUERY</span>
+                  <div className="flex items-center gap-2">
+                    <button className="text-gray-400 hover:text-gray-600">
+                      <Copy className="w-3.5 h-3.5" />
+                    </button>
+                    <button 
+                      onClick={() => setQueryExpanded(!queryExpanded)}
+                      className="text-gray-400 hover:text-gray-600"
+                    >
+                      <ChevronDown className={cn("w-3.5 h-3.5 transition-transform", queryExpanded && "rotate-180")} />
+                    </button>
+                  </div>
                 </div>
-              ))}
+                <div className={cn("relative", !queryExpanded && "max-h-[120px] overflow-hidden")}>
+                  <p className="text-[13px] text-gray-700 leading-relaxed font-medium">
+                    🚀 Project Name: Acuras Pro — Intelligent Deep Search Agent 1. Project Overview & Core Mission Acuras Pro is a high-end B2B SaaS application designed for Deep Research and Strategic Intelligence. unlike standard search engines, Acuras Pro uses multi-agent AI to conduct comprehensive investigations, verify data sources, and synthesize complex answers from the web and internal repositories.
+                  </p>
+                  {!queryExpanded && (
+                    <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-[#f8f9fa] to-transparent" />
+                  )}
+                </div>
+              </div>
+
+              {/* Briefing Section */}
+              <div className="p-4">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">BRIEFING</span>
+                  <button 
+                    onClick={() => setBriefingExpanded(!briefingExpanded)}
+                    className="text-gray-400 hover:text-gray-600"
+                  >
+                    <ChevronDown className={cn("w-3.5 h-3.5 transition-transform", briefingExpanded && "rotate-180")} />
+                  </button>
+                </div>
+                <div className={cn("relative space-y-4", !briefingExpanded && "max-h-[300px] overflow-hidden")}>
+                  <p className="text-[13px] text-gray-600 leading-relaxed">
+                    The core philosophy of the UX is "Evidence Over Noise" and "No Dead Ends." The interface is built to guide the user from a vague query to a verified, data-backed report, ensuring that every search yields a result—either from the live web or the internal archives.
+                  </p>
+                  <p className="text-[13px] text-gray-600 leading-relaxed">
+                    Key Vibe: Precision-focused, data-dense, "Cyber-Corporate," and high-trust. 2. Application Architecture (Page Tree) The application is streamlined into four interconnected search & analysis modules:
+                  </p>
+                  <p className="text-[13px] text-gray-600 leading-relaxed">
+                    Research Mode (Dashboard): The command center for monitoring active agents, viewing the "Research Log," and managing costs/tokens.
+                  </p>
+                  <p className="text-[13px] text-gray-600 leading-relaxed">
+                    Smart Search (The Core Engine): A hybrid search interface (Semantic + Keywords) for launching new operations. It supports "Contextual Injection" via file uploads.
+                  </p>
+                  {!briefingExpanded && (
+                    <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-[#f8f9fa] to-transparent" />
+                  )}
+                </div>
+              </div>
             </div>
           </div>
         )}
 
         {!leftExpanded && (
-          <div className="flex flex-col items-center pt-4 gap-3">
-            {mockBriefingHistory.map((item) => (
-              <div key={item.id} className="w-7 h-7 rounded bg-gray-100 flex items-center justify-center cursor-pointer hover:bg-gray-200">
-                <FileText className="w-3 h-3 text-gray-400" />
-              </div>
-            ))}
+          <div className="flex flex-col items-center justify-center h-full">
+            <span
+              className="text-xs font-bold text-gray-500 tracking-widest whitespace-nowrap"
+              style={{ writingMode: "vertical-rl", textOrientation: "mixed" }}
+            >
+              RESEARCH BRIEFING
+            </span>
           </div>
         )}
       </div>
