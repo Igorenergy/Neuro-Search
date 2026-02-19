@@ -26,6 +26,10 @@ import {
   AlertTriangle,
   Link2,
   Upload,
+  Link as LinkIcon,
+  Play,
+  Database,
+  Check,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -613,7 +617,6 @@ export default function SourcesPage() {
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
       />
-
       <Dialog open={showDeepExtractModal} onOpenChange={setShowDeepExtractModal}>
         <DialogContent className="max-w-[400px] p-0 overflow-hidden border-none bg-white rounded-lg shadow-2xl">
           <DialogHeader className="px-4 py-2.5 flex flex-row items-center justify-between space-y-0 border-b">
@@ -715,7 +718,6 @@ export default function SourcesPage() {
           </div>
         </DialogContent>
       </Dialog>
-
       <Dialog open={showConfidenceModal} onOpenChange={setShowConfidenceModal}>
         <DialogContent className="w-[500px] max-w-[500px] h-[250px] p-0 overflow-hidden border-none bg-white rounded-lg shadow-2xl">
           <DialogHeader className="px-4 py-2.5 flex flex-row items-center justify-between space-y-0 border-b">
@@ -788,7 +790,6 @@ export default function SourcesPage() {
           </div>
         </DialogContent>
       </Dialog>
-
       {showEnhanceModal && (
         <>
           <div
@@ -947,7 +948,7 @@ export default function SourcesPage() {
                       </div>
                       <div className="bg-gray-50 p-2 border-t border-gray-200 flex items-center gap-2">
                         <Switch className="scale-75 data-[state=checked]:bg-green-600" />
-                        <span className="text-xs font-medium flex items-center gap-1">
+                        <span className="text-xs font-medium flex items-center gap-1 text-[#3564bd]">
                           <Link2 className="w-3 h-3" /> Extract & Research Embedded URLs <Info className="w-3 h-3 text-[#0097B2]" />
                         </span>
                       </div>
