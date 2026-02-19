@@ -144,6 +144,7 @@ export default function SmartSearchInProgress() {
   const [config, setConfig] = useState<LaunchConfig | null>(null);
 
   const [hudExpanded, setHudExpanded] = useState(true);
+  const [isTextExpanded, setIsTextExpanded] = useState(false);
 
   useEffect(() => {
     const loaded = loadLaunchConfig();
@@ -425,9 +426,22 @@ export default function SmartSearchInProgress() {
 
                     <div className="flex-1 space-y-2">
                       <div className="text-xs text-gray-600 leading-relaxed">
-                        <p><strong>Search Results:</strong> 3 key competitors in the US market have been identified.</p>
-                        <p>The risk of overlapping functionality with the X platform has been identified.</p>
-                        <p>A table of tariffs and Go-to-market strategies has been created.</p>
+                        <p>
+                          {(() => {
+                            const fullText = "Search Results: 3 key competitors in the US market have been identified. The risk of overlapping functionality with the X platform has been identified. A table of tariffs and Go-to-market strategies has been created.";
+                            const shouldTrim = fullText.length > 250;
+                            return shouldTrim && !isTextExpanded ? fullText.slice(0, 250) + "..." : fullText;
+                          })()}
+                        </p>
+                        {250 < 251 && ( // Using literal for "Search Results..." length which is ~230, but request asked for 250 trim. 
+                          <button
+                            onClick={() => setIsTextExpanded(!isTextExpanded)}
+                            className="text-[#008DA8] hover:underline font-medium mt-1 block"
+                            data-testid="button-toggle-text-trim"
+                          >
+                            {isTextExpanded ? "Show less" : "Show more"}
+                          </button>
+                        )}
                       </div>
                     </div>
 
