@@ -264,7 +264,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     </Link>
                     <div className="flex items-center gap-1 shrink-0 mt-0.5">
                       {item.status === "in-progress" ? (
-                        <RefreshCw className="w-4 h-4 text-green-500" data-testid={`refresh-${item.id}`} />
+                        <RefreshCw className="w-4 h-4 text-green-500 animate-[spin_10s_linear_infinite]" data-testid={`refresh-${item.id}`} />
                       ) : (
                         <>
                           <Pin
