@@ -102,6 +102,7 @@ export default function Launcher() {
   const [refinePrompt, setRefinePrompt] = useState("");
   const [showVersionHistory, setShowVersionHistory] = useState(false);
   const [showAttachedFiles, setShowAttachedFiles] = useState(false);
+  const [confirmDeleteFile, setConfirmDeleteFile] = useState<{ type: "all" } | { type: "single"; index: number } | null>(null);
   const maxVersions = 5;
   const [totalVersions, setTotalVersions] = useState(1);
   const planStepCount = planText.split('\n').filter(l => l.trim()).length;
@@ -1076,20 +1077,15 @@ export default function Launcher() {
                 <div className="border border-gray-200 rounded-md overflow-hidden">
                   <div className="bg-gray-50 px-3 py-2 border-b border-gray-200 flex items-center justify-between">
                     <span className="text-xs font-bold text-gray-600">Attached Files: {attachedFiles.length}</span>
-                    <Trash2
-                      className={cn(
-                        "w-4 h-4 transition-colors",
-                        attachedFiles.length > 0
-                          ? "text-red-500 hover:text-red-700 cursor-pointer"
-                          : "text-red-300 cursor-not-allowed"
-                      )}
-                      onClick={() => {
-                        if (attachedFiles.length > 0) {
-                          setAttachedFiles([]);
-                        }
-                      }}
-                      data-testid="button-delete-all-files"
-                    />
+                    {attachedFiles.length > 0 && (
+                      <button
+                        className="text-xs text-red-500 font-medium hover:text-red-700 hover:underline transition-colors"
+                        onClick={() => setConfirmDeleteFile({ type: "all" })}
+                        data-testid="button-delete-all-files"
+                      >
+                        delete all
+                      </button>
+                    )}
                   </div>
                   <div className="p-3 space-y-2">
                     {attachedFiles.map((file, index) => (
@@ -1107,7 +1103,7 @@ export default function Launcher() {
                           <span className="text-[10px] text-gray-400">{file.size}</span>
                           <Trash2
                             className="w-3.5 h-3.5 text-red-400 hover:text-red-600 cursor-pointer invisible group-hover:visible transition-colors"
-                            onClick={() => setAttachedFiles(prev => prev.filter((_, i) => i !== index))}
+                            onClick={() => setConfirmDeleteFile({ type: "single", index })}
                             data-testid={`button-delete-file-${index}`}
                           />
                         </div>
@@ -1517,12 +1513,6 @@ export default function Launcher() {
         <DialogContent className="max-w-[400px] p-0 gap-0 bg-white overflow-hidden border border-gray-200 shadow-xl rounded-md data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-1/2 data-[state=open]:zoom-in-90 duration-300">
           <div className="flex items-center justify-between p-3 border-b border-gray-100">
             <h2 className="text-base font-bold text-gray-900">Confirm</h2>
-            {/* Standard close button is suppressed by p-0 or we can rely on default Dialog behavior if we don't custom build header completely. 
-                But to match the image exactly (black X), let's hide default and add custom if possible, 
-                or just let the default one exist if it looks okay. 
-                The shadcn DialogContent usually has a Close button. 
-                Let's use a custom close button matching the design.
-            */}
           </div>
           
           <div className="p-5 space-y-4">
@@ -1547,10 +1537,59 @@ export default function Launcher() {
                 className="border-[#D4A373] text-[#D4A373] hover:bg-[#FFF8F0] hover:text-[#C59262] h-9 px-6 text-xs font-bold bg-white"
                 onClick={() => {
                    setConfirmExitStep(null);
-                   // Mock navigation logic would go here
                 }}
               >
                 Yes, Go Back
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Confirm Delete File Modal */}
+      <Dialog open={!!confirmDeleteFile} onOpenChange={(open) => !open && setConfirmDeleteFile(null)}>
+        <DialogContent className="max-w-[400px] p-0 gap-0 bg-white overflow-hidden border border-gray-200 shadow-xl rounded-md">
+          <div className="flex items-center justify-between p-3 border-b border-gray-100">
+            <h2 className="text-base font-bold text-gray-900">Confirm Deletion</h2>
+          </div>
+          
+          <div className="p-5 space-y-4">
+            <p className="text-sm font-medium text-gray-800">
+              {confirmDeleteFile?.type === "all"
+                ? "Are you sure you want to delete all attached files?"
+                : `Are you sure you want to delete "${confirmDeleteFile?.type === "single" && attachedFiles[confirmDeleteFile.index]?.name}"?`}
+            </p>
+            
+            <p className="text-sm text-[#0097B2] font-medium leading-relaxed">
+              {confirmDeleteFile?.type === "all"
+                ? "This will remove all files from this research project. This action cannot be undone."
+                : "This file will be removed from the research project. This action cannot be undone."}
+            </p>
+            
+            <div className="flex items-center justify-between pt-4">
+              <button 
+                className="text-xs font-medium text-gray-900 underline hover:text-gray-700"
+                onClick={() => setConfirmDeleteFile(null)}
+                data-testid="button-cancel-delete"
+              >
+                Cancel
+              </button>
+              
+              <Button 
+                variant="outline"
+                className="border-red-400 text-red-500 hover:bg-red-50 hover:text-red-600 h-9 px-6 text-xs font-bold bg-white"
+                onClick={() => {
+                  if (confirmDeleteFile?.type === "all") {
+                    setAttachedFiles([]);
+                  } else if (confirmDeleteFile?.type === "single") {
+                    const idx = confirmDeleteFile.index;
+                    setAttachedFiles(prev => prev.filter((_, i) => i !== idx));
+                  }
+                  setConfirmDeleteFile(null);
+                }}
+                data-testid="button-confirm-delete"
+              >
+                Yes, Delete
               </Button>
             </div>
           </div>
