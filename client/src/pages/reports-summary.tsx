@@ -41,7 +41,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
 import { loadLaunchConfig } from "@/lib/launch-config";
-import { ResearchBriefingSidebar } from "@/components/research-briefing-sidebar";
+import ResearchBriefingPanel from "@/components/research-briefing-panel";
 
 
 interface ThoughtNode {
@@ -139,6 +139,7 @@ export default function ReportsSummary() {
   const [activeTab, setActiveTab] = useState<"summary" | "research-log">("summary");
   const [showExtendedModal, setShowExtendedModal] = useState(false);
   const [nextStepsExpanded, setNextStepsExpanded] = useState(false);
+  const [leftExpanded, setLeftExpanded] = useState(false);
   const config = loadLaunchConfig();
 
   const projectTitle = config?.query
@@ -150,7 +151,7 @@ export default function ReportsSummary() {
 
   return (
     <div className="-m-6 md:-m-8 flex h-[calc(100vh-64px)] w-[calc(100%+48px)] md:w-[calc(100%+64px)] bg-white" data-testid="reports-summary-page">
-      <ResearchBriefingSidebar />
+      <ResearchBriefingPanel expanded={leftExpanded} onToggle={() => setLeftExpanded(!leftExpanded)} />
       <div className="flex-1 flex flex-col overflow-hidden min-w-0">
       {/* Context Header */}
       <div className="flex items-center justify-between px-4 py-2.5 border-b border-gray-200 bg-[#F5F5F7] shrink-0">
