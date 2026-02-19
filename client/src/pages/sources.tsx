@@ -432,7 +432,7 @@ export default function SourcesPage() {
                   </div>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <div className="absolute top-3 right-3 z-10" data-testid={`confidence-tile-${source.id}`}>
+                      <div className="absolute top-2 right-3 z-10" data-testid={`confidence-tile-${source.id}`}>
                         <ConfidenceRing score={source.confidenceScore} size={24} />
                       </div>
                     </TooltipTrigger>
