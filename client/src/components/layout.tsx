@@ -187,9 +187,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <a href="#" className="text-[#008DA8] text-sm font-semibold underline decoration-[#008DA8] underline-offset-2 hover:text-[#006E7D] mx-auto">
               Show all (123)
             </a>
-            <div className="bg-[#FFD700] p-1 rounded-sm border border-yellow-500/50 shadow-sm">
-              <Zap className="w-4 h-4 text-black fill-current" />
-            </div>
           </div>
         </>
       ) : (
