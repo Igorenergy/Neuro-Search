@@ -70,6 +70,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   };
 
   const [deletedIds, setDeletedIds] = useState<number[]>([]);
+  const [pinnedIds, setPinnedIds] = useState<number[]>([1, 2, 3]);
 
   const researchItems: { id: number; title: string; status: ResearchStatus }[] = [
     { id: 1, title: "Реестр 492 Компаний: Полный анализ и стратегический обзор...", status: "success" },
@@ -95,6 +96,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   ];
 
   const visibleResearchItems = researchItems.filter(item => !deletedIds.includes(item.id));
+  const pinnedItems = visibleResearchItems.filter(item => pinnedIds.includes(item.id));
+  const unpinnedItems = visibleResearchItems.filter(item => !pinnedIds.includes(item.id));
+
+  const togglePin = (id: number) => {
+    setPinnedIds(prev => prev.includes(id) ? prev.filter(pid => pid !== id) : [...prev, id]);
+  };
 
   const SidebarContent = ({ collapsed }: { collapsed?: boolean }) => (
     <div className="flex flex-col h-full bg-[#F5F5F7] border-r border-gray-200 text-gray-800 font-sans">
@@ -165,8 +172,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <div className="flex-1 overflow-hidden bg-[#E6E1EF] mx-2 mb-2 border border-gray-300 rounded-sm">
             <ScrollArea className="h-full">
               {/* Pinned Items */}
+              {pinnedItems.length > 0 && (
               <div className="sticky top-0 z-10 bg-[#E6E1EF] divide-y divide-gray-200/50 border-b border-gray-300">
-                {visibleResearchItems.slice(0, 3).map((item) => (
+                {pinnedItems.map((item) => (
                   <div key={item.id} className={cn("flex items-start gap-2 p-3 hover:bg-white/50 cursor-pointer group transition-colors border-l-[3px]", statusConfig[item.status].borderColor)}>
                     <Link href={`${statusConfig[item.status].route}/${item.id}`} className="flex items-start gap-2 flex-1 min-w-0">
                       <img src={rocketIcon} alt="Rocket" className="w-4 h-4 mt-0.5 shrink-0 opacity-70" />
@@ -175,7 +183,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                       </p>
                     </Link>
                     <div className="flex items-center gap-1 shrink-0 mt-0.5">
-                      <Pin className="w-3.5 h-3.5 text-gray-500 rotate-45 cursor-pointer hover:text-gray-700 -mr-[10px] relative -left-[10px]" />
+                      <Pin
+                        className="w-3.5 h-3.5 text-gray-500 rotate-45 cursor-pointer hover:text-gray-700 -mr-[10px] relative -left-[10px]"
+                        onClick={(e) => { e.stopPropagation(); togglePin(item.id); }}
+                        data-testid={`pin-${item.id}`}
+                      />
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild onClick={(e) => e.preventDefault()}>
                           <button className="p-0 border-0 bg-transparent" data-testid={`kebab-menu-${item.id}`}>
@@ -205,9 +217,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   </div>
                 ))}
               </div>
-              {/* Remaining Items */}
+              )}
+              {/* Unpinned Items */}
               <div className="divide-y divide-gray-200/50">
-                {visibleResearchItems.slice(3).map((item) => (
+                {unpinnedItems.map((item) => (
                   <div key={item.id} className={cn("flex items-start gap-2 p-3 hover:bg-white/50 cursor-pointer group transition-colors border-l-[3px]", statusConfig[item.status].borderColor)}>
                     <Link href={`${statusConfig[item.status].route}/${item.id}`} className="flex items-start gap-2 flex-1 min-w-0">
                       <img src={rocketIcon} alt="Rocket" className="w-4 h-4 mt-0.5 shrink-0 opacity-70" />
@@ -216,7 +229,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                       </p>
                     </Link>
                     <div className="flex items-center gap-1 shrink-0 mt-0.5">
-                      <Pin className="w-3.5 h-3.5 text-gray-400 rotate-45 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer hover:text-gray-700" />
+                      <Pin
+                        className="w-3.5 h-3.5 text-gray-400 rotate-45 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer hover:text-gray-700"
+                        onClick={(e) => { e.stopPropagation(); togglePin(item.id); }}
+                        data-testid={`pin-${item.id}`}
+                      />
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild onClick={(e) => e.preventDefault()}>
                           <button className="p-0 border-0 bg-transparent opacity-0 group-hover:opacity-100 transition-opacity" data-testid={`kebab-menu-${item.id}`}>
