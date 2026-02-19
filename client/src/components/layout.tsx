@@ -64,7 +64,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   };
 
   const [deletedIds, setDeletedIds] = useState<number[]>([]);
-  const [pinnedIds, setPinnedIds] = useState<number[]>([1, 2, 3]);
+  const [pinnedIds, setPinnedIds] = useState<number[]>([]);
 
   const researchItems: { id: number; title: string; status: ResearchStatus }[] = [
     { id: 1, title: "Реестр 492 Компаний: Полный анализ и стратегический обзор...", status: "success" },
