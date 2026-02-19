@@ -11,6 +11,12 @@ import {
   Filter,
   Copy,
   Trash2,
+  Rocket,
+  DollarSign,
+  TrendingUp,
+  Zap,
+  ClipboardList,
+  RefreshCw,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -28,25 +34,27 @@ export default function Dashboard() {
 
   type ResearchStatus = "success" | "in-progress" | "failed" | "canceled";
 
-  const statusConfig: Record<ResearchStatus, { borderColor: string; route: string }> = {
-    "success": { borderColor: "border-l-green-500", route: "/research-success" },
-    "in-progress": { borderColor: "border-l-blue-500", route: "/research-in-progress" },
-    "failed": { borderColor: "border-l-red-500", route: "/research-failed" },
-    "canceled": { borderColor: "border-l-orange-400", route: "/research-canceled" },
+  const statusConfig: Record<ResearchStatus, { borderColor: string; route: string; tileBg: string; iconBg: string; iconColor: string }> = {
+    "success": { borderColor: "border-l-green-500", route: "/research-success", tileBg: "bg-[#E0F7FA]", iconBg: "bg-[#B2EBF2]", iconColor: "text-[#00838F]" },
+    "in-progress": { borderColor: "border-l-blue-500", route: "/research-in-progress", tileBg: "bg-[#E8F5E9]", iconBg: "bg-[#C8E6C9]", iconColor: "text-[#2E7D32]" },
+    "failed": { borderColor: "border-l-red-500", route: "/research-failed", tileBg: "bg-[#FCE4EC]", iconBg: "bg-[#F8BBD0]", iconColor: "text-[#C62828]" },
+    "canceled": { borderColor: "border-l-orange-400", route: "/research-canceled", tileBg: "bg-[#FFF3E0]", iconBg: "bg-[#FFE0B2]", iconColor: "text-[#E65100]" },
   };
 
-  const searches: { id: number; title: string; date: string; sources: number; status: ResearchStatus; hasAttachment: boolean }[] = [
-    { id: 1, title: "Американская Фабрика: Полный анализ и стратегический обзор", date: "5 дек. 2025 г.", sources: 4, status: "success", hasAttachment: true },
-    { id: 2, title: "Startup: AI Deep Research — Анализ рынка и конкурентов", date: "2 дек. 2025 г.", sources: 51, status: "success", hasAttachment: true },
-    { id: 3, title: "Untitled notebook", date: "5 дек. 2025 г.", sources: 0, status: "in-progress", hasAttachment: true },
-    { id: 4, title: "Abacus.AI: Корпоративный анализ и оценка платформы", date: "2 дек. 2025 г.", sources: 61, status: "success", hasAttachment: false },
-    { id: 5, title: "Инновации, Капитал и Стратегии Роста в Технологическом Секторе", date: "2 дек. 2025 г.", sources: 25, status: "failed", hasAttachment: true },
-    { id: 6, title: "Реестр 492 Компаний: Полный анализ и стратегический обзор", date: "2 дек. 2025 г.", sources: 2, status: "success", hasAttachment: false },
-    { id: 7, title: "Untitled notebook", date: "30 нояб. 2025 г.", sources: 0, status: "in-progress", hasAttachment: false },
-    { id: 8, title: "Потеря $1,8 млн на крипте: уроки и выводы для инвесторов", date: "24 нояб. 2025 г.", sources: 1, status: "canceled", hasAttachment: false },
-    { id: 9, title: "Мемуары Криптана: Ретродропи, стратегии и анализ", date: "23 нояб. 2025 г.", sources: 1, status: "success", hasAttachment: false },
-    { id: 10, title: "Искусственный Интеллект и Будущее Технологий", date: "17 нояб. 2025 г.", sources: 24, status: "failed", hasAttachment: false },
-    { id: 11, title: "15 Жестоких Правд о Неконкурентных Рынках", date: "16 нояб. 2025 г.", sources: 1, status: "success", hasAttachment: false },
+  const tileIcons = [Rocket, DollarSign, TrendingUp, ClipboardList, Zap, FileText];
+
+  const searches: { id: number; title: string; date: string; sources: number; status: ResearchStatus; hasAttachment: boolean; iconIdx: number }[] = [
+    { id: 1, title: "Американская Фабрика: Полный анализ и стратегический обзор", date: "5 дек. 2025 г.", sources: 4, status: "success", hasAttachment: true, iconIdx: 0 },
+    { id: 2, title: "Startup: AI Deep Research — Анализ рынка и конкурентов", date: "2 дек. 2025 г.", sources: 51, status: "success", hasAttachment: true, iconIdx: 1 },
+    { id: 3, title: "Untitled notebook", date: "5 дек. 2025 г.", sources: 0, status: "in-progress", hasAttachment: true, iconIdx: 3 },
+    { id: 4, title: "Abacus.AI: Корпоративный анализ и оценка платформы", date: "2 дек. 2025 г.", sources: 61, status: "success", hasAttachment: false, iconIdx: 3 },
+    { id: 5, title: "Инновации, Капитал и Стратегии Роста в Технологическом Секторе", date: "2 дек. 2025 г.", sources: 25, status: "failed", hasAttachment: true, iconIdx: 2 },
+    { id: 6, title: "Реестр 492 Компаний: Полный анализ и стратегический обзор", date: "2 дек. 2025 г.", sources: 2, status: "success", hasAttachment: false, iconIdx: 5 },
+    { id: 7, title: "Untitled notebook", date: "30 нояб. 2025 г.", sources: 0, status: "in-progress", hasAttachment: false, iconIdx: 3 },
+    { id: 8, title: "Потеря $1,8 млн на крипте: уроки и выводы для инвесторов", date: "24 нояб. 2025 г.", sources: 1, status: "canceled", hasAttachment: false, iconIdx: 2 },
+    { id: 9, title: "Мемуары Криптана: Ретродропи, стратегии и анализ", date: "23 нояб. 2025 г.", sources: 1, status: "success", hasAttachment: false, iconIdx: 4 },
+    { id: 10, title: "Искусственный Интеллект и Будущее Технологий", date: "17 нояб. 2025 г.", sources: 24, status: "failed", hasAttachment: false, iconIdx: 5 },
+    { id: 11, title: "15 Жестоких Правд о Неконкурентных Рынках", date: "16 нояб. 2025 г.", sources: 1, status: "success", hasAttachment: false, iconIdx: 4 },
   ];
 
   return (
@@ -178,80 +186,90 @@ export default function Dashboard() {
           </Link>
         </div>
       </div>
-      {/* Research List */}
-      <div className="bg-white rounded-md border border-gray-200 shadow-sm overflow-hidden">
-        {/* Create Research Row */}
+      {/* Research Tiles Grid */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+        {/* Create Research Tile */}
         <Link href="/smart-search/new">
-          <div className="flex items-center gap-3 p-3 border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors border-l-[3px] border-l-transparent" data-testid="card-create-research">
-            <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center shrink-0">
-              <Plus className="w-4 h-4 text-blue-500" />
+          <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-4 flex flex-col items-center justify-center min-h-[180px] hover:shadow-md transition-shadow cursor-pointer" data-testid="card-create-research">
+            <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center mb-3">
+              <Plus className="w-5 h-5 text-blue-500" />
             </div>
-            <span className="text-sm font-bold text-[#008DA8]">Create new research</span>
+            <span className="text-sm font-bold text-gray-800">Create research</span>
+            <div className="mt-2 space-y-1 text-center">
+              <span className="block text-[11px] font-bold text-[#008DA8] uppercase tracking-wide">Smart Search</span>
+              <span className="block text-[11px] font-bold text-[#008DA8] uppercase tracking-wide">Smart Sheet</span>
+            </div>
           </div>
         </Link>
 
-        {/* Research Items — in-progress first */}
+        {/* Research Item Tiles — in-progress first */}
         {[...searches].sort((a, b) => {
           if (a.status === "in-progress" && b.status !== "in-progress") return -1;
           if (a.status !== "in-progress" && b.status === "in-progress") return 1;
           return 0;
-        }).map((item) => (
-          <div
-            key={item.id}
-            className={cn(
-              "flex items-start gap-3 p-3 bg-white hover:bg-gray-50 cursor-pointer group transition-colors border-b border-gray-100 last:border-b-0 border-l-[3px]",
-              statusConfig[item.status].borderColor
-            )}
-            data-testid={`card-research-${item.id}`}
-          >
-            <Link href={`${statusConfig[item.status].route}/${item.id}`} className="flex items-start gap-3 flex-1 min-w-0">
-              <img src={rocketIcon} alt="Rocket" className="w-5 h-5 mt-0.5 shrink-0 opacity-70" />
-              <div className="flex-1 min-w-0">
-                <p className="text-[13px] leading-tight text-gray-800 line-clamp-2 font-medium">
+        }).map((item) => {
+          const config = statusConfig[item.status];
+          const IconComponent = tileIcons[item.iconIdx % tileIcons.length];
+          return (
+            <div
+              key={item.id}
+              className={cn(
+                "rounded-lg border border-gray-200 shadow-sm p-4 flex flex-col min-h-[180px] group relative hover:shadow-md transition-shadow",
+                config.tileBg
+              )}
+              data-testid={`card-research-${item.id}`}
+            >
+              <div className="flex items-start justify-between mb-3">
+                <div className={cn("w-9 h-9 rounded-lg flex items-center justify-center", config.iconBg)}>
+                  <IconComponent className={cn("w-5 h-5", config.iconColor)} />
+                </div>
+                <div className="flex items-center gap-1">
+                  {item.status === "in-progress" && (
+                    <RefreshCw className="w-3.5 h-3.5 text-blue-500 animate-[spin_10s_linear_infinite]" />
+                  )}
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild onClick={(e) => e.preventDefault()}>
+                      <button className="p-0.5 border-0 bg-transparent opacity-60 hover:opacity-100 transition-opacity" data-testid={`kebab-menu-${item.id}`}>
+                        <MoreVertical className="w-4 h-4 text-gray-500 cursor-pointer hover:text-gray-700" />
+                      </button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-44 bg-[#1a1a1a] border-[#333] shadow-xl">
+                      <DropdownMenuItem
+                        className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
+                        data-testid={`details-${item.id}`}
+                      >
+                        <FileText className="w-4 h-4 text-gray-400" />
+                        Details
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        className="flex items-center gap-2 text-sm text-[#008DA8] hover:text-[#00b0cc] focus:text-[#00b0cc] focus:bg-[#333] cursor-pointer"
+                        data-testid={`clone-${item.id}`}
+                      >
+                        <Copy className="w-4 h-4 text-[#008DA8]" />
+                        Clone & Restart
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 focus:text-red-400 focus:bg-[#333] cursor-pointer"
+                        data-testid={`delete-${item.id}`}
+                      >
+                        <Trash2 className="w-4 h-4" />
+                        Delete
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+              </div>
+              <Link href={`${config.route}/${item.id}`} className="flex flex-col flex-1 min-w-0">
+                <p className="text-[13px] leading-snug text-gray-800 font-semibold line-clamp-2 mb-auto">
                   {item.title}
                 </p>
-                <p className="text-[11px] text-gray-400 mt-1">
+                <p className="text-[11px] text-gray-500 mt-2">
                   {item.date} • {item.sources} источников
                 </p>
-              </div>
-            </Link>
-            <div className="flex items-center gap-1 shrink-0 mt-0.5">
-              {item.hasAttachment && (
-                <Paperclip className="w-3.5 h-3.5 text-gray-400 rotate-45 opacity-0 group-hover:opacity-100 transition-opacity" />
-              )}
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild onClick={(e) => e.preventDefault()}>
-                  <button className="p-0 border-0 bg-transparent opacity-0 group-hover:opacity-100 transition-opacity" data-testid={`kebab-menu-${item.id}`}>
-                    <MoreVertical className="w-3.5 h-3.5 text-gray-400 cursor-pointer hover:text-gray-700" />
-                  </button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-44 bg-[#1a1a1a] border-[#333] shadow-xl">
-                  <DropdownMenuItem
-                    className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
-                    data-testid={`details-${item.id}`}
-                  >
-                    <FileText className="w-4 h-4 text-gray-400" />
-                    Details
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    className="flex items-center gap-2 text-sm text-[#008DA8] hover:text-[#00b0cc] focus:text-[#00b0cc] focus:bg-[#333] cursor-pointer"
-                    data-testid={`clone-${item.id}`}
-                  >
-                    <Copy className="w-4 h-4 text-[#008DA8]" />
-                    Clone & Restart
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 focus:text-red-400 focus:bg-[#333] cursor-pointer"
-                    data-testid={`delete-${item.id}`}
-                  >
-                    <Trash2 className="w-4 h-4" />
-                    Delete
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              </Link>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
       <div className="flex justify-center pt-8 pb-12">
         <Button className="bg-[#008DA8] hover:bg-[#007A92] text-white px-8 h-10 rounded-sm font-medium">
