@@ -4,18 +4,13 @@ import {
   Plus,
   MoreVertical,
   Paperclip,
-  Rocket,
-  DollarSign,
-  Book,
-  Bot,
-  TrendingUp,
-  Building2,
-  Zap,
   FileText,
   X,
   ChevronDown,
   Search,
   Filter,
+  Copy,
+  Trash2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -26,132 +21,32 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import rocketIcon from "@assets/image_1771405092616.png";
 
 export default function Dashboard() {
   const [showBanner, setShowBanner] = useState(true);
 
-  const searches = [
-    {
-      id: 1,
-      title: "Американская Фабрика...",
-      date: "5 дек. 2025 г.",
-      sources: 4,
-      icon: Rocket,
-      color: "bg-cyan-100",
-      iconColor: "text-red-500",
-      iconBg: "bg-white",
-      hasAttachment: true,
-    },
-    {
-      id: 2,
-      title: "Startup: AI Deep Research",
-      date: "2 дек. 2025 г.",
-      sources: 51,
-      icon: DollarSign,
-      color: "bg-purple-100",
-      iconColor: "text-yellow-600",
-      iconBg: "bg-yellow-100",
-      hasAttachment: true,
-    },
-    {
-      id: 3,
-      title: "Untitled notebook",
-      date: "5 дек. 2025 г.",
-      sources: 0,
-      icon: Book,
-      color: "bg-purple-50",
-      iconColor: "text-orange-400",
-      iconBg: "bg-white",
-      hasAttachment: true,
-    },
-    {
-      id: 4,
-      title: "Abacus.AI: Корпоративный...",
-      date: "2 дек. 2025 г.",
-      sources: 61,
-      icon: Bot,
-      color: "bg-yellow-50",
-      iconColor: "text-gray-700",
-      iconBg: "bg-gray-200",
-      hasAttachment: false,
-    },
-    {
-      id: 5,
-      title: "Инновации, Капитал и...",
-      date: "2 дек. 2025 г.",
-      sources: 25,
-      icon: TrendingUp,
-      color: "bg-red-50",
-      iconColor: "text-red-500",
-      iconBg: "bg-white",
-      hasAttachment: true,
-    },
-    {
-      id: 6,
-      title: "Реестр 492 Компаний",
-      date: "2 дек. 2025 г.",
-      sources: 2,
-      icon: Building2,
-      color: "bg-cyan-50",
-      iconColor: "text-blue-500",
-      iconBg: "bg-white",
-      hasAttachment: false,
-    },
-    {
-      id: 7,
-      title: "Untitled notebook",
-      date: "30 нояб. 2025 г.",
-      sources: 0,
-      icon: Book,
-      color: "bg-purple-50",
-      iconColor: "text-orange-400",
-      iconBg: "bg-white",
-      hasAttachment: false,
-    },
-    {
-      id: 8,
-      title: "Потеря $1,8 млн на крипте: уроки...",
-      date: "24 нояб. 2025 г.",
-      sources: 1,
-      icon: TrendingUp, // Using TrendingUp as a graph placeholder
-      color: "bg-indigo-50",
-      iconColor: "text-blue-600",
-      iconBg: "bg-white",
-      hasAttachment: false,
-    },
-    {
-      id: 9,
-      title: "Мемуары Криптана: Ретродропи,...",
-      date: "23 нояб. 2025 г.",
-      sources: 1,
-      icon: Zap, // Using Zap for racing car placeholder equivalent
-      color: "bg-green-50",
-      iconColor: "text-red-500",
-      iconBg: "bg-white",
-      hasAttachment: false,
-    },
-    {
-      id: 10,
-      title: "Искусственный Интеллект и...",
-      date: "17 нояб. 2025 г.",
-      sources: 24,
-      icon: FileText, // Placeholder
-      color: "bg-orange-50",
-      iconColor: "text-red-600",
-      iconBg: "bg-white",
-      hasAttachment: false,
-    },
-    {
-      id: 11,
-      title: "15 Жестоких Правд о Неконкурентно...",
-      date: "16 нояб. 2025 г.",
-      sources: 1,
-      icon: Zap, // Placeholder for flexing arm
-      color: "bg-cyan-50",
-      iconColor: "text-yellow-600",
-      iconBg: "bg-white",
-      hasAttachment: false,
-    },
+  type ResearchStatus = "success" | "in-progress" | "failed" | "canceled";
+
+  const statusConfig: Record<ResearchStatus, { borderColor: string; route: string }> = {
+    "success": { borderColor: "border-l-green-500", route: "/research-success" },
+    "in-progress": { borderColor: "border-l-blue-500", route: "/research-in-progress" },
+    "failed": { borderColor: "border-l-red-500", route: "/research-failed" },
+    "canceled": { borderColor: "border-l-orange-400", route: "/research-canceled" },
+  };
+
+  const searches: { id: number; title: string; date: string; sources: number; status: ResearchStatus; hasAttachment: boolean }[] = [
+    { id: 1, title: "Американская Фабрика: Полный анализ и стратегический обзор", date: "5 дек. 2025 г.", sources: 4, status: "success", hasAttachment: true },
+    { id: 2, title: "Startup: AI Deep Research — Анализ рынка и конкурентов", date: "2 дек. 2025 г.", sources: 51, status: "success", hasAttachment: true },
+    { id: 3, title: "Untitled notebook", date: "5 дек. 2025 г.", sources: 0, status: "in-progress", hasAttachment: true },
+    { id: 4, title: "Abacus.AI: Корпоративный анализ и оценка платформы", date: "2 дек. 2025 г.", sources: 61, status: "success", hasAttachment: false },
+    { id: 5, title: "Инновации, Капитал и Стратегии Роста в Технологическом Секторе", date: "2 дек. 2025 г.", sources: 25, status: "failed", hasAttachment: true },
+    { id: 6, title: "Реестр 492 Компаний: Полный анализ и стратегический обзор", date: "2 дек. 2025 г.", sources: 2, status: "success", hasAttachment: false },
+    { id: 7, title: "Untitled notebook", date: "30 нояб. 2025 г.", sources: 0, status: "in-progress", hasAttachment: false },
+    { id: 8, title: "Потеря $1,8 млн на крипте: уроки и выводы для инвесторов", date: "24 нояб. 2025 г.", sources: 1, status: "canceled", hasAttachment: false },
+    { id: 9, title: "Мемуары Криптана: Ретродропи, стратегии и анализ", date: "23 нояб. 2025 г.", sources: 1, status: "success", hasAttachment: false },
+    { id: 10, title: "Искусственный Интеллект и Будущее Технологий", date: "17 нояб. 2025 г.", sources: 24, status: "failed", hasAttachment: false },
+    { id: 11, title: "15 Жестоких Правд о Неконкурентных Рынках", date: "16 нояб. 2025 г.", sources: 1, status: "success", hasAttachment: false },
   ];
 
   return (
@@ -283,88 +178,73 @@ export default function Dashboard() {
           </Link>
         </div>
       </div>
-      {/* Cards Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-        {/* Create Research Card */}
-        <div className="bg-white rounded-xl border border-gray-100 p-6 flex flex-col items-center justify-center text-center shadow-sm hover:shadow-md transition-shadow min-h-[220px]">
-          <div className="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center mb-4">
-            <Plus className="w-8 h-8 text-blue-500" />
+      {/* Research List */}
+      <div className="bg-white rounded-md border border-gray-200 shadow-sm overflow-hidden">
+        {/* Create Research Row */}
+        <Link href="/smart-search/new">
+          <div className="flex items-center gap-3 p-3 border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors border-l-[3px] border-l-transparent" data-testid="card-create-research">
+            <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center shrink-0">
+              <Plus className="w-4 h-4 text-blue-500" />
+            </div>
+            <span className="text-sm font-bold text-[#008DA8]">Create new research</span>
           </div>
-          <h3 className="text-lg font-bold text-gray-900 mb-4">
-            Create research
-          </h3>
-          <div className="space-y-2 w-full">
-            <Link href="/smart-search/new">
-              <a className="block text-sm font-bold text-[#008DA8] hover:underline mb-2">
-                SMART SEARCH
-              </a>
-            </Link>
-            <Link href="#">
-              <a className="block text-sm font-bold text-[#008DA8] hover:underline">
-                SMART SHEET
-              </a>
-            </Link>
-          </div>
-        </div>
+        </Link>
 
-        {/* Project Cards */}
+        {/* Research Items */}
         {searches.map((item) => (
           <div
             key={item.id}
             className={cn(
-              "rounded-xl p-5 relative group flex flex-col min-h-[220px] transition-all hover:shadow-md",
-              item.color,
+              "flex items-start gap-3 p-3 bg-white hover:bg-gray-50 cursor-pointer group transition-colors border-b border-gray-100 last:border-b-0 border-l-[3px]",
+              statusConfig[item.status].borderColor
             )}
+            data-testid={`card-research-${item.id}`}
           >
-            <div className="flex justify-between items-start mb-4">
-              <div
-                className={cn(
-                  "w-12 h-12 rounded-lg flex items-center justify-center border-2 border-black/5",
-                  item.iconBg,
-                )}
-              >
-                <item.icon
-                  className={cn("w-7 h-7 stroke-[1.5]", item.iconColor)}
-                />
+            <Link href={`${statusConfig[item.status].route}/${item.id}`} className="flex items-start gap-3 flex-1 min-w-0">
+              <img src={rocketIcon} alt="Rocket" className="w-5 h-5 mt-0.5 shrink-0 opacity-70" />
+              <div className="flex-1 min-w-0">
+                <p className="text-[13px] leading-tight text-gray-800 line-clamp-2 font-medium">
+                  {item.title}
+                </p>
+                <p className="text-[11px] text-gray-400 mt-1">
+                  {item.date} • {item.sources} источников
+                </p>
               </div>
-              <div className="flex items-center gap-1">
-                {item.hasAttachment && (
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-8 w-8 text-gray-500 hover:bg-black/5 rounded-full"
+            </Link>
+            <div className="flex items-center gap-1 shrink-0 mt-0.5">
+              {item.hasAttachment && (
+                <Paperclip className="w-3.5 h-3.5 text-gray-400 rotate-45 opacity-0 group-hover:opacity-100 transition-opacity" />
+              )}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild onClick={(e) => e.preventDefault()}>
+                  <button className="p-0 border-0 bg-transparent opacity-0 group-hover:opacity-100 transition-opacity" data-testid={`kebab-menu-${item.id}`}>
+                    <MoreVertical className="w-3.5 h-3.5 text-gray-400 cursor-pointer hover:text-gray-700" />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-44 bg-[#1a1a1a] border-[#333] shadow-xl">
+                  <DropdownMenuItem
+                    className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
+                    data-testid={`details-${item.id}`}
                   >
-                    <Paperclip className="w-4 h-4 rotate-45" />
-                  </Button>
-                )}
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-8 w-8 text-gray-500 hover:bg-black/5 rounded-full"
-                    >
-                      <MoreVertical className="w-4 h-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    <DropdownMenuItem>Open</DropdownMenuItem>
-                    <DropdownMenuItem>Rename</DropdownMenuItem>
-                    <DropdownMenuItem className="text-red-600">
-                      Delete
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-            </div>
-
-            <div className="mt-auto">
-              <h3 className="text-xl font-normal text-gray-800 leading-tight mb-3 line-clamp-2">
-                {item.title}
-              </h3>
-              <p className="text-sm text-gray-500 font-medium">
-                {item.date} • {item.sources} источников
-              </p>
+                    <FileText className="w-4 h-4 text-gray-400" />
+                    Details
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    className="flex items-center gap-2 text-sm text-[#008DA8] hover:text-[#00b0cc] focus:text-[#00b0cc] focus:bg-[#333] cursor-pointer"
+                    data-testid={`clone-${item.id}`}
+                  >
+                    <Copy className="w-4 h-4 text-[#008DA8]" />
+                    Clone & Restart
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 focus:text-red-400 focus:bg-[#333] cursor-pointer"
+                    data-testid={`delete-${item.id}`}
+                  >
+                    <Trash2 className="w-4 h-4" />
+                    Delete
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </div>
         ))}
