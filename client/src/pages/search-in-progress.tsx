@@ -17,6 +17,7 @@ import {
   AlertTriangle,
   Loader2,
   ToggleRight,
+  ChevronDown,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -354,143 +355,129 @@ export default function SmartSearchInProgress() {
         {/* HUD Dashboard - pinned below context header */}
         <div className="shrink-0 px-4 pt-3 pb-2 bg-white border-b border-gray-200 z-20">
           <Card className="p-0 overflow-hidden border-gray-200 shadow-md" data-testid="card-hud">
-            {!hudExpanded ? (
-              <div className="px-3 py-2 bg-[#edd8d8] flex items-center justify-between gap-2">
-                <div className="flex items-center gap-3 flex-wrap">
-                  <div className="flex items-center gap-2">
-                    <div className="w-6 h-6 bg-gray-200 rounded-sm flex items-center justify-center">
-                      <Settings2 className="w-3.5 h-3.5 text-gray-500" />
-                    </div>
-                    <span className="text-xs font-bold text-gray-700">
-                      {dataEngineLabels[config?.dataEngine || "ultimate"] || "Ultimate"} Engine
-                    </span>
+            {/* Collapsed Strip - always visible as the accordion header */}
+            <div
+              className="px-3 py-2 bg-[#edd8d8] flex items-center justify-between gap-2 cursor-pointer select-none"
+              onClick={() => setHudExpanded(!hudExpanded)}
+              data-testid="button-toggle-hud"
+            >
+              <div className="flex items-center gap-3 flex-wrap">
+                <div className="flex items-center gap-2">
+                  <div className="w-6 h-6 bg-gray-200 rounded-sm flex items-center justify-center">
+                    <Settings2 className="w-3.5 h-3.5 text-gray-500" />
                   </div>
-                  <div className="h-4 w-px bg-gray-300" />
-                  <div className="flex items-center gap-1.5 text-xs text-gray-600">
-                    <Clock className="w-3.5 h-3.5" />
-                    <span>{formatTime(13 * 60 + 48 - elapsedSeconds % (13 * 60 + 48))}</span>
-                  </div>
-                  <div className="h-4 w-px bg-gray-300" />
-                  <div className="flex items-center gap-1.5 text-xs text-gray-600">
-                    <Database className="w-3.5 h-3.5 text-gray-500" />
-                    <span><strong>12</strong> Sources</span>
-                  </div>
-                  <div className="h-4 w-px bg-gray-300" />
-                  <div className="flex items-center gap-1.5 text-xs text-gray-600">
-                    <Zap className="w-3.5 h-3.5 text-gray-500" />
-                    <span><strong>15K</strong> tokens</span>
-                  </div>
-                  <div className="h-4 w-px bg-gray-300" />
-                  <Progress value={30} className="h-1.5 w-16 [&>div]:bg-green-500" />
+                  <span className="text-xs font-bold text-gray-700">
+                    {dataEngineLabels[config?.dataEngine || "ultimate"] || "Ultimate"} Engine
+                  </span>
                 </div>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => setHudExpanded(true)}
-                  data-testid="button-expand-hud"
-                >
-                  <ChevronDown className="w-4 h-4" />
-                </Button>
+                <div className="h-4 w-px bg-gray-300" />
+                <div className="flex items-center gap-1.5 text-xs text-gray-600">
+                  <Clock className="w-3.5 h-3.5" />
+                  <span>{formatTime(13 * 60 + 48 - elapsedSeconds % (13 * 60 + 48))}</span>
+                </div>
+                <div className="h-4 w-px bg-gray-300" />
+                <div className="flex items-center gap-1.5 text-xs text-gray-600">
+                  <Database className="w-3.5 h-3.5 text-gray-500" />
+                  <span><strong>12</strong> Sources</span>
+                </div>
+                <div className="h-4 w-px bg-gray-300" />
+                <div className="flex items-center gap-1.5 text-xs text-gray-600">
+                  <Zap className="w-3.5 h-3.5 text-gray-500" />
+                  <span><strong>15K</strong> tokens</span>
+                </div>
+                <div className="h-4 w-px bg-gray-300" />
+                <Progress value={30} className="h-1.5 w-16 [&>div]:bg-green-500" />
               </div>
-            ) : (
-              <div className="p-4 space-y-4 bg-[#edd8d8]">
-                {/* Top Row: Engine + Timer */}
-                <div className="flex items-center justify-between gap-2">
-                  <div className="flex items-center gap-2">
-                    <div className="w-6 h-6 bg-gray-200 rounded-sm flex items-center justify-center">
-                      <Settings2 className="w-3.5 h-3.5 text-gray-500" />
+              <Button
+                variant="ghost"
+                size="icon"
+                className="shrink-0"
+                onClick={(e) => { e.stopPropagation(); setHudExpanded(!hudExpanded); }}
+                data-testid="button-expand-hud"
+              >
+                <ChevronDown className={cn("w-4 h-4 transition-transform duration-200", hudExpanded && "rotate-180")} />
+              </Button>
+            </div>
+
+            {/* Expanded Content - accordion body */}
+            <div
+              className="grid transition-[grid-template-rows] duration-300 ease-in-out"
+              style={{ gridTemplateRows: hudExpanded ? "1fr" : "0fr" }}
+            >
+              <div className="overflow-hidden">
+                <div className="p-4 pt-2 space-y-4 bg-[#edd8d8] border-t border-[#e0c5c5]">
+                  {/* Stats + Progress */}
+                  <div className="flex items-start gap-6">
+                    <div className="space-y-2 shrink-0">
+                      <div className="bg-gray-50 border border-gray-200 rounded-sm p-3 space-y-1.5">
+                        <div className="flex items-center gap-2 text-xs text-gray-700">
+                          <Database className="w-3.5 h-3.5 text-gray-500" />
+                          <span><strong>12</strong> Sources</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-xs text-gray-700">
+                          <Clock className="w-3.5 h-3.5 text-gray-500" />
+                          <span><strong>{elapsedSeconds}</strong> sec</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-xs text-gray-700">
+                          <Zap className="w-3.5 h-3.5 text-gray-500" />
+                          <span><strong>15K</strong> tokens</span>
+                        </div>
+                      </div>
                     </div>
-                    <span className="text-xs font-bold text-gray-700">
-                      {dataEngineLabels[config?.dataEngine || "ultimate"] || "Ultimate"} Engine
-                    </span>
+
+                    <div className="flex-1 space-y-2">
+                      <div className="text-xs text-gray-600 leading-relaxed">
+                        <p><strong>Search Results:</strong> 3 key competitors in the US market have been identified.</p>
+                        <p>The risk of overlapping functionality with the X platform has been identified.</p>
+                        <p>A table of tariffs and Go-to-market strategies has been created.</p>
+                      </div>
+                    </div>
+
+                    <div className="shrink-0 space-y-3 min-w-[200px]">
+                      <div>
+                        <span className="text-[10px] font-bold text-gray-500 uppercase">INPUTS</span>
+                        <div className="space-y-1.5 mt-1">
+                          <div className="flex items-center gap-2">
+                            <Globe className="w-3 h-3 text-gray-400" />
+                            <span className="text-[10px] text-gray-500 w-4">[K]</span>
+                            <Progress value={85} className="h-2 flex-1 [&>div]:bg-[#008DA8]" />
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <FileText className="w-3 h-3 text-gray-400" />
+                            <span className="text-[10px] text-gray-500 w-4">[d]</span>
+                            <Progress value={100} className="h-2 flex-1 [&>div]:bg-[#008DA8]" />
+                          </div>
+                        </div>
+                      </div>
+                      <div>
+                        <span className="text-[10px] font-bold text-gray-500 uppercase">OUTPUT</span>
+                        <div className="mt-1">
+                          <Progress value={30} className="h-2 [&>div]:bg-green-500" />
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <div className="flex items-center gap-1.5 text-xs text-gray-600">
-                      <Clock className="w-3.5 h-3.5" />
-                      <span>Time remaining: <strong>{formatTime(13 * 60 + 48 - elapsedSeconds % (13 * 60 + 48))}</strong></span>
-                    </div>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => setHudExpanded(false)}
-                      data-testid="button-collapse-hud"
+
+                  {/* Action Buttons */}
+                  <div className="flex items-center justify-center gap-3 pt-1">
+                    <button
+                      className="w-10 h-10 bg-red-500 hover:bg-red-600 rounded-full flex items-center justify-center transition-colors shadow-sm"
+                      onClick={() => setShowAbortModal(true)}
+                      data-testid="button-abort-research"
                     >
-                      <ChevronLeft className="w-4 h-4 rotate-90" />
-                    </Button>
+                      <X className="w-5 h-5 text-white" strokeWidth={3} />
+                    </button>
+                    <button
+                      className="w-10 h-10 bg-green-500 hover:bg-green-600 rounded-full flex items-center justify-center transition-colors shadow-sm"
+                      onClick={() => setShowFinishModal(true)}
+                      data-testid="button-finish-early"
+                    >
+                      <Check className="w-5 h-5 text-white" strokeWidth={3} />
+                    </button>
                   </div>
-                </div>
-
-                {/* Stats + Progress */}
-                <div className="flex items-start gap-6">
-                  <div className="space-y-2 shrink-0">
-                    <div className="bg-gray-50 border border-gray-200 rounded-sm p-3 space-y-1.5">
-                      <div className="flex items-center gap-2 text-xs text-gray-700">
-                        <Database className="w-3.5 h-3.5 text-gray-500" />
-                        <span><strong>12</strong> Sources</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-xs text-gray-700">
-                        <Clock className="w-3.5 h-3.5 text-gray-500" />
-                        <span><strong>{elapsedSeconds}</strong> sec</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-xs text-gray-700">
-                        <Zap className="w-3.5 h-3.5 text-gray-500" />
-                        <span><strong>15K</strong> tokens</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex-1 space-y-2">
-                    <div className="text-xs text-gray-600 leading-relaxed">
-                      <p><strong>Search Results:</strong> 3 key competitors in the US market have been identified.</p>
-                      <p>The risk of overlapping functionality with the X platform has been identified.</p>
-                      <p>A table of tariffs and Go-to-market strategies has been created.</p>
-                    </div>
-                  </div>
-
-                  <div className="shrink-0 space-y-3 min-w-[200px]">
-                    <div>
-                      <span className="text-[10px] font-bold text-gray-500 uppercase">INPUTS</span>
-                      <div className="space-y-1.5 mt-1">
-                        <div className="flex items-center gap-2">
-                          <Globe className="w-3 h-3 text-gray-400" />
-                          <span className="text-[10px] text-gray-500 w-4">[K]</span>
-                          <Progress value={85} className="h-2 flex-1 [&>div]:bg-[#008DA8]" />
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <FileText className="w-3 h-3 text-gray-400" />
-                          <span className="text-[10px] text-gray-500 w-4">[d]</span>
-                          <Progress value={100} className="h-2 flex-1 [&>div]:bg-[#008DA8]" />
-                        </div>
-                      </div>
-                    </div>
-                    <div>
-                      <span className="text-[10px] font-bold text-gray-500 uppercase">OUTPUT</span>
-                      <div className="mt-1">
-                        <Progress value={30} className="h-2 [&>div]:bg-green-500" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Action Buttons */}
-                <div className="flex items-center justify-center gap-3 pt-1">
-                  <button
-                    className="w-10 h-10 bg-red-500 hover:bg-red-600 rounded-full flex items-center justify-center transition-colors shadow-sm"
-                    onClick={() => setShowAbortModal(true)}
-                    data-testid="button-abort-research"
-                  >
-                    <X className="w-5 h-5 text-white" strokeWidth={3} />
-                  </button>
-                  <button
-                    className="w-10 h-10 bg-green-500 hover:bg-green-600 rounded-full flex items-center justify-center transition-colors shadow-sm"
-                    onClick={() => setShowFinishModal(true)}
-                    data-testid="button-finish-early"
-                  >
-                    <Check className="w-5 h-5 text-white" strokeWidth={3} />
-                  </button>
                 </div>
               </div>
-            )}
+            </div>
           </Card>
         </div>
 
