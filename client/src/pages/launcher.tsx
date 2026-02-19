@@ -172,13 +172,13 @@ export default function Launcher() {
     "Product Roadmap.pdf"
   ];
 
-  const attachedFiles = [
+  const [attachedFiles, setAttachedFiles] = useState([
     { name: "Market Analysis Q3.pdf", type: "PDF", size: "2.4 MB" },
     { name: "Competitor Report 2024.docx", type: "DOCX", size: "1.8 MB" },
     { name: "User Interviews.txt", type: "TXT", size: "340 KB" },
     { name: "Financial Projections.xlsx", type: "XLSX", size: "5.1 MB" },
     { name: "Product Roadmap.pdf", type: "PDF", size: "3.2 MB" },
-  ];
+  ]);
 
   const toggleRepoFile = (file: string) => {
       setSelectedRepoFiles(prev => 
@@ -1076,19 +1076,26 @@ export default function Launcher() {
                 <div className="border border-gray-200 rounded-md overflow-hidden">
                   <div className="bg-gray-50 px-3 py-2 border-b border-gray-200 flex items-center justify-between">
                     <span className="text-xs font-bold text-gray-600">Attached Files: {attachedFiles.length}</span>
-                    <button
-                      className="text-xs text-[#008DA8] font-medium hover:underline"
-                      onClick={() => setIsAddFileModalOpen(true)}
-                      data-testid="button-manage-files"
-                    >
-                      Manage
-                    </button>
+                    <Trash2
+                      className={cn(
+                        "w-4 h-4 transition-colors",
+                        attachedFiles.length > 0
+                          ? "text-red-500 hover:text-red-700 cursor-pointer"
+                          : "text-red-300 cursor-not-allowed"
+                      )}
+                      onClick={() => {
+                        if (attachedFiles.length > 0) {
+                          setAttachedFiles([]);
+                        }
+                      }}
+                      data-testid="button-delete-all-files"
+                    />
                   </div>
                   <div className="p-3 space-y-2">
                     {attachedFiles.map((file, index) => (
                       <div
                         key={index}
-                        className="flex items-center justify-between px-3 py-2 rounded-sm border border-gray-100 hover:bg-gray-50 transition-colors"
+                        className="group flex items-center justify-between px-3 py-2 rounded-sm border border-gray-100 hover:bg-gray-50 transition-colors"
                         data-testid={`card-attached-file-${index}`}
                       >
                         <div className="flex items-center gap-3">
@@ -1098,6 +1105,11 @@ export default function Launcher() {
                         <div className="flex items-center gap-3">
                           <span className="text-[10px] font-medium text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded-sm">{file.type}</span>
                           <span className="text-[10px] text-gray-400">{file.size}</span>
+                          <Trash2
+                            className="w-3.5 h-3.5 text-red-400 hover:text-red-600 cursor-pointer invisible group-hover:visible transition-colors"
+                            onClick={() => setAttachedFiles(prev => prev.filter((_, i) => i !== index))}
+                            data-testid={`button-delete-file-${index}`}
+                          />
                         </div>
                       </div>
                     ))}
