@@ -101,6 +101,7 @@ export default function Launcher() {
   const [showRefinePlan, setShowRefinePlan] = useState(false);
   const [refinePrompt, setRefinePrompt] = useState("");
   const [showVersionHistory, setShowVersionHistory] = useState(false);
+  const [showAttachedFiles, setShowAttachedFiles] = useState(false);
   const maxVersions = 5;
   const [totalVersions, setTotalVersions] = useState(1);
   const planStepCount = planText.split('\n').filter(l => l.trim()).length;
@@ -169,6 +170,14 @@ export default function Launcher() {
     "User Interviews.txt",
     "Financial Projections.xlsx",
     "Product Roadmap.pdf"
+  ];
+
+  const attachedFiles = [
+    { name: "Market Analysis Q3.pdf", type: "PDF", size: "2.4 MB" },
+    { name: "Competitor Report 2024.docx", type: "DOCX", size: "1.8 MB" },
+    { name: "User Interviews.txt", type: "TXT", size: "340 KB" },
+    { name: "Financial Projections.xlsx", type: "XLSX", size: "5.1 MB" },
+    { name: "Product Roadmap.pdf", type: "PDF", size: "3.2 MB" },
   ];
 
   const toggleRepoFile = (file: string) => {
@@ -1046,13 +1055,57 @@ export default function Launcher() {
               </div>
             </div>
             <button
-              className="border border-[#008DA8] rounded-sm px-3 py-1 text-xs font-medium text-[#008DA8] hover:bg-blue-50 transition-colors"
-              onClick={() => setIsAddFileModalOpen(true)}
+              className="border border-[#008DA8] rounded-sm px-3 py-1 text-xs font-medium text-[#008DA8] hover:bg-blue-50 transition-colors flex items-center gap-1.5"
+              onClick={() => setShowAttachedFiles(!showAttachedFiles)}
               data-testid="button-attached-files"
             >
-              Attached files: {files.length}
+              Attached files: {attachedFiles.length}
+              <ChevronDown className={cn("w-3 h-3 transition-transform duration-200", showAttachedFiles && "rotate-180")} />
             </button>
           </div>
+
+          <AnimatePresence>
+            {showAttachedFiles && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.2 }}
+                className="overflow-hidden"
+              >
+                <div className="border border-gray-200 rounded-md overflow-hidden">
+                  <div className="bg-gray-50 px-3 py-2 border-b border-gray-200 flex items-center justify-between">
+                    <span className="text-xs font-bold text-gray-600">Attached Files: {attachedFiles.length}</span>
+                    <button
+                      className="text-xs text-[#008DA8] font-medium hover:underline"
+                      onClick={() => setIsAddFileModalOpen(true)}
+                      data-testid="button-manage-files"
+                    >
+                      Manage
+                    </button>
+                  </div>
+                  <div className="p-3 space-y-2">
+                    {attachedFiles.map((file, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center justify-between px-3 py-2 rounded-sm border border-gray-100 hover:bg-gray-50 transition-colors"
+                        data-testid={`card-attached-file-${index}`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <FileText className="w-4 h-4 text-gray-400" />
+                          <span className="text-xs font-medium text-gray-700">{file.name}</span>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span className="text-[10px] font-medium text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded-sm">{file.type}</span>
+                          <span className="text-[10px] text-gray-400">{file.size}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           <div className="border border-gray-200 rounded-md overflow-hidden">
             <button 
