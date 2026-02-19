@@ -422,7 +422,7 @@ export default function SourcesPage() {
                 data-testid={`tile-source-${source.id}`}
                 onClick={() => { setDrawerSource(source); setDrawerOpen(true); }}
               >
-                <div className="flex items-center justify-between px-3 pt-3 pb-1">
+                <div className="flex items-center justify-between px-3 pt-3 pb-1 relative">
                   <div className="flex items-center gap-2">
                     <button onClick={(e) => { e.stopPropagation(); toggleSelect(source.id); }} className="shrink-0">
                       {selectedIds.has(source.id) ? (
@@ -445,6 +445,16 @@ export default function SourcesPage() {
                       )}
                     </div>
                   </div>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div className="absolute top-3 right-3 z-10" data-testid={`confidence-tile-${source.id}`}>
+                        <ConfidenceRing score={source.confidenceScore} size={24} />
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent side="top" className="max-w-[220px] text-center">
+                      <p className="text-xs">Confidence Score is an AI-driven credibility metric that separates verified facts from digital noise.</p>
+                    </TooltipContent>
+                  </Tooltip>
                 </div>
 
                 <div className="px-3 pb-2">
@@ -462,25 +472,32 @@ export default function SourcesPage() {
                     </span>
                     <span>{source.location}</span>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
-                      <button className="p-1 hover:bg-gray-200 rounded transition-colors" data-testid={`button-tile-footer-open-${source.id}`}>
-                        <ExternalLink className="w-3.5 h-3.5 text-gray-500" />
-                      </button>
-                      <button className="p-1 hover:bg-gray-200 rounded transition-colors" data-testid={`button-tile-footer-menu-${source.id}`}>
-                        <MoreVertical className="w-3.5 h-3.5 text-gray-500" />
-                      </button>
-                    </div>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <div data-testid={`confidence-tile-${source.id}`}>
-                          <ConfidenceRing score={source.confidenceScore} size={24} />
-                        </div>
-                      </TooltipTrigger>
-                      <TooltipContent side="top" className="max-w-[220px] text-center">
-                        <p className="text-xs">Confidence Score is an AI-driven credibility metric that separates verified facts from digital noise.</p>
-                      </TooltipContent>
-                    </Tooltip>
+                  <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
+                    <button className="p-1 hover:bg-gray-200 rounded transition-colors" data-testid={`button-tile-footer-open-${source.id}`}>
+                      <ExternalLink className="w-3.5 h-3.5 text-gray-500" />
+                    </button>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <button className="p-1 hover:bg-gray-200 rounded transition-colors" data-testid={`button-tile-footer-menu-${source.id}`}>
+                          <MoreVertical className="w-3.5 h-3.5 text-gray-500" />
+                        </button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem className="gap-2">
+                          <Settings className="w-4 h-4" /> Deep Extract
+                        </DropdownMenuItem>
+                        <DropdownMenuItem className="gap-2">
+                          <Shield className="w-4 h-4" /> Confidence Score
+                        </DropdownMenuItem>
+                        <DropdownMenuItem className="gap-2">
+                          {source.included ? (
+                            <><XCircle className="w-4 h-4 text-orange-400" /> Exclude</>
+                          ) : (
+                            <><CheckCircle className="w-4 h-4 text-[#00802b]" /> Include</>
+                          )}
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </div>
                 </div>
               </div>
