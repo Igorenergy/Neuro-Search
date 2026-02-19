@@ -190,8 +190,12 @@ export default function Dashboard() {
           </div>
         </Link>
 
-        {/* Research Items */}
-        {searches.map((item) => (
+        {/* Research Items — in-progress first */}
+        {[...searches].sort((a, b) => {
+          if (a.status === "in-progress" && b.status !== "in-progress") return -1;
+          if (a.status !== "in-progress" && b.status === "in-progress") return 1;
+          return 0;
+        }).map((item) => (
           <div
             key={item.id}
             className={cn(
