@@ -66,8 +66,8 @@ function ConfidenceRing({ score, size = 28 }: { score: number; size?: number }) 
   const color = score >= 80 ? "#00802b" : score >= 50 ? "#D4A373" : "#ef4444";
 
   return (
-    <div className="relative flex items-center gap-1.5">
-      <svg width={size} height={size} className="shrink-0">
+    <div className="relative flex items-center justify-center" style={{ width: size, height: size }}>
+      <svg width={size} height={size} className="absolute inset-0 -rotate-90">
         <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke="#e5e7eb" strokeWidth="2.5" />
         <circle
           cx={size / 2}
@@ -79,10 +79,9 @@ function ConfidenceRing({ score, size = 28 }: { score: number; size?: number }) 
           strokeDasharray={circumference}
           strokeDashoffset={offset}
           strokeLinecap="round"
-          transform={`rotate(-90 ${size / 2} ${size / 2})`}
         />
       </svg>
-      <span className="text-xs font-bold text-gray-700">{score}</span>
+      <span className="text-[10px] font-bold text-gray-700 z-10">{score}</span>
     </div>
   );
 }
