@@ -15,6 +15,7 @@ import {
   X,
   ChevronDown,
   Search,
+  Filter,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -240,17 +241,16 @@ export default function Dashboard() {
             <span className="text-sm font-bold text-gray-800">Status</span>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button
-                  variant="outline"
+                <button
                   className={cn(
-                    "h-8 bg-white border-gray-300 text-sm font-normal min-w-[120px] justify-between transition-all",
+                    "h-8 w-8 flex items-center justify-center rounded border transition-all",
+                    "bg-[#f8f9fa] border-gray-300 text-gray-600 hover:border-gray-400 hover:bg-white",
                     "data-[state=open]:border-black data-[state=open]:bg-white data-[state=open]:text-black"
                   )}
                   data-testid="button-status-filter"
                 >
-                  All: 20
-                  <ChevronDown className="w-4 h-4 opacity-50" />
-                </Button>
+                  <Filter className="w-4 h-4" />
+                </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-40 bg-[#1a1a1a] border-[#333] shadow-xl p-0.5">
                 {[
