@@ -17,6 +17,9 @@ import {
   Zap,
   Shield,
   FileText,
+  X,
+  RefreshCw,
+  Circle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -27,6 +30,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { cn } from "@/lib/utils";
 import { loadLaunchConfig } from "@/lib/launch-config";
 import rocketIcon from "@assets/image_1771405092616.png";
@@ -94,6 +104,8 @@ export default function SourcesPage() {
   const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
   const [sortBy, setSortBy] = useState("confidence");
   const [filtersActive, setFiltersActive] = useState(3);
+  const [showActionModal, setShowActionModal] = useState(false);
+  const [selectedAction, setSelectedAction] = useState("include");
 
   const config = loadLaunchConfig();
   const projectTitle = config?.query
@@ -199,13 +211,18 @@ export default function SourcesPage() {
 
         <div className="flex items-center gap-1.5">
           {selectedIds.size > 0 && [
-            { icon: Globe, color: "text-green-600", bg: "bg-green-100" },
-            { icon: Settings2, color: "text-blue-600", bg: "bg-blue-100" },
-            { icon: Shield, color: "text-orange-600", bg: "bg-orange-100" },
+            { icon: Globe, color: "text-green-600", bg: "bg-green-100", onClick: () => setShowActionModal(true) },
+            { icon: Settings2, color: "text-blue-600", bg: "bg-blue-100", onClick: () => {} },
+            { icon: Shield, color: "text-orange-600", bg: "bg-orange-100", onClick: () => {} },
           ].map((item, i) => (
-            <div key={i} className={cn("w-6 h-6 rounded-sm flex items-center justify-center", item.bg)}>
+            <button 
+              key={i} 
+              className={cn("w-6 h-6 rounded-sm flex items-center justify-center hover:opacity-80 transition-opacity", item.bg)}
+              onClick={item.onClick}
+              data-testid={`button-toolbar-action-${i}`}
+            >
               <item.icon className={cn("w-3.5 h-3.5", item.color)} />
-            </div>
+            </button>
           ))}
         </div>
 
@@ -368,6 +385,72 @@ export default function SourcesPage() {
           ))}
         </div>
       </div>
+
+      {/* Modal: Select Action */}
+      <Dialog open={showActionModal} onOpenChange={setShowActionModal}>
+        <DialogContent className="max-w-[320px] p-0 overflow-hidden border-none bg-white rounded-lg shadow-xl">
+          <DialogHeader className="p-4 flex flex-row items-center justify-between space-y-0">
+            <DialogTitle className="text-base font-bold text-gray-900">Select action</DialogTitle>
+            <button 
+              onClick={() => setShowActionModal(false)}
+              className="p-1 hover:bg-gray-100 rounded-sm transition-colors"
+            >
+              <X className="w-4 h-4 text-white bg-black rounded-[2px]" />
+            </button>
+          </DialogHeader>
+
+          <div className="px-6 pb-6 space-y-6">
+            <p className="text-sm text-[#008DA8] italic leading-tight">
+              You have selected rows with different statuses. Therefore, choose one of the actions
+            </p>
+
+            <RadioGroup value={selectedAction} onValueChange={setSelectedAction} className="gap-4">
+              <div className="flex items-center gap-3">
+                <RadioGroupItem value="include" id="include" className="border-gray-400 text-gray-600" />
+                <div className="flex items-center gap-2">
+                  <div className="w-5 h-5 bg-green-600 rounded-full flex items-center justify-center">
+                    <CheckSquare className="w-3 h-3 text-white" />
+                  </div>
+                  <label htmlFor="include" className="text-sm font-medium text-gray-900 cursor-pointer">
+                    Included all [{selectedIds.size}]
+                  </label>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <RadioGroupItem value="exclude" id="exclude" className="border-gray-400 text-gray-600" />
+                <div className="flex items-center gap-2">
+                  <div className="w-5 h-5 border-2 border-orange-400 rounded-full flex items-center justify-center">
+                    <Circle className="w-2 h-2 fill-orange-400 text-orange-400" />
+                  </div>
+                  <label htmlFor="exclude" className="text-sm font-medium text-gray-900 cursor-pointer">
+                    Excluded all [{selectedIds.size}]
+                  </label>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <RadioGroupItem value="reverse" id="reverse" className="border-gray-400 text-gray-600" />
+                <div className="flex items-center gap-2">
+                  <RefreshCw className="w-5 h-5 text-black" />
+                  <label htmlFor="reverse" className="text-sm font-medium text-gray-900 cursor-pointer">
+                    Reverse Status
+                  </label>
+                </div>
+              </div>
+            </RadioGroup>
+
+            <div className="flex justify-center">
+              <Button 
+                className="bg-[#00802b] hover:bg-[#006622] text-white px-10 h-9 font-bold text-sm rounded-md"
+                onClick={() => setShowActionModal(false)}
+              >
+                Apply
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
