@@ -334,22 +334,22 @@ export default function SmartSearchInProgress() {
         data-testid="panel-right"
       >
         {/* Context Header */}
-        <div className="sticky top-0 z-10 bg-white border-b border-gray-200 px-4 py-2 flex items-center justify-between gap-4 shrink-0">
-          <p className="text-xs font-medium text-gray-700 truncate max-w-[40%]" data-testid="text-project-title">
+        <div className="sticky top-0 z-10 bg-white border-b border-gray-200 px-3 py-2 flex items-center gap-3 shrink-0">
+          <div className="w-7 h-7 bg-gray-100 rounded-sm flex items-center justify-center shrink-0">
+            <Search className="w-4 h-4 text-gray-500" />
+          </div>
+          <p className="text-xs font-medium text-gray-700 truncate flex-1" data-testid="text-project-title">
             {config?.query || "Research in progress"}
           </p>
-
-          <div className="flex items-center gap-0 bg-gray-100 rounded-sm overflow-hidden border border-gray-200">
-            <button
-              className="px-4 py-1.5 text-xs font-bold text-white bg-[#008DA8] rounded-sm"
-              data-testid="button-reports-tab"
-            >
-              Reports
-            </button>
-            <span className="text-xs font-medium text-green-600 px-4 py-1.5" data-testid="text-status-in-progress">
-              Research is in progress
-            </span>
-          </div>
+          <button
+            className="px-5 py-1.5 text-xs font-bold text-white bg-green-600 rounded-sm shrink-0"
+            data-testid="button-reports-tab"
+          >
+            Reports
+          </button>
+          <span className="text-xs font-medium text-green-600 shrink-0" data-testid="text-status-in-progress">
+            Research is in progress
+          </span>
         </div>
 
         {/* Scrollable Content */}
