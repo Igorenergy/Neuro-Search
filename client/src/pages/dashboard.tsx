@@ -27,10 +27,29 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Switch as ToggleSwitch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import CloneRestartModal from "@/components/clone-restart-modal";
 import rocketIcon from "@assets/image_1771405092616.png";
 
 export default function Dashboard() {
   const [showBanner, setShowBanner] = useState(true);
+  const [detailsOpen, setDetailsOpen] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [cloneOpen, setCloneOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<{ id: number; title: string } | null>(null);
+  const [renameValue, setRenameValue] = useState("");
+  const [isPinned, setIsPinned] = useState(false);
+  const [deletedIds, setDeletedIds] = useState<number[]>([]);
 
   type ResearchStatus = "success" | "in-progress" | "failed" | "canceled";
 
@@ -58,6 +77,7 @@ export default function Dashboard() {
   ];
 
   return (
+    <>
     <div className="max-w-[1600px] mx-auto space-y-6 font-sans">
       {/* Latest News Banner */}
       {showBanner && (
@@ -202,7 +222,7 @@ export default function Dashboard() {
         </div>
 
         {/* Research Item Tiles — in-progress first */}
-        {[...searches].sort((a, b) => {
+        {[...searches].filter(s => !deletedIds.includes(s.id)).sort((a, b) => {
           if (a.status === "in-progress" && b.status !== "in-progress") return -1;
           if (a.status !== "in-progress" && b.status === "in-progress") return 1;
           return 0;
@@ -235,6 +255,7 @@ export default function Dashboard() {
                         <DropdownMenuItem
                           className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
                           data-testid={`details-${item.id}`}
+                          onClick={() => { setSelectedItem({ id: item.id, title: item.title }); setRenameValue(item.title); setIsPinned(false); setDetailsOpen(true); }}
                         >
                           <FileText className="w-4 h-4 text-gray-400" />
                           Details
@@ -242,6 +263,7 @@ export default function Dashboard() {
                         <DropdownMenuItem
                           className="flex items-center gap-2 text-sm text-[#008DA8] hover:text-[#00b0cc] focus:text-[#00b0cc] focus:bg-[#333] cursor-pointer"
                           data-testid={`clone-${item.id}`}
+                          onClick={() => { setSelectedItem({ id: item.id, title: item.title }); setCloneOpen(true); }}
                         >
                           <Copy className="w-4 h-4 text-[#008DA8]" />
                           Clone & Restart
@@ -249,6 +271,7 @@ export default function Dashboard() {
                         <DropdownMenuItem
                           className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 focus:text-red-400 focus:bg-[#333] cursor-pointer"
                           data-testid={`delete-${item.id}`}
+                          onClick={() => { setSelectedItem({ id: item.id, title: item.title }); setDeleteOpen(true); }}
                         >
                           <Trash2 className="w-4 h-4" />
                           Delete
@@ -276,5 +299,72 @@ export default function Dashboard() {
         </Button>
       </div>
     </div>
+
+    <Dialog open={detailsOpen} onOpenChange={setDetailsOpen}>
+      <DialogContent className="sm:max-w-[400px] bg-white border-gray-200">
+        <DialogHeader>
+          <DialogTitle className="text-gray-900">Research Details</DialogTitle>
+          <DialogDescription className="text-gray-500 text-sm">
+            Edit the name and pin status for this research item.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="space-y-5 py-2">
+          <div className="space-y-2">
+            <Label htmlFor="dash-rename" className="text-sm font-medium text-gray-700">Rename</Label>
+            <Input
+              id="dash-rename"
+              value={renameValue}
+              onChange={(e) => setRenameValue(e.target.value)}
+              className="border-gray-300 focus:border-[#008DA8] focus:ring-[#008DA8]"
+              data-testid="dash-input-rename"
+            />
+          </div>
+          <div className="flex items-center justify-between">
+            <Label htmlFor="dash-pin-toggle" className="text-sm font-medium text-gray-700">Pinned</Label>
+            <ToggleSwitch
+              id="dash-pin-toggle"
+              checked={isPinned}
+              onCheckedChange={setIsPinned}
+              data-testid="dash-toggle-pin"
+            />
+          </div>
+        </div>
+        <DialogFooter className="gap-2">
+          <Button variant="outline" onClick={() => setDetailsOpen(false)} className="border-gray-300 text-gray-700" data-testid="dash-button-cancel-details">
+            Cancel
+          </Button>
+          <Button onClick={() => setDetailsOpen(false)} className="bg-[#008DA8] hover:bg-[#006E7D] text-white" data-testid="dash-button-save-details">
+            Save
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+
+    <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
+      <DialogContent className="sm:max-w-[400px] bg-white border-gray-200">
+        <DialogHeader>
+          <DialogTitle className="text-gray-900">Delete Confirmation</DialogTitle>
+          <DialogDescription className="text-gray-500 text-sm">
+            Are you sure you want to delete this research? This action cannot be undone.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="py-2">
+          <p className="text-sm text-gray-700 bg-gray-50 p-3 rounded-md border border-gray-200 line-clamp-2">
+            {selectedItem?.title}
+          </p>
+        </div>
+        <DialogFooter className="gap-2">
+          <Button variant="outline" onClick={() => setDeleteOpen(false)} className="border-gray-300 text-gray-700" data-testid="dash-button-cancel-delete">
+            Cancel
+          </Button>
+          <Button variant="destructive" onClick={() => { if (selectedItem) setDeletedIds(prev => [...prev, selectedItem.id]); setDeleteOpen(false); }} className="bg-red-600 hover:bg-red-700" data-testid="dash-button-confirm-delete">
+            Delete
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+
+    <CloneRestartModal open={cloneOpen} onOpenChange={setCloneOpen} />
+  </>
   );
 }
