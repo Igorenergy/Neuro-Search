@@ -171,7 +171,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                         {item.title}
                       </p>
                       <div className="flex items-center gap-1 shrink-0 mt-1">
-                        <div className={cn("w-2 h-2 rounded-full shrink-0", statusConfig[item.status].dotColor)} />
                         <Pin className="w-3.5 h-3.5 text-gray-400 rotate-45 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer hover:text-gray-700" />
                         <MoreVertical className="w-3.5 h-3.5 text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer hover:text-gray-700" />
                       </div>
