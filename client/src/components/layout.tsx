@@ -132,7 +132,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-[200px]">
-                  <DropdownMenuItem>Smart search </DropdownMenuItem>
+                  <Link href="/smart-search/new">
+                    <DropdownMenuItem className="cursor-pointer">Smart search </DropdownMenuItem>
+                  </Link>
                 </DropdownMenuContent>
               </DropdownMenu>
               
