@@ -138,16 +138,18 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               {/* Pinned Items */}
               <div className="sticky top-0 z-10 bg-[#E6E1EF] divide-y divide-gray-200/50 border-b border-gray-300">
                 {researchItems.slice(0, 3).map((item) => (
-                  <div key={item.id} className="flex items-start gap-2 p-3 hover:bg-white/50 cursor-pointer group transition-colors">
-                    <img src={rocketIcon} alt="Rocket" className="w-4 h-4 mt-0.5 shrink-0 opacity-70" />
-                    <p className="text-[13px] leading-tight text-gray-800 line-clamp-2 font-medium flex-1">
-                      {item.title}
-                    </p>
-                    <div className="flex items-center gap-0.5 shrink-0 mt-0.5">
-                      <Pin className="w-3.5 h-3.5 text-gray-500 rotate-45 cursor-pointer hover:text-gray-700 -mr-[10px] relative -left-[10px]" />
-                      <MoreVertical className="w-3.5 h-3.5 text-gray-500 cursor-pointer hover:text-gray-700" />
+                  <Link key={item.id} href={`/research-success/${item.id}`}>
+                    <div className="flex items-start gap-2 p-3 hover:bg-white/50 cursor-pointer group transition-colors">
+                      <img src={rocketIcon} alt="Rocket" className="w-4 h-4 mt-0.5 shrink-0 opacity-70" />
+                      <p className="text-[13px] leading-tight text-gray-800 line-clamp-2 font-medium flex-1">
+                        {item.title}
+                      </p>
+                      <div className="flex items-center gap-0.5 shrink-0 mt-0.5">
+                        <Pin className="w-3.5 h-3.5 text-gray-500 rotate-45 cursor-pointer hover:text-gray-700 -mr-[10px] relative -left-[10px]" />
+                        <MoreVertical className="w-3.5 h-3.5 text-gray-500 cursor-pointer hover:text-gray-700" />
+                      </div>
                     </div>
-                  </div>
+                  </Link>
                 ))}
               </div>
               {/* Remaining Items */}
