@@ -11,11 +11,17 @@ import {
   ExternalLink,
   ChevronRight,
   ChevronLeft,
+  ChevronDown,
+  ChevronUp,
   Search,
   X,
   Globe,
   CheckCircle2,
   Clock,
+  FileText,
+  FolderOpen,
+  Package,
+  AlertCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -132,6 +138,7 @@ export default function ReportsSummary() {
   const params = useParams<{ id: string }>();
   const [activeTab, setActiveTab] = useState<"summary" | "research-log">("summary");
   const [showExtendedModal, setShowExtendedModal] = useState(false);
+  const [nextStepsExpanded, setNextStepsExpanded] = useState(false);
   const config = loadLaunchConfig();
 
   const projectTitle = config?.query
@@ -227,8 +234,8 @@ export default function ReportsSummary() {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 overflow-y-auto">
-        {activeTab === "summary" ? (
+      {activeTab === "summary" ? (
+        <div className="flex-1 overflow-y-auto">
           <div className="max-w-[900px] mx-auto py-6 px-6 space-y-4">
             {/* Strategic Overview Header */}
             <div className="mb-2 flex items-center justify-between gap-4">
@@ -325,19 +332,139 @@ export default function ReportsSummary() {
               </div>
             </Card>
           </div>
-        ) : (
-          <div className="p-4 space-y-6 max-w-5xl">
-            <div className="flex items-center gap-2 sticky top-0 bg-white/80 backdrop-blur-sm py-2 z-10 -mx-4 px-4">
-              <span className="text-xs font-bold text-[#008DA8]" data-testid="text-research-log-header">RESEARCH LOG</span>
-              <div className="flex items-center gap-1.5 ml-auto">
-                <CheckCircle2 className="w-3.5 h-3.5 text-green-600" />
-                <span className="text-[11px] font-medium text-green-700">Completed</span>
-                <span className="text-[11px] text-gray-400 ml-2 flex items-center gap-1">
-                  <Clock className="w-3 h-3" />
-                  12:34 total
-                </span>
-              </div>
+        </div>
+      ) : (
+          <div className="flex-1 flex flex-col overflow-hidden">
+            {/* Pinned: What should I do next? */}
+            <div className="shrink-0 border-b border-gray-200 bg-white z-20" data-testid="panel-next-steps">
+              <button
+                className="w-full flex items-center justify-between px-5 py-3 hover:bg-gray-50 transition-colors"
+                onClick={() => setNextStepsExpanded(!nextStepsExpanded)}
+                data-testid="button-toggle-next-steps"
+              >
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-bold text-gray-900">What should I do next?</span>
+                  <span className="text-sm text-[#008DA8]">(right arrows)</span>
+                </div>
+                {nextStepsExpanded ? (
+                  <ChevronUp className="w-4 h-4 text-gray-500" />
+                ) : (
+                  <ChevronDown className="w-4 h-4 text-gray-500" />
+                )}
+              </button>
+
+              {!nextStepsExpanded && (
+                <div className="px-5 pb-3 flex items-center gap-6 text-xs text-gray-600">
+                  <span className="flex items-center gap-1.5"><FileText className="w-3.5 h-3.5 text-gray-400" /> REPORT</span>
+                  <span className="flex items-center gap-1.5"><FolderOpen className="w-3.5 h-3.5 text-gray-400" /> SOURCES</span>
+                  <span className="flex items-center gap-1.5"><Package className="w-3.5 h-3.5 text-gray-400" /> ARTIFACTS</span>
+                  <span className="flex items-center gap-1.5"><Download className="w-3.5 h-3.5 text-gray-400" /> EXPORT</span>
+                  <span className="text-gray-300 mx-2">|</span>
+                  <span>Total: <span className="font-bold text-gray-800">$4.00</span></span>
+                  <span className="text-gray-300 mx-1">|</span>
+                  <span>Balance: <span className="font-bold text-gray-800">$124.50</span></span>
+                </div>
+              )}
+
+              {nextStepsExpanded && (
+                <div className="px-5 pb-4">
+                  <div className="flex gap-6">
+                    <div className="flex-1 space-y-2.5">
+                      <div className="flex items-start gap-2.5">
+                        <FileText className="w-4 h-4 text-gray-500 mt-0.5 shrink-0" />
+                        <p className="text-sm text-gray-700">
+                          <span className="font-bold">REPORT:</span> Project the full text of the report and conclusions in the tab on the right.
+                        </p>
+                      </div>
+                      <div className="flex items-start gap-2.5">
+                        <FolderOpen className="w-4 h-4 text-gray-500 mt-0.5 shrink-0" />
+                        <p className="text-sm text-gray-700">
+                          <span className="font-bold">SOURCES:</span> Check the list of sources and filter out the excess.
+                        </p>
+                      </div>
+                      <div className="flex items-start gap-2.5">
+                        <Package className="w-4 h-4 text-[#D97706] mt-0.5 shrink-0" />
+                        <p className="text-sm text-gray-700">
+                          <span className="font-bold">ARTIFACTS:</span> Generate a presentation or download the finished files.
+                        </p>
+                      </div>
+                      <div className="flex items-start gap-2.5">
+                        <Download className="w-4 h-4 text-gray-500 mt-0.5 shrink-0" />
+                        <p className="text-sm text-gray-700">
+                          <span className="font-bold">EXPORT:</span> Click the "Export" button in the header to download the entire project.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="shrink-0 w-px bg-gray-200" />
+
+                    <div className="shrink-0 space-y-1.5 min-w-[200px]">
+                      <h4 className="text-xs font-bold text-gray-700 mb-2">Cost Breakdown</h4>
+                      <div className="space-y-1 text-xs text-gray-600">
+                        <div className="flex justify-between gap-4">
+                          <span>Fixed cost for Core generator:</span>
+                          <span className="font-medium text-gray-800">$2.00</span>
+                        </div>
+                        <div className="flex justify-between gap-4">
+                          <span>Matches cost (10 x $0.15):</span>
+                          <span className="font-medium text-gray-800">$1.50</span>
+                        </div>
+                        <div className="flex justify-between gap-4">
+                          <span>Enrichment Cost:</span>
+                          <span className="font-medium text-gray-800">$0.50</span>
+                        </div>
+                        <div className="flex justify-between gap-4">
+                          <span className="text-gray-400">Core2x (10 x $0.050):</span>
+                          <span className="font-medium text-gray-800">$0.50</span>
+                        </div>
+                        <div className="flex justify-between gap-4 text-gray-400 text-[11px]">
+                          <span>company_summary</span>
+                          <span></span>
+                        </div>
+                        <div className="flex justify-between gap-4 pt-1.5 border-t border-gray-200 font-bold text-gray-900">
+                          <span>Total:</span>
+                          <span>$4.00</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="shrink-0 w-px bg-gray-200" />
+
+                    <div className="shrink-0 space-y-2 min-w-[160px]">
+                      <h4 className="text-xs font-bold text-gray-700 mb-2">Budget Control</h4>
+                      <div className="space-y-1.5 text-xs text-gray-600">
+                        <div>
+                          <span>Available Balance: </span>
+                          <span className="font-bold text-gray-900">$124.50</span>
+                        </div>
+                        <div>
+                          <span>Current research: </span>
+                          <span className="font-bold text-gray-900">$15.4 - $18.4</span>
+                        </div>
+                        <div className="flex items-center gap-1.5 mt-2">
+                          <AlertCircle className="w-3.5 h-3.5 text-red-500" />
+                          <span className="text-xs font-medium text-red-600">Strict Budget Cap</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
+
+            {/* Scrollable Research Log */}
+            <div className="flex-1 overflow-y-auto p-4 space-y-6 max-w-5xl">
+              <div className="flex items-center gap-2 sticky top-0 bg-white/80 backdrop-blur-sm py-2 z-10 -mx-4 px-4">
+                <span className="text-xs font-bold text-[#008DA8]" data-testid="text-research-log-header">RESEARCH LOG</span>
+                <div className="flex items-center gap-1.5 ml-auto">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-green-600" />
+                  <span className="text-[11px] font-medium text-green-700">Completed</span>
+                  <span className="text-[11px] text-gray-400 ml-2 flex items-center gap-1">
+                    <Clock className="w-3 h-3" />
+                    12:34 total
+                  </span>
+                </div>
+              </div>
 
             <div className="space-y-6" data-testid="archived-thought-stream">
               {archivedThoughtStream.map((node) => (
@@ -393,9 +520,9 @@ export default function ReportsSummary() {
                 <span className="text-xs font-medium">Research completed successfully</span>
               </div>
             </div>
+            </div>
           </div>
-        )}
-      </div>
+      )}
       </div>
       {/* Modal: Generate Extended Report */}
       <Dialog open={showExtendedModal} onOpenChange={setShowExtendedModal}>
