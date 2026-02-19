@@ -256,6 +256,14 @@ export default function ReportsSummary() {
           <div className="p-6 space-y-6">
             <div className="space-y-4">
               <div className="flex items-start gap-3">
+                <Checkbox id="executive" defaultChecked disabled className="mt-1 border-gray-300 data-[state=checked]:bg-[#008DA8] data-[state=checked]:border-[#008DA8]" />
+                <div className="space-y-1">
+                  <label htmlFor="executive" className="text-sm font-bold text-gray-900 cursor-pointer">Executive Summary (Selected by default)</label>
+                  <p className="text-xs text-gray-500">Subtitle: "TL;DR version for C-level stakeholders (1-page overview)."</p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3">
                 <Checkbox id="strategy" defaultChecked className="mt-1 border-gray-300 data-[state=checked]:bg-[#008DA8] data-[state=checked]:border-[#008DA8]" />
                 <div className="space-y-1">
                   <label htmlFor="strategy" className="text-sm font-bold text-gray-900 cursor-pointer">Strategy Frameworks</label>
@@ -279,14 +287,6 @@ export default function ReportsSummary() {
                   <label htmlFor="risk" className="text-sm font-bold text-gray-900 cursor-pointer">Risk Assessment</label>
                   <p className="text-xs text-gray-500">Subtitle: "Identifies market volatility, legal threats, and competitor moves."</p>
                   <p className="text-xs text-gray-500 italic">Value: Безопасность.</p>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3">
-                <Checkbox id="executive" defaultChecked disabled className="mt-1 border-gray-300 data-[state=checked]:bg-[#008DA8] data-[state=checked]:border-[#008DA8]" />
-                <div className="space-y-1">
-                  <label htmlFor="executive" className="text-sm font-bold text-gray-900 cursor-pointer">Executive Summary (Selected by default)</label>
-                  <p className="text-xs text-gray-500">Subtitle: "TL;DR version for C-level stakeholders (1-page overview)."</p>
                 </div>
               </div>
             </div>
