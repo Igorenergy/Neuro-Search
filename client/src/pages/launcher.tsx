@@ -103,6 +103,7 @@ export default function Launcher() {
   const [showVersionHistory, setShowVersionHistory] = useState(false);
   const [showAttachedFiles, setShowAttachedFiles] = useState(false);
   const [confirmDeleteFile, setConfirmDeleteFile] = useState<{ type: "all" } | { type: "single"; index: number } | null>(null);
+  const [fileFilter, setFileFilter] = useState<"all" | "step1" | "step2">("all");
   const maxVersions = 5;
   const [totalVersions, setTotalVersions] = useState(1);
   const planStepCount = planText.split('\n').filter(l => l.trim()).length;
@@ -174,12 +175,15 @@ export default function Launcher() {
   ];
 
   const [attachedFiles, setAttachedFiles] = useState([
-    { name: "Market Analysis Q3.pdf", type: "PDF", size: "2.4 MB" },
-    { name: "Competitor Report 2024.docx", type: "DOCX", size: "1.8 MB" },
-    { name: "User Interviews.txt", type: "TXT", size: "340 KB" },
-    { name: "Financial Projections.xlsx", type: "XLSX", size: "5.1 MB" },
-    { name: "Product Roadmap.pdf", type: "PDF", size: "3.2 MB" },
+    { name: "Market Analysis Q3.pdf", type: "PDF", size: "2.4 MB", step: "step1" as const },
+    { name: "Competitor Report 2024.docx", type: "DOCX", size: "1.8 MB", step: "step1" as const },
+    { name: "User Interviews.txt", type: "TXT", size: "340 KB", step: "step1" as const },
+    { name: "Financial Projections.xlsx", type: "XLSX", size: "5.1 MB", step: "step2" as const },
+    { name: "Product Roadmap.pdf", type: "PDF", size: "3.2 MB", step: "step2" as const },
   ]);
+  const filteredAttachedFiles = fileFilter === "all"
+    ? attachedFiles
+    : attachedFiles.filter(f => f.step === fileFilter);
 
   const toggleRepoFile = (file: string) => {
       setSelectedRepoFiles(prev => 
@@ -1075,8 +1079,18 @@ export default function Launcher() {
                 className="overflow-hidden"
               >
                 <div className="border border-gray-200 rounded-md overflow-hidden">
-                  <div className="bg-gray-50 px-3 py-2 border-b border-gray-200 flex items-center justify-between">
+                  <div className="bg-gray-50 px-3 py-2 border-b border-gray-200 flex items-center justify-between gap-2">
                     <span className="text-xs font-bold text-gray-600">Attached Files: {attachedFiles.length}</span>
+                    <Select value={fileFilter} onValueChange={(v: "all" | "step1" | "step2") => setFileFilter(v)}>
+                      <SelectTrigger className="h-6 w-[140px] text-[10px] border-gray-300 bg-white" data-testid="select-file-filter">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">All</SelectItem>
+                        <SelectItem value="step1">Added at Step1</SelectItem>
+                        <SelectItem value="step2">Added at Step2</SelectItem>
+                      </SelectContent>
+                    </Select>
                     {attachedFiles.length > 0 && (
                       <button
                         className="text-xs text-red-500 font-medium hover:text-red-700 hover:underline transition-colors"
@@ -1088,27 +1102,30 @@ export default function Launcher() {
                     )}
                   </div>
                   <div className="p-3 space-y-2">
-                    {attachedFiles.map((file, index) => (
-                      <div
-                        key={index}
-                        className="group flex items-center justify-between px-3 py-2 rounded-sm border border-gray-100 hover:bg-gray-50 transition-colors"
-                        data-testid={`card-attached-file-${index}`}
-                      >
-                        <div className="flex items-center gap-3">
-                          <FileText className="w-4 h-4 text-gray-400" />
-                          <span className="text-xs font-medium text-gray-700">{file.name}</span>
+                    {filteredAttachedFiles.map((file, index) => {
+                      const realIndex = attachedFiles.indexOf(file);
+                      return (
+                        <div
+                          key={realIndex}
+                          className="group flex items-center justify-between px-3 py-2 rounded-sm border border-gray-100 hover:bg-gray-50 transition-colors"
+                          data-testid={`card-attached-file-${realIndex}`}
+                        >
+                          <div className="flex items-center gap-3">
+                            <FileText className="w-4 h-4 text-gray-400" />
+                            <span className="text-xs font-medium text-gray-700">{file.name}</span>
+                          </div>
+                          <div className="flex items-center gap-3">
+                            <span className="text-[10px] font-medium text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded-sm">{file.type}</span>
+                            <span className="text-[10px] text-gray-400">{file.size}</span>
+                            <Trash2
+                              className="w-3.5 h-3.5 text-red-400 hover:text-red-600 cursor-pointer invisible group-hover:visible transition-colors"
+                              onClick={() => setConfirmDeleteFile({ type: "single", index: realIndex })}
+                              data-testid={`button-delete-file-${realIndex}`}
+                            />
+                          </div>
                         </div>
-                        <div className="flex items-center gap-3">
-                          <span className="text-[10px] font-medium text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded-sm">{file.type}</span>
-                          <span className="text-[10px] text-gray-400">{file.size}</span>
-                          <Trash2
-                            className="w-3.5 h-3.5 text-red-400 hover:text-red-600 cursor-pointer invisible group-hover:visible transition-colors"
-                            onClick={() => setConfirmDeleteFile({ type: "single", index })}
-                            data-testid={`button-delete-file-${index}`}
-                          />
-                        </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 </div>
               </motion.div>
