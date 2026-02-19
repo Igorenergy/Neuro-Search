@@ -54,6 +54,7 @@ import {
 import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { loadLaunchConfig } from "@/lib/launch-config";
+import { usePreviewStore } from "@/lib/preview-store";
 import { ResearchBriefingSidebar } from "@/components/research-briefing-sidebar";
 import { SourceDetailsDrawer } from "@/components/source-details-drawer";
 
@@ -117,6 +118,7 @@ export default function SourcesPage() {
   const [showDeepExtractModal, setShowDeepExtractModal] = useState(false);
   const [showConfidenceModal, setShowConfidenceModal] = useState(false);
   const [showEnhanceModal, setShowEnhanceModal] = useState(false);
+  const { openPreview } = usePreviewStore();
   const [enhanceScope, setEnhanceScope] = useState<"web" | "files">("web");
   const [enhanceEngine, setEnhanceEngine] = useState("ultimate");
   const [enhanceLanguages, setEnhanceLanguages] = useState<string[]>([]);
@@ -906,13 +908,36 @@ export default function SourcesPage() {
                       </div>
                       <div className="p-3">
                         <div className="space-y-2 mb-3">
-                          {["Market Analysis Q3.pdf", "Competitor Report.docx", "Financial Projections.xlsx"].map((name, i) => (
-                            <div key={i} className="flex items-center justify-between bg-[#008DA8] text-white px-3 py-2 rounded-sm">
+                          {[
+                            { name: "Market Analysis Q3.pdf", type: "PDF", size: "2.4 MB" },
+                            { name: "Competitor Report.docx", type: "DOCX", size: "1.8 MB" },
+                            { name: "Financial Projections.xlsx", type: "XLSX", size: "5.1 MB" },
+                          ].map((file, i) => (
+                            <div
+                              key={i}
+                              className="flex items-center justify-between bg-[#008DA8] text-white px-3 py-2 rounded-sm cursor-pointer hover:bg-[#007A92] transition-colors"
+                              onClick={() => {
+                                const previewFiles = [
+                                  { id: "enhance-0", name: "Market Analysis Q3.pdf", type: "PDF", size: "2.4 MB" },
+                                  { id: "enhance-1", name: "Competitor Report.docx", type: "DOCX", size: "1.8 MB" },
+                                  { id: "enhance-2", name: "Financial Projections.xlsx", type: "XLSX", size: "5.1 MB" },
+                                ];
+                                openPreview({
+                                  files: previewFiles,
+                                  initialFileId: `enhance-${i}`,
+                                  context: "input",
+                                });
+                              }}
+                              data-testid={`card-enhance-file-${i}`}
+                            >
                               <div className="flex items-center gap-2 min-w-0">
                                 <FileText className="w-4 h-4 text-white/80 shrink-0" strokeWidth={1.5} />
-                                <span className="text-[10px] font-medium truncate">{name}</span>
+                                <span className="text-[10px] font-medium truncate">{file.name}</span>
                               </div>
-                              <XCircle className="w-4 h-4 text-cyan-200 hover:text-white cursor-pointer shrink-0" />
+                              <XCircle
+                                className="w-4 h-4 text-cyan-200 hover:text-white cursor-pointer shrink-0"
+                                onClick={(e) => { e.stopPropagation(); }}
+                              />
                             </div>
                           ))}
                         </div>
