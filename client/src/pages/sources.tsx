@@ -344,25 +344,25 @@ export default function SourcesPage() {
                 {source.title}
               </span>
 
-              <div className="flex items-center gap-1.5 text-[11px] text-gray-500 shrink-0">
+              <div className="flex items-center gap-1.5 text-[11px] text-gray-500 w-[100px] shrink-0 justify-center">
                 <FileText className="w-3 h-3" />
                 {source.date}
               </div>
 
-              <div className="flex items-center gap-1.5 text-[11px] text-gray-500 shrink-0">
+              <div className="flex items-center gap-1.5 text-[11px] text-gray-500 w-[120px] shrink-0 justify-center">
                 <Globe className="w-3 h-3" />
                 Location: {source.location}
               </div>
 
-              <span className="text-[11px] text-gray-500 shrink-0">
+              <span className="text-[11px] text-gray-500 w-[100px] shrink-0 text-center">
                 Language: {source.language}
               </span>
 
-              <div className="shrink-0 flex items-center">
+              <div className="shrink-0 flex items-center w-[32px] justify-center">
                 <Settings className="w-3.5 h-3.5 text-blue-500" />
               </div>
 
-              <div className="shrink-0">
+              <div className="shrink-0 w-[40px] flex justify-center">
                 <ConfidenceRing score={source.confidenceScore} />
               </div>
 
