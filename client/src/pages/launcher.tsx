@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { useLocation } from "wouter";
 import { usePreviewStore } from "@/lib/preview-store";
+import { saveLaunchConfig } from "@/lib/launch-config";
 import { 
   Upload, 
   FileText, 
@@ -256,6 +257,20 @@ export default function Launcher() {
   const handleLaunch = () => {
     if (!query) return;
     setIsLaunching(true);
+    saveLaunchConfig({
+      query,
+      researchType,
+      dataEngine,
+      geoScope,
+      selectedLanguages,
+      attachedFiles,
+      planText,
+      planVersion,
+      totalVersions,
+      budgetCap,
+      deepCrawlEnabled,
+      showReasoning,
+    });
     setTimeout(() => {
       setLocation("/smart-search/in-progress/new");
     }, 1500);

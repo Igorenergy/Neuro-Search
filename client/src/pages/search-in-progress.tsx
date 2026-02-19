@@ -16,6 +16,7 @@ import {
   ExternalLink,
   AlertTriangle,
   Loader2,
+  ToggleRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -26,6 +27,7 @@ import {
   DialogContent,
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
+import { loadLaunchConfig, type LaunchConfig } from "@/lib/launch-config";
 
 interface ThoughtNode {
   id: string;
@@ -117,6 +119,19 @@ const mockThoughtStream: ThoughtNode[] = [
   },
 ];
 
+const dataEngineLabels: Record<string, string> = {
+  ultimate: "Ultimate",
+  pro: "Advanced",
+  fast: "Standard",
+};
+
+const scopeLabels: Record<string, string> = {
+  global: "Web (Global)",
+  us: "Web (US)",
+  eu: "Web (EU)",
+  local: "Local Only",
+};
+
 export default function SmartSearchInProgress() {
   const params = useParams<{ id: string }>();
   const [leftExpanded, setLeftExpanded] = useState(true);
@@ -125,6 +140,12 @@ export default function SmartSearchInProgress() {
   const [elapsedSeconds, setElapsedSeconds] = useState(45);
   const [autoScroll, setAutoScroll] = useState(true);
   const streamRef = useRef<HTMLDivElement>(null);
+  const [config, setConfig] = useState<LaunchConfig | null>(null);
+
+  useEffect(() => {
+    const loaded = loadLaunchConfig();
+    if (loaded) setConfig(loaded);
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -195,56 +216,103 @@ export default function SmartSearchInProgress() {
             <div className="space-y-3">
               <div>
                 <span className="text-[10px] font-bold text-gray-400 uppercase">Query</span>
-                <p className="text-xs text-gray-700 mt-1 leading-relaxed">
-                  Parallel.ai processors comparison and deep research capabilities analysis for investors
+                <p className="text-xs text-gray-700 mt-1 leading-relaxed" data-testid="text-briefing-query">
+                  {config?.query || "No query specified"}
                 </p>
               </div>
 
               <div>
                 <span className="text-[10px] font-bold text-gray-400 uppercase">Research Type</span>
-                <p className="text-xs text-gray-700 mt-1">Deep Search</p>
+                <p className="text-xs text-gray-700 mt-1" data-testid="text-briefing-type">
+                  {config?.researchType === "sheet" ? "Structured Sheet" : "Deep Search"}
+                </p>
               </div>
 
               <div>
                 <span className="text-[10px] font-bold text-gray-400 uppercase">Data Engine</span>
-                <div className="flex items-center gap-1.5 mt-1">
-                  <Zap className="w-3 h-3 text-yellow-500 fill-yellow-500" />
-                  <span className="text-xs font-bold text-gray-700">Ultimate</span>
+                <div className="flex items-center gap-1.5 mt-1" data-testid="text-briefing-engine">
+                  <Zap className={cn("w-3 h-3", 
+                    config?.dataEngine === "ultimate" ? "text-yellow-500 fill-yellow-500" :
+                    config?.dataEngine === "pro" ? "text-blue-500 fill-blue-500" :
+                    "text-green-500 fill-green-500"
+                  )} />
+                  <span className="text-xs font-bold text-gray-700">
+                    {dataEngineLabels[config?.dataEngine || "ultimate"] || "Ultimate"}
+                  </span>
                 </div>
               </div>
 
               <div>
                 <span className="text-[10px] font-bold text-gray-400 uppercase">Scope</span>
-                <div className="flex items-center gap-1.5 mt-1">
+                <div className="flex items-center gap-1.5 mt-1" data-testid="text-briefing-scope">
                   <Globe className="w-3 h-3 text-gray-500" />
-                  <span className="text-xs text-gray-700">Web (Global)</span>
+                  <span className="text-xs text-gray-700">
+                    {scopeLabels[config?.geoScope || "global"] || "Web (Global)"}
+                  </span>
                 </div>
               </div>
 
-              <div>
-                <span className="text-[10px] font-bold text-gray-400 uppercase">Languages</span>
-                <div className="flex gap-1 mt-1">
-                  <Badge variant="secondary" className="text-[10px] px-1.5 py-0">EN</Badge>
-                  <Badge variant="secondary" className="text-[10px] px-1.5 py-0">RU</Badge>
+              {(config?.selectedLanguages?.length ?? 0) > 0 && (
+                <div>
+                  <span className="text-[10px] font-bold text-gray-400 uppercase">Languages</span>
+                  <div className="flex gap-1 mt-1 flex-wrap" data-testid="text-briefing-languages">
+                    {config!.selectedLanguages.map((lang) => (
+                      <Badge key={lang} variant="secondary" className="text-[10px] px-1.5 py-0">
+                        {lang.toUpperCase()}
+                      </Badge>
+                    ))}
+                  </div>
                 </div>
+              )}
+
+              {(config?.attachedFiles?.length ?? 0) > 0 && (
+                <div>
+                  <span className="text-[10px] font-bold text-gray-400 uppercase">Attached Files ({config!.attachedFiles.length})</span>
+                  <div className="space-y-1 mt-1" data-testid="text-briefing-files">
+                    {config!.attachedFiles.map((f, i) => (
+                      <div key={i} className="flex items-center gap-2 text-xs text-gray-600">
+                        <FileText className="w-3 h-3 text-gray-400" />
+                        <span className="truncate">{f.name}</span>
+                        <span className="text-[10px] text-gray-400 shrink-0">{f.size}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              <div>
+                <span className="text-[10px] font-bold text-gray-400 uppercase">Budget Cap</span>
+                <p className="text-xs text-gray-700 mt-1" data-testid="text-briefing-budget">
+                  {config?.budgetCap ? "Enabled" : "Disabled"}
+                </p>
               </div>
 
               <div>
-                <span className="text-[10px] font-bold text-gray-400 uppercase">Attached Files</span>
+                <span className="text-[10px] font-bold text-gray-400 uppercase">Options</span>
                 <div className="space-y-1 mt-1">
-                  {["Market Analysis Q3.pdf", "Competitor Report.docx", "Financial Projections.xlsx"].map((f, i) => (
-                    <div key={i} className="flex items-center gap-2 text-xs text-gray-600">
-                      <FileText className="w-3 h-3 text-gray-400" />
-                      <span className="truncate">{f}</span>
-                    </div>
-                  ))}
+                  <div className="flex items-center gap-1.5 text-xs text-gray-600">
+                    <ToggleRight className={cn("w-3 h-3", config?.deepCrawlEnabled ? "text-green-500" : "text-gray-400")} />
+                    <span>Deep Crawl: {config?.deepCrawlEnabled ? "On" : "Off"}</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 text-xs text-gray-600">
+                    <ToggleRight className={cn("w-3 h-3", config?.showReasoning ? "text-green-500" : "text-gray-400")} />
+                    <span>Show Reasoning: {config?.showReasoning ? "On" : "Off"}</span>
+                  </div>
                 </div>
               </div>
 
-              <div>
-                <span className="text-[10px] font-bold text-gray-400 uppercase">Budget</span>
-                <p className="text-xs text-gray-700 mt-1">$15.40 - $18.40</p>
-              </div>
+              {config?.planText && (
+                <div>
+                  <span className="text-[10px] font-bold text-gray-400 uppercase">
+                    Research Plan (v{config.planVersion}/{config.totalVersions})
+                  </span>
+                  <div className="mt-1 bg-gray-50 border border-gray-200 rounded-sm p-2 max-h-[200px] overflow-y-auto" data-testid="text-briefing-plan">
+                    <p className="text-[11px] text-gray-600 leading-relaxed whitespace-pre-wrap">
+                      {config.planText}
+                    </p>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -257,7 +325,7 @@ export default function SmartSearchInProgress() {
         {/* Context Header */}
         <div className="sticky top-0 z-10 bg-white border-b border-gray-200 px-4 py-2 flex items-center justify-between gap-4 shrink-0">
           <p className="text-xs font-medium text-gray-700 truncate max-w-[40%]" data-testid="text-project-title">
-            Parallel.ai: Complete analysis and strategic overview for investors
+            {config?.query || "Research in progress"}
           </p>
 
           <div className="flex items-center gap-0 bg-gray-100 rounded-sm overflow-hidden border border-gray-200">
@@ -292,7 +360,9 @@ export default function SmartSearchInProgress() {
                     <div className="w-6 h-6 bg-gray-200 rounded-sm flex items-center justify-center">
                       <Settings2 className="w-3.5 h-3.5 text-gray-500" />
                     </div>
-                    <span className="text-xs font-bold text-gray-700">Data_engine_name</span>
+                    <span className="text-xs font-bold text-gray-700">
+                      {dataEngineLabels[config?.dataEngine || "ultimate"] || "Ultimate"} Engine
+                    </span>
                   </div>
                   <div className="flex items-center gap-6">
                     <div className="flex items-center gap-1.5 text-xs text-gray-600">
