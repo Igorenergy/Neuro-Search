@@ -801,7 +801,25 @@ export default function Launcher() {
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
                                {step1Files.map((id, i) => (
-                                  <div key={id} className="flex items-center justify-between bg-[#008DA8] text-white px-3 py-2 rounded-sm relative overflow-hidden group">
+                                  <div
+                                    key={id}
+                                    className="flex items-center justify-between bg-[#008DA8] text-white px-3 py-2 rounded-sm relative overflow-hidden group cursor-pointer"
+                                    onClick={() => {
+                                      const previewFiles = step1Files.map((fId) => ({
+                                        id: `step1-${fId}`,
+                                        name: `Mock File ${fId}.pdf`,
+                                        type: "PDF",
+                                        size: "150.5 KB",
+                                        step: "step1",
+                                      }));
+                                      openPreview({
+                                        files: previewFiles,
+                                        initialFileId: `step1-${id}`,
+                                        context: "input",
+                                      });
+                                    }}
+                                    data-testid={`card-step1-file-${id}`}
+                                  >
                                     <div className="flex items-center gap-2 min-w-0">
                                       <FileText className="w-5 h-5 text-white/80 shrink-0" strokeWidth={1.5} />
                                       <div className="flex flex-col min-w-0">
@@ -838,7 +856,26 @@ export default function Launcher() {
                             {step2Files.length > 0 && (
                                <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-4">
                                   {step2Files.map((file, i) => (
-                                     <div key={i} className="flex items-center justify-between bg-[#008DA8] text-white px-3 py-2 rounded-sm relative overflow-hidden group">
+                                     <div
+                                       key={i}
+                                       className="flex items-center justify-between bg-[#008DA8] text-white px-3 py-2 rounded-sm relative overflow-hidden group cursor-pointer"
+                                       onClick={() => {
+                                         const ext = file.name.split(".").pop()?.toUpperCase() || "FILE";
+                                         const previewFiles = step2Files.map((f, idx) => ({
+                                           id: `step2-${idx}`,
+                                           name: f.name,
+                                           type: f.name.split(".").pop()?.toUpperCase() || "FILE",
+                                           size: `${(f.size / 1024).toFixed(1)} KB`,
+                                           step: "step2",
+                                         }));
+                                         openPreview({
+                                           files: previewFiles,
+                                           initialFileId: `step2-${i}`,
+                                           context: "input",
+                                         });
+                                       }}
+                                       data-testid={`card-step2-file-${i}`}
+                                     >
                                        <div className="flex items-center gap-2 min-w-0">
                                          <FileText className="w-5 h-5 text-white/80 shrink-0" strokeWidth={1.5} />
                                          <div className="flex flex-col min-w-0">
