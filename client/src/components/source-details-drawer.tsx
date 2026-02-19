@@ -26,7 +26,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
-import type { SourceRow } from "@/pages/sources";
+import type { SourceRow } from "@/lib/types";
 
 interface SourceDetailsDrawerProps {
   source: SourceRow | null;

@@ -43,18 +43,7 @@ import { ResearchBriefingSidebar } from "@/components/research-briefing-sidebar"
 import { SourceDetailsDrawer } from "@/components/source-details-drawer";
 
 
-export interface SourceRow {
-  id: number;
-  title: string;
-  domain: string;
-  favicon: string;
-  date: string;
-  location: string;
-  language: string;
-  confidenceScore: number;
-  included: boolean;
-  type: "web" | "pdf" | "doc";
-}
+import type { SourceRow } from "@/lib/types";
 
 const mockSources: SourceRow[] = [
   { id: 1, title: "Strategic Audit Dashboard-Full Dataset...", domain: "parallelai.tech", favicon: "https://www.google.com/s2/favicons?domain=parallelai.tech&sz=16", date: "10.05.2025", location: "USA", language: "En", confidenceScore: 95, included: true, type: "web" },
