@@ -1498,9 +1498,7 @@ export default function Launcher() {
 
           <div className="flex items-center justify-between gap-4">
             <div className="space-y-2">
-              <p className="text-orange-500 font-medium text-[20px]">
-                Reason: High load on Smart Search nodes.
-              </p>
+              <p className="text-orange-500 font-medium text-[20px]">Reason: High load on Smart Search engine.</p>
               <p className="text-xs text-gray-600">
                 Queue Position: <strong>#4</strong>
               </p>
