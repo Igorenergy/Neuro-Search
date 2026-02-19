@@ -344,48 +344,50 @@ export default function SourcesPage() {
                 {source.title}
               </span>
 
-              <div className="flex items-center gap-1.5 text-[11px] text-gray-500 w-[100px] shrink-0 justify-center">
-                <FileText className="w-3 h-3" />
-                {source.date}
-              </div>
+              <div className="flex items-center justify-between flex-1 min-w-0 gap-3">
+                <div className="flex items-center gap-1.5 text-[11px] text-gray-500 shrink-0">
+                  <FileText className="w-3 h-3" />
+                  {source.date}
+                </div>
 
-              <div className="flex items-center gap-1.5 text-[11px] text-gray-500 w-[120px] shrink-0 justify-center">
-                <Globe className="w-3 h-3" />
-                Location: {source.location}
-              </div>
+                <div className="flex items-center gap-1.5 text-[11px] text-gray-500 shrink-0">
+                  <Globe className="w-3 h-3" />
+                  Location: {source.location}
+                </div>
 
-              <span className="text-[11px] text-gray-500 w-[100px] shrink-0 text-center">
-                Language: {source.language}
-              </span>
+                <span className="text-[11px] text-gray-500 shrink-0">
+                  Language: {source.language}
+                </span>
 
-              <div className="shrink-0 flex items-center w-[32px] justify-center">
-                <Settings className="w-3.5 h-3.5 text-blue-500" />
-              </div>
+                <div className="shrink-0 flex items-center">
+                  <Settings className="w-3.5 h-3.5 text-blue-500" />
+                </div>
 
-              <div className="shrink-0 w-[40px] flex justify-center">
-                <ConfidenceRing score={source.confidenceScore} />
-              </div>
+                <div className="shrink-0">
+                  <ConfidenceRing score={source.confidenceScore} />
+                </div>
 
-              <div className="flex items-center gap-1 shrink-0 ml-auto">
-                <button
-                  className="p-1 hover:bg-gray-200 rounded transition-colors"
-                  data-testid={`button-open-source-${source.id}`}
-                >
-                  <ExternalLink className="w-3.5 h-3.5 text-gray-500" />
-                </button>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <button className="p-1 hover:bg-gray-200 rounded transition-colors" data-testid={`button-source-menu-${source.id}`}>
-                      <MoreVertical className="w-3.5 h-3.5 text-gray-500" />
-                    </button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem>Deep Extract</DropdownMenuItem>
-                    <DropdownMenuItem>Open Original</DropdownMenuItem>
-                    <DropdownMenuItem>{source.included ? "Exclude" : "Include"}</DropdownMenuItem>
-                    <DropdownMenuItem className="text-red-600">Remove</DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                <div className="flex items-center gap-1 shrink-0">
+                  <button
+                    className="p-1 hover:bg-gray-200 rounded transition-colors"
+                    data-testid={`button-open-source-${source.id}`}
+                  >
+                    <ExternalLink className="w-3.5 h-3.5 text-gray-500" />
+                  </button>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <button className="p-1 hover:bg-gray-200 rounded transition-colors" data-testid={`button-source-menu-${source.id}`}>
+                        <MoreVertical className="w-3.5 h-3.5 text-gray-500" />
+                      </button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem>Deep Extract</DropdownMenuItem>
+                      <DropdownMenuItem>Open Original</DropdownMenuItem>
+                      <DropdownMenuItem>{source.included ? "Exclude" : "Include"}</DropdownMenuItem>
+                      <DropdownMenuItem className="text-red-600">Remove</DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
               </div>
             </div>
           ))}
