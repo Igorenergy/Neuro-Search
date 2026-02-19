@@ -19,6 +19,7 @@ import {
   ToggleRight,
   ChevronDown,
   Copy,
+  Rocket,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -401,7 +402,7 @@ export default function SmartSearchInProgress() {
         {/* Context Header */}
         <div className="sticky top-0 z-10 border-b border-gray-200 px-3 py-2 flex items-center gap-3 shrink-0 bg-[#dddddd]">
           <div className="w-8 h-8 bg-gray-800 rounded-sm flex items-center justify-center shrink-0">
-            <FileText className="w-4 h-4 text-white" />
+            <Rocket className="w-4 h-4 text-white" />
           </div>
           <p className="text-xs font-medium text-gray-700 flex-1 leading-snug line-clamp-2" data-testid="text-project-title">
             {(() => {
