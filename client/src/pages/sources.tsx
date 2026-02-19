@@ -948,7 +948,7 @@ export default function SourcesPage() {
                       <div className="flex items-center justify-between p-2 border-b border-gray-200">
                         <div className="flex items-center gap-2">
                           <FileText className="w-5 h-5" strokeWidth={1.5} />
-                          <span className="text-sm font-medium">Files & Assets: {enhanceFiles.length}/10</span>
+                          <span className="text-sm font-medium text-[#274b8a]">Files & Assets: {enhanceFiles.length}/10</span>
                         </div>
                         {enhanceFiles.length > 0 && (
                           <div className="flex items-center gap-2 text-xs text-gray-600">
@@ -1107,7 +1107,6 @@ export default function SourcesPage() {
           </div>
         </>
       )}
-
       <Dialog open={isAddFileModalOpen} onOpenChange={setIsAddFileModalOpen}>
         <DialogContent className="max-w-xl p-0 gap-0 bg-[#F8F9FA] overflow-hidden">
           <div className="flex items-center justify-between p-3 border-b border-gray-200 bg-white">
