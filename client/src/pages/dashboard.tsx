@@ -242,7 +242,10 @@ export default function Dashboard() {
               <DropdownMenuTrigger asChild>
                 <Button
                   variant="outline"
-                  className="h-8 bg-white border-gray-300 text-sm font-normal min-w-[120px] justify-between"
+                  className={cn(
+                    "h-8 bg-white border-gray-300 text-sm font-normal min-w-[120px] justify-between transition-all",
+                    "data-[state=open]:border-black data-[state=open]:bg-white data-[state=open]:text-black"
+                  )}
                   data-testid="button-status-filter"
                 >
                   All: 20
