@@ -137,9 +137,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 </DropdownMenuContent>
               </DropdownMenu>
               
-              <Button size="icon" className="h-9 w-9 bg-[#5F8D4E] hover:bg-[#4d753e] rounded-sm shrink-0">
-                <Search className="w-5 h-5 text-white stroke-[3]" />
-              </Button>
+              <Link href="/research/search">
+                <Button size="icon" className="h-9 w-9 bg-[#5F8D4E] hover:bg-[#4d753e] rounded-sm shrink-0">
+                  <Search className="w-5 h-5 text-white stroke-[3]" />
+                </Button>
+              </Link>
             </div>
 
             {/* Navigation Links */}
