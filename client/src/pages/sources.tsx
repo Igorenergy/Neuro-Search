@@ -422,7 +422,7 @@ export default function SourcesPage() {
                 data-testid={`tile-source-${source.id}`}
                 onClick={() => { setDrawerSource(source); setDrawerOpen(true); }}
               >
-                <div className="flex items-center justify-between px-3 pt-3 pb-1 relative">
+                <div className="flex items-center justify-between px-3 pt-3 pb-1 relative border-b border-gray-100">
                   <div className="flex items-center gap-3 text-[10px] text-gray-500">
                     <span className="flex items-center gap-1">
                       <FileText className="w-3 h-3" />
