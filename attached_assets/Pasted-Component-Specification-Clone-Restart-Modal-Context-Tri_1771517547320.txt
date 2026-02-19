@@ -1,0 +1,79 @@
+Component Specification: "Clone & Restart" Modal
+Context: Triggered when the user clicks the [ Clone & Restart ] button from a completed, aborted, or failed research project (e.g., from the Read-Only Left Panel/Drawer).
+Role: To eliminate repetitive data entry. It acts as an interactive bridge, allowing the user to take a previous research payload, modify specific variables (like tweaking the prompt or changing the engine), and launch a new iteration without overwriting the original history.
+
+1. Layout & Presentation (UI)
+Component Type: Centered Dialog/Modal (shadcn/ui Dialog or AlertDialog).
+
+Backdrop: A dark, semi-transparent overlay (bg-black/50 with backdrop-blur-sm). Clicking the backdrop should not close the modal to prevent accidental data loss while editing.
+
+Container: A clean, white, rounded card (max-w-2xl w-full).
+
+Header: * Title: "Clone Research Operation" or "New Iteration".
+
+Subtitle: "Review and adjust your previous parameters before launching."
+
+Close Icon: [X] in the top right corner.
+
+2. Form Fields & Editable State (The Core)
+When the modal opens, it must immediately populate its internal state with the data from the previous run.
+
+Field 1: The Prompt (Omni-Input)
+
+UI: A large, resizable textarea.
+
+Logic: Pre-filled with the exact text prompt from the original research. The user can freely edit this text (e.g., changing "in the EU" to "in the USA").
+
+Field 2: Data Engine / Tier Selection
+
+UI: A 3-column segmented control or radio cards (Standard, Advanced, Ultimate).
+
+Logic: Pre-selected based on the original run. This allows the user to say, "The Advanced engine failed, let me retry this exact prompt with the Ultimate engine."
+
+Field 3: Attached Files Context
+
+UI: A visual list of files that were attached to the original run. Each file has a small [x] to remove it. Below the list, a subtle [ + Add another file ] button.
+
+Logic: Critical Backend Rule: The UI must pass the existing file references (IDs) to the new payload. The user should not have to re-upload files that are already stored in their Workspace/Assets Repository.
+
+Field 4: Advanced Settings (Contextual Reveal)
+
+UI: Toggles for features like "Deep Linked Research".
+
+Logic: As defined in your system architecture, if the attached files contain links, display the [ Deep Linked Research (N links found) ] toggle and preserve its previous state (ON/OFF).
+
+3. Footer & Actions
+Layout: Right-aligned action buttons (flex justify-end gap-3 p-4 bg-gray-50 border-t).
+
+Left Side (Optional Cost Indicator): If the new settings change the price, show a dynamically updating estimate (e.g., Estimated Cost: $1.20).
+
+Secondary Action: [ Cancel ] (Closes modal, discards state changes).
+
+Primary Action: [ Launch New Research ] (Prominent CTA, e.g., solid black or brand color).
+
+4. Workflow Logic & State Management (For the Developer)
+State Initialization:
+
+TypeScript
+// When [Clone] is clicked, populate the modal state:
+const initialCloneState = {
+  query: previousTask.query,
+  engine: previousTask.engine,
+  files: previousTask.files.map(f => f.id), 
+  deepLinksEnabled: previousTask.settings.deepLinksEnabled
+}
+Submit Action (onLaunch):
+
+When the user clicks Launch, the frontend compiles the modified state into a new payload.
+
+The frontend sends a POST /api/research/start request.
+
+Crucial Routing: Do not update the current project ID. The backend must generate a NEW unique ID for this run.
+
+The Transition:
+
+Upon successful API response (receipt of the new ID), close the modal.
+
+Instantly redirect the user to the new progress view: router.push('/smart-search/in-progress/${NEW_ID}').
+
+The previous research remains fully intact in the user's History/Reports.
