@@ -212,7 +212,7 @@ export default function SourcesPage() {
           ].map((item, i) => (
             <button 
               key={i} 
-              className={cn("w-6 h-6 rounded-sm flex items-center justify-center hover:opacity-80 transition-opacity", item.bg)}
+              className={cn("w-6 h-6 rounded-sm flex items-center justify-center transition-all hover:scale-110 hover:shadow-sm", item.bg)}
               onClick={item.onClick}
               data-testid={`button-toolbar-action-${i}`}
             >
