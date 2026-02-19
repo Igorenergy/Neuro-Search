@@ -229,7 +229,7 @@ export default function SourcesPage() {
           INCLUDED: {includedCount} [{totalCount}]
         </span>
 
-        <div className="w-px h-5 bg-gray-300" />
+        <div className="flex-1" />
 
         <button className="flex items-center gap-1.5 text-xs font-bold text-[#008DA8]" data-testid="button-filters">
           <Filter className="w-3.5 h-3.5" />
