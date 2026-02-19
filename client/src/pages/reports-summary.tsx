@@ -117,12 +117,6 @@ export default function ReportsSummary() {
           </button>
         </div>
 
-        <button
-          className="text-xs font-bold text-[#008DA8] hover:text-[#006E7D] transition-colors underline underline-offset-2"
-          data-testid="button-generate-extended"
-        >
-          GENERATE EXTENDED REPORT
-        </button>
       </div>
 
       {/* Main Content */}
@@ -130,13 +124,21 @@ export default function ReportsSummary() {
         {activeTab === "summary" ? (
           <div className="max-w-[900px] mx-auto py-6 px-6 space-y-4">
             {/* Strategic Overview Header */}
-            <div className="mb-2">
-              <h2 className="text-base font-bold text-gray-900" data-testid="text-overview-title">
-                Strategic Overview & Key Insights
-              </h2>
-              <p className="text-xs text-gray-500 mt-1 leading-relaxed max-w-[700px]">
-                Весь текст должен укладываться в 300–450 слов (максимум 2000–2500 знаков). Визуально это должно занимать 1–1.5 экрана на десктопе, чтобы пользователю почти не приходилось скроллить.
-              </p>
+            <div className="mb-2 flex items-center justify-between gap-4">
+              <div>
+                <h2 className="text-base font-bold text-gray-900" data-testid="text-overview-title">
+                  Strategic Overview & Key Insights
+                </h2>
+                <p className="text-xs text-gray-500 mt-1 leading-relaxed max-w-[700px]">
+                  Весь текст должен укладываться в 300–450 слов (максимум 2000–2500 знаков). Визуально это должно занимать 1–1.5 экрана на десктопе, чтобы пользователю почти не приходилось скроллить.
+                </p>
+              </div>
+              <button
+                className="text-xs font-bold text-[#008DA8] hover:text-[#006E7D] transition-colors underline underline-offset-2 shrink-0"
+                data-testid="button-generate-extended"
+              >
+                GENERATE EXTENDED REPORT
+              </button>
             </div>
 
             {/* Card 1: The Verdict */}
