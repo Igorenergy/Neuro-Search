@@ -54,6 +54,16 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     { id: 8, title: "Стратегический Риск-менеджмент в Трейдинге: Психология, Инстру...", icon: MoreVertical },
     { id: 9, title: "NFT как Инвестиционный Актив: Анализ Волатильности, Ликвиднос...", icon: MoreVertical },
     { id: 10, title: "Фискальная Политика Евросоюза: Анализ Бюджета на 2026 год и Вли ...", icon: MoreVertical },
+    { id: 11, title: "Квантовые Вычисления: Прорывы 2025 года и Влияние на Криптографию...", icon: MoreVertical },
+    { id: 12, title: "Анализ Рынка Электромобилей: Tesla vs BYD vs Rivian — Конкурентные...", icon: Paperclip },
+    { id: 13, title: "Кибербезопасность в Эпоху AI: Новые Угрозы и Стратегии Защиты...", icon: MoreVertical },
+    { id: 14, title: "Глобальные Цепочки Поставок 2025: Реструктуризация и Геополитические...", icon: MoreVertical },
+    { id: 15, title: "Метавселенная для Бизнеса: ROI Анализ Корпоративных Внедрений...", icon: Paperclip },
+    { id: 16, title: "Зелёная Энергетика: Инвестиционные Возможности в Солнечной и Ветровой...", icon: MoreVertical },
+    { id: 17, title: "Нейроинтерфейсы и BCI: Медицинские Применения и Этические Вопросы...", icon: MoreVertical },
+    { id: 18, title: "Рынок SaaS B2B: Тренды Консолидации и Стратегии Выхода 2025–2027...", icon: Paperclip },
+    { id: 19, title: "Автономное Вождение Level 4: Регуляторные Барьеры и Дорожная Карта...", icon: MoreVertical },
+    { id: 20, title: "Цифровой Рубль и CBDC: Макроэкономический Анализ и Сценарии Внедрения...", icon: MoreVertical },
   ];
 
   const SidebarContent = ({ collapsed }: { collapsed?: boolean }) => (
