@@ -793,9 +793,6 @@ export default function SourcesPage() {
             <div className="px-6 py-2 bg-[#0097B2] text-white text-xs font-bold flex items-center justify-center">
               ENHANCE RESEARCH
             </div>
-            <div className="px-6 py-2 bg-[#F0F2F5] text-[#5A6B7C] text-xs font-bold flex items-center justify-center border-r border-gray-300">
-              REASONING
-            </div>
             <div className="flex-1 bg-[#5A6B7C]" />
             <button
               onClick={() => setShowEnhanceModal(false)}
