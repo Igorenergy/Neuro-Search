@@ -321,10 +321,14 @@ export default function SourcesPage() {
               </button>
 
               <div className={cn(
-                "w-6 h-6 rounded-sm flex items-center justify-center shrink-0",
-                source.included ? "bg-green-100" : "bg-orange-100"
+                "w-6 h-6 rounded-full flex items-center justify-center shrink-0",
+                source.included ? "bg-[#00802b]" : "border-2 border-orange-400"
               )}>
-                <Globe className={cn("w-3.5 h-3.5", source.included ? "text-green-600" : "text-orange-500")} />
+                {source.included ? (
+                  <CheckSquare className="w-3 h-3 text-white" />
+                ) : (
+                  <Circle className="w-2 h-2 fill-orange-400 text-orange-400" />
+                )}
               </div>
 
               <div className={cn(
