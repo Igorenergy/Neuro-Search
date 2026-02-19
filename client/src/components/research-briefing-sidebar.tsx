@@ -74,9 +74,8 @@ export function ResearchBriefingSidebar() {
           <ChevronRight className="w-3 h-3 text-gray-500" />
         )}
       </button>
-
       {!leftExpanded && (
-        <div className="flex flex-col items-center justify-center h-full">
+        <div className="flex flex-col items-center justify-center h-full bg-[#e4e7eb]">
           <span
             className="text-xs font-bold text-gray-500 tracking-widest"
             style={{ writingMode: "vertical-rl", textOrientation: "mixed" }}
@@ -85,7 +84,6 @@ export function ResearchBriefingSidebar() {
           </span>
         </div>
       )}
-
       {leftExpanded && (
         <div className="flex flex-col h-full p-4 pr-6 space-y-4 overflow-hidden">
           <h3 className="text-sm font-bold text-gray-800 sticky top-0 py-2 z-10 -mx-4 px-4 border-b border-gray-100 ml-[-10px] mr-[-10px] pl-[1px] pr-[1px] pt-[3px] pb-[3px] mt-[0px] mb-[0px] bg-[#9f9f9f59]">
