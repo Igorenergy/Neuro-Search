@@ -12,7 +12,7 @@ import {
   List,
   CheckSquare,
   Square,
-  Settings2,
+  Settings,
   Globe,
   Zap,
   Shield,
@@ -212,7 +212,7 @@ export default function SourcesPage() {
         <div className="flex items-center gap-1.5">
           {selectedIds.size > 0 && [
             { icon: Globe, color: "text-green-600", bg: "bg-green-100", onClick: () => setShowActionModal(true) },
-            { icon: Settings2, color: "text-blue-600", bg: "bg-blue-100", onClick: () => {} },
+            { icon: Settings, color: "text-blue-600", bg: "bg-blue-100", onClick: () => {} },
             { icon: Shield, color: "text-orange-600", bg: "bg-orange-100", onClick: () => {} },
           ].map((item, i) => (
             <button 
@@ -357,7 +357,7 @@ export default function SourcesPage() {
               </span>
 
               <div className="shrink-0 flex items-center gap-1">
-                <Settings2 className="w-3.5 h-3.5 text-blue-500" />
+                <Settings className="w-3.5 h-3.5 text-blue-500" />
               </div>
 
               <div className="shrink-0">
