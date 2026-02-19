@@ -29,12 +29,29 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Switch as ToggleSwitch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { Trash2, FileText } from "lucide-react";
 import rocketIcon from "@assets/image_1771405092616.png";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [detailsOpen, setDetailsOpen] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<{ id: number; title: string } | null>(null);
+  const [renameValue, setRenameValue] = useState("");
+  const [isPinned, setIsPinned] = useState(false);
 
   useEffect(() => {
     const isResultsPage = location.includes("research-success") || location.includes("sources/");
@@ -146,35 +163,83 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               {/* Pinned Items */}
               <div className="sticky top-0 z-10 bg-[#E6E1EF] divide-y divide-gray-200/50 border-b border-gray-300">
                 {researchItems.slice(0, 3).map((item) => (
-                  <Link key={item.id} href={`${statusConfig[item.status].route}/${item.id}`}>
-                    <div className={cn("flex items-start gap-2 p-3 hover:bg-white/50 cursor-pointer group transition-colors border-l-[3px]", statusConfig[item.status].borderColor)}>
+                  <div key={item.id} className={cn("flex items-start gap-2 p-3 hover:bg-white/50 cursor-pointer group transition-colors border-l-[3px]", statusConfig[item.status].borderColor)}>
+                    <Link href={`${statusConfig[item.status].route}/${item.id}`} className="flex items-start gap-2 flex-1 min-w-0">
                       <img src={rocketIcon} alt="Rocket" className="w-4 h-4 mt-0.5 shrink-0 opacity-70" />
                       <p className="text-[13px] leading-tight text-gray-800 line-clamp-2 font-medium flex-1">
                         {item.title}
                       </p>
-                      <div className="flex items-center gap-1 shrink-0 mt-1">
-                        <Pin className="w-3.5 h-3.5 text-gray-500 rotate-45 cursor-pointer hover:text-gray-700 -mr-[10px] relative -left-[10px]" />
-                        <MoreVertical className="w-3.5 h-3.5 text-gray-500 cursor-pointer hover:text-gray-700" />
-                      </div>
+                    </Link>
+                    <div className="flex items-center gap-1 shrink-0 mt-0.5">
+                      <Pin className="w-3.5 h-3.5 text-gray-500 rotate-45 cursor-pointer hover:text-gray-700 -mr-[10px] relative -left-[10px]" />
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild onClick={(e) => e.preventDefault()}>
+                          <button className="p-0 border-0 bg-transparent" data-testid={`kebab-menu-${item.id}`}>
+                            <MoreVertical className="w-3.5 h-3.5 text-gray-500 cursor-pointer hover:text-gray-700" />
+                          </button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="w-40 bg-white border-gray-200 shadow-lg">
+                          <DropdownMenuItem
+                            className="flex items-center gap-2 text-sm cursor-pointer"
+                            onClick={(e) => { e.preventDefault(); setSelectedItem(item); setRenameValue(item.title); setIsPinned(true); setDetailsOpen(true); }}
+                            data-testid={`details-${item.id}`}
+                          >
+                            <FileText className="w-4 h-4 text-gray-500" />
+                            Details
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            className="flex items-center gap-2 text-sm text-red-600 focus:text-red-600 cursor-pointer"
+                            onClick={(e) => { e.preventDefault(); setSelectedItem(item); setDeleteOpen(true); }}
+                            data-testid={`delete-${item.id}`}
+                          >
+                            <Trash2 className="w-4 h-4" />
+                            Delete
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
                     </div>
-                  </Link>
+                  </div>
                 ))}
               </div>
               {/* Remaining Items */}
               <div className="divide-y divide-gray-200/50">
                 {researchItems.slice(3).map((item) => (
-                  <Link key={item.id} href={`${statusConfig[item.status].route}/${item.id}`}>
-                    <div className={cn("flex items-start gap-2 p-3 hover:bg-white/50 cursor-pointer group transition-colors border-l-[3px]", statusConfig[item.status].borderColor)}>
+                  <div key={item.id} className={cn("flex items-start gap-2 p-3 hover:bg-white/50 cursor-pointer group transition-colors border-l-[3px]", statusConfig[item.status].borderColor)}>
+                    <Link href={`${statusConfig[item.status].route}/${item.id}`} className="flex items-start gap-2 flex-1 min-w-0">
                       <img src={rocketIcon} alt="Rocket" className="w-4 h-4 mt-0.5 shrink-0 opacity-70" />
                       <p className="text-[13px] leading-tight text-gray-800 line-clamp-2 font-medium flex-1">
                         {item.title}
                       </p>
-                      <div className="flex items-center gap-1 shrink-0 mt-1">
-                        <Pin className="w-3.5 h-3.5 text-gray-400 rotate-45 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer hover:text-gray-700" />
-                        <MoreVertical className="w-3.5 h-3.5 text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer hover:text-gray-700" />
-                      </div>
+                    </Link>
+                    <div className="flex items-center gap-1 shrink-0 mt-0.5">
+                      <Pin className="w-3.5 h-3.5 text-gray-400 rotate-45 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer hover:text-gray-700" />
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild onClick={(e) => e.preventDefault()}>
+                          <button className="p-0 border-0 bg-transparent opacity-0 group-hover:opacity-100 transition-opacity" data-testid={`kebab-menu-${item.id}`}>
+                            <MoreVertical className="w-3.5 h-3.5 text-gray-400 cursor-pointer hover:text-gray-700" />
+                          </button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="w-40 bg-white border-gray-200 shadow-lg">
+                          <DropdownMenuItem
+                            className="flex items-center gap-2 text-sm cursor-pointer"
+                            onClick={(e) => { e.preventDefault(); setSelectedItem(item); setRenameValue(item.title); setIsPinned(false); setDetailsOpen(true); }}
+                            data-testid={`details-${item.id}`}
+                          >
+                            <FileText className="w-4 h-4 text-gray-500" />
+                            Details
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            className="flex items-center gap-2 text-sm text-red-600 focus:text-red-600 cursor-pointer"
+                            onClick={(e) => { e.preventDefault(); setSelectedItem(item); setDeleteOpen(true); }}
+                            data-testid={`delete-${item.id}`}
+                          >
+                            <Trash2 className="w-4 h-4" />
+                            Delete
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
                     </div>
-                  </Link>
+                  </div>
                 ))}
               </div>
             </ScrollArea>
@@ -214,6 +279,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   );
 
   return (
+    <>
     <div className="min-h-screen bg-background text-foreground flex">
       {/* Desktop Sidebar */}
       <aside 
@@ -327,5 +393,70 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </div>
       </main>
     </div>
+
+    <Dialog open={detailsOpen} onOpenChange={setDetailsOpen}>
+      <DialogContent className="sm:max-w-[400px] bg-white border-gray-200">
+        <DialogHeader>
+          <DialogTitle className="text-gray-900">Research Details</DialogTitle>
+          <DialogDescription className="text-gray-500 text-sm">
+            Edit the name and pin status for this research item.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="space-y-5 py-2">
+          <div className="space-y-2">
+            <Label htmlFor="rename" className="text-sm font-medium text-gray-700">Rename</Label>
+            <Input
+              id="rename"
+              value={renameValue}
+              onChange={(e) => setRenameValue(e.target.value)}
+              className="border-gray-300 focus:border-[#008DA8] focus:ring-[#008DA8]"
+              data-testid="input-rename"
+            />
+          </div>
+          <div className="flex items-center justify-between">
+            <Label htmlFor="pin-toggle" className="text-sm font-medium text-gray-700">Pinned</Label>
+            <ToggleSwitch
+              id="pin-toggle"
+              checked={isPinned}
+              onCheckedChange={setIsPinned}
+              data-testid="toggle-pin"
+            />
+          </div>
+        </div>
+        <DialogFooter className="gap-2">
+          <Button variant="outline" onClick={() => setDetailsOpen(false)} className="border-gray-300 text-gray-700" data-testid="button-cancel-details">
+            Cancel
+          </Button>
+          <Button onClick={() => setDetailsOpen(false)} className="bg-[#008DA8] hover:bg-[#006E7D] text-white" data-testid="button-save-details">
+            Save
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+
+    <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
+      <DialogContent className="sm:max-w-[400px] bg-white border-gray-200">
+        <DialogHeader>
+          <DialogTitle className="text-gray-900">Delete Confirmation</DialogTitle>
+          <DialogDescription className="text-gray-500 text-sm">
+            Are you sure you want to delete this research? This action cannot be undone.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="py-2">
+          <p className="text-sm text-gray-700 bg-gray-50 p-3 rounded-md border border-gray-200 line-clamp-2">
+            {selectedItem?.title}
+          </p>
+        </div>
+        <DialogFooter className="gap-2">
+          <Button variant="outline" onClick={() => setDeleteOpen(false)} className="border-gray-300 text-gray-700" data-testid="button-cancel-delete">
+            Cancel
+          </Button>
+          <Button variant="destructive" onClick={() => setDeleteOpen(false)} className="bg-red-600 hover:bg-red-700" data-testid="button-confirm-delete">
+            Delete
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+    </>
   );
 }
