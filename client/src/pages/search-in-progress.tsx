@@ -444,7 +444,7 @@ export default function SmartSearchInProgress() {
                 className="border-red-400 text-red-500 hover:bg-red-50 hover:text-red-600 h-9 px-6 text-xs font-bold bg-white"
                 onClick={() => {
                   setShowAbortModal(false);
-                  navigate("/smart-search/action-required/1");
+                  navigate("/research-canceled/1");
                 }}
                 data-testid="button-confirm-abort"
               >

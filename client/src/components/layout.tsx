@@ -227,8 +227,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                  location === "/" ? "Dashboard" : 
                  location.includes("dashboard") ? "Overview" :
                  location.includes("assets") ? "Assets Repository" :
-                 location.includes("failed") ? "Failed" :
-                 location.includes("action-required") ? "Cancel" :
+                 location.includes("research-failed") ? "Failed" :
+                 location.includes("research-canceled") ? "Cancel" :
                  location.includes("in-progress") ? "in progress" :
                  location.includes("reports/summary") ? "Reports" :
                  location.includes("sources") ? "Sources" :
