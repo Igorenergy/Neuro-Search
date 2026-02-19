@@ -401,7 +401,7 @@ export default function SmartSearchInProgress() {
       >
         {/* Context Header */}
         <div className="sticky top-0 z-10 border-b border-gray-200 px-3 py-2 flex items-center gap-3 shrink-0 bg-[#dddddd]">
-          <div className="w-8 h-8 bg-gray-800 rounded-sm flex items-center justify-center shrink-0">
+          <div className="w-8 h-8 rounded-sm flex items-center justify-center shrink-0 bg-[#dddddd] text-[#191c1c]">
             <Rocket className="w-4 h-4 text-white" />
           </div>
           <p className="text-xs font-medium text-gray-700 flex-1 leading-snug line-clamp-2" data-testid="text-project-title">
@@ -496,13 +496,13 @@ export default function SmartSearchInProgress() {
                           })()}
                         </p>
                         {250 < 251 && ( // Using literal for "Search Results..." length which is ~230, but request asked for 250 trim. 
-                          <button
+                          (<button
                             onClick={() => setIsTextExpanded(!isTextExpanded)}
                             className="text-[#008DA8] hover:underline font-medium mt-1 block"
                             data-testid="button-toggle-text-trim"
                           >
                             {isTextExpanded ? "Show less" : "Show more"}
-                          </button>
+                          </button>)
                         )}
                       </div>
                     </div>
