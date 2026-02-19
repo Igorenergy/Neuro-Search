@@ -40,7 +40,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Switch as ToggleSwitch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { Trash2, FileText, Copy } from "lucide-react";
+import { Trash2, FileText, Copy, Filter } from "lucide-react";
 import rocketIcon from "@assets/image_1771405092616.png";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -65,6 +65,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   const [deletedIds, setDeletedIds] = useState<number[]>([]);
   const [pinnedIds, setPinnedIds] = useState<number[]>([]);
+  const [statusFilter, setStatusFilter] = useState<"all" | ResearchStatus>("all");
 
   const researchItems: { id: number; title: string; status: ResearchStatus }[] = [
     { id: 1, title: "Реестр 492 Компаний: Полный анализ и стратегический обзор...", status: "success" },
@@ -90,8 +91,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   ];
 
   const visibleResearchItems = researchItems.filter(item => !deletedIds.includes(item.id));
-  const pinnedItems = visibleResearchItems.filter(item => pinnedIds.includes(item.id));
-  const unpinnedItems = visibleResearchItems.filter(item => !pinnedIds.includes(item.id));
+  const filteredItems = statusFilter === "all" ? visibleResearchItems : visibleResearchItems.filter(item => item.status === statusFilter);
+  const pinnedItems = filteredItems.filter(item => pinnedIds.includes(item.id));
+  const unpinnedItems = filteredItems.filter(item => !pinnedIds.includes(item.id));
 
   const togglePin = (id: number) => {
     setPinnedIds(prev => prev.includes(id) ? prev.filter(pid => pid !== id) : [...prev, id]);
@@ -148,6 +150,31 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             {/* Filter Bar */}
             <div className="flex items-center justify-between px-1 mt-2">
               <span className="text-sm font-semibold text-black">Latest research</span>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button className={cn("p-1 rounded hover:bg-gray-200 transition-colors", statusFilter !== "all" && "text-[#008DA8]")} data-testid="button-filter-status">
+                    <Filter className="w-4 h-4" />
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-36 bg-white border-gray-200 shadow-lg">
+                  {([
+                    { value: "all", label: "All" },
+                    { value: "success", label: "Success" },
+                    { value: "in-progress", label: "In Progress" },
+                    { value: "failed", label: "Failed" },
+                    { value: "canceled", label: "Canceled" },
+                  ] as const).map((opt) => (
+                    <DropdownMenuItem
+                      key={opt.value}
+                      className={cn("text-sm cursor-pointer", statusFilter === opt.value && "font-bold text-[#008DA8]")}
+                      onClick={() => setStatusFilter(opt.value)}
+                      data-testid={`filter-${opt.value}`}
+                    >
+                      {opt.label}
+                    </DropdownMenuItem>
+                  ))}
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           </div>
 
