@@ -340,7 +340,7 @@ export default function SourcesPage() {
                 {source.included ? "icon" : "icon"}
               </div>
 
-              <span className="text-sm font-medium text-gray-800 truncate flex-1 min-w-0" data-testid={`text-source-title-${source.id}`}>
+              <span className="text-sm font-medium text-gray-800 truncate flex-1 min-w-0 max-w-[360px]" data-testid={`text-source-title-${source.id}`}>
                 {source.title}
               </span>
 
