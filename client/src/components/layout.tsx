@@ -175,9 +175,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </div>
           </ScrollArea>
           <div className="mt-auto pb-4">
-            <div className="bg-[#FFD700] p-2 rounded-sm">
-              <Zap className="w-5 h-5 text-black fill-current" />
-            </div>
           </div>
         </div>
       )}
