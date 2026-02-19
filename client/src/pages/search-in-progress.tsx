@@ -311,10 +311,22 @@ export default function SmartSearchInProgress() {
                   <span className="text-[10px] font-bold text-gray-400 uppercase">
                     Research Plan (v{config.planVersion}/{config.totalVersions})
                   </span>
-                  <div className="mt-1 bg-gray-50 border border-gray-200 rounded-sm p-2 max-h-[200px] overflow-y-auto" data-testid="text-briefing-plan">
+                  <div className="mt-1 bg-gray-50 border border-gray-200 rounded-sm p-2" data-testid="text-briefing-plan">
                     <p className="text-[11px] text-gray-600 leading-relaxed whitespace-pre-wrap">
-                      {config.planText}
+                      {config.planText.length > 250 && !briefingExpanded
+                        ? config.planText.slice(0, 250) + "..."
+                        : config.planText}
                     </p>
+                    {config.planText.length > 250 && (
+                      <button
+                        onClick={() => setBriefingExpanded(!briefingExpanded)}
+                        className="text-[11px] text-[#008DA8] hover:underline font-medium mt-1.5 flex items-center gap-1"
+                        data-testid="button-toggle-plan-text"
+                      >
+                        {briefingExpanded ? "Show less" : "Show more"}
+                        <ChevronDown className={cn("w-3 h-3 transition-transform duration-200", briefingExpanded && "rotate-180")} />
+                      </button>
+                    )}
                   </div>
                 </div>
               )}
