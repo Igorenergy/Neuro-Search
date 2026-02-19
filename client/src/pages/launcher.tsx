@@ -1559,7 +1559,10 @@ export default function Launcher() {
               <Button
                 variant="outline"
                 className="border-red-400 text-red-500 hover:bg-red-50 hover:text-red-600 h-9 px-6 text-xs font-bold bg-white"
-                onClick={() => setShowCancelQueueModal(false)}
+                onClick={() => {
+                  setShowCancelQueueModal(false);
+                  setLocation("/smart-search/action-required/1");
+                }}
                 data-testid="button-confirm-cancel-queue"
               >
                 Yes, Cancel Research
