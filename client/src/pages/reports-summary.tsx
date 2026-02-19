@@ -42,7 +42,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
 import { loadLaunchConfig } from "@/lib/launch-config";
 import { ResearchBriefingSidebar } from "@/components/research-briefing-sidebar";
-import rocketIcon from "@assets/image_1771405092616.png";
+
 
 interface ThoughtNode {
   id: string;
@@ -155,7 +155,6 @@ export default function ReportsSummary() {
       {/* Context Header */}
       <div className="flex items-center justify-between px-4 py-2.5 border-b border-gray-200 bg-[#F5F5F7] shrink-0">
         <div className="flex items-center gap-3 min-w-0">
-          <img src={rocketIcon} alt="" className="w-5 h-5 shrink-0 opacity-80" />
           <h1 className="text-sm font-bold text-gray-900 truncate max-w-[400px]" data-testid="text-project-title">
             {projectTitle}
           </h1>
