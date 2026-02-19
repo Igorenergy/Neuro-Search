@@ -1,0 +1,91 @@
+Page Specification: Smart Search - Failed (Action Required)
+Route: /smart-search/action-required/:id (or /failed)
+Role: The "Rescue Dashboard." This page appears when the AI agent encounters a fatal scraping error (e.g., blocked by Cloudflare, CAPTCHA, or Paywalls) that it cannot bypass automatically. Instead of a "dead end," the UI presents a structured matrix of resolution strategies, allowing the user to unblock the agent and salvage the research.
+
+1. Global Layout & SPA Mechanics
+This page inherits the exact Sliding Panels SPA architecture defined in the "In Progress" view:
+
+Container: flex h-screen w-full overflow-hidden bg-gray-50.
+
+Left Panel (Briefing History): Collapsed by default (w-[50px]). Expandable to w-[350px] via user click. Independent vertical scroll.
+
+Right Panel (Main Error Dashboard): Fills remaining space (flex-1). Minimum width applied (min-w-[600px]) to prevent text reflow. Independent vertical scroll (overflow-y-auto).
+
+2. Context Header (Top Bar)
+Breadcrumbs: Dashboard > [Project Name] > Failed
+
+Status Badges: * [ Reports ] (Disabled/Gray).
+
+[ ⚠️ Action Required ] or [ 🛑 Blocked ] (Active pill, Red or Warning Orange background).
+
+3. The Resolution Matrix (Error Handling UI)
+Reference: The gray layout blocks in the mockup.
+This section provides 3 tiers of solutions to bypass the block.
+
+Tier 1: The "Pro" Way (Recommended)
+
+UI: A full-width banner/card across the top.
+
+Logic: Suggests routing the request through the user's local browser to bypass server-side IP bans.
+
+State Management:
+
+If extension is NOT installed: Button reads [ Install Extension ].
+
+If extension IS installed: Button reads [ Retry via Extension ] (Triggers the agent to resume using the local bridge).
+
+Tier 2: Algorithmic Bypasses (Split 2-Column Grid)
+
+Card A: Premium Routing (Residential Proxies)
+
+Target Errors: 403 Forbidden, CAPTCHA, WAF blocks.
+
+Description: "Use premium residential IPs to simulate real user traffic."
+
+Backend Logic: Checks user balance. If funds are sufficient, clicking the button charges the account and restarts the failed step with use_residential_proxy: true.
+
+Button CTA: [ Upgrade & Retry ($X.XX) ] (Premium styling).
+
+Card B: Visual Extraction (Vision Engine)
+
+Target Errors: Empty HTML body, Heavy JS rendering, Obfuscated text.
+
+Description: "Take a screenshot of the page and use Vision AI to read the text like a human."
+
+Backend Logic: Switches the scraping method from standard HTTP/DOM parsing to a headless browser screenshot + GPT-4V/Claude-3-Vision OCR processing.
+
+Button CTA: [ Retry with Vision Engine ].
+
+Tier 3: The Manual Fallback
+
+UI: A horizontal drag-and-drop zone below the cards.
+
+Description: "Provide Data Manually. Upload PDFs or HTML copies of the blocked pages."
+
+Logic: If the user has the document locally, they can upload it here. The system injects this file directly into the agent's context window, bypassing the need to scrape the URL, and resumes the research.
+
+Button CTA: [ Upload Files ].
+
+4. Partial Results Viewer (Bottom Section)
+Reference: The text-heavy document area at the bottom of the mockup.
+Role: Proves to the user that the system didn't lose everything. It displays the raw data or partial report generated before the fatal error occurred.
+
+Toolbar:
+
+Left: Label indicating status (e.g., Partial Draft or Recovered Data).
+
+Center: Pagination controls (< 1/20 >) to navigate through the salvaged data chunks.
+
+Right: * [ Export ▼ ] Dropdown (Download as TXT, Markdown).
+
+Search input (Q Search in report) for local text finding.
+
+Document Canvas:
+
+UI: A white, paper-like container with generous padding (p-8).
+
+Content: Renders the recovered Markdown or raw text.
+
+State: Strictly Read-Only. The user cannot edit this text; they can only read it to decide if they have enough information or if they need to pay for a bypass method (Cards A/B) to get the rest.
+
+Instruction for AI Developer: "Implement the Right Panel layout using CSS Grid for the resolution cards. Ensure the [ Upgrade & Retry ] button includes an interstitial loading state (Loading... Routing through residential network) while waiting for the backend to confirm the proxy connection."
