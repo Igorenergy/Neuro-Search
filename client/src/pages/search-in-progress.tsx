@@ -18,6 +18,7 @@ import {
   Loader2,
   ToggleRight,
   ChevronDown,
+  Copy,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -220,16 +221,29 @@ export default function SmartSearchInProgress() {
             <h3 className="text-sm font-bold text-gray-800 sticky top-0 py-2 z-10 -mx-4 px-4 border-b border-gray-100 ml-[-10px] mr-[-10px] pl-[1px] pr-[1px] pt-[3px] pb-[3px] mt-[0px] mb-[0px] bg-[#9f9f9f59]">Research Briefing</h3>
 
             <div className="flex-1 overflow-y-auto space-y-3 pt-2">
-              <div>
-                <span className="text-[10px] font-bold text-gray-400 uppercase">Query</span>
+              <div className="relative group/query">
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] font-bold text-gray-400 uppercase">Query</span>
+                  <button
+                    onClick={() => {
+                      if (config?.query) {
+                        navigator.clipboard.writeText(config.query);
+                      }
+                    }}
+                    className="opacity-0 group-hover/query:opacity-100 transition-opacity p-1 hover:bg-gray-100 rounded-sm"
+                    title="Copy query"
+                  >
+                    <Copy className="w-3 h-3 text-gray-400" />
+                  </button>
+                </div>
                 <p className="text-xs text-gray-700 mt-1 leading-relaxed" data-testid="text-briefing-query">
                   {(() => {
                     const queryText = config?.query || "No query specified";
-                    const shouldTrim = queryText.length > 250;
-                    return shouldTrim && !queryExpanded ? queryText.slice(0, 250) + "..." : queryText;
+                    const shouldTrim = queryText.length > 2050;
+                    return shouldTrim && !queryExpanded ? queryText.slice(0, 2050) + "..." : queryText;
                   })()}
                 </p>
-                {config?.query && config.query.length > 250 && (
+                {config?.query && config.query.length > 2050 && (
                   <button
                     onClick={() => setQueryExpanded(!queryExpanded)}
                     className="text-[11px] text-[#008DA8] hover:underline font-medium mt-1 flex items-center gap-1"
