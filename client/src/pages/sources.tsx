@@ -344,7 +344,7 @@ export default function SourcesPage() {
                 {source.title}
               </span>
 
-              <div className="flex items-center gap-1 text-[11px] text-gray-500 shrink-0">
+              <div className="flex items-center gap-1 text-[11px] text-gray-500 shrink-0 ml-[50px]">
                 <FileText className="w-3 h-3" />
                 {source.date}
               </div>
