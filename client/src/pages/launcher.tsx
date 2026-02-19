@@ -30,7 +30,9 @@ import {
   GripVertical,
   History,
   RefreshCw,
-  Search
+  Search,
+  Hourglass,
+  AlertTriangle
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -106,6 +108,7 @@ export default function Launcher() {
   const [showVersionHistory, setShowVersionHistory] = useState(false);
   const [showAttachedFiles, setShowAttachedFiles] = useState(false);
   const [confirmDeleteFile, setConfirmDeleteFile] = useState<{ type: "all" } | { type: "single"; index: number } | null>(null);
+  const [showCancelQueueModal, setShowCancelQueueModal] = useState(false);
   const [confirmDeleteVersion, setConfirmDeleteVersion] = useState(false);
   const [fileFilter, setFileFilter] = useState<"all" | "step1" | "step2">("all");
   const maxVersions = 5;
@@ -1484,6 +1487,82 @@ export default function Launcher() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Queue Status Block */}
+      <Card className="p-0 border-gray-200 shadow-sm" data-testid="card-queue-status">
+        <div className="p-5 space-y-4 bg-[#a19999b8]">
+          <div className="flex items-center gap-2">
+            <Hourglass className="w-5 h-5 text-orange-500" />
+            <h4 className="text-sm font-bold text-gray-800">The task is in the queue</h4>
+          </div>
+
+          <div className="flex items-center justify-between gap-4">
+            <div className="space-y-2">
+              <p className="text-orange-500 font-medium text-[20px]">
+                Reason: High load on Smart Search nodes.
+              </p>
+              <p className="text-xs text-gray-600">
+                Queue Position: <strong>#4</strong>
+              </p>
+            </div>
+
+            <div className="flex items-center gap-3 shrink-0">
+              <span className="text-[15px] text-[#a82d52]">Est. Wait<br />Time:</span>
+              <div className="w-16 h-16 rounded-full border-2 border-[#008DA8] flex items-center justify-center bg-[#fc3535e3]">
+                <div className="text-center">
+                  <span className="text-xs font-bold text-[#008DA8] leading-tight block">1 min.</span>
+                  <span className="text-xs font-bold text-[#008DA8] leading-tight block">25 sec.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-center pt-1">
+            <button
+              className="w-10 h-10 bg-red-500 hover:bg-red-600 rounded-full flex items-center justify-center transition-colors shadow-sm"
+              onClick={() => setShowCancelQueueModal(true)}
+              data-testid="button-cancel-queue"
+            >
+              <X className="w-5 h-5 text-white" strokeWidth={3} />
+            </button>
+          </div>
+        </div>
+      </Card>
+
+      {/* Cancel Queue Modal */}
+      <Dialog open={showCancelQueueModal} onOpenChange={setShowCancelQueueModal}>
+        <DialogContent className="max-w-[420px] p-0 gap-0 bg-white overflow-hidden border border-gray-200 shadow-xl rounded-md">
+          <div className="flex items-center gap-2 p-3 border-b border-gray-100 bg-red-50">
+            <AlertTriangle className="w-5 h-5 text-red-500" />
+            <h2 className="text-base font-bold text-gray-900">Cancel Research</h2>
+          </div>
+          <div className="p-5 space-y-4">
+            <p className="text-sm font-medium text-gray-800">
+              Are you sure you want to cancel this research task?
+            </p>
+            <p className="text-sm text-red-500 font-medium leading-relaxed">
+              The task will be removed from the queue and all progress will be permanently discarded. This action cannot be undone.
+            </p>
+            <div className="flex items-center justify-between pt-4">
+              <button
+                className="text-xs font-medium text-gray-900 underline hover:text-gray-700"
+                onClick={() => setShowCancelQueueModal(false)}
+                data-testid="button-cancel-queue-dismiss"
+              >
+                Cancel
+              </button>
+              <Button
+                variant="outline"
+                className="border-red-400 text-red-500 hover:bg-red-50 hover:text-red-600 h-9 px-6 text-xs font-bold bg-white"
+                onClick={() => setShowCancelQueueModal(false)}
+                data-testid="button-confirm-cancel-queue"
+              >
+                Yes, Cancel Research
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {/* Add Files Modal */}
       <Dialog open={isAddFileModalOpen} onOpenChange={setIsAddFileModalOpen}>
