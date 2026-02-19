@@ -364,19 +364,6 @@ export default function SourcesPage() {
                     Language: {source.language}
                   </div>
 
-                  <div className="flex items-center flex-1 min-w-0">
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <div data-testid={`confidence-ring-${source.id}`}>
-                          <ConfidenceRing score={source.confidenceScore} />
-                        </div>
-                      </TooltipTrigger>
-                      <TooltipContent side="top" className="max-w-[220px] text-center">
-                        <p className="text-xs">Confidence Score is an AI-driven credibility metric that separates verified facts from digital noise.</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </div>
-
                   <div className="flex items-center gap-1 shrink-0" onClick={(e) => e.stopPropagation()}>
                     <button
                       className="p-1 hover:bg-gray-200 rounded transition-colors"
@@ -406,6 +393,19 @@ export default function SourcesPage() {
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
+                  </div>
+
+                  <div className="flex items-center flex-1 min-w-0">
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <div data-testid={`confidence-ring-${source.id}`}>
+                          <ConfidenceRing score={source.confidenceScore} />
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent side="top" className="max-w-[220px] text-center">
+                        <p className="text-xs">Confidence Score is an AI-driven credibility metric that separates verified facts from digital noise.</p>
+                      </TooltipContent>
+                    </Tooltip>
                   </div>
                 </div>
               </div>
