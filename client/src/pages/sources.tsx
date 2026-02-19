@@ -340,29 +340,29 @@ export default function SourcesPage() {
                 {source.included ? "icon" : "icon"}
               </div>
 
-              <span className="text-sm font-medium text-gray-800 truncate flex-1 min-w-0" data-testid={`text-source-title-${source.id}`}>
+              <span className="text-sm font-medium text-gray-800 truncate min-w-0" style={{ flex: '1 1 0', maxWidth: '280px' }} data-testid={`text-source-title-${source.id}`}>
                 {source.title}
               </span>
 
-              <div className="flex items-center gap-1 text-[11px] text-gray-500 shrink-0 -ml-[50px] mr-auto">
+              <div className="flex items-center gap-1 text-[11px] text-gray-500 w-[90px] shrink-0">
                 <FileText className="w-3 h-3" />
                 {source.date}
               </div>
 
-              <div className="flex items-center gap-1 text-[11px] text-gray-500 shrink-0 -ml-[50px]">
+              <div className="flex items-center gap-1 text-[11px] text-gray-500 w-[110px] shrink-0">
                 <Globe className="w-3 h-3" />
-                Location:{source.location}
+                Location: {source.location}
               </div>
 
-              <span className="text-[11px] text-gray-500 shrink-0">
+              <span className="text-[11px] text-gray-500 w-[90px] shrink-0">
                 Language: {source.language}
               </span>
 
-              <div className="shrink-0 flex items-center gap-1">
+              <div className="shrink-0 flex items-center gap-1 w-[24px]">
                 <Settings className="w-3.5 h-3.5 text-blue-500" />
               </div>
 
-              <div className="shrink-0">
+              <div className="shrink-0 w-[32px] flex justify-center">
                 <ConfidenceRing score={source.confidenceScore} />
               </div>
 
