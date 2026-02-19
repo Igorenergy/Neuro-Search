@@ -1,0 +1,83 @@
+Page Specification: Smart Search - In Progress (Sliding Panels SPA)
+Route: /smart-search/in-progress/:id
+Role: The "Live Command Center." This page visualizes the AI agent's real-time thought process and research steps. It is built as a highly interactive One Page Application (SPA) using a modern split-view architecture to preserve context without wasting screen space.
+
+1. Global Layout & SPA Mechanics (CRITICAL UI LOGIC)
+This interface relies on a bold, modern UX concept known as Sliding Panels (or Horizontal Accordion). To execute this 8/10 UX idea perfectly and avoid critical usability pitfalls (like "jumping text" or layout breaking), the developer must strictly follow these structural rules:
+
+Container (SPA Lock): The main wrapper must be locked to the viewport size to prevent global browser scrolling.
+
+Classes: flex h-screen w-full overflow-hidden bg-gray-50.
+
+Dual Independent Scrolling: Both the left and right sections must have their own independent vertical scrollbars. If one side has long content, scrolling it should not affect the other side.
+
+Classes: Apply overflow-y-auto to both child panels individually.
+
+2. The Sliding Panels Pattern (Left vs. Right)
+The layout follows a "Rigid Controller & Fluid Content" paradigm:
+
+A. Left Panel (The Controller: Launcher / Briefing History)
+
+Role: Acts as the horizontal accordion. It displays the read-only inputs, prompt, and settings from the Launcher.
+
+Mechanics: * Collapsed State (Default): A narrow vertical strip (w-[50px]) containing a toggle icon or vertical text (e.g., ⚙️ Brief).
+
+Expanded State (On Click): Smoothly slides out to take up a fixed portion of the screen (e.g., w-[350px] or ~30% width).
+
+Animation: Must be extremely smooth so the user's eyes can track the layout shift. (transition-all duration-300 ease-in-out).
+
+B. Right Panel (The Fluid Content: System Reports / In Progress)
+
+Role: The primary workspace where the live report and AI status are generated.
+
+Mechanics: This panel does not have its own collapse/expand buttons. It simply reacts to the Left Panel by filling all remaining available space (flex-1 relative).
+
+UX Risk Mitigation (Anti-Text-Reflow): To prevent the dangerous pitfall where expanding the Left Panel crushes the text in the Right Panel and makes the user lose their reading spot, the Right Panel MUST have a minimum width constraint.
+
+Classes: min-w-[600px]. If the viewport is too narrow to accommodate both, the layout should gracefully handle it (e.g., stop the left panel from expanding further, or switch to an overlay mode on small screens).
+
+3. Context Header (Right Panel Top Bar)
+Visual: A sticky header at the top of the right panel's scrollable area (sticky top-0 z-10).
+
+Elements:
+
+Project Title: Truncated if too long.
+
+Status Toggle/Badges: Two centered pills:
+
+[ Reports ] (Inactive/Clickable - leads to final output, currently disabled).
+
+[ Research is in progress ] (Active/Green text - indicates current state).
+
+4. Live Status Dashboard (The HUD)
+Role: A fixed widget giving a quantitative overview of the running task, placed just below the header in the right panel.
+
+Visual: A bordered card containing:
+
+Top Right Alert: A blue info box with text: "You can safely close this window. The research is running on our secure servers."
+
+Left Block (Stats): Live updating counters (12 Sources, 45 sec, 15k tokens).
+
+Right Block (Progress Bars):
+
+INPUTS: Web search progress and File parsing progress.
+
+OUTPUT: Report generation phase.
+
+5. Critical Action Buttons (Control Panel)
+Located below or inside the HUD.
+
+🟥 Abort Research (Red [X]): Emergency Stop. Triggers a Red Warning Modal ("Discard all current progress?"). Sends FORCE_KILL.
+
+🟩 Finish Early / Save (Green [✓]): Graceful Shutdown. Triggers an Info Modal ("Generate report now based on current sources?"). Sends GRACEFUL_SHUTDOWN.
+
+6. The Agent's "Thought Stream" (Live Feed)
+Role: A vertical timeline rendering the AI's internal monologue and actions inside the Right Panel.
+
+Auto-Scroll Logic: The container should automatically scroll to the bottom as new elements appear, unless the user manually scrolls up.
+
+Stream Elements:
+
+Thinking Nodes (Text Blocks): Explain what the AI is analyzing.
+
+Action Nodes (Source Grids): A responsive grid of "Source Pills" (Favicon + Domain title) that pop in with a fade/scale animation as the AI discovers new web links.

@@ -9,6 +9,7 @@ import Dashboard from "@/pages/dashboard";
 import Launcher from "@/pages/launcher";
 import SearchPage from "@/pages/search";
 import AssetsRepository from "@/pages/assets-repository";
+import SmartSearchInProgress from "@/pages/smart-search-in-progress";
 import { PreviewProvider } from "@/lib/preview-store";
 import FilePreviewDrawer from "@/components/file-preview-drawer";
 import { useEffect } from "react";
@@ -29,6 +30,7 @@ function Router() {
         <Route path="/smart-search/new" component={Launcher} />
         <Route path="/research/launcher" component={Launcher} />
         <Route path="/research/search" component={SearchPage} />
+        <Route path="/smart-search/in-progress/:id" component={SmartSearchInProgress} />
         <Route path="/assets" component={AssetsRepository} />
         {/* Fallback to 404 */}
         <Route component={NotFound} />

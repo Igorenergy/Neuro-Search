@@ -1,0 +1,517 @@
+import { useState, useRef, useEffect, useCallback } from "react";
+import { useParams } from "wouter";
+import {
+  X,
+  Check,
+  ChevronRight,
+  ChevronLeft,
+  Info,
+  Globe,
+  Search,
+  FileText,
+  Zap,
+  Clock,
+  Database,
+  Settings2,
+  ExternalLink,
+  AlertTriangle,
+  Loader2,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
+import {
+  Dialog,
+  DialogContent,
+} from "@/components/ui/dialog";
+import { cn } from "@/lib/utils";
+
+interface ThoughtNode {
+  id: string;
+  type: "thinking" | "sources";
+  title?: string;
+  content?: string;
+  sources?: { favicon: string; domain: string; title: string }[];
+}
+
+const mockThoughtStream: ThoughtNode[] = [
+  {
+    id: "t1",
+    type: "thinking",
+    title: "Determining the architecture of Parallel.ai",
+    content:
+      'I am starting with a detailed study of the Parallel.ai platform to precisely determine what lies behind the term "processors." At this stage, I assume that these are specialized agent structures or modules for data processing, and not physical equipment. I need to understand their internal classification and working principles to match them accurately with the intellectual tools of search.',
+  },
+  {
+    id: "t2",
+    type: "thinking",
+    title: "Competitive environment analysis",
+    content:
+      "In parallel, I am synthesizing information about the current capabilities of deep search modes from leading market players such as OpenAI, Perplexity, Google, xAI and Anthropic. This will allow me to identify key metrics for comparison, including the depth of autonomous research, the ability for complex reasoning, and the quality of the final data synthesis, in order to objectively assess the position of Parallel.ai.",
+  },
+  {
+    id: "t3",
+    type: "thinking",
+    title: "Directions for further search",
+    content:
+      "My next steps will be aimed at finding specific technical descriptions of processor types within Parallel.ai and their functional differences. I plan to collect detailed characteristics for each type in order to form a complete comparative table structure and clearly display the advantages and limitations of each solution in the context of deep research.",
+  },
+  {
+    id: "s1",
+    type: "sources",
+    title: "Researching websites",
+    sources: [
+      { favicon: "https://www.google.com/s2/favicons?domain=parallelai.tech&sz=16", domain: "parallelai.tech", title: "ParallelAI" },
+      { favicon: "https://www.google.com/s2/favicons?domain=parallel.ai&sz=16", domain: "paralle...", title: "Parallel | Web Sea..." },
+      { favicon: "https://www.google.com/s2/favicons?domain=parallel.ai&sz=16", domain: "paralle...", title: "The best web sea..." },
+      { favicon: "https://www.google.com/s2/favicons?domain=docs.parallel.ai&sz=16", domain: "docs.p...", title: "Processors - Par..." },
+      { favicon: "https://www.google.com/s2/favicons?domain=parallel.ai&sz=16", domain: "paralle...", title: "Introducing the P..." },
+      { favicon: "https://www.google.com/s2/favicons?domain=parallel.ai&sz=16", domain: "paralle...", title: "Introducing the P..." },
+      { favicon: "https://www.google.com/s2/favicons?domain=parallel.ai&sz=16", domain: "paralle...", title: "Introducing the T..." },
+      { favicon: "https://www.google.com/s2/favicons?domain=parallel.ai&sz=16", domain: "paralle...", title: "Building a real-ti..." },
+      { favicon: "https://www.google.com/s2/favicons?domain=parallel.ai&sz=16", domain: "paralle...", title: "Introducing Parall..." },
+      { favicon: "https://www.google.com/s2/favicons?domain=reddit.com&sz=16", domain: "reddit...", title: "I compared the r..." },
+      { favicon: "https://www.google.com/s2/favicons?domain=parallel.ai&sz=16", domain: "paralle...", title: "Parallel Task API ..." },
+      { favicon: "https://www.google.com/s2/favicons?domain=parallel.ai&sz=16", domain: "paralle...", title: "How to build a m..." },
+      { favicon: "https://www.google.com/s2/favicons?domain=parallel.ai&sz=16", domain: "paralle...", title: "Parallel Deep Res..." },
+      { favicon: "https://www.google.com/s2/favicons?domain=parallel.ai&sz=16", domain: "paralle...", title: "State of the Art D..." },
+      { favicon: "https://www.google.com/s2/favicons?domain=parallel.ai&sz=16", domain: "paralle...", title: "A new pareto-fro..." },
+    ],
+  },
+  {
+    id: "t4",
+    type: "thinking",
+    title: "Classification of intelligent processors",
+    content:
+      'I have studied the architecture of Parallel.ai in detail and found that different levels of AI agent power for web research are hidden behind the term "processors." The lineup ranges from lightweight solutions for quickly extracting metadata to ultra-deep systems capable of conducting complex searches of up to 90 minutes. I found that the system divides processors into standard and fast, offering a flexible choice between data relevance and task execution speed.',
+  },
+  {
+    id: "t5",
+    type: "thinking",
+    title: "Data synthesis and identified contradictions",
+    content:
+      'Synthesizing the information received, I have recorded ambitious claims by the platform about surpassing human researchers and leading models like GPT-5 and Gemini in specialized tests. However, to create a complete picture, I need to fill in the gaps in the descriptions of specific "deep search" modes from competitors such as Anthropic and xAI, to understand whether they offer comparable agent autonomy or are limited only to an extended search context.',
+  },
+  {
+    id: "t6",
+    type: "thinking",
+    title: "Next steps for system comparison",
+    content:
+      "In the near future, I plan to focus on studying the official documentation and tariff plans to correlate the cost and efficiency of each type of processor. In parallel, I will conduct a deep analysis of the Deep Research functionality of the largest market players, including OpenAI and Perplexity. This will allow me to form the final comparative table, where the time of autonomous work, the depth of analysis, and the cost of each solution will be clearly reflected.",
+  },
+  {
+    id: "s2",
+    type: "sources",
+    title: "Researching websites",
+    sources: [
+      { favicon: "https://www.google.com/s2/favicons?domain=help.openai.com&sz=16", domain: "help.o...", title: "Apps in ChatGPT ..." },
+      { favicon: "https://www.google.com/s2/favicons?domain=platform.openai.com&sz=16", domain: "platform.o...", title: "Changelog | ..." },
+      { favicon: "https://www.google.com/s2/favicons?domain=medium.com&sz=16", domain: "mediu...", title: "OpenAI releases ..." },
+      { favicon: "https://www.google.com/s2/favicons?domain=openai.com&sz=16", domain: "openr...", title: "o3 Deep Researc..." },
+      { favicon: "https://www.google.com/s2/favicons?domain=openai.com&sz=16", domain: "openai...", title: "ChatGPT agent S..." },
+      { favicon: "https://www.google.com/s2/favicons?domain=docs.perplexity.ai&sz=16", domain: "docs.pe...", title: "Sonar deep rese..." },
+      { favicon: "https://www.google.com/s2/favicons?domain=apidog.com&sz=16", domain: "apidog...", title: "How to Use Perpl..." },
+      { favicon: "https://www.google.com/s2/favicons?domain=openai.com&sz=16", domain: "openr...", title: "Sonar Deep Rese..." },
+    ],
+  },
+];
+
+export default function SmartSearchInProgress() {
+  const params = useParams<{ id: string }>();
+  const [leftExpanded, setLeftExpanded] = useState(false);
+  const [showAbortModal, setShowAbortModal] = useState(false);
+  const [showFinishModal, setShowFinishModal] = useState(false);
+  const [elapsedSeconds, setElapsedSeconds] = useState(45);
+  const [autoScroll, setAutoScroll] = useState(true);
+  const streamRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setElapsedSeconds((s) => s + 1);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    if (autoScroll && streamRef.current) {
+      streamRef.current.scrollTop = streamRef.current.scrollHeight;
+    }
+  }, [autoScroll, elapsedSeconds]);
+
+  const handleStreamScroll = useCallback(() => {
+    if (!streamRef.current) return;
+    const el = streamRef.current;
+    const isNearBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 100;
+    setAutoScroll(isNearBottom);
+  }, []);
+
+  const formatTime = (s: number) => {
+    const m = Math.floor(s / 60);
+    const sec = s % 60;
+    return `${m}:${sec.toString().padStart(2, "0")}`;
+  };
+
+  return (
+    <div className="-m-6 md:-m-8 flex h-[calc(100vh-64px)] w-[calc(100%+48px)] md:w-[calc(100%+64px)] overflow-hidden bg-gray-50" data-testid="in-progress-page">
+      {/* Left Panel: Research Briefing */}
+      <div
+        className={cn(
+          "shrink-0 bg-white border-r border-gray-200 transition-all duration-300 ease-in-out overflow-y-auto overflow-x-hidden relative flex flex-col",
+          leftExpanded ? "w-[350px]" : "w-[50px]"
+        )}
+        data-testid="panel-left"
+      >
+        {/* Toggle Button */}
+        <button
+          className="absolute top-1/2 -translate-y-1/2 right-0 z-10 w-5 h-12 bg-gray-100 border border-gray-200 border-r-0 rounded-l-sm flex items-center justify-center hover:bg-gray-200 transition-colors"
+          onClick={() => setLeftExpanded(!leftExpanded)}
+          data-testid="button-toggle-left-panel"
+        >
+          {leftExpanded ? (
+            <ChevronLeft className="w-3 h-3 text-gray-500" />
+          ) : (
+            <ChevronRight className="w-3 h-3 text-gray-500" />
+          )}
+        </button>
+
+        {/* Collapsed State */}
+        {!leftExpanded && (
+          <div className="flex flex-col items-center justify-center h-full">
+            <span
+              className="text-xs font-bold text-gray-500 tracking-widest"
+              style={{ writingMode: "vertical-rl", textOrientation: "mixed" }}
+            >
+              RESEARCH BRIEFING
+            </span>
+          </div>
+        )}
+
+        {/* Expanded Content */}
+        {leftExpanded && (
+          <div className="flex flex-col h-full overflow-y-auto p-4 pr-6 space-y-4">
+            <h3 className="text-sm font-bold text-gray-800">Research Briefing</h3>
+
+            <div className="space-y-3">
+              <div>
+                <span className="text-[10px] font-bold text-gray-400 uppercase">Query</span>
+                <p className="text-xs text-gray-700 mt-1 leading-relaxed">
+                  Parallel.ai processors comparison and deep research capabilities analysis for investors
+                </p>
+              </div>
+
+              <div>
+                <span className="text-[10px] font-bold text-gray-400 uppercase">Research Type</span>
+                <p className="text-xs text-gray-700 mt-1">Deep Search</p>
+              </div>
+
+              <div>
+                <span className="text-[10px] font-bold text-gray-400 uppercase">Data Engine</span>
+                <div className="flex items-center gap-1.5 mt-1">
+                  <Zap className="w-3 h-3 text-yellow-500 fill-yellow-500" />
+                  <span className="text-xs font-bold text-gray-700">Ultimate</span>
+                </div>
+              </div>
+
+              <div>
+                <span className="text-[10px] font-bold text-gray-400 uppercase">Scope</span>
+                <div className="flex items-center gap-1.5 mt-1">
+                  <Globe className="w-3 h-3 text-gray-500" />
+                  <span className="text-xs text-gray-700">Web (Global)</span>
+                </div>
+              </div>
+
+              <div>
+                <span className="text-[10px] font-bold text-gray-400 uppercase">Languages</span>
+                <div className="flex gap-1 mt-1">
+                  <Badge variant="secondary" className="text-[10px] px-1.5 py-0">EN</Badge>
+                  <Badge variant="secondary" className="text-[10px] px-1.5 py-0">RU</Badge>
+                </div>
+              </div>
+
+              <div>
+                <span className="text-[10px] font-bold text-gray-400 uppercase">Attached Files</span>
+                <div className="space-y-1 mt-1">
+                  {["Market Analysis Q3.pdf", "Competitor Report.docx", "Financial Projections.xlsx"].map((f, i) => (
+                    <div key={i} className="flex items-center gap-2 text-xs text-gray-600">
+                      <FileText className="w-3 h-3 text-gray-400" />
+                      <span className="truncate">{f}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <span className="text-[10px] font-bold text-gray-400 uppercase">Budget</span>
+                <p className="text-xs text-gray-700 mt-1">$15.40 - $18.40</p>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Right Panel: Main Content */}
+      <div
+        className="flex-1 min-w-[600px] flex flex-col overflow-hidden"
+        data-testid="panel-right"
+      >
+        {/* Context Header */}
+        <div className="sticky top-0 z-10 bg-white border-b border-gray-200 px-4 py-2 flex items-center justify-between gap-4 shrink-0">
+          <p className="text-xs font-medium text-gray-700 truncate max-w-[40%]" data-testid="text-project-title">
+            Parallel.ai: Complete analysis and strategic overview for investors
+          </p>
+
+          <div className="flex items-center gap-0 bg-gray-100 rounded-sm overflow-hidden border border-gray-200">
+            <button
+              className="px-4 py-1.5 text-xs font-bold text-white bg-[#008DA8] rounded-sm"
+              data-testid="button-reports-tab"
+            >
+              Reports
+            </button>
+            <span className="text-xs font-medium text-green-600 px-4 py-1.5" data-testid="text-status-in-progress">
+              Research is in progress
+            </span>
+          </div>
+        </div>
+
+        {/* Scrollable Content */}
+        <div
+          ref={streamRef}
+          className="flex-1 overflow-y-auto"
+          onScroll={handleStreamScroll}
+        >
+          <div className="p-4 space-y-6 max-w-5xl">
+            {/* RESEARCH LOG label */}
+            <span className="text-xs font-bold text-[#008DA8]" data-testid="text-research-log">RESEARCH LOG</span>
+
+            {/* HUD Dashboard */}
+            <Card className="p-0 overflow-hidden border-gray-200" data-testid="card-hud">
+              <div className="p-4 space-y-4">
+                {/* Top Row: Engine + Timer */}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <div className="w-6 h-6 bg-gray-200 rounded-sm flex items-center justify-center">
+                      <Settings2 className="w-3.5 h-3.5 text-gray-500" />
+                    </div>
+                    <span className="text-xs font-bold text-gray-700">Data_engine_name</span>
+                  </div>
+                  <div className="flex items-center gap-6">
+                    <div className="flex items-center gap-1.5 text-xs text-gray-600">
+                      <Clock className="w-3.5 h-3.5" />
+                      <span>Time remaining: <strong>{formatTime(13 * 60 + 48 - elapsedSeconds % (13 * 60 + 48))}</strong></span>
+                    </div>
+
+                    {/* Info Alert */}
+                    <div className="bg-blue-50 border border-blue-200 rounded-sm px-3 py-1.5 text-[10px] text-blue-700 max-w-[280px] flex items-start gap-1.5">
+                      <Info className="w-3 h-3 mt-0.5 shrink-0" />
+                      <span>You can safely close this window. The research is running on our secure servers. We will save the results to your history automatically.</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Stats + Progress */}
+                <div className="flex items-start gap-6">
+                  {/* Left: Stats */}
+                  <div className="space-y-2 shrink-0">
+                    <div className="bg-gray-50 border border-gray-200 rounded-sm p-3 space-y-1.5">
+                      <div className="flex items-center gap-2 text-xs text-gray-700">
+                        <Database className="w-3.5 h-3.5 text-gray-500" />
+                        <span><strong>12</strong> Sources</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-xs text-gray-700">
+                        <Clock className="w-3.5 h-3.5 text-gray-500" />
+                        <span><strong>{elapsedSeconds}</strong> sec</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-xs text-gray-700">
+                        <Zap className="w-3.5 h-3.5 text-gray-500" />
+                        <span><strong>15K</strong> tokens</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Center: Search Results Text */}
+                  <div className="flex-1 space-y-2">
+                    <div className="text-xs text-gray-600 leading-relaxed">
+                      <p><strong>Search Results:</strong> 3 key competitors in the US market have been identified.</p>
+                      <p>The risk of overlapping functionality with the X platform has been identified.</p>
+                      <p>A table of tariffs and Go-to-market strategies has been created.</p>
+                    </div>
+                  </div>
+
+                  {/* Right: Progress Bars */}
+                  <div className="shrink-0 space-y-3 min-w-[200px]">
+                    <div>
+                      <span className="text-[10px] font-bold text-gray-500 uppercase">INPUTS</span>
+                      <div className="space-y-1.5 mt-1">
+                        <div className="flex items-center gap-2">
+                          <Globe className="w-3 h-3 text-gray-400" />
+                          <span className="text-[10px] text-gray-500 w-4">[K]</span>
+                          <Progress value={85} className="h-2 flex-1 [&>div]:bg-[#008DA8]" />
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <FileText className="w-3 h-3 text-gray-400" />
+                          <span className="text-[10px] text-gray-500 w-4">[d]</span>
+                          <Progress value={100} className="h-2 flex-1 [&>div]:bg-[#008DA8]" />
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <span className="text-[10px] font-bold text-gray-500 uppercase">OUTPUT</span>
+                      <div className="mt-1">
+                        <Progress value={30} className="h-2 [&>div]:bg-green-500" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex items-center gap-3 pt-1">
+                  <button
+                    className="w-10 h-10 bg-red-500 hover:bg-red-600 rounded-full flex items-center justify-center transition-colors shadow-sm"
+                    onClick={() => setShowAbortModal(true)}
+                    data-testid="button-abort-research"
+                  >
+                    <X className="w-5 h-5 text-white" strokeWidth={3} />
+                  </button>
+                  <button
+                    className="w-10 h-10 bg-green-500 hover:bg-green-600 rounded-full flex items-center justify-center transition-colors shadow-sm"
+                    onClick={() => setShowFinishModal(true)}
+                    data-testid="button-finish-early"
+                  >
+                    <Check className="w-5 h-5 text-white" strokeWidth={3} />
+                  </button>
+                </div>
+              </div>
+            </Card>
+
+            {/* Thought Stream */}
+            <div className="space-y-6" data-testid="thought-stream">
+              {mockThoughtStream.map((node) => (
+                <div key={node.id}>
+                  {node.type === "thinking" && (
+                    <div className="space-y-2" data-testid={`thought-node-${node.id}`}>
+                      <h4 className="text-sm font-bold text-gray-800 flex items-center gap-2">
+                        <span className="text-gray-400">{">"}</span>
+                        {node.title}
+                      </h4>
+                      <p className="text-sm text-gray-600 leading-relaxed pl-4">
+                        {node.content}
+                      </p>
+                    </div>
+                  )}
+
+                  {node.type === "sources" && (
+                    <div className="space-y-3" data-testid={`source-node-${node.id}`}>
+                      <h4 className="text-sm font-bold text-gray-800 flex items-center gap-2">
+                        <Globe className="w-4 h-4 text-gray-400" />
+                        {node.title}
+                      </h4>
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 pl-4">
+                        {node.sources?.map((source, si) => (
+                          <div
+                            key={si}
+                            className="flex items-center gap-2 bg-white border border-gray-200 rounded-sm px-2.5 py-1.5 hover:border-gray-300 hover:shadow-sm transition-all cursor-pointer group"
+                            data-testid={`source-pill-${node.id}-${si}`}
+                          >
+                            <img
+                              src={source.favicon}
+                              alt=""
+                              className="w-4 h-4 rounded-sm shrink-0"
+                              onError={(e) => {
+                                (e.target as HTMLImageElement).style.display = "none";
+                              }}
+                            />
+                            <div className="min-w-0 flex-1">
+                              <p className="text-[10px] text-gray-400 truncate">{source.domain}</p>
+                              <p className="text-[11px] font-medium text-gray-700 truncate">{source.title}</p>
+                            </div>
+                            <ExternalLink className="w-3 h-3 text-gray-300 group-hover:text-gray-500 shrink-0 invisible group-hover:visible" />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
+
+              {/* Loading indicator */}
+              <div className="flex items-center gap-2 text-gray-400 py-4">
+                <Loader2 className="w-4 h-4 animate-spin" />
+                <span className="text-xs">AI is analyzing data...</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Abort Research Modal */}
+      <Dialog open={showAbortModal} onOpenChange={setShowAbortModal}>
+        <DialogContent className="max-w-[420px] p-0 gap-0 bg-white overflow-hidden border border-gray-200 shadow-xl rounded-md">
+          <div className="flex items-center gap-2 p-3 border-b border-gray-100 bg-red-50">
+            <AlertTriangle className="w-5 h-5 text-red-500" />
+            <h2 className="text-base font-bold text-gray-900">Abort Research</h2>
+          </div>
+          <div className="p-5 space-y-4">
+            <p className="text-sm font-medium text-gray-800">
+              Are you sure you want to abort this research?
+            </p>
+            <p className="text-sm text-red-500 font-medium leading-relaxed">
+              All current progress will be permanently discarded. This action cannot be undone.
+            </p>
+            <div className="flex items-center justify-between pt-4">
+              <button
+                className="text-xs font-medium text-gray-900 underline hover:text-gray-700"
+                onClick={() => setShowAbortModal(false)}
+                data-testid="button-cancel-abort"
+              >
+                Cancel
+              </button>
+              <Button
+                variant="outline"
+                className="border-red-400 text-red-500 hover:bg-red-50 hover:text-red-600 h-9 px-6 text-xs font-bold bg-white"
+                onClick={() => setShowAbortModal(false)}
+                data-testid="button-confirm-abort"
+              >
+                Yes, Abort
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Finish Early Modal */}
+      <Dialog open={showFinishModal} onOpenChange={setShowFinishModal}>
+        <DialogContent className="max-w-[420px] p-0 gap-0 bg-white overflow-hidden border border-gray-200 shadow-xl rounded-md">
+          <div className="flex items-center gap-2 p-3 border-b border-gray-100 bg-green-50">
+            <Check className="w-5 h-5 text-green-600" />
+            <h2 className="text-base font-bold text-gray-900">Finish Early</h2>
+          </div>
+          <div className="p-5 space-y-4">
+            <p className="text-sm font-medium text-gray-800">
+              Generate the report now based on current sources?
+            </p>
+            <p className="text-sm text-[#0097B2] font-medium leading-relaxed">
+              The AI will stop gathering new sources and compile a report from the data collected so far. You will still receive a complete, structured output.
+            </p>
+            <div className="flex items-center justify-between pt-4">
+              <button
+                className="text-xs font-medium text-gray-900 underline hover:text-gray-700"
+                onClick={() => setShowFinishModal(false)}
+                data-testid="button-cancel-finish"
+              >
+                Cancel
+              </button>
+              <Button
+                className="bg-green-600 hover:bg-green-700 text-white h-9 px-6 text-xs font-bold"
+                onClick={() => setShowFinishModal(false)}
+                data-testid="button-confirm-finish"
+              >
+                Yes, Generate Report
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+}
