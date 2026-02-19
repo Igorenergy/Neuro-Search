@@ -103,6 +103,7 @@ export default function Launcher() {
   const [showVersionHistory, setShowVersionHistory] = useState(false);
   const [showAttachedFiles, setShowAttachedFiles] = useState(false);
   const [confirmDeleteFile, setConfirmDeleteFile] = useState<{ type: "all" } | { type: "single"; index: number } | null>(null);
+  const [confirmDeleteVersion, setConfirmDeleteVersion] = useState(false);
   const [fileFilter, setFileFilter] = useState<"all" | "step1" | "step2">("all");
   const maxVersions = 5;
   const [totalVersions, setTotalVersions] = useState(1);
@@ -1140,25 +1141,16 @@ export default function Launcher() {
             >
               <span className="text-xs font-bold text-gray-600">Details: {planStepCount} Steps</span>
               <div className="flex items-center gap-7">
-                <Trash2
-                  className={cn(
-                    "w-5 h-5 transition-colors",
-                    totalVersions > 1
-                      ? "text-red-500 hover:text-red-700 cursor-pointer"
-                      : "text-red-300 cursor-not-allowed"
-                  )}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    if (totalVersions > 1) {
-                      const newTotal = totalVersions - 1;
-                      setTotalVersions(newTotal);
-                      if (planVersion > newTotal) {
-                        setPlanVersion(newTotal);
-                      }
-                    }
-                  }}
-                  data-testid="button-delete-version"
-                />
+                {planVersion !== 1 && (
+                  <Trash2
+                    className="w-5 h-5 text-red-500 hover:text-red-700 cursor-pointer transition-colors"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setConfirmDeleteVersion(true);
+                    }}
+                    data-testid="button-delete-version"
+                  />
+                )}
                 <ChevronDown className={cn("w-4 h-4 text-gray-500 transition-transform duration-200", !isPlanCollapsed && "rotate-180")} />
               </div>
             </button>
@@ -1557,6 +1549,51 @@ export default function Launcher() {
                 }}
               >
                 Yes, Go Back
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Confirm Delete Version Modal */}
+      <Dialog open={confirmDeleteVersion} onOpenChange={(open) => !open && setConfirmDeleteVersion(false)}>
+        <DialogContent className="max-w-[400px] p-0 gap-0 bg-white overflow-hidden border border-gray-200 shadow-xl rounded-md">
+          <div className="flex items-center justify-between p-3 border-b border-gray-100">
+            <h2 className="text-base font-bold text-gray-900">Confirm Deletion</h2>
+          </div>
+          
+          <div className="p-5 space-y-4">
+            <p className="text-sm font-medium text-gray-800">
+              Are you sure you want to delete Version {planVersion}?
+            </p>
+            
+            <p className="text-sm text-[#0097B2] font-medium leading-relaxed">
+              This version of the research plan will be permanently removed. This action cannot be undone.
+            </p>
+            
+            <div className="flex items-center justify-between pt-4">
+              <button 
+                className="text-xs font-medium text-gray-900 underline hover:text-gray-700"
+                onClick={() => setConfirmDeleteVersion(false)}
+                data-testid="button-cancel-delete-version"
+              >
+                Cancel
+              </button>
+              
+              <Button 
+                variant="outline"
+                className="border-red-400 text-red-500 hover:bg-red-50 hover:text-red-600 h-9 px-6 text-xs font-bold bg-white"
+                onClick={() => {
+                  const newTotal = totalVersions - 1;
+                  setTotalVersions(newTotal);
+                  if (planVersion > newTotal) {
+                    setPlanVersion(newTotal);
+                  }
+                  setConfirmDeleteVersion(false);
+                }}
+                data-testid="button-confirm-delete-version"
+              >
+                Yes, Delete
               </Button>
             </div>
           </div>
