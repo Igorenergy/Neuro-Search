@@ -445,33 +445,6 @@ export default function SourcesPage() {
                       )}
                     </div>
                   </div>
-                  <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
-                    <button className="p-1 hover:bg-gray-200 rounded transition-colors" data-testid={`button-tile-open-${source.id}`}>
-                      <ExternalLink className="w-3.5 h-3.5 text-gray-500" />
-                    </button>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <button className="p-1 hover:bg-gray-200 rounded transition-colors" data-testid={`button-tile-menu-${source.id}`}>
-                          <MoreVertical className="w-3.5 h-3.5 text-gray-500" />
-                        </button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuItem className="gap-2">
-                          <Settings className="w-4 h-4" /> Deep Extract
-                        </DropdownMenuItem>
-                        <DropdownMenuItem className="gap-2">
-                          <Shield className="w-4 h-4" /> Confidence Score
-                        </DropdownMenuItem>
-                        <DropdownMenuItem className="gap-2">
-                          {source.included ? (
-                            <><XCircle className="w-4 h-4 text-orange-400" /> Exclude</>
-                          ) : (
-                            <><CheckCircle className="w-4 h-4 text-[#00802b]" /> Include</>
-                          )}
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </div>
                 </div>
 
                 <div className="px-3 pb-2">
