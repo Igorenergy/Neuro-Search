@@ -92,7 +92,7 @@ export default function SourcesPage() {
   const [sources, setSources] = useState(mockSources);
   const [searchQuery, setSearchQuery] = useState("");
   const [viewMode, setViewMode] = useState<"list" | "grid">("list");
-  const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set([1]));
+  const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
   const [sortBy, setSortBy] = useState("confidence");
   const [filtersActive, setFiltersActive] = useState(3);
 
