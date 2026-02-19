@@ -43,28 +43,36 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     }
   }, [location]);
 
-  // Mock data for the sidebar list matching the image
-  const researchItems = [
-    { id: 1, title: "Реестр 492 Компаний: Полный анализ и стратегический обзор...", icon: Paperclip },
-    { id: 2, title: "Мемуары Криптана: Ретроспективный анализ криптозимы и стратегии...", icon: Paperclip },
-    { id: 3, title: "Мемуары Криптана: Ретроспективный анализ криптозимы и стратегии...", icon: Paperclip },
-    { id: 4, title: "1Искусственный Интеллект и Будущее Технологий: Глубокий анализ...", icon: MoreVertical },
-    { id: 5, title: "15 Жестоких Правд о Неконкурентных Рынках: Как выжить и преуспеть ...", icon: MoreVertical },
-    { id: 6, title: "Блокчейн в Финтехе 2025: Анализ Рисков, Прогноз ROI и Стратегии...", icon: MoreVertical },
-    { id: 7, title: "Биотехнологии 2.0: Инвестиции в Геномное Редактирование и Персп ...", icon: MoreVertical },
-    { id: 8, title: "Стратегический Риск-менеджмент в Трейдинге: Психология, Инстру...", icon: MoreVertical },
-    { id: 9, title: "NFT как Инвестиционный Актив: Анализ Волатильности, Ликвиднос...", icon: MoreVertical },
-    { id: 10, title: "Фискальная Политика Евросоюза: Анализ Бюджета на 2026 год и Вли ...", icon: MoreVertical },
-    { id: 11, title: "Квантовые Вычисления: Прорывы 2025 года и Влияние на Криптографию...", icon: MoreVertical },
-    { id: 12, title: "Анализ Рынка Электромобилей: Tesla vs BYD vs Rivian — Конкурентные...", icon: Paperclip },
-    { id: 13, title: "Кибербезопасность в Эпоху AI: Новые Угрозы и Стратегии Защиты...", icon: MoreVertical },
-    { id: 14, title: "Глобальные Цепочки Поставок 2025: Реструктуризация и Геополитические...", icon: MoreVertical },
-    { id: 15, title: "Метавселенная для Бизнеса: ROI Анализ Корпоративных Внедрений...", icon: Paperclip },
-    { id: 16, title: "Зелёная Энергетика: Инвестиционные Возможности в Солнечной и Ветровой...", icon: MoreVertical },
-    { id: 17, title: "Нейроинтерфейсы и BCI: Медицинские Применения и Этические Вопросы...", icon: MoreVertical },
-    { id: 18, title: "Рынок SaaS B2B: Тренды Консолидации и Стратегии Выхода 2025–2027...", icon: Paperclip },
-    { id: 19, title: "Автономное Вождение Level 4: Регуляторные Барьеры и Дорожная Карта...", icon: MoreVertical },
-    { id: 20, title: "Цифровой Рубль и CBDC: Макроэкономический Анализ и Сценарии Внедрения...", icon: MoreVertical },
+  type ResearchStatus = "success" | "in-progress" | "failed" | "canceled";
+
+  const statusConfig: Record<ResearchStatus, { borderColor: string; dotColor: string; route: string }> = {
+    "success": { borderColor: "border-l-green-500", dotColor: "bg-green-500", route: "/research-success" },
+    "in-progress": { borderColor: "border-l-blue-500", dotColor: "bg-blue-500", route: "/research-in-progress" },
+    "failed": { borderColor: "border-l-red-500", dotColor: "bg-red-500", route: "/research-failed" },
+    "canceled": { borderColor: "border-l-orange-400", dotColor: "bg-orange-400", route: "/research-canceled" },
+  };
+
+  const researchItems: { id: number; title: string; status: ResearchStatus }[] = [
+    { id: 1, title: "Реестр 492 Компаний: Полный анализ и стратегический обзор...", status: "success" },
+    { id: 2, title: "Мемуары Криптана: Ретроспективный анализ криптозимы и стратегии...", status: "success" },
+    { id: 3, title: "Мемуары Криптана: Ретроспективный анализ криптозимы и стратегии...", status: "in-progress" },
+    { id: 4, title: "Искусственный Интеллект и Будущее Технологий: Глубокий анализ...", status: "success" },
+    { id: 5, title: "15 Жестоких Правд о Неконкурентных Рынках: Как выжить и преуспеть ...", status: "failed" },
+    { id: 6, title: "Блокчейн в Финтехе 2025: Анализ Рисков, Прогноз ROI и Стратегии...", status: "success" },
+    { id: 7, title: "Биотехнологии 2.0: Инвестиции в Геномное Редактирование и Персп ...", status: "in-progress" },
+    { id: 8, title: "Стратегический Риск-менеджмент в Трейдинге: Психология, Инстру...", status: "canceled" },
+    { id: 9, title: "NFT как Инвестиционный Актив: Анализ Волатильности, Ликвиднос...", status: "success" },
+    { id: 10, title: "Фискальная Политика Евросоюза: Анализ Бюджета на 2026 год и Вли ...", status: "failed" },
+    { id: 11, title: "Квантовые Вычисления: Прорывы 2025 года и Влияние на Криптографию...", status: "success" },
+    { id: 12, title: "Анализ Рынка Электромобилей: Tesla vs BYD vs Rivian — Конкурентные...", status: "in-progress" },
+    { id: 13, title: "Кибербезопасность в Эпоху AI: Новые Угрозы и Стратегии Защиты...", status: "canceled" },
+    { id: 14, title: "Глобальные Цепочки Поставок 2025: Реструктуризация и Геополитические...", status: "success" },
+    { id: 15, title: "Метавселенная для Бизнеса: ROI Анализ Корпоративных Внедрений...", status: "failed" },
+    { id: 16, title: "Зелёная Энергетика: Инвестиционные Возможности в Солнечной и Ветровой...", status: "success" },
+    { id: 17, title: "Нейроинтерфейсы и BCI: Медицинские Применения и Этические Вопросы...", status: "in-progress" },
+    { id: 18, title: "Рынок SaaS B2B: Тренды Консолидации и Стратегии Выхода 2025–2027...", status: "canceled" },
+    { id: 19, title: "Автономное Вождение Level 4: Регуляторные Барьеры и Дорожная Карта...", status: "success" },
+    { id: 20, title: "Цифровой Рубль и CBDC: Макроэкономический Анализ и Сценарии Внедрения...", status: "failed" },
   ];
 
   const SidebarContent = ({ collapsed }: { collapsed?: boolean }) => (
@@ -138,13 +146,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               {/* Pinned Items */}
               <div className="sticky top-0 z-10 bg-[#E6E1EF] divide-y divide-gray-200/50 border-b border-gray-300">
                 {researchItems.slice(0, 3).map((item) => (
-                  <Link key={item.id} href={`/research-success/${item.id}`}>
-                    <div className="flex items-start gap-2 p-3 hover:bg-white/50 cursor-pointer group transition-colors">
+                  <Link key={item.id} href={`${statusConfig[item.status].route}/${item.id}`}>
+                    <div className={cn("flex items-start gap-2 p-3 hover:bg-white/50 cursor-pointer group transition-colors border-l-[3px]", statusConfig[item.status].borderColor)}>
                       <img src={rocketIcon} alt="Rocket" className="w-4 h-4 mt-0.5 shrink-0 opacity-70" />
                       <p className="text-[13px] leading-tight text-gray-800 line-clamp-2 font-medium flex-1">
                         {item.title}
                       </p>
-                      <div className="flex items-center gap-0.5 shrink-0 mt-0.5">
+                      <div className="flex items-center gap-1 shrink-0 mt-1">
+                        <div className={cn("w-2 h-2 rounded-full shrink-0", statusConfig[item.status].dotColor)} />
                         <Pin className="w-3.5 h-3.5 text-gray-500 rotate-45 cursor-pointer hover:text-gray-700 -mr-[10px] relative -left-[10px]" />
                         <MoreVertical className="w-3.5 h-3.5 text-gray-500 cursor-pointer hover:text-gray-700" />
                       </div>
@@ -155,16 +164,19 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               {/* Remaining Items */}
               <div className="divide-y divide-gray-200/50">
                 {researchItems.slice(3).map((item) => (
-                  <div key={item.id} className="flex items-start gap-2 p-3 hover:bg-white/50 cursor-pointer group transition-colors">
-                    <img src={rocketIcon} alt="Rocket" className="w-4 h-4 mt-0.5 shrink-0 opacity-70" />
-                    <p className="text-[13px] leading-tight text-gray-800 line-clamp-2 font-medium flex-1">
-                      {item.title}
-                    </p>
-                    <div className="flex items-center gap-0.5 shrink-0 mt-0.5">
-                      <Pin className="w-3.5 h-3.5 text-gray-400 rotate-45 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer hover:text-gray-700" />
-                      <MoreVertical className="w-3.5 h-3.5 text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer hover:text-gray-700" />
+                  <Link key={item.id} href={`${statusConfig[item.status].route}/${item.id}`}>
+                    <div className={cn("flex items-start gap-2 p-3 hover:bg-white/50 cursor-pointer group transition-colors border-l-[3px]", statusConfig[item.status].borderColor)}>
+                      <img src={rocketIcon} alt="Rocket" className="w-4 h-4 mt-0.5 shrink-0 opacity-70" />
+                      <p className="text-[13px] leading-tight text-gray-800 line-clamp-2 font-medium flex-1">
+                        {item.title}
+                      </p>
+                      <div className="flex items-center gap-1 shrink-0 mt-1">
+                        <div className={cn("w-2 h-2 rounded-full shrink-0", statusConfig[item.status].dotColor)} />
+                        <Pin className="w-3.5 h-3.5 text-gray-400 rotate-45 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer hover:text-gray-700" />
+                        <MoreVertical className="w-3.5 h-3.5 text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer hover:text-gray-700" />
+                      </div>
                     </div>
-                  </div>
+                  </Link>
                 ))}
               </div>
             </ScrollArea>
