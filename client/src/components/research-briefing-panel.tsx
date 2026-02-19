@@ -75,7 +75,16 @@ export default function ResearchBriefingPanel({ expanded, onToggle }: ResearchBr
       )}
       {expanded && (
         <div className="flex flex-col h-full p-4 pr-6 space-y-4 overflow-hidden">
-          <h3 className="text-sm font-bold text-gray-800 sticky top-0 py-2 z-10 -mx-4 px-4 border-b border-gray-100 ml-[-10px] mr-[-10px] pl-[1px] pr-[1px] pt-[3px] pb-[3px] mt-[0px] mb-[0px] bg-[#9f9f9f59]">Research Briefing</h3>
+          <div className="flex items-center justify-between sticky top-0 py-2 z-10 -mx-4 px-4 border-b border-gray-100 ml-[-10px] mr-[-10px] pl-[1px] pr-[1px] pt-[3px] pb-[3px] mt-[0px] mb-[0px] bg-[#9f9f9f59]">
+            <h3 className="text-sm font-bold text-gray-800">Research Briefing</h3>
+            <button
+              title="Clone & Restart"
+              className="p-1 hover:bg-gray-200 rounded-sm transition-colors"
+              data-testid="button-clone-restart-briefing"
+            >
+              <Copy className="w-3.5 h-3.5 text-[#008DA8]" />
+            </button>
+          </div>
 
           <div className="flex-1 overflow-y-auto overflow-x-hidden space-y-3 pt-2">
             <div className="relative group/query">
