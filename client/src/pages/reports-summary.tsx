@@ -440,10 +440,7 @@ export default function ReportsSummary() {
                           <span>Current research: </span>
                           <span className="font-bold text-gray-900">$15.4 - $18.4</span>
                         </div>
-                        <div className="flex items-center gap-1.5 mt-2">
-                          <AlertCircle className="w-3.5 h-3.5 text-red-500" />
-                          <span className="text-xs font-medium text-red-600">Strict Budget Cap</span>
-                        </div>
+
                       </div>
                     </div>
                   </div>
