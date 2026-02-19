@@ -143,15 +143,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </div>
 
             {/* Navigation Links */}
-            <div className="flex gap-1 px-1">
+            <div className="flex gap-1 px-1 mb-2">
               <Link href="/research/dashboard">
                 <Button variant="ghost" className={cn("h-8 px-2 text-xs font-semibold text-gray-600 hover:text-black hover:bg-black/5", location.includes("dashboard") && "bg-black/5 text-black")}>
                   Dashboard
-                </Button>
-              </Link>
-              <Link href="/assets">
-                <Button variant="ghost" className={cn("h-8 px-2 text-xs font-semibold text-gray-600 hover:text-black hover:bg-black/5", location.includes("assets") && "bg-black/5 text-black")}>
-                  Assets
                 </Button>
               </Link>
             </div>
@@ -261,8 +256,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </div>
 
           {/* Footer */}
-          <div className="p-2 pt-0 flex items-center justify-between">
-            <a href="#" className="text-[#008DA8] text-sm font-semibold underline decoration-[#008DA8] underline-offset-2 hover:text-[#006E7D] mx-auto">
+          <div className="p-2 pt-0 flex items-center justify-between gap-2">
+            <Link href="/assets" className="flex-1">
+              <Button variant="ghost" className={cn("w-full h-8 px-2 text-xs font-semibold text-gray-600 hover:text-black hover:bg-black/5 flex items-center justify-center gap-1", location.includes("assets") && "bg-black/5 text-black")}>
+                Assets
+              </Button>
+            </Link>
+            <a href="#" className="text-[#008DA8] text-sm font-semibold underline decoration-[#008DA8] underline-offset-2 hover:text-[#006E7D] whitespace-nowrap">
               Show all (123)
             </a>
           </div>
