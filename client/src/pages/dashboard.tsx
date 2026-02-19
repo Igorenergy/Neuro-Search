@@ -223,39 +223,40 @@ export default function Dashboard() {
                   <IconComponent className={cn("w-5 h-5", config.iconColor)} />
                 </div>
                 <div className="flex items-center gap-1">
-                  {item.status === "in-progress" && (
+                  {item.status === "in-progress" ? (
                     <RefreshCw className="w-3.5 h-3.5 text-blue-500 animate-[spin_10s_linear_infinite]" />
+                  ) : (
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild onClick={(e) => e.preventDefault()}>
+                        <button className="p-0.5 border-0 bg-transparent opacity-60 hover:opacity-100 transition-opacity" data-testid={`kebab-menu-${item.id}`}>
+                          <MoreVertical className="w-4 h-4 text-gray-500 cursor-pointer hover:text-gray-700" />
+                        </button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" className="w-44 bg-[#1a1a1a] border-[#333] shadow-xl">
+                        <DropdownMenuItem
+                          className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
+                          data-testid={`details-${item.id}`}
+                        >
+                          <FileText className="w-4 h-4 text-gray-400" />
+                          Details
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          className="flex items-center gap-2 text-sm text-[#008DA8] hover:text-[#00b0cc] focus:text-[#00b0cc] focus:bg-[#333] cursor-pointer"
+                          data-testid={`clone-${item.id}`}
+                        >
+                          <Copy className="w-4 h-4 text-[#008DA8]" />
+                          Clone & Restart
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 focus:text-red-400 focus:bg-[#333] cursor-pointer"
+                          data-testid={`delete-${item.id}`}
+                        >
+                          <Trash2 className="w-4 h-4" />
+                          Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   )}
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild onClick={(e) => e.preventDefault()}>
-                      <button className="p-0.5 border-0 bg-transparent opacity-60 hover:opacity-100 transition-opacity" data-testid={`kebab-menu-${item.id}`}>
-                        <MoreVertical className="w-4 h-4 text-gray-500 cursor-pointer hover:text-gray-700" />
-                      </button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end" className="w-44 bg-[#1a1a1a] border-[#333] shadow-xl">
-                      <DropdownMenuItem
-                        className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
-                        data-testid={`details-${item.id}`}
-                      >
-                        <FileText className="w-4 h-4 text-gray-400" />
-                        Details
-                      </DropdownMenuItem>
-                      <DropdownMenuItem
-                        className="flex items-center gap-2 text-sm text-[#008DA8] hover:text-[#00b0cc] focus:text-[#00b0cc] focus:bg-[#333] cursor-pointer"
-                        data-testid={`clone-${item.id}`}
-                      >
-                        <Copy className="w-4 h-4 text-[#008DA8]" />
-                        Clone & Restart
-                      </DropdownMenuItem>
-                      <DropdownMenuItem
-                        className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 focus:text-red-400 focus:bg-[#333] cursor-pointer"
-                        data-testid={`delete-${item.id}`}
-                      >
-                        <Trash2 className="w-4 h-4" />
-                        Delete
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
                 </div>
               </div>
               <Link href={`${config.route}/${item.id}`} className="flex flex-col flex-1 min-w-0">
