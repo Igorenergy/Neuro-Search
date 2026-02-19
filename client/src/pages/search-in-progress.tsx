@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from "react";
-import { useParams } from "wouter";
+import { useParams, Link } from "wouter";
 import {
   X,
   Check,
@@ -313,6 +313,18 @@ export default function SmartSearchInProgress() {
                   </div>
                 </div>
               )}
+            </div>
+
+            <div className="mt-auto pt-4 border-t border-gray-200">
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-xs text-gray-500">Want to start another one?</span>
+                <Link href="/smart-search/new">
+                  <a className="text-xs font-bold text-[#008DA8] hover:underline flex items-center gap-1" data-testid="link-start-new-research">
+                    Start New Research
+                    <Zap className="w-3 h-3 text-yellow-500 fill-yellow-500" />
+                  </a>
+                </Link>
+              </div>
             </div>
           </div>
         )}
