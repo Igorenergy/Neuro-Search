@@ -69,6 +69,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     "canceled": { borderColor: "border-l-orange-400", dotColor: "bg-orange-400", route: "/research-canceled" },
   };
 
+  const [deletedIds, setDeletedIds] = useState<number[]>([]);
+
   const researchItems: { id: number; title: string; status: ResearchStatus }[] = [
     { id: 1, title: "Реестр 492 Компаний: Полный анализ и стратегический обзор...", status: "success" },
     { id: 2, title: "Мемуары Криптана: Ретроспективный анализ криптозимы и стратегии...", status: "success" },
@@ -91,6 +93,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     { id: 19, title: "Автономное Вождение Level 4: Регуляторные Барьеры и Дорожная Карта...", status: "success" },
     { id: 20, title: "Цифровой Рубль и CBDC: Макроэкономический Анализ и Сценарии Внедрения...", status: "failed" },
   ];
+
+  const visibleResearchItems = researchItems.filter(item => !deletedIds.includes(item.id));
 
   const SidebarContent = ({ collapsed }: { collapsed?: boolean }) => (
     <div className="flex flex-col h-full bg-[#F5F5F7] border-r border-gray-200 text-gray-800 font-sans">
@@ -162,7 +166,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <ScrollArea className="h-full">
               {/* Pinned Items */}
               <div className="sticky top-0 z-10 bg-[#E6E1EF] divide-y divide-gray-200/50 border-b border-gray-300">
-                {researchItems.slice(0, 3).map((item) => (
+                {visibleResearchItems.slice(0, 3).map((item) => (
                   <div key={item.id} className={cn("flex items-start gap-2 p-3 hover:bg-white/50 cursor-pointer group transition-colors border-l-[3px]", statusConfig[item.status].borderColor)}>
                     <Link href={`${statusConfig[item.status].route}/${item.id}`} className="flex items-start gap-2 flex-1 min-w-0">
                       <img src={rocketIcon} alt="Rocket" className="w-4 h-4 mt-0.5 shrink-0 opacity-70" />
@@ -203,7 +207,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               </div>
               {/* Remaining Items */}
               <div className="divide-y divide-gray-200/50">
-                {researchItems.slice(3).map((item) => (
+                {visibleResearchItems.slice(3).map((item) => (
                   <div key={item.id} className={cn("flex items-start gap-2 p-3 hover:bg-white/50 cursor-pointer group transition-colors border-l-[3px]", statusConfig[item.status].borderColor)}>
                     <Link href={`${statusConfig[item.status].route}/${item.id}`} className="flex items-start gap-2 flex-1 min-w-0">
                       <img src={rocketIcon} alt="Rocket" className="w-4 h-4 mt-0.5 shrink-0 opacity-70" />
@@ -264,7 +268,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <div className="w-8 h-[1px] bg-gray-300" />
           <ScrollArea className="flex-1 w-full px-2">
             <div className="flex flex-col items-center gap-3">
-              {researchItems.map(item => (
+              {visibleResearchItems.map(item => (
                 <div key={item.id} className="w-8 h-8 rounded-full bg-[#E6E1EF] flex items-center justify-center hover:bg-gray-200 cursor-pointer" title={item.title}>
                   <img src={rocketIcon} alt="Rocket" className="w-4 h-4 opacity-70" />
                 </div>
@@ -451,7 +455,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <Button variant="outline" onClick={() => setDeleteOpen(false)} className="border-gray-300 text-gray-700" data-testid="button-cancel-delete">
             Cancel
           </Button>
-          <Button variant="destructive" onClick={() => setDeleteOpen(false)} className="bg-red-600 hover:bg-red-700" data-testid="button-confirm-delete">
+          <Button variant="destructive" onClick={() => { if (selectedItem) setDeletedIds(prev => [...prev, selectedItem.id]); setDeleteOpen(false); }} className="bg-red-600 hover:bg-red-700" data-testid="button-confirm-delete">
             Delete
           </Button>
         </DialogFooter>
