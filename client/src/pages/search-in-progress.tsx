@@ -30,6 +30,7 @@ import {
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { loadLaunchConfig, type LaunchConfig } from "@/lib/launch-config";
+import { usePreviewStore } from "@/lib/preview-store";
 
 interface ThoughtNode {
   id: string;
@@ -148,6 +149,7 @@ export default function SmartSearchInProgress() {
   const [isTextExpanded, setIsTextExpanded] = useState(false);
   const [briefingExpanded, setBriefingExpanded] = useState(false);
   const [queryExpanded, setQueryExpanded] = useState(false);
+  const { openPreview } = usePreviewStore();
 
   useEffect(() => {
     const loaded = loadLaunchConfig();
@@ -304,7 +306,24 @@ export default function SmartSearchInProgress() {
                   <span className="text-[10px] font-bold text-gray-400 uppercase">Attached Files ({config!.attachedFiles.length})</span>
                   <div className="space-y-1 mt-1" data-testid="text-briefing-files">
                     {config!.attachedFiles.map((f, i) => (
-                      <div key={i} className="flex items-center gap-2 text-xs text-gray-600">
+                      <div
+                        key={i}
+                        className="flex items-center gap-2 text-xs text-gray-600 cursor-pointer hover:bg-gray-100 rounded-sm px-1 py-0.5 -mx-1 transition-colors"
+                        data-testid={`card-briefing-file-${i}`}
+                        onClick={() => {
+                          const previewFiles = config!.attachedFiles.map((af, idx) => ({
+                            id: `briefing-file-${idx}`,
+                            name: af.name,
+                            type: af.name.split(".").pop()?.toUpperCase() || "FILE",
+                            size: af.size,
+                          }));
+                          openPreview({
+                            files: previewFiles,
+                            initialFileId: `briefing-file-${i}`,
+                            context: "input",
+                          });
+                        }}
+                      >
                         <FileText className="w-3 h-3 text-gray-400" />
                         <span className="truncate">{f.name}</span>
                         <span className="text-[10px] text-gray-400 shrink-0">{f.size}</span>
