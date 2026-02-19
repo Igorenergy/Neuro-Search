@@ -1,4 +1,5 @@
 import { useState } from "react";
+import AddFilesModal from "@/components/add-files-modal";
 import { 
   Folder, 
   FileText, 
@@ -32,6 +33,7 @@ import { cn } from "@/lib/utils";
 export default function AssetsRepository() {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [selectedItem, setSelectedItem] = useState<number | null>(null);
+  const [isAddFileModalOpen, setIsAddFileModalOpen] = useState(false);
 
   // Mock Data
   const folders = [
@@ -111,7 +113,7 @@ export default function AssetsRepository() {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start">
                 <DropdownMenuItem>New Folder</DropdownMenuItem>
-                <DropdownMenuItem>Upload File</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setIsAddFileModalOpen(true)}>Upload File</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
@@ -234,6 +236,7 @@ export default function AssetsRepository() {
 
         </div>
       </main>
+      <AddFilesModal open={isAddFileModalOpen} onOpenChange={setIsAddFileModalOpen} />
     </div>
   );
 }

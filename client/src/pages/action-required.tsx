@@ -1,4 +1,5 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
+import AddFilesModal from "@/components/add-files-modal";
 import { useParams, Link } from "wouter";
 import {
   ChevronRight,
@@ -77,7 +78,7 @@ export default function ActionRequired() {
   const [proxyLoading, setProxyLoading] = useState(false);
   const [visionLoading, setVisionLoading] = useState(false);
   const [exportOpen, setExportOpen] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isAddFileModalOpen, setIsAddFileModalOpen] = useState(false);
 
   const handleProxyRetry = () => {
     setProxyLoading(true);
@@ -259,10 +260,9 @@ export default function ActionRequired() {
             {/* Tier 3: Manual Fallback */}
             <div
               className="border-2 border-dashed border-gray-300 rounded-lg bg-gray-50/50 p-5 hover:border-gray-400 hover:bg-gray-100/50 transition-all cursor-pointer"
-              onClick={() => fileInputRef.current?.click()}
+              onClick={() => setIsAddFileModalOpen(true)}
               data-testid="card-manual-upload"
             >
-              <input type="file" ref={fileInputRef} className="hidden" multiple accept=".pdf,.html,.txt,.md,.docx" />
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
@@ -278,7 +278,7 @@ export default function ActionRequired() {
                   className="shrink-0 h-9 px-5 text-xs font-bold border-gray-300 text-gray-600 hover:bg-white gap-2"
                   onClick={(e) => {
                     e.stopPropagation();
-                    fileInputRef.current?.click();
+                    setIsAddFileModalOpen(true);
                   }}
                   data-testid="button-upload-files"
                 >
@@ -370,6 +370,7 @@ export default function ActionRequired() {
         </div>
         </div>
       </div>
+      <AddFilesModal open={isAddFileModalOpen} onOpenChange={setIsAddFileModalOpen} />
     </div>
   );
 }

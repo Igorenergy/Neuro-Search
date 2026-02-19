@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { useLocation } from "wouter";
 import { usePreviewStore } from "@/lib/preview-store";
 import { saveLaunchConfig, loadCloneDraft, clearCloneDraft } from "@/lib/launch-config";
+import AddFilesModal from "@/components/add-files-modal";
 import { 
   Upload, 
   FileText, 
@@ -84,8 +85,6 @@ export default function Launcher() {
   const [step1Files, setStep1Files] = useState<number[]>([1, 2, 3]); // Mock files for step 1
   const [isDragging, setIsDragging] = useState(false);
   const [step2Files, setStep2Files] = useState<File[]>([]);
-  const [activeUploadTab, setActiveUploadTab] = useState<"upload" | "repository">("upload");
-  const [selectedRepoFiles, setSelectedRepoFiles] = useState<string[]>([]);
   const [dataEngine, setDataEngine] = useState("ultimate");
 
   const [planVersion, setPlanVersion] = useState(1);
@@ -174,14 +173,6 @@ export default function Launcher() {
   };
 
 
-  const repoFiles = [
-    "Market Analysis Q3.pdf",
-    "Competitor Report 2024.docx",
-    "User Interviews.txt",
-    "Financial Projections.xlsx",
-    "Product Roadmap.pdf"
-  ];
-
   const [attachedFiles, setAttachedFiles] = useState([
     { name: "Market Analysis Q3.pdf", type: "PDF", size: "2.4 MB", step: "step1" as const },
     { name: "Competitor Report 2024.docx", type: "DOCX", size: "1.8 MB", step: "step1" as const },
@@ -192,14 +183,6 @@ export default function Launcher() {
   const filteredAttachedFiles = fileFilter === "all"
     ? attachedFiles
     : attachedFiles.filter(f => f.step === fileFilter);
-
-  const toggleRepoFile = (file: string) => {
-      setSelectedRepoFiles(prev => 
-          prev.includes(file) 
-              ? prev.filter(f => f !== file)
-              : [...prev, file]
-      );
-  };
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
@@ -457,120 +440,12 @@ export default function Launcher() {
                   onChange={handleFileUpload}
                 />
                 
-                <Dialog open={isAddFileModalOpen} onOpenChange={setIsAddFileModalOpen}>
-                  <DialogTrigger asChild>
-                    <button 
-                      className="bg-white border border-green-600 rounded-md px-4 py-1 text-sm font-medium shadow-sm hover:bg-gray-50 flex items-center justify-center min-w-[100px]"
-                    >
-                      selected: {files.length > 0 ? files.length : 0}
-                    </button>
-                  </DialogTrigger>
-                  <DialogContent className="max-w-xl p-0 gap-0 bg-[#F8F9FA] overflow-hidden data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-1/2 data-[state=open]:zoom-in-90 duration-300">
-                    <div className="flex items-center justify-between p-3 border-b border-gray-200 bg-white">
-                      <div className="flex items-center gap-3">
-                        <h2 className="text-base font-bold text-gray-900">Add Files</h2>
-                        <div className="flex items-center gap-2 text-xs text-gray-600">
-                          <span className="text-orange-400">📂</span>
-                          <span>Context window</span>
-                          <div className="w-32 h-4 bg-white border border-green-500 rounded-sm relative overflow-hidden">
-                             <div className="absolute inset-y-0 left-0 bg-green-500 w-[20%]"></div>
-                             <span className="absolute inset-0 flex items-center justify-center text-[10px] font-medium text-gray-700 z-10">Usage: 20%</span>
-                          </div>
-                        </div>
-                      </div>
-                      {/* Close button is handled by DialogPrimitive but we can add custom if needed, default X is there */}
-                    </div>
-                    
-                    <div className="p-4 space-y-4">
-                       {/* Tabs */}
-                       <div className="flex items-center gap-4 text-xs font-medium">
-                          <label className="flex items-center gap-2 cursor-pointer">
-                             <div className="w-3 h-3 rounded-full border-[4px] border-gray-500 bg-white ring-1 ring-gray-500"></div>
-                             <span className="text-gray-900 font-bold">Upload new</span>
-                          </label>
-                          <label className="flex items-center gap-2 cursor-pointer text-gray-500">
-                             <div className="w-3 h-3 rounded-full border border-gray-300 bg-white"></div>
-                             <span>SelectFrom <span className="text-blue-700">Assets Repository (100)</span></span>
-                          </label>
-                       </div>
-
-                       {/* Options Cards */}
-                       <div className="grid grid-cols-3 gap-3">
-                          <div className="bg-white p-3 rounded-md border border-gray-200 shadow-sm flex flex-col gap-2 cursor-pointer hover:border-blue-300 hover:shadow-md transition-all">
-                             <div className="flex items-center gap-2 text-gray-700 font-medium text-xs">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" className="w-4 h-4" alt="Google" />
-                                <span>Google Workspace</span>
-                             </div>
-                             <div className="flex items-center gap-2">
-                                <span className="px-2 py-0.5 bg-blue-50 text-blue-600 rounded-sm text-[10px] font-bold border border-blue-100 flex items-center gap-1">
-                                  <Database className="w-2.5 h-2.5" /> Google Disk
-                                </span>
-                             </div>
-                          </div>
-
-                          <div className="bg-white p-3 rounded-md border border-gray-200 shadow-sm flex flex-col gap-2 cursor-pointer hover:border-blue-300 hover:shadow-md transition-all">
-                             <div className="flex items-center gap-2 text-gray-700 font-medium text-xs">
-                                <LinkIcon className="w-3.5 h-3.5" />
-                                <span>Add link</span>
-                             </div>
-                             <div className="flex items-center gap-1 flex-wrap">
-                                <span className="px-2 py-0.5 bg-blue-50 text-blue-600 rounded-sm text-[10px] font-bold border border-blue-100 flex items-center gap-1">
-                                  <Globe className="w-2.5 h-2.5" /> Site
-                                </span>
-                                <span className="px-2 py-0.5 bg-blue-50 text-blue-600 rounded-sm text-[10px] font-bold border border-blue-100 flex items-center gap-1">
-                                  <Play className="w-2.5 h-2.5" /> YouTube
-                                </span>
-                             </div>
-                          </div>
-
-                          <div className="bg-white p-3 rounded-md border border-gray-200 shadow-sm flex flex-col gap-2 cursor-pointer hover:border-blue-300 hover:shadow-md transition-all">
-                             <div className="flex items-center gap-2 text-gray-700 font-medium text-xs">
-                                <FileText className="w-3.5 h-3.5" />
-                                <span>Paste text</span>
-                             </div>
-                             <div className="flex items-center gap-2">
-                                <span className="px-2 py-0.5 bg-blue-50 text-blue-600 rounded-sm text-[10px] font-bold border border-blue-100 flex items-center gap-1">
-                                  <FileText className="w-2.5 h-2.5" /> Copied text
-                                </span>
-                             </div>
-                          </div>
-                       </div>
-
-                       {/* Upload Area */}
-                       <div 
-                          className="border-2 border-dashed border-gray-300 rounded-lg bg-gray-50 h-40 flex flex-col items-center justify-center gap-2 cursor-pointer hover:bg-gray-100 hover:border-gray-400 transition-colors"
-                          onClick={() => fileInputRef.current?.click()}
-                       >
-                          <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mb-1">
-                             <Upload className="w-5 h-5 text-blue-600" />
-                          </div>
-                          <div className="text-center space-y-0.5">
-                             <h3 className="text-sm font-bold text-gray-800">Upload sources</h3>
-                             <p className="text-xs text-blue-600 font-medium">Select file <span className="text-gray-500 font-normal">or drag here.</span></p>
-                          </div>
-                          <p className="text-[9px] text-gray-400 max-w-sm text-center leading-relaxed px-4">
-                             Supported file types: PDF, txt, Markdown, audio (e.g. MP3 files), docx, avif, .bmp, .gif, .ico, .jp2, .png, .webp, .tif, .tiff, .heic, .heif, .jpeg, .jpg, .jpe.
-                          </p>
-                       </div>
-
-                       {/* Footer Actions */}
-                       <div className="flex items-center justify-between pt-1">
-                          <label className="flex items-center gap-2 cursor-pointer select-none">
-                             <input type="checkbox" className="w-3.5 h-3.5 rounded border-gray-300 text-green-600 focus:ring-green-500" />
-                             <span className="text-xs font-medium text-black">Save 5 files to <span className="text-blue-800">Assets Repository (100)</span></span>
-                          </label>
-                          <div className="flex items-center gap-3">
-                             <Button variant="ghost" size="sm" className="text-[#008DA8] hover:text-[#007A92] hover:bg-transparent font-bold underline h-8 text-xs" onClick={() => setIsAddFileModalOpen(false)}>
-                                CANCEL
-                             </Button>
-                             <Button size="sm" className="bg-[#00802b] hover:bg-[#006622] text-white font-bold px-6 h-8 text-xs" onClick={() => setIsAddFileModalOpen(false)}>
-                                Save & Add
-                             </Button>
-                          </div>
-                       </div>
-                    </div>
-                  </DialogContent>
-                </Dialog>
+                <button 
+                  className="bg-white border border-green-600 rounded-md px-4 py-1 text-sm font-medium shadow-sm hover:bg-gray-50 flex items-center justify-center min-w-[100px]"
+                  onClick={() => setIsAddFileModalOpen(true)}
+                >
+                  selected: {files.length > 0 ? files.length : 0}
+                </button>
 
                 <button 
                   className={cn(
@@ -1573,147 +1448,7 @@ export default function Launcher() {
       </Dialog>
 
       {/* Add Files Modal */}
-      <Dialog open={isAddFileModalOpen} onOpenChange={setIsAddFileModalOpen}>
-        <DialogContent className="max-w-xl p-0 gap-0 bg-[#F8F9FA] overflow-hidden">
-          <div className="flex items-center justify-between p-3 border-b border-gray-200 bg-white">
-            <div className="flex items-center gap-3">
-              <h2 className="text-base font-bold text-gray-900">Add Files</h2>
-              <div className="flex items-center gap-2 text-xs text-gray-600">
-                <span className="text-orange-400">📂</span>
-                
-                <div className="group relative">
-                    <span className="cursor-help border-b border-dotted border-gray-400">Context window</span>
-                    {/* Tooltip for text */}
-                    <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-max max-w-[200px] bg-gray-900 text-white text-[10px] p-2 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 text-center">
-                        Available space in context window
-                        <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-gray-900 rotate-45"></div>
-                    </div>
-                </div>
-
-                <div className="w-32 h-4 bg-white border border-green-500 rounded-sm relative overflow-hidden">
-                    <div className="absolute inset-y-0 left-0 bg-green-500 w-[20%]"></div>
-                    <span className="absolute inset-0 flex items-center justify-center text-[10px] font-medium text-gray-700 z-10">Usage: 20%</span>
-                </div>
-              </div>
-            </div>
-            {/* Close button is handled by DialogPrimitive but we can add custom if needed, default X is there */}
-          </div>
-          
-          <div className="p-4 space-y-4">
-              {/* Tabs */}
-              <div className="flex items-center gap-4 text-xs font-medium">
-                <label className="flex items-center gap-2 cursor-pointer" onClick={() => setActiveUploadTab("upload")}>
-                    <div className={cn("w-3 h-3 rounded-full border bg-white flex items-center justify-center", activeUploadTab === "upload" ? "border-[4px] border-gray-500 ring-1 ring-gray-500" : "border-gray-300")}></div>
-                    <span className={cn(activeUploadTab === "upload" ? "text-gray-900 font-bold" : "text-gray-500")}>Upload new</span>
-                </label>
-                <label className="flex items-center gap-2 cursor-pointer" onClick={() => setActiveUploadTab("repository")}>
-                    <div className={cn("w-3 h-3 rounded-full border bg-white flex items-center justify-center", activeUploadTab === "repository" ? "border-[4px] border-gray-500 ring-1 ring-gray-500" : "border-gray-300")}></div>
-                    <span className={cn(activeUploadTab === "repository" ? "text-gray-900 font-bold" : "text-gray-500")}>Select From <span className="text-blue-700">Assets Repository (100)</span></span>
-                </label>
-              </div>
-
-              {activeUploadTab === "upload" ? (
-                  <>
-                      {/* Options Cards */}
-                      <div className="grid grid-cols-3 gap-3">
-                        <div className="bg-white p-3 rounded-md border border-gray-200 shadow-sm flex flex-col gap-2 cursor-pointer hover:border-blue-300 hover:shadow-md transition-all">
-                            <div className="flex items-center gap-2 text-gray-700 font-medium text-xs">
-                              <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" className="w-4 h-4" alt="Google" />
-                              <span>Google Workspace</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <span className="px-2 py-0.5 bg-blue-50 text-blue-600 rounded-sm text-[10px] font-bold border border-blue-100 flex items-center gap-1">
-                                <Database className="w-2.5 h-2.5" /> Google Disk
-                              </span>
-                            </div>
-                        </div>
-
-                        <div className="bg-white p-3 rounded-md border border-gray-200 shadow-sm flex flex-col gap-2 cursor-pointer hover:border-blue-300 hover:shadow-md transition-all">
-                            <div className="flex items-center gap-2 text-gray-700 font-medium text-xs">
-                              <LinkIcon className="w-3.5 h-3.5" />
-                              <span>Add link</span>
-                            </div>
-                            <div className="flex items-center gap-1 flex-wrap">
-                              <span className="px-2 py-0.5 bg-blue-50 text-blue-600 rounded-sm text-[10px] font-bold border border-blue-100 flex items-center gap-1">
-                                <Globe className="w-2.5 h-2.5" /> Site
-                              </span>
-                              <span className="px-2 py-0.5 bg-blue-50 text-blue-600 rounded-sm text-[10px] font-bold border border-blue-100 flex items-center gap-1">
-                                <Play className="w-2.5 h-2.5" /> YouTube
-                              </span>
-                            </div>
-                        </div>
-
-                        <div className="bg-white p-3 rounded-md border border-gray-200 shadow-sm flex flex-col gap-2 cursor-pointer hover:border-blue-300 hover:shadow-md transition-all">
-                            <div className="flex items-center gap-2 text-gray-700 font-medium text-xs">
-                              <FileText className="w-3.5 h-3.5" />
-                              <span>Paste text</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <span className="px-2 py-0.5 bg-blue-50 text-blue-600 rounded-sm text-[10px] font-bold border border-blue-100 flex items-center gap-1">
-                                <FileText className="w-2.5 h-2.5" /> Copied text
-                              </span>
-                            </div>
-                        </div>
-                      </div>
-
-                      {/* Upload Area */}
-                      <div 
-                        className="border-2 border-dashed border-gray-300 rounded-lg bg-gray-50 h-40 flex flex-col items-center justify-center gap-2 cursor-pointer hover:bg-gray-100 hover:border-gray-400 transition-colors"
-                        onClick={() => fileInputRef.current?.click()}
-                      >
-                        <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mb-1">
-                            <Upload className="w-5 h-5 text-blue-600" />
-                        </div>
-                        <div className="text-center space-y-0.5">
-                            <h3 className="text-sm font-bold text-gray-800">Upload sources</h3>
-                            <p className="text-xs text-blue-600 font-medium">Select file <span className="text-gray-500 font-normal">or drag here.</span></p>
-                        </div>
-                        <p className="text-[9px] text-gray-400 max-w-sm text-center leading-relaxed px-4">
-                            Supported file types: PDF, txt, Markdown, audio (e.g. MP3 files), docx, avif, .bmp, .gif, .ico, .jp2, .png, .webp, .tif, .tiff, .heic, .heif, .jpeg, .jpg, .jpe.
-                        </p>
-                      </div>
-                  </>
-              ) : (
-                  <div className="border rounded-md bg-white p-2 h-[260px] overflow-y-auto">
-                      <div className="space-y-1">
-                          {repoFiles.map((file, index) => (
-                              <div key={index} className="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-sm cursor-pointer border-b border-gray-100 last:border-0" onClick={() => toggleRepoFile(file)}>
-                                  <div className={cn(
-                                      "w-4 h-4 rounded border flex items-center justify-center transition-colors",
-                                      selectedRepoFiles.includes(file) ? "bg-blue-600 border-blue-600" : "border-gray-300 bg-white"
-                                  )}>
-                                      {selectedRepoFiles.includes(file) && <Check className="w-3 h-3 text-white" />}
-                                  </div>
-                                  <FileText className="w-4 h-4 text-gray-500" />
-                                  <span className="text-sm text-gray-700">{file}</span>
-                              </div>
-                          ))}
-                      </div>
-                  </div>
-              )}
-
-              {/* Footer Actions */}
-              <div className="flex flex-col items-center gap-4 pt-2">
-                {activeUploadTab === "upload" && (
-                    <label className="flex items-center gap-2 cursor-pointer select-none">
-                        <input type="checkbox" className="w-3.5 h-3.5 rounded border-gray-300 text-green-600 focus:ring-green-500" />
-                        <span className="text-xs font-medium text-black">Save 5 files to <span className="text-blue-800">Assets Repository (100)</span></span>
-                    </label>
-                )}
-                
-                <div className="flex items-center justify-center gap-6 w-full">
-                    <Button variant="ghost" size="sm" className="text-[#008DA8] hover:text-[#007A92] hover:bg-transparent font-bold underline h-8 text-xs" onClick={() => setIsAddFileModalOpen(false)}>
-                      CANCEL
-                    </Button>
-
-                    <Button size="sm" className="bg-[#00802b] hover:bg-[#006622] text-white font-bold px-6 h-8 text-xs" onClick={() => setIsAddFileModalOpen(false)}>
-                      Save & Add
-                    </Button>
-                </div>
-              </div>
-          </div>
-        </DialogContent>
-      </Dialog>
+      <AddFilesModal open={isAddFileModalOpen} onOpenChange={setIsAddFileModalOpen} />
 
       {/* Confirm Exit Modal */}
       <Dialog open={!!confirmExitStep} onOpenChange={(open) => !open && setConfirmExitStep(null)}>
