@@ -236,13 +236,39 @@ export default function Dashboard() {
 
         <div className="flex items-center gap-2">
           <span className="text-sm font-bold text-gray-800">Status</span>
-          <Button
-            variant="outline"
-            className="h-8 bg-white border-gray-300 text-sm font-normal min-w-[100px] justify-between"
-          >
-            All: 20
-            <ChevronDown className="w-4 h-4 opacity-50" />
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="outline"
+                className="h-8 bg-white border-gray-300 text-sm font-normal min-w-[120px] justify-between"
+                data-testid="button-status-filter"
+              >
+                All: 20
+                <ChevronDown className="w-4 h-4 opacity-50" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-40 bg-[#1a1a1a] border-[#333] shadow-xl p-0.5">
+              {[
+                { label: "All", count: 20, textColor: "text-gray-300" },
+                { label: "Success", count: 12, textColor: "text-green-500" },
+                { label: "In Progress", count: 3, textColor: "text-blue-500" },
+                { label: "Failed", count: 4, textColor: "text-red-500" },
+                { label: "Canceled", count: 1, textColor: "text-orange-500" },
+              ].map((opt) => (
+                <DropdownMenuItem
+                  key={opt.label}
+                  className={cn(
+                    "text-xs cursor-pointer flex justify-between items-center px-2 py-1.5 hover:text-white focus:text-white focus:bg-[#333]",
+                    opt.textColor
+                  )}
+                  data-testid={`filter-${opt.label.toLowerCase().replace(" ", "-")}`}
+                >
+                  <span>{opt.label}</span>
+                  <span className="text-[10px] text-gray-500 ml-2">{opt.count}</span>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </div>
       {/* Cards Grid */}
