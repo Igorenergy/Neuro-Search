@@ -295,7 +295,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           {/* Footer */}
           <div className="p-2 pt-0 flex items-center justify-center">
             <Link href="/assets" className="w-full">
-              <Button variant="ghost" className={cn("w-full h-8 px-2 text-xs font-semibold text-gray-600 hover:text-black hover:bg-black/5 flex items-center justify-center gap-1", location.includes("assets") && "bg-black/5 text-black")}>Files & Attachments</Button>
+              <Button variant="ghost" className={cn("w-full h-8 px-2 text-xs font-semibold text-gray-600 hover:text-black hover:bg-black/5 flex items-center justify-center gap-1", location.includes("assets") && "bg-black/5 text-black")}>
+                <FileText className="w-3.5 h-3.5" />
+                Files & Attachments: 123
+              </Button>
             </Link>
           </div>
         </>
