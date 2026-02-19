@@ -334,7 +334,7 @@ export default function SmartSearchInProgress() {
         data-testid="panel-right"
       >
         {/* Context Header */}
-        <div className="sticky top-0 z-10 bg-white border-b border-gray-200 px-3 py-2 flex items-center gap-3 shrink-0">
+        <div className="sticky top-0 z-10 border-b border-gray-200 px-3 py-2 flex items-center gap-3 shrink-0 bg-[#dddddd]">
           <div className="w-8 h-8 bg-gray-800 rounded-sm flex items-center justify-center shrink-0">
             <FileText className="w-4 h-4 text-white" />
           </div>
