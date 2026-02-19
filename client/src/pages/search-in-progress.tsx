@@ -335,11 +335,14 @@ export default function SmartSearchInProgress() {
       >
         {/* Context Header */}
         <div className="sticky top-0 z-10 bg-white border-b border-gray-200 px-3 py-2 flex items-center gap-3 shrink-0">
-          <div className="w-7 h-7 bg-gray-100 rounded-sm flex items-center justify-center shrink-0">
-            <Search className="w-4 h-4 text-gray-500" />
+          <div className="w-8 h-8 bg-gray-800 rounded-sm flex items-center justify-center shrink-0">
+            <FileText className="w-4 h-4 text-white" />
           </div>
-          <p className="text-xs font-medium text-gray-700 truncate flex-1" data-testid="text-project-title">
-            {config?.query || "Research in progress"}
+          <p className="text-xs font-medium text-gray-700 flex-1 leading-snug line-clamp-2" data-testid="text-project-title">
+            {(() => {
+              const text = config?.query || "Research in progress";
+              return text.length > 100 ? text.slice(0, 100) + "..." : text;
+            })()}
           </p>
           <button
             className="px-5 py-1.5 text-xs font-bold text-white bg-green-600 rounded-sm shrink-0"
