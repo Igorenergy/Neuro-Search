@@ -49,6 +49,7 @@ import { Switch as ToggleSwitch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
 import { loadLaunchConfig } from "@/lib/launch-config";
 import ResearchBriefingPanel from "@/components/research-briefing-panel";
+import CloneRestartModal from "@/components/clone-restart-modal";
 
 
 interface ThoughtNode {
@@ -151,6 +152,7 @@ export default function ReportsSummary() {
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [renameValue, setRenameValue] = useState("");
   const [isPinned, setIsPinned] = useState(false);
+  const [cloneOpen, setCloneOpen] = useState(false);
   const config = loadLaunchConfig();
 
   const projectTitle = config?.query
@@ -190,6 +192,7 @@ export default function ReportsSummary() {
               </DropdownMenuItem>
               <DropdownMenuItem
                 className="flex items-center gap-2 text-sm text-[#008DA8] focus:text-[#008DA8] cursor-pointer"
+                onClick={(e) => { e.preventDefault(); setCloneOpen(true); }}
                 data-testid="menu-clone"
               >
                 <Copy className="w-4 h-4 text-gray-500" />
@@ -701,6 +704,8 @@ export default function ReportsSummary() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      <CloneRestartModal open={cloneOpen} onOpenChange={setCloneOpen} />
     </div>
   );
 }

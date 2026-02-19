@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { useLocation } from "wouter";
 import { usePreviewStore } from "@/lib/preview-store";
-import { saveLaunchConfig } from "@/lib/launch-config";
+import { saveLaunchConfig, loadCloneDraft, clearCloneDraft } from "@/lib/launch-config";
 import { 
   Upload, 
   FileText, 

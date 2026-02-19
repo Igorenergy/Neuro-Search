@@ -1,0 +1,65 @@
+Component Specification: "Clone & Restart" Confirmation Modal
+Context: Triggered when the user clicks the [ Clone & Restart ] button from a past research project (whether it is Completed, Failed, or Aborted).
+Role: To act as a secure confirmation step before taking the user out of their current context. It clearly explains what will happen and sets expectations regarding cost and data transfer.
+
+1. Layout & Presentation (UI)
+Component Type: Centered Dialog/Modal (shadcn/ui Dialog or AlertDialog).
+
+Backdrop: A dark, semi-transparent overlay (bg-black/50 with backdrop-blur-sm).
+
+Container: A clean, white, rounded card (max-w-md w-full p-6).
+
+Iconography: A prominent, circular icon at the top center (e.g., a "Copy/Duplicate" icon in blue or neutral gray) to visually indicate the cloning action.
+
+2. Typography & Content (The Core)
+Header (Title): * Clone & Restart Research (Font: text-lg font-semibold text-gray-900 text-center).
+
+Description (What happens next): * Text: "This action will duplicate your original prompt, selected data engine, and all attached files. You will be redirected to the Launcher page, where you can edit these parameters before starting a new operation."
+
+Style: text-sm text-gray-500 text-center mt-2.
+
+The Cost Block (Read-Only Highlight):
+
+Visual: A distinct, slightly highlighted box below the description (e.g., bg-gray-50 border border-gray-200 rounded-lg p-4 mt-4 flex justify-between items-center).
+
+Left Label: "Estimated Cost (Based on previous run):"
+
+Right Value: [ $X.XX ] (Font: font-mono font-medium text-gray-900).
+
+Disclaimer (Small text below): "Final cost may vary if you change settings or add new files in the Launcher."
+
+3. Footer & Action Buttons
+Layout: A full-width flex container (mt-6 flex gap-3).
+
+Secondary Action (Left): * [ Cancel ] (Button style: variant="outline" w-full). Closes the modal and does nothing.
+
+Primary Action (Right): * [ Proceed to Launcher ] or [ Clone Settings ] (Button style: variant="default" w-full bg-black text-white).
+
+4. Workflow Logic & State Management (For the Developer)
+Step 1: Data Extraction
+
+When the user clicks the initial "Clone" button to open this modal, the frontend must temporarily hold the research_payload of the current project in memory.
+
+JSON
+{
+  "previous_query": "Analyze SaaS competitors...",
+  "previous_engine": "Ultimate",
+  "previous_files": ["file_id_1", "file_id_2"]
+}
+Step 2: The Transition (onSubmit)
+
+When the user clicks [ Proceed to Launcher ], the frontend must not start the research immediately.
+
+Instead, it must push this payload into a global state manager (like Zustand/Redux) or temporarily into sessionStorage (e.g., clone_draft_state).
+
+Then, execute a route change to the Launcher: router.push('/smart-search/new').
+
+Step 3: Hydrating the Launcher (Target Page Logic)
+
+When the /smart-search/new (Launcher) page mounts, it must check if a clone_draft_state exists.
+
+If it exists, the Launcher must instantly auto-fill the "Omni-Input" field, select the correct Engine tier, and attach the respective files.
+
+The user now sees a fully prepared Launcher page and can edit the text before hitting the final "Launch" button.
+
+Crucial cleanup: Once the Launcher is populated, clear the clone_draft_state from memory so future visits to the Launcher remain blank.

@@ -42,6 +42,7 @@ import { Switch as ToggleSwitch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Trash2, FileText, Copy, Filter } from "lucide-react";
 import rocketIcon from "@assets/image_1771405092616.png";
+import CloneRestartModal from "@/components/clone-restart-modal";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
@@ -49,6 +50,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
+  const [cloneOpen, setCloneOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<{ id: number; title: string } | null>(null);
   const [renameValue, setRenameValue] = useState("");
   const [isPinned, setIsPinned] = useState(false);
@@ -215,7 +217,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                           </DropdownMenuItem>
                           <DropdownMenuItem
                             className="flex items-center gap-2 text-sm cursor-pointer"
-                            onClick={(e) => { e.preventDefault(); }}
+                            onClick={(e) => { e.preventDefault(); setCloneOpen(true); }}
                             data-testid={`clone-${item.id}`}
                           >
                             <Copy className="w-4 h-4 text-gray-500" />
@@ -269,7 +271,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                           </DropdownMenuItem>
                           <DropdownMenuItem
                             className="flex items-center gap-2 text-sm cursor-pointer"
-                            onClick={(e) => { e.preventDefault(); }}
+                            onClick={(e) => { e.preventDefault(); setCloneOpen(true); }}
                             data-testid={`clone-${item.id}`}
                           >
                             <Copy className="w-4 h-4 text-gray-500" />
@@ -508,6 +510,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </DialogFooter>
       </DialogContent>
     </Dialog>
+    <CloneRestartModal open={cloneOpen} onOpenChange={setCloneOpen} />
     </>
   );
 }

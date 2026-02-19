@@ -15,6 +15,7 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { loadLaunchConfig, type LaunchConfig } from "@/lib/launch-config";
 import { usePreviewStore } from "@/lib/preview-store";
+import CloneRestartModal from "@/components/clone-restart-modal";
 
 const dataEngineLabels: Record<string, string> = {
   ultimate: "Ultimate",
@@ -38,6 +39,7 @@ export default function ResearchBriefingPanel({ expanded, onToggle }: ResearchBr
   const [config, setConfig] = useState<LaunchConfig | null>(null);
   const [briefingExpanded, setBriefingExpanded] = useState(false);
   const [queryExpanded, setQueryExpanded] = useState(false);
+  const [cloneOpen, setCloneOpen] = useState(false);
   const { openPreview } = usePreviewStore();
 
   useEffect(() => {
@@ -81,6 +83,7 @@ export default function ResearchBriefingPanel({ expanded, onToggle }: ResearchBr
             <button
               title="Clone & Restart"
               className="p-1 hover:bg-gray-200 rounded-sm transition-colors"
+              onClick={() => setCloneOpen(true)}
               data-testid="button-clone-restart-briefing"
             >
               <GitFork className="w-3.5 h-3.5 text-[#008DA8]" />
@@ -257,6 +260,7 @@ export default function ResearchBriefingPanel({ expanded, onToggle }: ResearchBr
           </div>
         </div>
       )}
+      <CloneRestartModal open={cloneOpen} onOpenChange={setCloneOpen} />
     </div>
   );
 }
