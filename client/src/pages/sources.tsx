@@ -20,6 +20,8 @@ import {
   X,
   RefreshCw,
   Circle,
+  CheckCircle,
+  XCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -317,23 +319,11 @@ export default function SourcesPage() {
                 )}
               </button>
 
-              <div className={cn(
-                "w-6 h-6 rounded-full flex items-center justify-center shrink-0",
-                source.included ? "bg-[#00802b]" : "border-2 border-orange-400"
-              )}>
-                {source.included ? (
-                  <CheckSquare className="w-3 h-3 text-white" />
-                ) : (
-                  <Circle className="w-2 h-2 fill-orange-400 text-orange-400" />
-                )}
-              </div>
-
-              <div className={cn(
-                "px-2 py-0.5 rounded-sm text-[10px] font-bold shrink-0 uppercase",
-                source.included ? "bg-green-100 text-green-700" : "bg-orange-100 text-orange-600"
-              )}>
-                {source.included ? "icon" : "icon"}
-              </div>
+              {source.included ? (
+                <CheckCircle className="w-5 h-5 text-[#00802b] shrink-0" />
+              ) : (
+                <XCircle className="w-5 h-5 text-orange-400 shrink-0" />
+              )}
 
               <span className="text-sm font-medium text-gray-800 truncate flex-1 min-w-0 max-w-[360px]" data-testid={`text-source-title-${source.id}`}>
                 {source.title}
@@ -381,9 +371,19 @@ export default function SourcesPage() {
                       </button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      <DropdownMenuItem>⚙️Deep Extract</DropdownMenuItem>
-                      <DropdownMenuItem>🛡️Confidence Score</DropdownMenuItem>
-                      <DropdownMenuItem>{source.included ? "Exclude" : "Include"}</DropdownMenuItem>
+                      <DropdownMenuItem className="gap-2">
+                        <Settings className="w-4 h-4" /> Deep Extract
+                      </DropdownMenuItem>
+                      <DropdownMenuItem className="gap-2">
+                        <Shield className="w-4 h-4" /> Confidence Score
+                      </DropdownMenuItem>
+                      <DropdownMenuItem className="gap-2">
+                        {source.included ? (
+                          <><XCircle className="w-4 h-4 text-orange-400" /> Exclude</>
+                        ) : (
+                          <><CheckCircle className="w-4 h-4 text-[#00802b]" /> Include</>
+                        )}
+                      </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </div>
@@ -416,9 +416,7 @@ export default function SourcesPage() {
               <div className="flex items-center gap-3">
                 <RadioGroupItem value="include" id="include" className="border-gray-400 text-gray-600" />
                 <div className="flex items-center gap-2">
-                  <div className="w-5 h-5 bg-green-600 rounded-full flex items-center justify-center">
-                    <CheckSquare className="w-3 h-3 text-white" />
-                  </div>
+                  <CheckCircle className="w-5 h-5 text-[#00802b]" />
                   <label htmlFor="include" className="text-sm font-medium text-gray-900 cursor-pointer">
                     Included all [{selectedIds.size}]
                   </label>
@@ -428,9 +426,7 @@ export default function SourcesPage() {
               <div className="flex items-center gap-3">
                 <RadioGroupItem value="exclude" id="exclude" className="border-gray-400 text-gray-600" />
                 <div className="flex items-center gap-2">
-                  <div className="w-5 h-5 border-2 border-orange-400 rounded-full flex items-center justify-center">
-                    <Circle className="w-2 h-2 fill-orange-400 text-orange-400" />
-                  </div>
+                  <XCircle className="w-5 h-5 text-orange-400" />
                   <label htmlFor="exclude" className="text-sm font-medium text-gray-900 cursor-pointer">
                     Excluded all [{selectedIds.size}]
                   </label>
