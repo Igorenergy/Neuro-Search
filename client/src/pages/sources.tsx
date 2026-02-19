@@ -365,10 +365,6 @@ export default function SourcesPage() {
                 </div>
 
                 <div className="flex items-center flex-1 min-w-0">
-                  <Settings className="w-3.5 h-3.5 text-blue-500" />
-                </div>
-
-                <div className="flex items-center flex-1 min-w-0">
                   <ConfidenceRing score={source.confidenceScore} />
                 </div>
 
