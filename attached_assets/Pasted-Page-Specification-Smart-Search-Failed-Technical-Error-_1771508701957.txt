@@ -1,0 +1,91 @@
+Page Specification: Smart Search - Failed (Technical & Error Handling Focus)
+Route: /smart-search/failed/:id
+Role: The "Error Resolution & Recovery" dashboard. This page is triggered when the AI agent encounters a terminal state during the execution phase. The UX goal is to prevent user frustration by explaining why it failed, offering a clear recovery path, and exposing technical logs for power users without overwhelming standard users.
+
+1. Error State Architecture (Visual Hierarchy)
+The page uses the established Sliding Panels SPA layout, but the Right Panel (Main Content) is structured to prioritize problem-solving.
+
+Top Banner (The Alert):
+
+Visual: A full-width banner at the top of the Right Panel. Background color depends on severity:
+
+🔴 Critical (Red): Hard failures (e.g., API limits reached, systemic crash).
+
+🟠 Warning (Orange): Blockers (e.g., Cloudflare, CAPTCHA).
+
+🟡 Caution (Yellow): Partial failures (e.g., 3 out of 10 sources failed).
+
+Content: Human-readable error title (e.g., "Research Blocked by Anti-Bot Protection") and a concise subtitle.
+
+2. Technical Error Taxonomy & UI Logic
+The UI must dynamically adapt based on the specific error_code returned by the backend. The developer must implement the following conditional logic:
+
+Scenario A: Anti-Bot & WAF Blocks (HTTP 403, Cloudflare, CAPTCHA)
+
+Trigger: Backend returns err_waf_blocked or err_captcha.
+
+UX/UI Action: Display the "Resolution Matrix" (as described in the previous spec).
+
+Logic: Prompt the user to use the Local Browser Extension, pay for Residential Proxies, or use the Vision Engine.
+
+Scenario B: Network Timeouts & Unreachable Hosts (HTTP 504, 502, DNS Errors)
+
+Trigger: Backend returns err_timeout or err_host_unreachable.
+
+UX/UI Action: * Display a card explaining: "Target servers took too long to respond or are currently offline."
+
+Primary Action: [ Retry Failed Sources ] (Triggers a targeted re-fetch with extended timeout settings).
+
+Secondary Action: [ Skip Offline Sources ] (Aborts the failed links and proceeds to report generation with the remaining valid data).
+
+Scenario C: Parsing & Extraction Failures (Empty DOM, Heavy SPA)
+
+Trigger: Backend successfully connects (HTTP 200) but extracts 0 meaningful tokens (err_empty_extraction).
+
+UX/UI Action: * Display a card: "We accessed the page, but couldn't read the content (likely hidden behind complex JavaScript or a login)."
+
+Primary Action: [ Switch to Vision Engine ] (Instructs the agent to take a headless screenshot and use OCR/Vision AI).
+
+Secondary Action: [ Manual Upload ] (Drag-and-drop zone for the user to upload a PDF/HTML copy of the blocked page).
+
+Scenario D: Context Limit & Token Exhaustion (LLM 400 Context Exceeded)
+
+Trigger: The aggregated data from sources exceeds the LLM's context window (e.g., err_token_limit_exceeded).
+
+UX/UI Action:
+
+Display a card: "The gathered data is too large to analyze in a single pass."
+
+UI Component: A visual "Token Usage Bar" showing capacity at 120% (Red).
+
+Primary Action: [ Auto-Summarize Sources ] (Triggers an intermediate map-reduce step to compress raw data before final synthesis).
+
+Secondary Action: Checkboxes next to large sources allowing the user to uncheck/exclude heavy files to reduce token count manually.
+
+3. The "Developer Console" (Technical Details Component)
+Role: For advanced users or internal debugging.
+
+UI Component: An accordion labeled [+] View Technical Logs positioned at the bottom of the error cards.
+
+State: Collapsed by default.
+
+Content inside Accordion:
+
+A dark-themed, monospace code block (bg-slate-900 text-green-400 font-mono text-sm p-4 overflow-x-auto).
+
+Displays the raw JSON error payload or stack trace (e.g., {"step": "fetch_url", "url": "...", "status": 403, "headers": {...}}).
+
+Action: A [ Copy Logs ] icon button in the top right corner of the block for easy pasting to support.
+
+4. Graceful Degradation (Partial Data Recovery)
+Logic: If the agent successfully scraped 8 sources but failed on the last 2, the system must not discard the 8 successful ones.
+
+UI Component: Below the error resolution cards, display a "Recovered Context" section.
+
+Elements:
+
+A mini Data Grid showing the successfully parsed sources with green checkmarks.
+
+A prominent button: [ Proceed with Partial Data ].
+
+Backend Logic for button: Sends a FORCE_CONTINUE signal to the backend, instructing the LLM to skip the failed queue and immediately generate the System Report using only the green-checked sources.
