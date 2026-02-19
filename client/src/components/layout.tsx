@@ -258,15 +258,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </div>
 
           {/* Footer */}
-          <div className="p-2 pt-0 flex items-center justify-between gap-2">
-            <Link href="/assets" className="flex-1">
+          <div className="p-2 pt-0 flex items-center justify-center">
+            <Link href="/assets" className="w-full">
               <Button variant="ghost" className={cn("w-full h-8 px-2 text-xs font-semibold text-gray-600 hover:text-black hover:bg-black/5 flex items-center justify-center gap-1", location.includes("assets") && "bg-black/5 text-black")}>
                 Assets
               </Button>
             </Link>
-            <a href="#" className="text-[#008DA8] text-sm font-semibold underline decoration-[#008DA8] underline-offset-2 hover:text-[#006E7D] whitespace-nowrap">
-              Show all (123)
-            </a>
           </div>
         </>
       ) : (
