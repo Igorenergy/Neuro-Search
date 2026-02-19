@@ -156,6 +156,9 @@ export default function ReportsSummary() {
       {/* Context Header */}
       <div className="flex items-center justify-between px-4 py-2.5 border-b border-gray-200 bg-[#F5F5F7] shrink-0">
         <div className="flex items-center gap-3 min-w-0">
+          <div className="w-8 h-8 rounded-sm flex items-center justify-center shrink-0 bg-green-600">
+            <Rocket className="w-4 h-4 text-white" />
+          </div>
           <h1 className="text-sm font-bold text-gray-900 truncate max-w-[400px]" data-testid="text-project-title">
             {projectTitle}
           </h1>
