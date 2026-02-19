@@ -132,7 +132,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-[200px]">
-                  <DropdownMenuItem>New Research</DropdownMenuItem>
+                  <DropdownMenuItem>Smart search </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
               
