@@ -321,7 +321,6 @@ export default function SmartSearchInProgress() {
                 <Link href="/smart-search/new">
                   <a className="text-xs font-bold text-[#008DA8] hover:underline flex items-center gap-1" data-testid="link-start-new-research">
                     Start New Research
-                    <Zap className="w-3 h-3 text-yellow-500 fill-yellow-500" />
                   </a>
                 </Link>
               </div>
