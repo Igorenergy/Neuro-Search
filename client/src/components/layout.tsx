@@ -158,7 +158,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     <Filter className="w-4 h-4" />
                   </button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-40 bg-white border-gray-200 shadow-lg">
+                <DropdownMenuContent align="end" className="w-36 bg-[#1a1a1a] border-[#333] shadow-xl p-0.5">
                   {([
                     { value: "all", label: "All Statuses", count: visibleResearchItems.length },
                     { value: "success", label: "Success", count: visibleResearchItems.filter(i => i.status === "success").length },
@@ -168,12 +168,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   ] as const).map((opt) => (
                     <DropdownMenuItem
                       key={opt.value}
-                      className={cn("text-sm cursor-pointer flex justify-between items-center", statusFilter === opt.value && "font-bold text-[#008DA8]")}
+                      className={cn("text-xs cursor-pointer flex justify-between items-center px-2 py-1 text-gray-300 hover:text-white focus:text-white focus:bg-[#333]", statusFilter === opt.value && "font-bold text-[#008DA8] focus:text-[#008DA8]")}
                       onClick={() => setStatusFilter(opt.value)}
                       data-testid={`filter-${opt.value}`}
                     >
                       <span>{opt.label}</span>
-                      <span className="text-[10px] text-gray-400 ml-2">{opt.count}</span>
+                      <span className="text-[9px] text-gray-500 ml-2">{opt.count}</span>
                     </DropdownMenuItem>
                   ))}
                 </DropdownMenuContent>
@@ -242,7 +242,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               {/* Unpinned Items */}
               <div className="divide-y divide-gray-200/50">
                 {unpinnedItems.map((item) => (
-                  <div key={item.id} className="flex items-start gap-2 p-3 bg-white hover:bg-gray-100 cursor-pointer group transition-colors border-l-[3px] border-l-green-500">
+                  <div key={item.id} className={cn("flex items-start gap-2 p-3 bg-white hover:bg-gray-100 cursor-pointer group transition-colors border-l-[3px]", statusConfig[item.status].borderColor)}>
                     <Link href={`${statusConfig[item.status].route}/${item.id}`} className="flex items-start gap-2 flex-1 min-w-0">
                       <img src={rocketIcon} alt="Rocket" className="w-4 h-4 mt-0.5 shrink-0 opacity-70" />
                       <p className="text-[13px] leading-tight text-gray-800 line-clamp-2 font-medium flex-1">
