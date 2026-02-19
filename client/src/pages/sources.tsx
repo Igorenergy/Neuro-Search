@@ -208,17 +208,17 @@ export default function SourcesPage() {
 
         <div className="flex items-center gap-1.5">
           {selectedIds.size > 0 && [
-            { icon: Globe, color: "text-green-600", bg: "bg-green-100", onClick: () => setShowActionModal(true) },
-            { icon: Settings, color: "text-blue-600", bg: "bg-blue-100", onClick: () => {} },
-            { icon: Shield, color: "text-orange-600", bg: "bg-orange-100", onClick: () => {} },
+            { icon: Globe, color: "text-gray-500", hoverBg: "hover:bg-green-100", hoverColor: "group-hover/btn:text-green-600", onClick: () => setShowActionModal(true) },
+            { icon: Settings, color: "text-gray-500", hoverBg: "hover:bg-blue-100", hoverColor: "group-hover/btn:text-blue-600", onClick: () => {} },
+            { icon: Shield, color: "text-gray-500", hoverBg: "hover:bg-orange-100", hoverColor: "group-hover/btn:text-orange-600", onClick: () => {} },
           ].map((item, i) => (
             <button 
               key={i} 
-              className={cn("w-6 h-6 rounded-sm flex items-center justify-center transition-all hover:scale-110 hover:shadow-sm", item.bg)}
+              className={cn("group/btn w-6 h-6 rounded-sm flex items-center justify-center transition-all hover:scale-110 hover:shadow-sm bg-gray-100", item.hoverBg)}
               onClick={item.onClick}
               data-testid={`button-toolbar-action-${i}`}
             >
-              <item.icon className={cn("w-3.5 h-3.5", item.color)} />
+              <item.icon className={cn("w-3.5 h-3.5 transition-colors", item.color, item.hoverColor)} />
             </button>
           ))}
         </div>
@@ -276,6 +276,14 @@ export default function SourcesPage() {
             <LayoutGrid className="w-4 h-4" />
           </button>
         </div>
+
+        <button
+          className="p-1 hover:bg-gray-200 rounded transition-colors"
+          title="Download all sources"
+          data-testid="button-download-sources"
+        >
+          <Download className="w-4 h-4 text-gray-500" />
+        </button>
       </div>
 
       {/* Enhance Research + Progress */}
@@ -296,59 +304,179 @@ export default function SourcesPage() {
 
       {/* Data Grid */}
       <div className="flex-1 overflow-y-auto">
-        <div className="flex flex-col gap-2 p-3">
+        <div className={cn(
+          "p-3",
+          viewMode === "list" ? "flex flex-col gap-2" : "grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3"
+        )}>
           {filteredSources.map((source) => (
-            <div
-              key={source.id}
-              className={cn(
-                "flex items-center gap-3 px-3 py-2.5 bg-white border rounded-md transition-colors group",
-                source.included
-                  ? "border-l-[3px] border-l-green-500 border-t-gray-200 border-r-gray-200 border-b-gray-200"
-                  : "border-l-[3px] border-l-orange-400 border-t-gray-200 border-r-gray-200 border-b-gray-200",
-                selectedIds.has(source.id) && "bg-blue-50/40"
-              )}
-              data-testid={`row-source-${source.id}`}
-              onClick={() => { setDrawerSource(source); setDrawerOpen(true); }}
-              style={{ cursor: "pointer" }}
-            >
-              <button onClick={(e) => { e.stopPropagation(); toggleSelect(source.id); }} className="shrink-0">
-                {selectedIds.has(source.id) ? (
-                  <CheckSquare className="w-4 h-4 text-[#008DA8]" />
-                ) : (
-                  <Square className="w-4 h-4 text-gray-300" />
+            viewMode === "list" ? (
+              <div
+                key={source.id}
+                className={cn(
+                  "flex items-center gap-3 px-3 py-2.5 bg-white border rounded-md transition-colors group",
+                  source.included
+                    ? "border-l-[3px] border-l-green-500 border-t-gray-200 border-r-gray-200 border-b-gray-200"
+                    : "border-l-[3px] border-l-orange-400 border-t-gray-200 border-r-gray-200 border-b-gray-200",
+                  selectedIds.has(source.id) && "bg-blue-50/40"
                 )}
-              </button>
+                data-testid={`row-source-${source.id}`}
+                onClick={() => { setDrawerSource(source); setDrawerOpen(true); }}
+                style={{ cursor: "pointer" }}
+              >
+                <button onClick={(e) => { e.stopPropagation(); toggleSelect(source.id); }} className="shrink-0">
+                  {selectedIds.has(source.id) ? (
+                    <CheckSquare className="w-4 h-4 text-[#008DA8]" />
+                  ) : (
+                    <Square className="w-4 h-4 text-gray-300" />
+                  )}
+                </button>
 
-              {source.included ? (
-                <CheckCircle className="w-5 h-5 text-[#00802b] shrink-0" />
-              ) : (
-                <XCircle className="w-5 h-5 text-orange-400 shrink-0" />
-              )}
+                {source.included ? (
+                  <CheckCircle className="w-5 h-5 text-[#00802b] shrink-0" />
+                ) : (
+                  <XCircle className="w-5 h-5 text-orange-400 shrink-0" />
+                )}
 
-              <span className="text-sm font-medium text-gray-800 truncate flex-1 min-w-0 max-w-[360px]" data-testid={`text-source-title-${source.id}`}>
-                {source.title}
-              </span>
-
-              <div className="flex items-center flex-1 min-w-0">
-                <div className="flex items-center gap-1.5 text-[11px] text-gray-500 flex-1 min-w-0">
-                  <FileText className="w-3 h-3 shrink-0" />
-                  {source.date}
-                </div>
-
-                <div className="flex items-center gap-1.5 text-[11px] text-gray-500 flex-1 min-w-0">
-                  <Globe className="w-3 h-3 shrink-0" />
-                  Location: {source.location}
-                </div>
-
-                <div className="flex items-center text-[11px] text-gray-500 flex-1 min-w-0">
-                  Language: {source.language}
-                </div>
+                <span className="text-sm font-medium text-gray-800 truncate flex-1 min-w-0 max-w-[360px]" data-testid={`text-source-title-${source.id}`}>
+                  {source.title}
+                </span>
 
                 <div className="flex items-center flex-1 min-w-0">
+                  <div className="flex items-center gap-1.5 text-[11px] text-gray-500 flex-1 min-w-0">
+                    <FileText className="w-3 h-3 shrink-0" />
+                    {source.date}
+                  </div>
+
+                  <div className="flex items-center gap-1.5 text-[11px] text-gray-500 flex-1 min-w-0">
+                    <Globe className="w-3 h-3 shrink-0" />
+                    Location: {source.location}
+                  </div>
+
+                  <div className="flex items-center text-[11px] text-gray-500 flex-1 min-w-0">
+                    Language: {source.language}
+                  </div>
+
+                  <div className="flex items-center flex-1 min-w-0">
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <div data-testid={`confidence-ring-${source.id}`}>
+                          <ConfidenceRing score={source.confidenceScore} />
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent side="top" className="max-w-[220px] text-center">
+                        <p className="text-xs">Confidence Score is an AI-driven credibility metric that separates verified facts from digital noise.</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </div>
+
+                  <div className="flex items-center gap-1 shrink-0" onClick={(e) => e.stopPropagation()}>
+                    <button
+                      className="p-1 hover:bg-gray-200 rounded transition-colors"
+                      data-testid={`button-open-source-${source.id}`}
+                    >
+                      <ExternalLink className="w-3.5 h-3.5 text-gray-500" />
+                    </button>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <button className="p-1 hover:bg-gray-200 rounded transition-colors" data-testid={`button-source-menu-${source.id}`}>
+                          <MoreVertical className="w-3.5 h-3.5 text-gray-500" />
+                        </button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem className="gap-2">
+                          <Settings className="w-4 h-4" /> Deep Extract
+                        </DropdownMenuItem>
+                        <DropdownMenuItem className="gap-2">
+                          <Shield className="w-4 h-4" /> Confidence Score
+                        </DropdownMenuItem>
+                        <DropdownMenuItem className="gap-2">
+                          {source.included ? (
+                            <><XCircle className="w-4 h-4 text-orange-400" /> Exclude</>
+                          ) : (
+                            <><CheckCircle className="w-4 h-4 text-[#00802b]" /> Include</>
+                          )}
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div
+                key={source.id}
+                className={cn(
+                  "flex flex-col bg-white border rounded-md transition-colors group cursor-pointer",
+                  source.included
+                    ? "border-t-[3px] border-t-green-500 border-l-gray-200 border-r-gray-200 border-b-gray-200"
+                    : "border-t-[3px] border-t-orange-400 border-l-gray-200 border-r-gray-200 border-b-gray-200",
+                  selectedIds.has(source.id) && "bg-blue-50/40"
+                )}
+                data-testid={`tile-source-${source.id}`}
+                onClick={() => { setDrawerSource(source); setDrawerOpen(true); }}
+              >
+                <div className="flex items-center justify-between px-3 pt-3 pb-1">
+                  <div className="flex items-center gap-2">
+                    <button onClick={(e) => { e.stopPropagation(); toggleSelect(source.id); }} className="shrink-0">
+                      {selectedIds.has(source.id) ? (
+                        <CheckSquare className="w-4 h-4 text-[#008DA8]" />
+                      ) : (
+                        <Square className="w-4 h-4 text-gray-300" />
+                      )}
+                    </button>
+                    {source.included ? (
+                      <CheckCircle className="w-4 h-4 text-[#00802b]" />
+                    ) : (
+                      <XCircle className="w-4 h-4 text-orange-400" />
+                    )}
+                  </div>
+                  <div className="flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
+                    <button className="p-1 hover:bg-gray-200 rounded transition-colors" data-testid={`button-tile-open-${source.id}`}>
+                      <ExternalLink className="w-3.5 h-3.5 text-gray-500" />
+                    </button>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <button className="p-1 hover:bg-gray-200 rounded transition-colors" data-testid={`button-tile-menu-${source.id}`}>
+                          <MoreVertical className="w-3.5 h-3.5 text-gray-500" />
+                        </button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem className="gap-2">
+                          <Settings className="w-4 h-4" /> Deep Extract
+                        </DropdownMenuItem>
+                        <DropdownMenuItem className="gap-2">
+                          <Shield className="w-4 h-4" /> Confidence Score
+                        </DropdownMenuItem>
+                        <DropdownMenuItem className="gap-2">
+                          {source.included ? (
+                            <><XCircle className="w-4 h-4 text-orange-400" /> Exclude</>
+                          ) : (
+                            <><CheckCircle className="w-4 h-4 text-[#00802b]" /> Include</>
+                          )}
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+                </div>
+
+                <div className="px-3 pb-2">
+                  <p className="text-sm font-medium text-gray-800 line-clamp-2 leading-tight" data-testid={`text-tile-title-${source.id}`}>
+                    {source.title}
+                  </p>
+                  <p className="text-[11px] text-gray-400 mt-1 truncate">{source.domain}</p>
+                </div>
+
+                <div className="flex items-center justify-between px-3 py-2 border-t border-gray-100 mt-auto">
+                  <div className="flex items-center gap-3 text-[10px] text-gray-500">
+                    <span className="flex items-center gap-1">
+                      <FileText className="w-3 h-3" />
+                      {source.date}
+                    </span>
+                    <span>{source.location}</span>
+                  </div>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <div data-testid={`confidence-ring-${source.id}`}>
-                        <ConfidenceRing score={source.confidenceScore} />
+                      <div data-testid={`confidence-tile-${source.id}`}>
+                        <ConfidenceRing score={source.confidenceScore} size={24} />
                       </div>
                     </TooltipTrigger>
                     <TooltipContent side="top" className="max-w-[220px] text-center">
@@ -356,39 +484,8 @@ export default function SourcesPage() {
                     </TooltipContent>
                   </Tooltip>
                 </div>
-
-                <div className="flex items-center gap-1 shrink-0" onClick={(e) => e.stopPropagation()}>
-                  <button
-                    className="p-1 hover:bg-gray-200 rounded transition-colors"
-                    data-testid={`button-open-source-${source.id}`}
-                  >
-                    <ExternalLink className="w-3.5 h-3.5 text-gray-500" />
-                  </button>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <button className="p-1 hover:bg-gray-200 rounded transition-colors" data-testid={`button-source-menu-${source.id}`}>
-                        <MoreVertical className="w-3.5 h-3.5 text-gray-500" />
-                      </button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuItem className="gap-2">
-                        <Settings className="w-4 h-4" /> Deep Extract
-                      </DropdownMenuItem>
-                      <DropdownMenuItem className="gap-2">
-                        <Shield className="w-4 h-4" /> Confidence Score
-                      </DropdownMenuItem>
-                      <DropdownMenuItem className="gap-2">
-                        {source.included ? (
-                          <><XCircle className="w-4 h-4 text-orange-400" /> Exclude</>
-                        ) : (
-                          <><CheckCircle className="w-4 h-4 text-[#00802b]" /> Include</>
-                        )}
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </div>
               </div>
-            </div>
+            )
           ))}
         </div>
       </div>
