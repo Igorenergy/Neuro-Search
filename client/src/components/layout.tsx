@@ -31,7 +31,7 @@ import {
 import rocketIcon from "@assets/image_1771405092616.png";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  const [location] = useLocation();
+  const [location, navigate] = useLocation();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
 
@@ -42,19 +42,37 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     }
   }, [location]);
 
-  // Mock data for the sidebar list matching the image
-  const researchItems = [
-    { id: 1, title: "Реестр 492 Компаний: Полный анализ и стратегический обзор...", icon: Paperclip },
-    { id: 2, title: "Мемуары Криптана: Ретроспективный анализ криптозимы и стратегии...", icon: Paperclip },
-    { id: 3, title: "Мемуары Криптана: Ретроспективный анализ криптозимы и стратегии...", icon: Paperclip },
-    { id: 4, title: "1Искусственный Интеллект и Будущее Технологий: Глубокий анализ...", icon: MoreVertical },
-    { id: 5, title: "15 Жестоких Правд о Неконкурентных Рынках: Как выжить и преуспеть ...", icon: MoreVertical },
-    { id: 6, title: "Блокчейн в Финтехе 2025: Анализ Рисков, Прогноз ROI и Стратегии...", icon: MoreVertical },
-    { id: 7, title: "Биотехнологии 2.0: Инвестиции в Геномное Редактирование и Персп ...", icon: MoreVertical },
-    { id: 8, title: "Стратегический Риск-менеджмент в Трейдинге: Психология, Инстру...", icon: MoreVertical },
-    { id: 9, title: "NFT как Инвестиционный Актив: Анализ Волатильности, Ликвиднос...", icon: MoreVertical },
-    { id: 10, title: "Фискальная Политика Евросоюза: Анализ Бюджета на 2026 год и Вли ...", icon: MoreVertical },
+  type ResearchStatus = "success" | "in_progress" | "failed" | "canceled";
+
+  const statusStyles: Record<ResearchStatus, { bg: string; border: string; text: string; label: string }> = {
+    success: { bg: "bg-green-500", border: "border-green-400", text: "text-green-700", label: "Success" },
+    in_progress: { bg: "bg-blue-500", border: "border-blue-400", text: "text-blue-700", label: "In Progress" },
+    failed: { bg: "bg-red-500", border: "border-red-400", text: "text-red-700", label: "Failed" },
+    canceled: { bg: "bg-orange-400", border: "border-orange-300", text: "text-orange-600", label: "Canceled" },
+  };
+
+  const statusRoutes: Record<ResearchStatus, string> = {
+    success: "/research-success/",
+    in_progress: "/research-in-progress/",
+    failed: "/research-failed/",
+    canceled: "/research-canceled/",
+  };
+
+  const researchItems: { id: number; title: string; status: ResearchStatus; pinned?: boolean }[] = [
+    { id: 1, title: "Реестр 492 Компаний: Полный анализ и стратегический обзор...", status: "in_progress", pinned: true },
+    { id: 2, title: "Мемуары Криптана: Ретроспективный анализ криптозимы и стратегии...", status: "success", pinned: true },
+    { id: 3, title: "Мемуары Криптана: Ретроспективный анализ криптозимы и стратегии...", status: "failed", pinned: true },
+    { id: 4, title: "Искусственный Интеллект и Будущее Технологий: Глубокий анализ...", status: "success" },
+    { id: 5, title: "15 Жестоких Правд о Неконкурентных Рынках: Как выжить и преуспеть ...", status: "canceled" },
+    { id: 6, title: "Блокчейн в Финтехе 2025: Анализ Рисков, Прогноз ROI и Стратегии...", status: "in_progress" },
+    { id: 7, title: "Биотехнологии 2.0: Инвестиции в Геномное Редактирование и Персп ...", status: "success" },
+    { id: 8, title: "Стратегический Риск-менеджмент в Трейдинге: Психология, Инстру...", status: "failed" },
+    { id: 9, title: "NFT как Инвестиционный Актив: Анализ Волатильности, Ликвиднос...", status: "canceled" },
+    { id: 10, title: "Фискальная Политика Евросоюза: Анализ Бюджета на 2026 год и Вли ...", status: "success" },
   ];
+
+  const pinnedItems = researchItems.filter(i => i.pinned);
+  const unpinnedItems = researchItems.filter(i => !i.pinned);
 
   const SidebarContent = ({ collapsed }: { collapsed?: boolean }) => (
     <div className="flex flex-col h-full bg-[#F5F5F7] border-r border-gray-200 text-gray-800 font-sans">
@@ -122,21 +140,40 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </div>
 
           {/* Research List */}
-          <div className="flex-1 overflow-hidden bg-[#E6E1EF] mx-2 mb-2 border border-gray-300 rounded-sm">
-            <ScrollArea className="h-full">
-              <div className="divide-y divide-gray-200/50">
-                {researchItems.map((item) => (
-                  <div key={item.id} className="flex items-start gap-2 p-3 hover:bg-white/50 cursor-pointer group transition-colors">
-                    <img src={rocketIcon} alt="Rocket" className="w-4 h-4 mt-0.5 shrink-0 opacity-70" />
-                    <p className="text-[13px] leading-tight text-gray-800 line-clamp-3 font-medium flex-1">
+          <div className="flex-1 overflow-hidden bg-[#E6E1EF] mx-2 mb-2 border border-gray-300 rounded-sm flex flex-col">
+            {/* Pinned Items */}
+            <div className="sticky top-0 z-10 bg-[#DDD8E8] border-b border-gray-300">
+              {pinnedItems.map((item) => {
+                const style = statusStyles[item.status];
+                return (
+                  <div key={item.id} className="flex items-start gap-2 p-3 hover:bg-white/50 cursor-pointer group transition-colors border-b border-gray-200/50 last:border-0" onClick={() => navigate(`${statusRoutes[item.status]}${item.id}`)}>
+                    <div className={cn("w-2 h-2 rounded-full mt-1.5 shrink-0", style.bg)} title={style.label} />
+                    <p className="text-[13px] leading-tight text-gray-800 line-clamp-2 font-medium flex-1">
                       {item.title}
                     </p>
-                    <item.icon className={cn(
-                      "w-4 h-4 shrink-0 mt-0.5", 
-                      item.icon === Paperclip ? "text-[#8E4D6E] rotate-45" : "text-gray-600"
-                    )} />
+                    <MoreVertical className="w-4 h-4 shrink-0 mt-0.5 text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </div>
-                ))}
+                );
+              })}
+            </div>
+
+            {/* Scrollable Items */}
+            <ScrollArea className="flex-1">
+              <div className="divide-y divide-gray-200/50">
+                {unpinnedItems.map((item) => {
+                  const style = statusStyles[item.status];
+                  return (
+                    <div key={item.id} className="flex items-start gap-2 p-3 hover:bg-white/50 cursor-pointer group transition-colors" onClick={() => navigate(`${statusRoutes[item.status]}${item.id}`)}>
+                      <div className={cn("w-2 h-2 rounded-full mt-1.5 shrink-0", style.bg)} title={style.label} />
+                      <p className="text-[13px] leading-tight text-gray-800 line-clamp-2 font-medium flex-1">
+                        {item.title}
+                      </p>
+                      <span className={cn("text-[9px] font-bold shrink-0 mt-0.5 px-1.5 py-0.5 rounded-sm border", `${style.text} bg-white/80 ${style.border}`)}>
+                        {style.label}
+                      </span>
+                    </div>
+                  );
+                })}
               </div>
             </ScrollArea>
           </div>
