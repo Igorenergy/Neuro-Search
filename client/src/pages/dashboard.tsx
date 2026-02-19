@@ -233,50 +233,51 @@ export default function Dashboard() {
       )}
       {/* Main Content Header */}
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-[13px]">
-        <div className="flex items-center gap-3">
-          <h1 className="text-xl font-bold text-gray-900" data-testid="text-searches-title">Your Searches (20)</h1>
+        <h1 className="text-xl font-bold text-gray-900" data-testid="text-searches-title">Your Searches (20)</h1>
+
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
+            <span className="text-sm font-bold text-gray-800">Status</span>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="outline"
+                  className="h-8 bg-white border-gray-300 text-sm font-normal min-w-[120px] justify-between"
+                  data-testid="button-status-filter"
+                >
+                  All: 20
+                  <ChevronDown className="w-4 h-4 opacity-50" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-40 bg-[#1a1a1a] border-[#333] shadow-xl p-0.5">
+                {[
+                  { label: "All", count: 20, textColor: "text-gray-300" },
+                  { label: "Success", count: 12, textColor: "text-green-500" },
+                  { label: "In Progress", count: 3, textColor: "text-blue-500" },
+                  { label: "Failed", count: 4, textColor: "text-red-500" },
+                  { label: "Canceled", count: 1, textColor: "text-orange-500" },
+                ].map((opt) => (
+                  <DropdownMenuItem
+                    key={opt.label}
+                    className={cn(
+                      "text-xs cursor-pointer flex justify-between items-center px-2 py-1.5 hover:text-white focus:text-white focus:bg-[#333]",
+                      opt.textColor
+                    )}
+                    data-testid={`filter-${opt.label.toLowerCase().replace(" ", "-")}`}
+                  >
+                    <span>{opt.label}</span>
+                    <span className="text-[10px] text-gray-500 ml-2">{opt.count}</span>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+
           <Link href="/smart-search/new">
             <Button size="icon" className="h-9 w-9 bg-[#00802b] hover:bg-[#006622] rounded-md shadow-sm border border-[#006622]" data-testid="button-new-search">
               <Search className="w-5 h-5 text-white stroke-[2.5]" />
             </Button>
           </Link>
-        </div>
-
-        <div className="flex items-center gap-2">
-          <span className="text-sm font-bold text-gray-800">Status</span>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="outline"
-                className="h-8 bg-white border-gray-300 text-sm font-normal min-w-[120px] justify-between"
-                data-testid="button-status-filter"
-              >
-                All: 20
-                <ChevronDown className="w-4 h-4 opacity-50" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-40 bg-[#1a1a1a] border-[#333] shadow-xl p-0.5">
-              {[
-                { label: "All", count: 20, textColor: "text-gray-300" },
-                { label: "Success", count: 12, textColor: "text-green-500" },
-                { label: "In Progress", count: 3, textColor: "text-blue-500" },
-                { label: "Failed", count: 4, textColor: "text-red-500" },
-                { label: "Canceled", count: 1, textColor: "text-orange-500" },
-              ].map((opt) => (
-                <DropdownMenuItem
-                  key={opt.label}
-                  className={cn(
-                    "text-xs cursor-pointer flex justify-between items-center px-2 py-1.5 hover:text-white focus:text-white focus:bg-[#333]",
-                    opt.textColor
-                  )}
-                  data-testid={`filter-${opt.label.toLowerCase().replace(" ", "-")}`}
-                >
-                  <span>{opt.label}</span>
-                  <span className="text-[10px] text-gray-500 ml-2">{opt.count}</span>
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
         </div>
       </div>
       {/* Cards Grid */}
