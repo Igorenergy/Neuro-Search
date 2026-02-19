@@ -313,7 +313,7 @@ export default function SourcesPage() {
               <div
                 key={source.id}
                 className={cn(
-                  "flex items-center gap-3 px-3 py-2.5 bg-white border rounded-md transition-colors group",
+                  "flex items-center gap-3 px-3 py-2.5 bg-white border rounded-md transition-all group hover:shadow-md hover:border-gray-300",
                   source.included
                     ? "border-l-[3px] border-l-green-500 border-t-gray-200 border-r-gray-200 border-b-gray-200"
                     : "border-l-[3px] border-l-orange-400 border-t-gray-200 border-r-gray-200 border-b-gray-200",
@@ -413,7 +413,7 @@ export default function SourcesPage() {
               <div
                 key={source.id}
                 className={cn(
-                  "flex flex-col bg-white border rounded-md transition-colors group cursor-pointer",
+                  "flex flex-col bg-white border rounded-md transition-all group cursor-pointer hover:shadow-md hover:border-gray-300",
                   source.included
                     ? "border-t-[3px] border-t-green-500 border-l-gray-200 border-r-gray-200 border-b-gray-200"
                     : "border-t-[3px] border-t-orange-400 border-l-gray-200 border-r-gray-200 border-b-gray-200",
