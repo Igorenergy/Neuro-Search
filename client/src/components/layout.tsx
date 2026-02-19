@@ -238,7 +238,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
              </h1>
           </div>
           
-          <div className="flex items-center gap-3">
+          <div className="fixed right-4 top-0 h-16 flex items-center gap-3 z-50">
             <Button size="icon" className="h-9 w-9 bg-[#00802b] hover:bg-[#006622] rounded-md shadow-sm border border-[#006622]">
               <Search className="w-5 h-5 text-white stroke-[2.5]" />
             </Button>
@@ -276,9 +276,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   {[
                     { label: "Profile & Settings", icon: User },
                     { label: "Integrations", icon: Zap },
-                    { label: "Billing & Usage", icon: MoreVertical }, // Using MoreVertical as placeholder for card/wallet
-                    { label: "Export Hub: 26", icon: Search }, // Using Search as placeholder
-                    { label: "Log out", icon: PanelLeftClose } // Using PanelLeftClose as placeholder
+                    { label: "Billing & Usage", icon: MoreVertical },
+                    { label: "Export Hub: 26", icon: Search },
+                    { label: "Log out", icon: PanelLeftClose }
                   ].map((item, idx) => (
                     <DropdownMenuItem key={idx} className="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 focus:bg-gray-200 focus:text-black cursor-pointer rounded-sm">
                       <item.icon className="w-4 h-4 text-gray-500" />
