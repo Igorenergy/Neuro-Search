@@ -344,12 +344,6 @@ export default function SmartSearchInProgress() {
               return text.length > 100 ? text.slice(0, 100) + "..." : text;
             })()}
           </p>
-          <button
-            className="px-5 py-1.5 text-xs font-bold text-white bg-green-600 rounded-sm shrink-0"
-            data-testid="button-reports-tab"
-          >
-            Reports
-          </button>
           <span className="text-xs font-medium text-green-600 shrink-0" data-testid="text-status-in-progress">
             Research is in progress
           </span>
