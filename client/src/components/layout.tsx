@@ -40,7 +40,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Switch as ToggleSwitch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { Trash2, FileText, Copy, Filter } from "lucide-react";
+import { Trash2, FileText, Copy, Filter, RefreshCw } from "lucide-react";
 import rocketIcon from "@assets/image_1771405092616.png";
 import CloneRestartModal from "@/components/clone-restart-modal";
 
@@ -263,44 +263,50 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                       </p>
                     </Link>
                     <div className="flex items-center gap-1 shrink-0 mt-0.5">
-                      <Pin
-                        className="w-3.5 h-3.5 text-gray-400 rotate-45 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer hover:text-gray-700"
-                        onClick={(e) => { e.stopPropagation(); togglePin(item.id); }}
-                        data-testid={`pin-${item.id}`}
-                      />
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild onClick={(e) => e.preventDefault()}>
-                          <button className="p-0 border-0 bg-transparent opacity-0 group-hover:opacity-100 transition-opacity" data-testid={`kebab-menu-${item.id}`}>
-                            <MoreVertical className="w-3.5 h-3.5 text-gray-400 cursor-pointer hover:text-gray-700" />
-                          </button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-44 bg-[#1a1a1a] border-[#333] shadow-xl">
-                          <DropdownMenuItem
-                            className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
-                            onClick={(e) => { e.preventDefault(); setSelectedItem(item); setRenameValue(item.title); setIsPinned(false); setDetailsOpen(true); }}
-                            data-testid={`details-${item.id}`}
-                          >
-                            <FileText className="w-4 h-4 text-gray-400" />
-                            Details
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            className="flex items-center gap-2 text-sm text-[#008DA8] hover:text-[#00b0cc] focus:text-[#00b0cc] focus:bg-[#333] cursor-pointer"
-                            onClick={(e) => { e.preventDefault(); setCloneOpen(true); }}
-                            data-testid={`clone-${item.id}`}
-                          >
-                            <Copy className="w-4 h-4 text-[#008DA8]" />
-                            Clone & Restart
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 focus:text-red-400 focus:bg-[#333] cursor-pointer"
-                            onClick={(e) => { e.preventDefault(); setSelectedItem(item); setDeleteOpen(true); }}
-                            data-testid={`delete-${item.id}`}
-                          >
-                            <Trash2 className="w-4 h-4" />
-                            Delete
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
+                      {item.status === "in-progress" ? (
+                        <RefreshCw className="w-4 h-4 text-green-500" data-testid={`refresh-${item.id}`} />
+                      ) : (
+                        <>
+                          <Pin
+                            className="w-3.5 h-3.5 text-gray-400 rotate-45 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer hover:text-gray-700"
+                            onClick={(e) => { e.stopPropagation(); togglePin(item.id); }}
+                            data-testid={`pin-${item.id}`}
+                          />
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild onClick={(e) => e.preventDefault()}>
+                              <button className="p-0 border-0 bg-transparent opacity-0 group-hover:opacity-100 transition-opacity" data-testid={`kebab-menu-${item.id}`}>
+                                <MoreVertical className="w-3.5 h-3.5 text-gray-400 cursor-pointer hover:text-gray-700" />
+                              </button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end" className="w-44 bg-[#1a1a1a] border-[#333] shadow-xl">
+                              <DropdownMenuItem
+                                className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
+                                onClick={(e) => { e.preventDefault(); setSelectedItem(item); setRenameValue(item.title); setIsPinned(false); setDetailsOpen(true); }}
+                                data-testid={`details-${item.id}`}
+                              >
+                                <FileText className="w-4 h-4 text-gray-400" />
+                                Details
+                              </DropdownMenuItem>
+                              <DropdownMenuItem
+                                className="flex items-center gap-2 text-sm text-[#008DA8] hover:text-[#00b0cc] focus:text-[#00b0cc] focus:bg-[#333] cursor-pointer"
+                                onClick={(e) => { e.preventDefault(); setCloneOpen(true); }}
+                                data-testid={`clone-${item.id}`}
+                              >
+                                <Copy className="w-4 h-4 text-[#008DA8]" />
+                                Clone & Restart
+                              </DropdownMenuItem>
+                              <DropdownMenuItem
+                                className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 focus:text-red-400 focus:bg-[#333] cursor-pointer"
+                                onClick={(e) => { e.preventDefault(); setSelectedItem(item); setDeleteOpen(true); }}
+                                data-testid={`delete-${item.id}`}
+                              >
+                                <Trash2 className="w-4 h-4" />
+                                Delete
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </>
+                      )}
                     </div>
                   </div>
                 ))}
