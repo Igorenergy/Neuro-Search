@@ -359,7 +359,7 @@ export default function SmartSearchInProgress() {
                 </div>
 
                 {/* Action Buttons */}
-                <div className="flex items-center gap-3 pt-1">
+                <div className="flex items-center justify-center gap-3 pt-1">
                   <button
                     className="w-10 h-10 bg-red-500 hover:bg-red-600 rounded-full flex items-center justify-center transition-colors shadow-sm"
                     onClick={() => setShowAbortModal(true)}
