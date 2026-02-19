@@ -9,6 +9,7 @@ import {
   Zap,
   Copy,
   ToggleRight,
+  GitFork,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
@@ -82,7 +83,7 @@ export default function ResearchBriefingPanel({ expanded, onToggle }: ResearchBr
               className="p-1 hover:bg-gray-200 rounded-sm transition-colors"
               data-testid="button-clone-restart-briefing"
             >
-              <Copy className="w-3.5 h-3.5 text-[#008DA8]" />
+              <GitFork className="w-3.5 h-3.5 text-[#008DA8]" />
             </button>
           </div>
 
