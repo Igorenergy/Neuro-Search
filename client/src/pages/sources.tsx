@@ -381,7 +381,7 @@ export default function SourcesPage() {
                       </button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      <DropdownMenuItem>Deep Extract</DropdownMenuItem>
+                      <DropdownMenuItem>⚙️Deep Extract</DropdownMenuItem>
                       <DropdownMenuItem>Open Original</DropdownMenuItem>
                       <DropdownMenuItem>Confidence Score</DropdownMenuItem>
                       <DropdownMenuItem>{source.included ? "Exclude" : "Include"}</DropdownMenuItem>
@@ -461,7 +461,6 @@ export default function SourcesPage() {
           </div>
         </DialogContent>
       </Dialog>
-
       <SourceDetailsDrawer
         source={drawerSource}
         open={drawerOpen}
