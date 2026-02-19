@@ -13,7 +13,8 @@ import {
   Zap,
   ChevronRight,
   PanelLeftClose,
-  PanelLeftOpen
+  PanelLeftOpen,
+  Pin
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -142,7 +143,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     <p className="text-[13px] leading-tight text-gray-800 line-clamp-2 font-medium flex-1">
                       {item.title}
                     </p>
-                    <MoreVertical className="w-4 h-4 shrink-0 mt-0.5 text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer hover:text-gray-700" />
+                    <div className="flex items-center gap-0.5 shrink-0 mt-0.5">
+                      <Pin className="w-3.5 h-3.5 text-gray-400 rotate-45 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer hover:text-gray-700" />
+                      <MoreVertical className="w-3.5 h-3.5 text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer hover:text-gray-700" />
+                    </div>
                   </div>
                 ))}
               </div>
@@ -154,10 +158,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     <p className="text-[13px] leading-tight text-gray-800 line-clamp-2 font-medium flex-1">
                       {item.title}
                     </p>
-                    <item.icon className={cn(
-                      "w-4 h-4 shrink-0 mt-0.5", 
-                      item.icon === Paperclip ? "text-[#8E4D6E] rotate-45" : "text-gray-600"
-                    )} />
+                    <div className="flex items-center gap-0.5 shrink-0 mt-0.5">
+                      <Pin className="w-3.5 h-3.5 text-gray-400 rotate-45 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer hover:text-gray-700" />
+                      <MoreVertical className="w-3.5 h-3.5 text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer hover:text-gray-700" />
+                    </div>
                   </div>
                 ))}
               </div>
