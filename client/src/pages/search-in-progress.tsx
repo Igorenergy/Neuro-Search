@@ -388,15 +388,13 @@ export default function SmartSearchInProgress() {
                 <div className="h-4 w-px bg-gray-300" />
                 <Progress value={30} className="h-1.5 w-16 [&>div]:bg-green-500" />
               </div>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="shrink-0"
+              <div
+                className="shrink-0 w-7 h-7 rounded-sm flex items-center justify-center bg-gray-700/10 hover:bg-gray-700/20 transition-colors cursor-pointer"
                 onClick={(e) => { e.stopPropagation(); setHudExpanded(!hudExpanded); }}
                 data-testid="button-expand-hud"
               >
-                <ChevronDown className={cn("w-4 h-4 transition-transform duration-200", hudExpanded && "rotate-180")} />
-              </Button>
+                <ChevronDown className={cn("w-4 h-4 text-gray-600 transition-transform duration-200", hudExpanded && "rotate-180")} />
+              </div>
             </div>
 
             {/* Expanded Content - accordion body */}
