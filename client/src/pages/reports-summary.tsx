@@ -10,6 +10,9 @@ import {
   Rocket,
   ExternalLink,
   ChevronRight,
+  ChevronLeft,
+  Search,
+  X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -20,6 +23,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
 import { loadLaunchConfig } from "@/lib/launch-config";
 import rocketIcon from "@assets/image_1771405092616.png";
@@ -27,6 +37,7 @@ import rocketIcon from "@assets/image_1771405092616.png";
 export default function ReportsSummary() {
   const params = useParams<{ id: string }>();
   const [activeTab, setActiveTab] = useState<"summary" | "research-log">("summary");
+  const [showExtendedModal, setShowExtendedModal] = useState(false);
   const config = loadLaunchConfig();
 
   const projectTitle = config?.query
@@ -135,6 +146,7 @@ export default function ReportsSummary() {
               </div>
               <button
                 className="text-xs font-bold text-[#008DA8] hover:text-[#006E7D] transition-colors underline underline-offset-2 shrink-0"
+                onClick={() => setShowExtendedModal(true)}
                 data-testid="button-generate-extended"
               >
                 GENERATE EXTENDED REPORT
@@ -224,6 +236,89 @@ export default function ReportsSummary() {
           </div>
         )}
       </div>
+      {/* Modal: Generate Extended Report */}
+      <Dialog open={showExtendedModal} onOpenChange={setShowExtendedModal}>
+        <DialogContent className="max-w-[500px] p-0 overflow-hidden border-none bg-white rounded-lg shadow-xl">
+          <DialogHeader className="p-4 border-b border-gray-100 flex flex-row items-center justify-between space-y-0">
+            <DialogTitle className="text-sm font-bold text-gray-900">Generate extended report</DialogTitle>
+            <button 
+              onClick={() => setShowExtendedModal(false)}
+              className="p-1 hover:bg-gray-100 rounded-full transition-colors"
+            >
+              <X className="w-4 h-4 text-gray-500" />
+            </button>
+          </DialogHeader>
+
+          <div className="p-6 space-y-6">
+            <div className="space-y-4">
+              <div className="flex items-start gap-3">
+                <Checkbox id="strategy" defaultChecked className="mt-1 border-gray-300 data-[state=checked]:bg-[#008DA8] data-[state=checked]:border-[#008DA8]" />
+                <div className="space-y-1">
+                  <label htmlFor="strategy" className="text-sm font-bold text-gray-900 cursor-pointer">Strategy Frameworks</label>
+                  <p className="text-xs text-gray-500">Subtitle: "Includes SWOT Analysis, PESTEL, and Porter's 5 Forces."</p>
+                  <p className="text-xs text-gray-500 italic">Value: Готовая стратегия.</p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <Checkbox id="financial" className="mt-1 border-gray-300 data-[state=checked]:bg-[#008DA8] data-[state=checked]:border-[#008DA8]" />
+                <div className="space-y-1">
+                  <label htmlFor="financial" className="text-sm font-bold text-gray-900 cursor-pointer">Financial Deep Dive</label>
+                  <p className="text-xs text-gray-500">Subtitle: "Extracts revenue tables, funding rounds, and fiscal KPIs."</p>
+                  <p className="text-xs text-gray-500 italic">Value: Цифры и таблицы.</p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <Checkbox id="risk" className="mt-1 border-gray-300 data-[state=checked]:bg-[#008DA8] data-[state=checked]:border-[#008DA8]" />
+                <div className="space-y-1">
+                  <label htmlFor="risk" className="text-sm font-bold text-gray-900 cursor-pointer">Risk Assessment</label>
+                  <p className="text-xs text-gray-500">Subtitle: "Identifies market volatility, legal threats, and competitor moves."</p>
+                  <p className="text-xs text-gray-500 italic">Value: Безопасность.</p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <Checkbox id="executive" defaultChecked disabled className="mt-1 border-gray-300 data-[state=checked]:bg-[#008DA8] data-[state=checked]:border-[#008DA8]" />
+                <div className="space-y-1">
+                  <label htmlFor="executive" className="text-sm font-bold text-gray-900 cursor-pointer">Executive Summary (Selected by default)</label>
+                  <p className="text-xs text-gray-500">Subtitle: "TL;DR version for C-level stakeholders (1-page overview)."</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-[#E5E5E5] p-4 rounded-sm border border-gray-300">
+              <div className="space-y-1 font-mono text-xs text-gray-700">
+                <div className="flex justify-between items-center">
+                  <span>Base Report:</span>
+                  <span>...... $4.99</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span>Add-on: PPTX:</span>
+                  <span>...... $1.50</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span>White Label:</span>
+                  <span>...... $2.00</span>
+                </div>
+                <div className="flex justify-between items-center pt-1 border-t border-gray-400 font-bold">
+                  <span>Total:</span>
+                  <span>$8.49</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex justify-center">
+              <Button 
+                className="bg-[#00802b] hover:bg-[#006622] text-white px-8 font-bold text-sm"
+                onClick={() => setShowExtendedModal(false)}
+              >
+                Pay & Generate
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
