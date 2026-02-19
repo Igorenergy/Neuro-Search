@@ -9,6 +9,8 @@ import Dashboard from "@/pages/dashboard";
 import Launcher from "@/pages/launcher";
 import SearchPage from "@/pages/search";
 import AssetsRepository from "@/pages/assets-repository";
+import { PreviewProvider } from "@/lib/preview-store";
+import FilePreviewDrawer from "@/components/file-preview-drawer";
 import { useEffect } from "react";
 
 function Router() {
@@ -39,8 +41,11 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <Toaster />
-        <Router />
+        <PreviewProvider>
+          <Toaster />
+          <Router />
+          <FilePreviewDrawer />
+        </PreviewProvider>
       </TooltipProvider>
     </QueryClientProvider>
   );

@@ -1,5 +1,6 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { useLocation } from "wouter";
+import { usePreviewStore } from "@/lib/preview-store";
 import { 
   Upload, 
   FileText, 
@@ -59,6 +60,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 export default function Launcher() {
   const [, setLocation] = useLocation();
+  const { openPreview } = usePreviewStore();
   const [query, setQuery] = useState("");
   const [scope, setScope] = useState<"web" | "assets" | "hybrid">("web");
   const [files, setFiles] = useState<File[]>([]);
@@ -1108,8 +1110,22 @@ export default function Launcher() {
                       return (
                         <div
                           key={realIndex}
-                          className="group flex items-center justify-between px-3 py-2 rounded-sm border border-gray-100 hover:bg-gray-50 transition-colors"
+                          className="group flex items-center justify-between px-3 py-2 rounded-sm border border-gray-100 hover:bg-gray-50 transition-colors cursor-pointer"
                           data-testid={`card-attached-file-${realIndex}`}
+                          onClick={() => {
+                            const previewFiles = attachedFiles.map((f, i) => ({
+                              id: `file-${i}`,
+                              name: f.name,
+                              type: f.type,
+                              size: f.size,
+                              step: f.step,
+                            }));
+                            openPreview({
+                              files: previewFiles,
+                              initialFileId: `file-${realIndex}`,
+                              context: "input",
+                            });
+                          }}
                         >
                           <div className="flex items-center gap-3">
                             <FileText className="w-4 h-4 text-gray-400" />
@@ -1120,7 +1136,10 @@ export default function Launcher() {
                             <span className="text-[10px] text-gray-400">{file.size}</span>
                             <Trash2
                               className="w-3.5 h-3.5 text-red-400 hover:text-red-600 cursor-pointer invisible group-hover:visible transition-colors"
-                              onClick={() => setConfirmDeleteFile({ type: "single", index: realIndex })}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setConfirmDeleteFile({ type: "single", index: realIndex });
+                              }}
                               data-testid={`button-delete-file-${realIndex}`}
                             />
                           </div>
