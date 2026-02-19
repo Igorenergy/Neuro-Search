@@ -34,10 +34,10 @@ function Router() {
         <Route path="/smart-search/new" component={Launcher} />
         <Route path="/research/launcher" component={Launcher} />
         <Route path="/research/search" component={SearchPage} />
-        <Route path="/smart-search/in-progress/:id" component={SmartSearchInProgress} />
+        <Route path="/research-in-progress/:id" component={SmartSearchInProgress} />
         <Route path="/research-canceled/:id" component={ActionRequired} />
         <Route path="/research-failed/:id" component={SmartSearchFailed} />
-        <Route path="/reports/summary/:id" component={ReportsSummary} />
+        <Route path="/research-success/:id" component={ReportsSummary} />
         <Route path="/sources/:id" component={SourcesPage} />
         <Route path="/assets" component={AssetsRepository} />
         {/* Fallback to 404 */}

@@ -256,7 +256,7 @@ export default function SourcesPage() {
         </div>
 
         <div className="flex items-center gap-2 shrink-0">
-          <Link href={`/reports/summary/${params.id || "1"}`}>
+          <Link href={`/research-success/${params.id || "1"}`}>
             <button
               className="px-4 py-1.5 text-xs font-bold rounded-sm bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors"
               data-testid="button-tab-reports"

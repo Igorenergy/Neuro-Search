@@ -276,7 +276,7 @@ export default function Launcher() {
       showReasoning,
     });
     setTimeout(() => {
-      setLocation("/smart-search/in-progress/new");
+      setLocation("/research-in-progress/new");
     }, 1500);
   };
 

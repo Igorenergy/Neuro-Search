@@ -480,7 +480,7 @@ export default function SmartSearchInProgress() {
                 className="bg-green-600 hover:bg-green-700 text-white h-9 px-6 text-xs font-bold"
                 onClick={() => {
                   setShowFinishModal(false);
-                  navigate(`/reports/summary/${params.id || "new"}`);
+                  navigate(`/research-success/${params.id || "new"}`);
                 }}
                 data-testid="button-confirm-finish"
               >

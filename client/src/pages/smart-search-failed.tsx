@@ -315,7 +315,7 @@ export default function SmartSearchFailed() {
                         </div>
                       </div>
                       <p className="text-xs text-gray-500 leading-relaxed">Abort the failed links and proceed to report generation with the remaining {successfulSources.length} valid data sources.</p>
-                      <Button variant="outline" className="w-full h-9 text-xs font-bold border-gray-300 text-gray-700 hover:bg-gray-50 gap-2" onClick={() => navigate(`/reports/summary/${params.id || "1"}`)} data-testid="button-skip-sources">
+                      <Button variant="outline" className="w-full h-9 text-xs font-bold border-gray-300 text-gray-700 hover:bg-gray-50 gap-2" onClick={() => navigate(`/research-success/${params.id || "1"}`)} data-testid="button-skip-sources">
                         <SkipForward className="w-3.5 h-3.5" /> Skip & Generate Report
                       </Button>
                     </div>
@@ -510,7 +510,7 @@ export default function SmartSearchFailed() {
               <div className="px-4 py-3 border-t border-gray-200 bg-gray-50 flex items-center justify-end">
                 <Button
                   className="bg-[#00802b] hover:bg-[#006622] text-white h-9 px-6 text-xs font-bold gap-2"
-                  onClick={() => navigate(`/reports/summary/${params.id || "1"}`)}
+                  onClick={() => navigate(`/research-success/${params.id || "1"}`)}
                   data-testid="button-proceed-partial"
                 >
                   <ArrowRight className="w-3.5 h-3.5" /> Proceed with Partial Data

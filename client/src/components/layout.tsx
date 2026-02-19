@@ -36,7 +36,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   useEffect(() => {
-    const isResultsPage = location.includes("reports/summary") || location.includes("sources/");
+    const isResultsPage = location.includes("research-success") || location.includes("sources/");
     if (isResultsPage) {
       setIsCollapsed(true);
     }
@@ -230,7 +230,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                  location.includes("research-failed") ? "Failed" :
                  location.includes("research-canceled") ? "Cancel" :
                  location.includes("in-progress") ? "in progress" :
-                 location.includes("reports/summary") ? "Reports" :
+                 location.includes("research-success") ? "Reports" :
                  location.includes("sources") ? "Sources" :
                  location.includes("search") ? "Launcher" : 
                  location.includes("new") ? "Launcher" : "Page"}

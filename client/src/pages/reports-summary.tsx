@@ -173,7 +173,7 @@ export default function ReportsSummary() {
         </div>
 
         <div className="flex items-center gap-2 shrink-0">
-          <Link href={`/reports/summary/${params.id || "1"}`}>
+          <Link href={`/research-success/${params.id || "1"}`}>
             <button
               className="px-4 py-1.5 text-xs font-bold rounded-sm bg-[#00802b] text-white"
               data-testid="button-tab-reports"
