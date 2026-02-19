@@ -198,7 +198,9 @@ export default function SmartSearchInProgress() {
           </div>
           <p className="text-xs font-medium text-gray-700 flex-1 leading-snug line-clamp-2" data-testid="text-project-title">
             {(() => {
-              const text = config?.query || "Research in progress";
+              const text = config?.query && !config.query.includes("research-") 
+                ? config.query 
+                : "Startup: AI Deep Research — Анализ рынка и конкурентов";
               return text.length > 100 ? text.slice(0, 100) + "..." : text;
             })()}
           </p>
