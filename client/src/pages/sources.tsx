@@ -39,6 +39,7 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { cn } from "@/lib/utils";
 import { loadLaunchConfig } from "@/lib/launch-config";
+import { ResearchBriefingSidebar } from "@/components/research-briefing-sidebar";
 import rocketIcon from "@assets/image_1771405092616.png";
 
 interface SourceRow {
@@ -141,7 +142,9 @@ export default function SourcesPage() {
   const allSelected = selectedIds.size === filteredSources.length && filteredSources.length > 0;
 
   return (
-    <div className="-m-6 md:-m-8 flex flex-col h-[calc(100vh-64px)] w-[calc(100%+48px)] md:w-[calc(100%+64px)] bg-white" data-testid="sources-page">
+    <div className="-m-6 md:-m-8 flex h-[calc(100vh-64px)] w-[calc(100%+48px)] md:w-[calc(100%+64px)] bg-white" data-testid="sources-page">
+      <ResearchBriefingSidebar />
+      <div className="flex-1 flex flex-col overflow-hidden min-w-0">
       {/* Context Header */}
       <div className="flex items-center justify-between px-4 py-2.5 border-b border-gray-200 bg-[#F5F5F7] shrink-0">
         <div className="flex items-center gap-3 min-w-0">
@@ -390,6 +393,7 @@ export default function SourcesPage() {
         </div>
       </div>
 
+      </div>
       {/* Modal: Select Action */}
       <Dialog open={showActionModal} onOpenChange={setShowActionModal}>
         <DialogContent className="max-w-[320px] p-0 overflow-hidden border-none bg-white rounded-lg shadow-xl">

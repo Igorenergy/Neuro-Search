@@ -32,6 +32,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
 import { loadLaunchConfig } from "@/lib/launch-config";
+import { ResearchBriefingSidebar } from "@/components/research-briefing-sidebar";
 import rocketIcon from "@assets/image_1771405092616.png";
 
 export default function ReportsSummary() {
@@ -48,7 +49,9 @@ export default function ReportsSummary() {
   const artifactsCount = 3;
 
   return (
-    <div className="-m-6 md:-m-8 flex flex-col h-[calc(100vh-64px)] w-[calc(100%+48px)] md:w-[calc(100%+64px)] bg-white" data-testid="reports-summary-page">
+    <div className="-m-6 md:-m-8 flex h-[calc(100vh-64px)] w-[calc(100%+48px)] md:w-[calc(100%+64px)] bg-white" data-testid="reports-summary-page">
+      <ResearchBriefingSidebar />
+      <div className="flex-1 flex flex-col overflow-hidden min-w-0">
       {/* Context Header */}
       <div className="flex items-center justify-between px-4 py-2.5 border-b border-gray-200 bg-[#F5F5F7] shrink-0">
         <div className="flex items-center gap-3 min-w-0">
@@ -235,6 +238,7 @@ export default function ReportsSummary() {
             <p className="text-sm text-gray-500">The step-by-step thinking and actions taken by the AI agent during this research operation.</p>
           </div>
         )}
+      </div>
       </div>
       {/* Modal: Generate Extended Report */}
       <Dialog open={showExtendedModal} onOpenChange={setShowExtendedModal}>
