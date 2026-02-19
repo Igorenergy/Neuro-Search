@@ -129,7 +129,7 @@ export default function Dashboard() {
       )}
       {/* Main Content Header */}
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-[13px]">
-        <h1 className="text-xl font-bold text-gray-900" data-testid="text-searches-title">Your Searches (20)</h1>
+        <h1 className="font-bold text-gray-900 text-[15px]" data-testid="text-searches-title">Your Searches (20)</h1>
 
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
@@ -171,7 +171,7 @@ export default function Dashboard() {
             </DropdownMenu>
           </div>
 
-          <Link href="/smart-search/new">
+          <Link href="/research/search">
             <Button size="icon" className="h-9 w-9 bg-[#00802b] hover:bg-[#006622] rounded-md shadow-sm border border-[#006622]" data-testid="button-new-search">
               <Search className="w-5 h-5 text-white stroke-[2.5]" />
             </Button>
