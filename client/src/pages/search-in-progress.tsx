@@ -145,6 +145,7 @@ export default function SmartSearchInProgress() {
 
   const [hudExpanded, setHudExpanded] = useState(true);
   const [isTextExpanded, setIsTextExpanded] = useState(false);
+  const [briefingExpanded, setBriefingExpanded] = useState(false);
 
   useEffect(() => {
     const loaded = loadLaunchConfig();
