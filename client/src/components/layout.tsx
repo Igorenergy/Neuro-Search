@@ -169,7 +169,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-36 bg-[#1a1a1a] border-[#333] shadow-xl p-0.5">
                   {([
-                    { value: "all", label: "All Statuses", count: visibleResearchItems.length, textColor: "text-gray-300" },
+                    { value: "all", label: "All", count: visibleResearchItems.length, textColor: "text-gray-300" },
                     { value: "success", label: "Success", count: visibleResearchItems.filter(i => i.status === "success").length, textColor: "text-green-500" },
                     { value: "in-progress", label: "In Progress", count: visibleResearchItems.filter(i => i.status === "in-progress").length, textColor: "text-blue-500" },
                     { value: "failed", label: "Failed", count: visibleResearchItems.filter(i => i.status === "failed").length, textColor: "text-red-500" },
