@@ -82,7 +82,7 @@ function ConfidenceRing({ score, size = 28 }: { score: number; size?: number }) 
           transform={`rotate(-90 ${size / 2} ${size / 2})`}
         />
       </svg>
-      <span className="text-xs font-bold text-gray-700">{score}%</span>
+      <span className="text-xs font-bold text-gray-700">{score}</span>
     </div>
   );
 }
