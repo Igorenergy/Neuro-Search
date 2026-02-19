@@ -208,7 +208,6 @@ export default function Dashboard() {
           return 0;
         }).map((item) => {
           const config = statusConfig[item.status];
-          const IconComponent = tileIcons[item.iconIdx % tileIcons.length];
           return (
             <div
               key={item.id}
@@ -220,7 +219,7 @@ export default function Dashboard() {
             >
               <div className="flex items-start justify-between mb-3">
                 <div className={cn("w-9 h-9 rounded-lg flex items-center justify-center", config.iconBg)}>
-                  <IconComponent className={cn("w-5 h-5", config.iconColor)} />
+                  <img src={rocketIcon} alt="Rocket" className="w-5 h-5 opacity-80" />
                 </div>
                 <div className="flex items-center gap-1">
                   {item.status === "in-progress" ? (
