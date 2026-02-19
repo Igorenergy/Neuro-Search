@@ -119,7 +119,7 @@ const mockThoughtStream: ThoughtNode[] = [
 
 export default function SmartSearchInProgress() {
   const params = useParams<{ id: string }>();
-  const [leftExpanded, setLeftExpanded] = useState(false);
+  const [leftExpanded, setLeftExpanded] = useState(true);
   const [showAbortModal, setShowAbortModal] = useState(false);
   const [showFinishModal, setShowFinishModal] = useState(false);
   const [elapsedSeconds, setElapsedSeconds] = useState(45);

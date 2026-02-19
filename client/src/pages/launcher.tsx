@@ -257,7 +257,7 @@ export default function Launcher() {
     if (!query) return;
     setIsLaunching(true);
     setTimeout(() => {
-      setLocation("/research/dashboard");
+      setLocation("/smart-search/in-progress/new");
     }, 1500);
   };
 
