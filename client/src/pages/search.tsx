@@ -166,7 +166,7 @@ export default function SearchPage() {
       {/* Header Section */}
       <div className="mb-8 space-y-6">
         <div className="flex justify-between items-center">
-          <h1 className="text-xl font-bold text-gray-900">
+          <h1 className="font-bold text-gray-900 text-[16px]">
             Search in researches
           </h1>
           <div className="flex items-center gap-2 text-sm text-gray-500">
@@ -222,12 +222,11 @@ export default function SearchPage() {
           </div>
         </div>
       </div>
-
       {/* Results Content */}
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden min-h-[500px]">
         {isEmpty ? (
           /* No Dead Ends State */
-          <div className="flex flex-col items-center justify-center py-20 animate-in fade-in duration-300">
+          (<div className="flex flex-col items-center justify-center py-20 animate-in fade-in duration-300">
             <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-6">
               <Search className="w-8 h-8 text-gray-400" />
             </div>
@@ -239,7 +238,6 @@ export default function SearchPage() {
               <span className="font-bold text-gray-900">3 matching files</span>{" "}
               in the Assets Repository.
             </p>
-
             <div className="flex gap-4">
               <Button className="gap-2 bg-[#008DA8] hover:bg-[#007A92] text-white">
                 <FolderOpen className="w-4 h-4" />
@@ -253,10 +251,10 @@ export default function SearchPage() {
                 Start New Research
               </Button>
             </div>
-          </div>
+          </div>)
         ) : (
           /* Results Table */
-          <div>
+          (<div>
             {/* Table Header */}
             <div className="grid grid-cols-[1fr_120px_120px_150px_40px] gap-4 px-6 py-4 border-b border-gray-200 bg-gray-50/50 text-sm font-bold text-gray-900">
               <div className="flex items-center gap-1 cursor-pointer hover:text-[#008DA8]">
@@ -273,7 +271,6 @@ export default function SearchPage() {
               </div>
               <div></div>
             </div>
-
             {/* Table Body */}
             <div className="divide-y divide-gray-100">
               {results.map((item) => (
@@ -328,10 +325,9 @@ export default function SearchPage() {
                 </div>
               ))}
             </div>
-          </div>
+          </div>)
         )}
       </div>
-
       {!isEmpty && (
         <div className="flex justify-center mt-8 pb-12">
           <Button className="bg-[#008DA8] hover:bg-[#007A92] text-white px-8 h-10 rounded-sm font-medium">

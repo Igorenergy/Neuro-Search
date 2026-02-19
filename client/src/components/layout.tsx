@@ -144,17 +144,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               </Link>
             </div>
 
-            {/* Navigation Links */}
-            <div className="flex gap-1 px-1 mb-2">
-              <Link href="/research/dashboard">
-                <Button variant="ghost" className={cn("h-8 px-2 text-xs font-semibold text-gray-600 hover:text-black hover:bg-black/5", location.includes("dashboard") && "bg-black/5 text-black")}>
-                  Dashboard
-                </Button>
-              </Link>
-            </div>
-
             {/* Filter Bar */}
-            <div className="flex items-center justify-between px-1">
+            <div className="flex items-center justify-between px-1 mt-2">
               <span className="text-sm font-semibold text-black">Latest research</span>
             </div>
           </div>
