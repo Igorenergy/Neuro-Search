@@ -353,9 +353,6 @@ export default function SmartSearchInProgress() {
 
         {/* HUD Dashboard - pinned below context header */}
         <div className="shrink-0 px-4 pt-3 pb-2 bg-white border-b border-gray-200 z-20">
-          <div className="flex items-center gap-2 mb-2">
-            <span className="text-xs font-bold text-[#008DA8]" data-testid="text-research-log">RESEARCH LOG</span>
-          </div>
           <Card className="p-0 overflow-hidden border-gray-200 shadow-md" data-testid="card-hud">
             {!hudExpanded ? (
               <div className="px-3 py-2 bg-[#edd8d8] flex items-center justify-between gap-2">
@@ -504,6 +501,9 @@ export default function SmartSearchInProgress() {
           onScroll={handleStreamScroll}
         >
           <div className="p-4 space-y-6 max-w-5xl">
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-bold text-[#008DA8]" data-testid="text-research-log">RESEARCH LOG</span>
+            </div>
             {/* Thought Stream */}
             <div className="space-y-6" data-testid="thought-stream">
               {mockThoughtStream.map((node) => (
