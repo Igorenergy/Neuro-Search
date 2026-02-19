@@ -249,7 +249,6 @@ export default function SmartSearchInProgress() {
           </div>
         )}
       </div>
-
       {/* Right Panel: Main Content */}
       <div
         className="flex-1 min-w-[600px] flex flex-col overflow-hidden"
@@ -286,7 +285,7 @@ export default function SmartSearchInProgress() {
 
             {/* HUD Dashboard */}
             <Card className="p-0 overflow-hidden border-gray-200" data-testid="card-hud">
-              <div className="p-4 space-y-4">
+              <div className="p-4 space-y-4 bg-[#edd8d8]">
                 {/* Top Row: Engine + Timer */}
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
@@ -301,11 +300,6 @@ export default function SmartSearchInProgress() {
                       <span>Time remaining: <strong>{formatTime(13 * 60 + 48 - elapsedSeconds % (13 * 60 + 48))}</strong></span>
                     </div>
 
-                    {/* Info Alert */}
-                    <div className="bg-blue-50 border border-blue-200 rounded-sm px-3 py-1.5 text-[10px] text-blue-700 max-w-[280px] flex items-start gap-1.5">
-                      <Info className="w-3 h-3 mt-0.5 shrink-0" />
-                      <span>You can safely close this window. The research is running on our secure servers. We will save the results to your history automatically.</span>
-                    </div>
                   </div>
                 </div>
 
@@ -443,7 +437,6 @@ export default function SmartSearchInProgress() {
           </div>
         </div>
       </div>
-
       {/* Abort Research Modal */}
       <Dialog open={showAbortModal} onOpenChange={setShowAbortModal}>
         <DialogContent className="max-w-[420px] p-0 gap-0 bg-white overflow-hidden border border-gray-200 shadow-xl rounded-md">
@@ -478,7 +471,6 @@ export default function SmartSearchInProgress() {
           </div>
         </DialogContent>
       </Dialog>
-
       {/* Finish Early Modal */}
       <Dialog open={showFinishModal} onOpenChange={setShowFinishModal}>
         <DialogContent className="max-w-[420px] p-0 gap-0 bg-white overflow-hidden border border-gray-200 shadow-xl rounded-md">
