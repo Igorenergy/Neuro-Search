@@ -349,7 +349,7 @@ export default function SourcesPage() {
                 {source.date}
               </div>
 
-              <div className="flex items-center gap-1 text-[11px] text-gray-500 shrink-0">
+              <div className="flex items-center gap-1 text-[11px] text-gray-500 shrink-0 -ml-[50px]">
                 <Globe className="w-3 h-3" />
                 Location:{source.location}
               </div>
