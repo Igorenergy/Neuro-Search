@@ -241,7 +241,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               {/* Unpinned Items */}
               <div className="divide-y divide-gray-200/50">
                 {unpinnedItems.map((item) => (
-                  <div key={item.id} className={cn("flex items-start gap-2 p-3 hover:bg-white/50 cursor-pointer group transition-colors border-l-[3px]", statusConfig[item.status].borderColor)}>
+                  <div key={item.id} className="flex items-start gap-2 p-3 hover:bg-white/50 cursor-pointer group transition-colors border-l-[3px] border-l-green-500 bg-[#ffffff00]">
                     <Link href={`${statusConfig[item.status].route}/${item.id}`} className="flex items-start gap-2 flex-1 min-w-0">
                       <img src={rocketIcon} alt="Rocket" className="w-4 h-4 mt-0.5 shrink-0 opacity-70" />
                       <p className="text-[13px] leading-tight text-gray-800 line-clamp-2 font-medium flex-1">
