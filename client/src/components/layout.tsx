@@ -95,7 +95,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const visibleResearchItems = researchItems.filter(item => !deletedIds.includes(item.id));
   const filteredItems = statusFilter === "all" ? visibleResearchItems : visibleResearchItems.filter(item => item.status === statusFilter);
   const pinnedItems = filteredItems.filter(item => pinnedIds.includes(item.id));
-  const unpinnedItems = filteredItems.filter(item => !pinnedIds.includes(item.id));
+  const unpinnedItems = filteredItems.filter(item => !pinnedIds.includes(item.id)).sort((a, b) => {
+    if (a.status === "in-progress" && b.status !== "in-progress") return -1;
+    if (a.status !== "in-progress" && b.status === "in-progress") return 1;
+    return 0;
+  });
 
   const togglePin = (id: number) => {
     setPinnedIds(prev => prev.includes(id) ? prev.filter(pid => pid !== id) : [...prev, id]);
