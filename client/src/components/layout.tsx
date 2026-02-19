@@ -158,21 +158,22 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     <Filter className="w-4 h-4" />
                   </button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-36 bg-white border-gray-200 shadow-lg">
+                <DropdownMenuContent align="end" className="w-40 bg-white border-gray-200 shadow-lg">
                   {([
-                    { value: "all", label: "All" },
-                    { value: "success", label: "Success" },
-                    { value: "in-progress", label: "In Progress" },
-                    { value: "failed", label: "Failed" },
-                    { value: "canceled", label: "Canceled" },
+                    { value: "all", label: "All Statuses", count: visibleResearchItems.length },
+                    { value: "success", label: "Success", count: visibleResearchItems.filter(i => i.status === "success").length },
+                    { value: "in-progress", label: "In Progress", count: visibleResearchItems.filter(i => i.status === "in-progress").length },
+                    { value: "failed", label: "Failed", count: visibleResearchItems.filter(i => i.status === "failed").length },
+                    { value: "canceled", label: "Canceled", count: visibleResearchItems.filter(i => i.status === "canceled").length },
                   ] as const).map((opt) => (
                     <DropdownMenuItem
                       key={opt.value}
-                      className={cn("text-sm cursor-pointer", statusFilter === opt.value && "font-bold text-[#008DA8]")}
+                      className={cn("text-sm cursor-pointer flex justify-between items-center", statusFilter === opt.value && "font-bold text-[#008DA8]")}
                       onClick={() => setStatusFilter(opt.value)}
                       data-testid={`filter-${opt.value}`}
                     >
-                      {opt.label}
+                      <span>{opt.label}</span>
+                      <span className="text-[10px] text-gray-400 ml-2">{opt.count}</span>
                     </DropdownMenuItem>
                   ))}
                 </DropdownMenuContent>
