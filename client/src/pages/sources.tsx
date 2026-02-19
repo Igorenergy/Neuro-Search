@@ -381,9 +381,9 @@ export default function SourcesPage() {
                       </button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      <DropdownMenuItem>⚙️Deep Extract</DropdownMenuItem>
+                      <DropdownMenuItem>Deep Extract</DropdownMenuItem>
                       <DropdownMenuItem>Open Original</DropdownMenuItem>
-                      <DropdownMenuItem>🛡️ Confidence Score</DropdownMenuItem>
+                      <DropdownMenuItem>Confidence Score</DropdownMenuItem>
                       <DropdownMenuItem>{source.included ? "Exclude" : "Include"}</DropdownMenuItem>
                       <DropdownMenuItem className="text-red-600">Remove</DropdownMenuItem>
                     </DropdownMenuContent>
@@ -401,6 +401,12 @@ export default function SourcesPage() {
         <DialogContent className="max-w-[320px] p-0 overflow-hidden border-none bg-white rounded-lg shadow-xl">
           <DialogHeader className="p-4 flex flex-row items-center justify-between space-y-0">
             <DialogTitle className="text-base font-bold text-gray-900">Select action</DialogTitle>
+            <button 
+              onClick={() => setShowActionModal(false)}
+              className="p-1 hover:bg-gray-100 rounded-sm transition-colors"
+            >
+              <X className="w-4 h-4 text-white bg-black rounded-[2px]" />
+            </button>
           </DialogHeader>
 
           <div className="px-6 pb-6 space-y-6">
@@ -455,6 +461,7 @@ export default function SourcesPage() {
           </div>
         </DialogContent>
       </Dialog>
+
       <SourceDetailsDrawer
         source={drawerSource}
         open={drawerOpen}
