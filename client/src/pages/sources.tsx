@@ -106,6 +106,7 @@ export default function SourcesPage() {
   const [drawerSource, setDrawerSource] = useState<SourceRow | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [showDeepExtractModal, setShowDeepExtractModal] = useState(false);
+  const [showConfidenceModal, setShowConfidenceModal] = useState(false);
 
   const config = loadLaunchConfig();
   const projectTitle = config?.query
@@ -214,7 +215,7 @@ export default function SourcesPage() {
           {selectedIds.size > 0 && [
             { icon: Globe, color: "text-gray-500", hoverBg: "hover:bg-green-100", hoverColor: "group-hover/btn:text-green-600", onClick: () => setShowActionModal(true) },
             { icon: Settings, color: "text-gray-500", hoverBg: "hover:bg-blue-100", hoverColor: "group-hover/btn:text-blue-600", onClick: () => setShowDeepExtractModal(true) },
-            { icon: Shield, color: "text-gray-500", hoverBg: "hover:bg-orange-100", hoverColor: "group-hover/btn:text-orange-600", onClick: () => {} },
+            { icon: Shield, color: "text-gray-500", hoverBg: "hover:bg-orange-100", hoverColor: "group-hover/btn:text-orange-600", onClick: () => setShowConfidenceModal(true) },
           ].map((item, i) => (
             <button 
               key={i} 
@@ -398,7 +399,7 @@ export default function SourcesPage() {
                         <DropdownMenuItem className="gap-2" onClick={() => setShowDeepExtractModal(true)}>
                           <Settings className="w-4 h-4" /> Deep Extract
                         </DropdownMenuItem>
-                        <DropdownMenuItem className="gap-2">
+                        <DropdownMenuItem className="gap-2" onClick={() => setShowConfidenceModal(true)}>
                           <Shield className="w-4 h-4" /> Confidence Score
                         </DropdownMenuItem>
                         <DropdownMenuItem className="gap-2">
@@ -490,7 +491,7 @@ export default function SourcesPage() {
                         <DropdownMenuItem className="gap-2" onClick={() => setShowDeepExtractModal(true)}>
                           <Settings className="w-4 h-4" /> Deep Extract
                         </DropdownMenuItem>
-                        <DropdownMenuItem className="gap-2">
+                        <DropdownMenuItem className="gap-2" onClick={() => setShowConfidenceModal(true)}>
                           <Shield className="w-4 h-4" /> Confidence Score
                         </DropdownMenuItem>
                         <DropdownMenuItem className="gap-2">
@@ -675,6 +676,79 @@ export default function SourcesPage() {
               >
                 Apply & Launch
               </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={showConfidenceModal} onOpenChange={setShowConfidenceModal}>
+        <DialogContent className="w-[500px] max-w-[500px] h-[250px] p-0 overflow-hidden border-none bg-white rounded-lg shadow-2xl">
+          <DialogHeader className="px-4 py-2.5 flex flex-row items-center justify-between space-y-0 border-b">
+            <DialogTitle className="text-base font-bold text-gray-900">Confidence Score</DialogTitle>
+            <button 
+              onClick={() => setShowConfidenceModal(false)}
+              className="p-1 hover:bg-gray-100 rounded-sm transition-colors"
+            >
+              <X className="w-5 h-5 text-white bg-black rounded-[2px]" />
+            </button>
+          </DialogHeader>
+
+          <div className="flex flex-1 px-4 pb-4 gap-6 items-center">
+            <div className="relative flex items-center justify-center shrink-0" style={{ width: 140, height: 140 }}>
+              <svg width="140" height="140" viewBox="0 0 140 140" className="-rotate-90">
+                <circle cx="70" cy="70" r="58" fill="none" stroke="#1a2030" strokeWidth="12" />
+                <circle cx="70" cy="70" r="58" fill="none" stroke="#333850" strokeWidth="12"
+                  strokeDasharray={`${2 * Math.PI * 58}`}
+                  strokeDashoffset={`${2 * Math.PI * 58 * (1 - 0.7)}`}
+                  strokeLinecap="round"
+                />
+                <circle cx="70" cy="70" r="58" fill="none" stroke="url(#confidenceGrad)" strokeWidth="12"
+                  strokeDasharray={`${2 * Math.PI * 58}`}
+                  strokeDashoffset={`${2 * Math.PI * 58 * (1 - 0.7)}`}
+                  strokeLinecap="round"
+                />
+                <defs>
+                  <linearGradient id="confidenceGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="#00802b" />
+                    <stop offset="100%" stopColor="#9B66FF" />
+                  </linearGradient>
+                </defs>
+              </svg>
+              <div className="absolute inset-0 flex flex-col items-center justify-center">
+                <span className="text-3xl font-bold text-gray-800">70%</span>
+                <span className="text-[10px] text-gray-500">Confidence</span>
+                <span className="text-[9px] text-green-500 font-medium mt-0.5">+26% Boost</span>
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-3 flex-1 min-w-0">
+              <p className="text-xs text-gray-500 leading-relaxed">
+                Confidence Score is an AI-driven credibility metric that separates verified facts from digital noise.
+              </p>
+
+              <div className="space-y-2">
+                <h4 className="text-xs font-bold text-gray-900">Apply Calculation To:</h4>
+                <div className="flex items-center gap-2">
+                  <Switch id="conf-included" defaultChecked className="data-[state=checked]:bg-[#00802b]" />
+                  <label htmlFor="conf-included" className="text-xs font-medium text-gray-700">Included sources: {includedCount}</label>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Switch id="conf-excluded" className="data-[state=checked]:bg-[#00802b]" />
+                  <label htmlFor="conf-excluded" className="text-xs font-medium text-gray-700">Excluded sources: {totalCount - includedCount}</label>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between pt-2 border-t mt-auto">
+                <div className="bg-gray-100 px-3 py-1.5 rounded text-xs font-bold text-gray-700">
+                  Total Cost: $12.34
+                </div>
+                <Button 
+                  className="bg-[#00802b] hover:bg-[#006622] text-white px-5 h-8 font-bold text-xs rounded-md"
+                  onClick={() => setShowConfidenceModal(false)}
+                >
+                  Apply & Launch
+                </Button>
+              </div>
             </div>
           </div>
         </DialogContent>
