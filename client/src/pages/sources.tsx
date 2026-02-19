@@ -126,6 +126,11 @@ export default function SourcesPage() {
   const [enhanceScope, setEnhanceScope] = useState<"web" | "files">("web");
   const [enhanceEngine, setEnhanceEngine] = useState("ultimate");
   const [enhanceLanguages, setEnhanceLanguages] = useState<string[]>([]);
+  const [enhanceFiles, setEnhanceFiles] = useState([
+    { name: "Market Analysis Q3.pdf", type: "PDF", size: "2.4 MB" },
+    { name: "Competitor Report.docx", type: "DOCX", size: "1.8 MB" },
+    { name: "Financial Projections.xlsx", type: "XLSX", size: "5.1 MB" },
+  ]);
   const [enhanceBudgetCap, setEnhanceBudgetCap] = useState(true);
   const [enhanceCostOpen, setEnhanceCostOpen] = useState(false);
   const [isAddFileModalOpen, setIsAddFileModalOpen] = useState(false);
@@ -955,20 +960,17 @@ export default function SourcesPage() {
                       </div>
                       <div className="p-3">
                         <div className="space-y-2 mb-3">
-                          {[
-                            { name: "Market Analysis Q3.pdf", type: "PDF", size: "2.4 MB" },
-                            { name: "Competitor Report.docx", type: "DOCX", size: "1.8 MB" },
-                            { name: "Financial Projections.xlsx", type: "XLSX", size: "5.1 MB" },
-                          ].map((file, i) => (
+                          {enhanceFiles.map((file, i) => (
                             <div
-                              key={i}
+                              key={`${file.name}-${i}`}
                               className="flex items-center justify-between bg-[#008DA8] text-white px-3 py-2 rounded-sm cursor-pointer hover:bg-[#007A92] transition-colors"
                               onClick={() => {
-                                const previewFiles = [
-                                  { id: "enhance-0", name: "Market Analysis Q3.pdf", type: "PDF", size: "2.4 MB" },
-                                  { id: "enhance-1", name: "Competitor Report.docx", type: "DOCX", size: "1.8 MB" },
-                                  { id: "enhance-2", name: "Financial Projections.xlsx", type: "XLSX", size: "5.1 MB" },
-                                ];
+                                const previewFiles = enhanceFiles.map((f, idx) => ({
+                                  id: `enhance-${idx}`,
+                                  name: f.name,
+                                  type: f.type,
+                                  size: f.size,
+                                }));
                                 openPreview({
                                   files: previewFiles,
                                   initialFileId: `enhance-${i}`,
@@ -983,7 +985,7 @@ export default function SourcesPage() {
                               </div>
                               <XCircle
                                 className="w-4 h-4 text-cyan-200 hover:text-white cursor-pointer shrink-0"
-                                onClick={(e) => { e.stopPropagation(); }}
+                                onClick={(e) => { e.stopPropagation(); setEnhanceFiles(prev => prev.filter((_, idx) => idx !== i)); }}
                               />
                             </div>
                           ))}
