@@ -128,6 +128,28 @@ export default function SourcesPage() {
   const [enhanceLanguages, setEnhanceLanguages] = useState<string[]>([]);
   const [enhanceBudgetCap, setEnhanceBudgetCap] = useState(true);
   const [enhanceCostOpen, setEnhanceCostOpen] = useState(false);
+  const [isAddFileModalOpen, setIsAddFileModalOpen] = useState(false);
+  const [activeUploadTab, setActiveUploadTab] = useState<"upload" | "repository">("upload");
+  const [selectedRepoFiles, setSelectedRepoFiles] = useState<string[]>([]);
+
+  const repoFiles = [
+    "Annual Report 2024.pdf",
+    "Board Meeting Notes.docx",
+    "Customer Survey Results.xlsx",
+    "Product Roadmap Q3.pdf",
+    "Marketing Strategy.pptx",
+    "Employee Handbook.pdf",
+    "Budget Forecast 2025.xlsx",
+    "Competitor Analysis.pdf",
+    "Sales Pipeline Report.csv",
+    "Technical Architecture.docx",
+  ];
+
+  const toggleRepoFile = (file: string) => {
+    setSelectedRepoFiles(prev =>
+      prev.includes(file) ? prev.filter(f => f !== file) : [...prev, file]
+    );
+  };
 
   const enhanceLanguageOptions = [
     { value: "auto", label: "Auto Detect" },
@@ -942,12 +964,12 @@ export default function SourcesPage() {
                             </div>
                           ))}
                         </div>
-                        <Button variant="outline" className="border-green-600 text-green-700 hover:bg-green-50 h-8 text-xs font-medium" data-testid="button-enhance-upload">
+                        <Button variant="outline" className="border-green-600 text-green-700 hover:bg-green-50 h-8 text-xs font-medium" data-testid="button-enhance-upload" onClick={() => setIsAddFileModalOpen(true)}>
                           <Upload className="w-3 h-3 mr-1" /> Upload files
                         </Button>
                       </div>
                       <div className="bg-gray-50 p-2 border-t border-gray-200 flex items-center gap-2">
-                        <Switch className="scale-75 data-[state=checked]:bg-green-600" />
+                        <Switch className="scale-75 data-[state=checked]:bg-green-600 bg-[#343a4669]" />
                         <span className="text-xs font-medium flex items-center gap-1 text-[#3564bd]">
                           <Link2 className="w-3 h-3" /> Extract & Research Embedded URLs <Info className="w-3 h-3 text-[#0097B2]" />
                         </span>
@@ -1057,6 +1079,137 @@ export default function SourcesPage() {
           </div>
         </>
       )}
+
+      <Dialog open={isAddFileModalOpen} onOpenChange={setIsAddFileModalOpen}>
+        <DialogContent className="max-w-xl p-0 gap-0 bg-[#F8F9FA] overflow-hidden">
+          <div className="flex items-center justify-between p-3 border-b border-gray-200 bg-white">
+            <div className="flex items-center gap-3">
+              <DialogHeader className="p-0 space-y-0">
+                <DialogTitle className="text-base font-bold text-gray-900">Add Files</DialogTitle>
+              </DialogHeader>
+              <div className="flex items-center gap-2 text-xs text-gray-600">
+                <span className="text-orange-400">
+                  <FileText className="w-3.5 h-3.5 inline" />
+                </span>
+                <div className="group relative">
+                  <span className="cursor-help border-b border-dotted border-gray-400">Context window</span>
+                  <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-max max-w-[200px] bg-gray-900 text-white text-[10px] p-2 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 text-center">
+                    Available space in context window
+                    <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-gray-900 rotate-45" />
+                  </div>
+                </div>
+                <div className="w-32 h-4 bg-white border border-green-500 rounded-sm relative overflow-hidden">
+                  <div className="absolute inset-y-0 left-0 bg-green-500 w-[20%]" />
+                  <span className="absolute inset-0 flex items-center justify-center text-[10px] font-medium text-gray-700 z-10">Usage: 20%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="p-4 space-y-4">
+            <div className="flex items-center gap-4 text-xs font-medium">
+              <label className="flex items-center gap-2 cursor-pointer" onClick={() => setActiveUploadTab("upload")}>
+                <div className={cn("w-3 h-3 rounded-full border bg-white flex items-center justify-center", activeUploadTab === "upload" ? "border-[4px] border-gray-500 ring-1 ring-gray-500" : "border-gray-300")} />
+                <span className={cn(activeUploadTab === "upload" ? "text-gray-900 font-bold" : "text-gray-500")}>Upload new</span>
+              </label>
+              <label className="flex items-center gap-2 cursor-pointer" onClick={() => setActiveUploadTab("repository")}>
+                <div className={cn("w-3 h-3 rounded-full border bg-white flex items-center justify-center", activeUploadTab === "repository" ? "border-[4px] border-gray-500 ring-1 ring-gray-500" : "border-gray-300")} />
+                <span className={cn(activeUploadTab === "repository" ? "text-gray-900 font-bold" : "text-gray-500")}>Select From <span className="text-blue-700">Assets Repository (100)</span></span>
+              </label>
+            </div>
+
+            {activeUploadTab === "upload" ? (
+              <>
+                <div className="grid grid-cols-3 gap-3">
+                  <div className="bg-white p-3 rounded-md border border-gray-200 shadow-sm flex flex-col gap-2 cursor-pointer hover:border-blue-300 hover:shadow-md transition-all" data-testid="card-google-workspace">
+                    <div className="flex items-center gap-2 text-gray-700 font-medium text-xs">
+                      <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" className="w-4 h-4" alt="Google" />
+                      <span>Google Workspace</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="px-2 py-0.5 bg-blue-50 text-blue-600 rounded-sm text-[10px] font-bold border border-blue-100 flex items-center gap-1">
+                        <Database className="w-2.5 h-2.5" /> Google Disk
+                      </span>
+                    </div>
+                  </div>
+                  <div className="bg-white p-3 rounded-md border border-gray-200 shadow-sm flex flex-col gap-2 cursor-pointer hover:border-blue-300 hover:shadow-md transition-all" data-testid="card-add-link">
+                    <div className="flex items-center gap-2 text-gray-700 font-medium text-xs">
+                      <LinkIcon className="w-3.5 h-3.5" />
+                      <span>Add link</span>
+                    </div>
+                    <div className="flex items-center gap-1 flex-wrap">
+                      <span className="px-2 py-0.5 bg-blue-50 text-blue-600 rounded-sm text-[10px] font-bold border border-blue-100 flex items-center gap-1">
+                        <Globe className="w-2.5 h-2.5" /> Site
+                      </span>
+                      <span className="px-2 py-0.5 bg-blue-50 text-blue-600 rounded-sm text-[10px] font-bold border border-blue-100 flex items-center gap-1">
+                        <Play className="w-2.5 h-2.5" /> YouTube
+                      </span>
+                    </div>
+                  </div>
+                  <div className="bg-white p-3 rounded-md border border-gray-200 shadow-sm flex flex-col gap-2 cursor-pointer hover:border-blue-300 hover:shadow-md transition-all" data-testid="card-paste-text">
+                    <div className="flex items-center gap-2 text-gray-700 font-medium text-xs">
+                      <FileText className="w-3.5 h-3.5" />
+                      <span>Paste text</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="px-2 py-0.5 bg-blue-50 text-blue-600 rounded-sm text-[10px] font-bold border border-blue-100 flex items-center gap-1">
+                        <FileText className="w-2.5 h-2.5" /> Copied text
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="border-2 border-dashed border-gray-300 rounded-lg bg-gray-50 h-40 flex flex-col items-center justify-center gap-2 cursor-pointer hover:bg-gray-100 hover:border-gray-400 transition-colors" data-testid="area-upload-drop">
+                  <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mb-1">
+                    <Upload className="w-5 h-5 text-blue-600" />
+                  </div>
+                  <div className="text-center space-y-0.5">
+                    <h3 className="text-sm font-bold text-gray-800">Upload sources</h3>
+                    <p className="text-xs text-blue-600 font-medium">Select file <span className="text-gray-500 font-normal">or drag here.</span></p>
+                  </div>
+                  <p className="text-[9px] text-gray-400 max-w-sm text-center leading-relaxed px-4">
+                    Supported file types: PDF, txt, Markdown, audio (e.g. MP3 files), docx, avif, .bmp, .gif, .ico, .jp2, .png, .webp, .tif, .tiff, .heic, .heif, .jpeg, .jpg, .jpe.
+                  </p>
+                </div>
+              </>
+            ) : (
+              <div className="border rounded-md bg-white p-2 h-[260px] overflow-y-auto">
+                <div className="space-y-1">
+                  {repoFiles.map((file, index) => (
+                    <div key={index} className="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-sm cursor-pointer border-b border-gray-100 last:border-0" onClick={() => toggleRepoFile(file)} data-testid={`row-repo-file-${index}`}>
+                      <div className={cn(
+                        "w-4 h-4 rounded border flex items-center justify-center transition-colors",
+                        selectedRepoFiles.includes(file) ? "bg-blue-600 border-blue-600" : "border-gray-300 bg-white"
+                      )}>
+                        {selectedRepoFiles.includes(file) && <Check className="w-3 h-3 text-white" />}
+                      </div>
+                      <FileText className="w-4 h-4 text-gray-500" />
+                      <span className="text-sm text-gray-700">{file}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <div className="flex flex-col items-center gap-4 pt-2">
+              {activeUploadTab === "upload" && (
+                <label className="flex items-center gap-2 cursor-pointer select-none">
+                  <input type="checkbox" className="w-3.5 h-3.5 rounded border-gray-300 text-green-600 focus:ring-green-500" />
+                  <span className="text-xs font-medium text-black">Save 5 files to <span className="text-blue-800">Assets Repository (100)</span></span>
+                </label>
+              )}
+              <div className="flex items-center justify-center gap-6 w-full">
+                <Button variant="ghost" size="sm" className="text-[#008DA8] hover:text-[#007A92] hover:bg-transparent font-bold underline h-8 text-xs" onClick={() => setIsAddFileModalOpen(false)} data-testid="button-addfiles-cancel">
+                  CANCEL
+                </Button>
+                <Button size="sm" className="bg-[#00802b] hover:bg-[#006622] text-white font-bold px-6 h-8 text-xs" onClick={() => setIsAddFileModalOpen(false)} data-testid="button-addfiles-save">
+                  Save & Add
+                </Button>
+              </div>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
