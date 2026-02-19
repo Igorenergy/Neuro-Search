@@ -144,7 +144,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                       {item.title}
                     </p>
                     <div className="flex items-center gap-0.5 shrink-0 mt-0.5">
-                      <Pin className="w-3.5 h-3.5 text-gray-500 rotate-45 cursor-pointer hover:text-gray-700" />
+                      <Pin className="w-3.5 h-3.5 text-gray-500 rotate-45 cursor-pointer hover:text-gray-700 -mr-[10px] relative -left-[10px]" />
                       <MoreVertical className="w-3.5 h-3.5 text-gray-500 cursor-pointer hover:text-gray-700" />
                     </div>
                   </div>
