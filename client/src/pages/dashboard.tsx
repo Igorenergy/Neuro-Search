@@ -14,6 +14,7 @@ import {
   FileText,
   X,
   ChevronDown,
+  Search,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -232,7 +233,14 @@ export default function Dashboard() {
       )}
       {/* Main Content Header */}
       <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-[13px]">
-        <h1 className="text-xl font-bold text-gray-900">Your Searches (20)</h1>
+        <div className="flex items-center gap-3">
+          <h1 className="text-xl font-bold text-gray-900" data-testid="text-searches-title">Your Searches (20)</h1>
+          <Link href="/smart-search/new">
+            <Button size="icon" className="h-9 w-9 bg-[#00802b] hover:bg-[#006622] rounded-md shadow-sm border border-[#006622]" data-testid="button-new-search">
+              <Search className="w-5 h-5 text-white stroke-[2.5]" />
+            </Button>
+          </Link>
+        </div>
 
         <div className="flex items-center gap-2">
           <span className="text-sm font-bold text-gray-800">Status</span>

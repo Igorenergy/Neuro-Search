@@ -398,10 +398,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </div>
             
             <div className="fixed right-4 top-0 h-16 flex items-center gap-3 z-50">
-              <Button size="icon" className="h-9 w-9 bg-[#00802b] hover:bg-[#006622] rounded-md shadow-sm border border-[#006622]">
-                <Search className="w-5 h-5 text-white stroke-[2.5]" />
-              </Button>
-              
               <div className="relative">
                 <Button variant="outline" size="icon" className="h-9 w-12 bg-white border-gray-400 text-gray-600 hover:bg-gray-50 rounded-md gap-1 px-2 w-auto">
                   <Bell className="w-5 h-5 fill-current" />
