@@ -20,6 +20,7 @@ import {
   Paperclip,
   MoreVertical,
   X,
+  Rocket,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -194,27 +195,22 @@ export default function ActionRequired() {
       </div>
 
       {/* Right Panel: Main Error Dashboard */}
-      <div className="flex-1 min-w-[600px] overflow-y-auto" data-testid="panel-right">
-        <div className="max-w-[1100px] mx-auto p-6 space-y-5">
-
-          {/* Context Header */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2 text-xs text-gray-500">
-              <Link href="/research/dashboard" className="hover:text-gray-700 transition-colors" data-testid="link-dashboard">Dashboard</Link>
-              <ChevronRight className="w-3 h-3" />
-              <span className="text-gray-700 font-medium">AI Platform Analysis</span>
-              <ChevronRight className="w-3 h-3" />
-              <span className="text-red-600 font-bold">Failed</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <Badge variant="outline" className="text-[10px] border-gray-300 text-gray-400 cursor-not-allowed gap-1">
-                <FileText className="w-3 h-3" /> Reports
-              </Badge>
-              <Badge className="text-[10px] bg-red-500/10 text-red-600 border border-red-200 gap-1 font-bold">
-                <AlertTriangle className="w-3 h-3" /> Action Required
-              </Badge>
-            </div>
+      <div className="flex-1 min-w-[600px] flex flex-col overflow-hidden" data-testid="panel-right">
+        {/* Context Bar */}
+        <div className="sticky top-0 z-10 border-b border-gray-200 px-3 py-2 flex items-center gap-3 shrink-0 bg-[#dddddd]">
+          <div className="w-8 h-8 rounded-sm flex items-center justify-center shrink-0 bg-[#dddddd] text-[#191c1c]">
+            <Rocket className="w-4 h-4 text-white" />
           </div>
+          <p className="text-xs font-medium text-gray-700 flex-1 leading-snug line-clamp-2" data-testid="text-project-title">
+            Project Name: Acuras Pro — Intelligent Deep Search Agent 1. Project Overview & Core Mission Acura...
+          </p>
+          <span className="text-xs font-medium text-orange-500 shrink-0" data-testid="text-status-cancelled">
+            Research is cancel
+          </span>
+        </div>
+
+        <div className="flex-1 overflow-y-auto">
+        <div className="max-w-[1100px] mx-auto p-6 space-y-5">
 
           {/* Error Summary Banner */}
           <div className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-start gap-3" data-testid="card-error-summary">
@@ -472,6 +468,7 @@ export default function ActionRequired() {
             </div>
           </div>
 
+        </div>
         </div>
       </div>
     </div>
