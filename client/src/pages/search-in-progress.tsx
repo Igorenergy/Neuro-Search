@@ -560,8 +560,8 @@ export default function SmartSearchInProgress() {
           className="flex-1 overflow-y-auto"
           onScroll={handleStreamScroll}
         >
-          <div className="p-4 space-y-6 max-w-5xl">
-            <div className="flex items-center gap-2">
+          <div className="p-4 space-y-6 max-w-5xl relative">
+            <div className="flex items-center gap-2 sticky top-0 bg-gray-50/80 backdrop-blur-sm py-2 z-10 -mx-4 px-4">
               <span className="text-xs font-bold text-[#008DA8]" data-testid="text-research-log">RESEARCH LOG</span>
             </div>
             {/* Thought Stream */}
