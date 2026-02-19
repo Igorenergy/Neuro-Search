@@ -948,15 +948,17 @@ export default function SourcesPage() {
                       <div className="flex items-center justify-between p-2 border-b border-gray-200">
                         <div className="flex items-center gap-2">
                           <FileText className="w-5 h-5" strokeWidth={1.5} />
-                          <span className="text-sm font-medium">Files & Assets: 3/10</span>
+                          <span className="text-sm font-medium">Files & Assets: {enhanceFiles.length}/10</span>
                         </div>
-                        <div className="flex items-center gap-2 text-xs text-gray-600">
-                          <span>Context window</span>
-                          <div className="w-32 h-4 bg-white border border-green-500 rounded-sm relative overflow-hidden">
-                            <div className="absolute inset-y-0 left-0 bg-green-500 w-[20%]" />
-                            <span className="absolute inset-0 flex items-center justify-center text-[10px] font-medium text-gray-700 z-10">Usage: 20%</span>
+                        {enhanceFiles.length > 0 && (
+                          <div className="flex items-center gap-2 text-xs text-gray-600">
+                            <span>Context window</span>
+                            <div className="w-32 h-4 bg-white border border-green-500 rounded-sm relative overflow-hidden">
+                              <div className="absolute inset-y-0 left-0 bg-green-500 transition-all" style={{ width: `${Math.round((enhanceFiles.length / 10) * 100)}%` }} />
+                              <span className="absolute inset-0 flex items-center justify-center text-[10px] font-medium text-gray-700 z-10">Usage: {Math.round((enhanceFiles.length / 10) * 100)}%</span>
+                            </div>
                           </div>
-                        </div>
+                        )}
                       </div>
                       <div className="p-3">
                         <div className="space-y-2 mb-3">
