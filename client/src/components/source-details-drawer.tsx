@@ -235,14 +235,6 @@ export function SourceDetailsDrawer({ source, open, onClose }: SourceDetailsDraw
             </button>
             <button
               className="p-2 hover:bg-gray-100 rounded transition-colors"
-              title="Search in document"
-              onClick={() => setShowSearch(!showSearch)}
-              data-testid="button-drawer-search"
-            >
-              <Search className="w-4 h-4 text-gray-600" />
-            </button>
-            <button
-              className="p-2 hover:bg-gray-100 rounded transition-colors"
               title="Download"
               onClick={() => { /* Download functionality placeholder */ }}
               data-testid="button-drawer-download"
