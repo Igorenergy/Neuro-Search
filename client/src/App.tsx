@@ -9,7 +9,7 @@ import Dashboard from "@/pages/dashboard";
 import Launcher from "@/pages/launcher";
 import SearchPage from "@/pages/search";
 import AssetsRepository from "@/pages/assets-repository";
-import SmartSearchInProgress from "@/pages/smart-search-in-progress";
+import SmartSearchInProgress from "@/pages/search-in-progress";
 import { PreviewProvider } from "@/lib/preview-store";
 import FilePreviewDrawer from "@/components/file-preview-drawer";
 import { useEffect } from "react";
