@@ -38,6 +38,7 @@ import {
 } from "@/components/ui/dialog";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { cn } from "@/lib/utils";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { loadLaunchConfig } from "@/lib/launch-config";
 import { ResearchBriefingSidebar } from "@/components/research-briefing-sidebar";
 import { SourceDetailsDrawer } from "@/components/source-details-drawer";
@@ -354,7 +355,16 @@ export default function SourcesPage() {
                 </div>
 
                 <div className="flex items-center flex-1 min-w-0">
-                  <ConfidenceRing score={source.confidenceScore} />
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div data-testid={`confidence-ring-${source.id}`}>
+                        <ConfidenceRing score={source.confidenceScore} />
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent side="top" className="max-w-[220px] text-center">
+                      <p className="text-xs">Confidence Score is an AI-driven credibility metric that separates verified facts from digital noise.</p>
+                    </TooltipContent>
+                  </Tooltip>
                 </div>
 
                 <div className="flex items-center gap-1 shrink-0" onClick={(e) => e.stopPropagation()}>
