@@ -35,9 +35,9 @@ export default function Dashboard() {
   type ResearchStatus = "success" | "in-progress" | "failed" | "canceled";
 
   const statusConfig: Record<ResearchStatus, { borderColor: string; route: string; tileBg: string; iconBg: string; iconColor: string }> = {
-    "success": { borderColor: "border-l-green-500", route: "/research-success", tileBg: "bg-[#E0F7FA]", iconBg: "bg-[#B2EBF2]", iconColor: "text-[#00838F]" },
-    "in-progress": { borderColor: "border-l-blue-500", route: "/research-in-progress", tileBg: "bg-[#E8F5E9]", iconBg: "bg-[#C8E6C9]", iconColor: "text-[#2E7D32]" },
-    "failed": { borderColor: "border-l-red-500", route: "/research-failed", tileBg: "bg-[#FCE4EC]", iconBg: "bg-[#F8BBD0]", iconColor: "text-[#C62828]" },
+    "success": { borderColor: "border-l-green-500", route: "/research-success", tileBg: "bg-[#E8F5E9]", iconBg: "bg-[#C8E6C9]", iconColor: "text-[#2E7D32]" },
+    "in-progress": { borderColor: "border-l-blue-500", route: "/research-in-progress", tileBg: "bg-[#E3F2FD]", iconBg: "bg-[#BBDEFB]", iconColor: "text-[#1565C0]" },
+    "failed": { borderColor: "border-l-red-500", route: "/research-failed", tileBg: "bg-[#FFEBEE]", iconBg: "bg-[#FFCDD2]", iconColor: "text-[#C62828]" },
     "canceled": { borderColor: "border-l-orange-400", route: "/research-canceled", tileBg: "bg-[#FFF3E0]", iconBg: "bg-[#FFE0B2]", iconColor: "text-[#E65100]" },
   };
 
