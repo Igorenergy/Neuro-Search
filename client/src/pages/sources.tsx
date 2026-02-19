@@ -383,7 +383,7 @@ export default function SourcesPage() {
                     <DropdownMenuContent align="end">
                       <DropdownMenuItem>⚙️Deep Extract</DropdownMenuItem>
                       <DropdownMenuItem>Open Original</DropdownMenuItem>
-                      <DropdownMenuItem>🛡️ Confidence Score</DropdownMenuItem>
+                      <DropdownMenuItem>🛡️Confidence Score</DropdownMenuItem>
                       <DropdownMenuItem>{source.included ? "Exclude" : "Include"}</DropdownMenuItem>
                       <DropdownMenuItem className="text-red-600">Remove</DropdownMenuItem>
                     </DropdownMenuContent>
