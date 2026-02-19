@@ -344,7 +344,7 @@ export default function SourcesPage() {
                 {source.title}
               </span>
 
-              <div className="flex items-center justify-between flex-1 min-w-0 gap-3">
+              <div className="flex items-center flex-1 min-w-0 gap-8">
                 <div className="flex items-center gap-1.5 text-[11px] text-gray-500 shrink-0">
                   <FileText className="w-3 h-3" />
                   {source.date}
@@ -367,7 +367,7 @@ export default function SourcesPage() {
                   <ConfidenceRing score={source.confidenceScore} />
                 </div>
 
-                <div className="flex items-center gap-1 shrink-0">
+                <div className="flex items-center gap-1 shrink-0 ml-auto">
                   <button
                     className="p-1 hover:bg-gray-200 rounded transition-colors"
                     data-testid={`button-open-source-${source.id}`}
