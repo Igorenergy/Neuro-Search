@@ -146,6 +146,7 @@ export default function SmartSearchInProgress() {
   const [hudExpanded, setHudExpanded] = useState(true);
   const [isTextExpanded, setIsTextExpanded] = useState(false);
   const [briefingExpanded, setBriefingExpanded] = useState(false);
+  const [queryExpanded, setQueryExpanded] = useState(false);
 
   useEffect(() => {
     const loaded = loadLaunchConfig();
@@ -222,8 +223,22 @@ export default function SmartSearchInProgress() {
               <div>
                 <span className="text-[10px] font-bold text-gray-400 uppercase">Query</span>
                 <p className="text-xs text-gray-700 mt-1 leading-relaxed" data-testid="text-briefing-query">
-                  {config?.query || "No query specified"}
+                  {(() => {
+                    const queryText = config?.query || "No query specified";
+                    const shouldTrim = queryText.length > 250;
+                    return shouldTrim && !queryExpanded ? queryText.slice(0, 250) + "..." : queryText;
+                  })()}
                 </p>
+                {config?.query && config.query.length > 250 && (
+                  <button
+                    onClick={() => setQueryExpanded(!queryExpanded)}
+                    className="text-[11px] text-[#008DA8] hover:underline font-medium mt-1 flex items-center gap-1"
+                    data-testid="button-toggle-query-text"
+                  >
+                    {queryExpanded ? "Show less" : "Show more"}
+                    <ChevronDown className={cn("w-3 h-3 transition-transform duration-200", queryExpanded && "rotate-180")} />
+                  </button>
+                )}
               </div>
 
               <div>
