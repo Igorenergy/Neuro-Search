@@ -64,7 +64,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <div className="w-8 h-8 bg-gray-200 border border-gray-400 flex items-center justify-center rounded-sm shrink-0">
              <span className="text-[10px] font-bold text-gray-500">Logo</span>
           </div>
-          {!collapsed && <span className="font-bold text-lg text-gray-800 tracking-tight">Acuras</span>}
+          {!collapsed && <span className="font-bold text-lg text-gray-800 tracking-tight">Neuro-Search</span>}
         </div>
         <Button 
           variant="ghost" 
@@ -157,7 +157,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </>
       ) : (
         /* Collapsed State Icons */
-        <div className="flex flex-col items-center gap-4 py-4">
+        (<div className="flex flex-col items-center gap-4 py-4">
           <Button size="icon" variant="ghost" className="h-10 w-10 text-[#006E7D]">
             <Plus className="w-6 h-6" />
           </Button>
@@ -176,7 +176,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </ScrollArea>
           <div className="mt-auto pb-4">
           </div>
-        </div>
+        </div>)
       )}
     </div>
   );
