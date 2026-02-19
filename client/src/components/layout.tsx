@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
@@ -34,6 +34,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
+
+  useEffect(() => {
+    const isResultsPage = location.includes("reports/summary") || location.includes("sources/");
+    if (isResultsPage) {
+      setIsCollapsed(true);
+    }
+  }, [location]);
 
   // Mock data for the sidebar list matching the image
   const researchItems = [
@@ -224,6 +231,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                  location.includes("dashboard") ? "Overview" :
                  location.includes("assets") ? "Assets Repository" :
                  location.includes("in-progress") ? "in progress" :
+                 location.includes("reports/summary") ? "Reports" :
+                 location.includes("sources") ? "Sources" :
                  location.includes("search") ? "Launcher" : 
                  location.includes("new") ? "Launcher" : "Page"}
              </h1>

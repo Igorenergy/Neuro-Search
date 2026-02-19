@@ -1,0 +1,75 @@
+Global Routing Logic (The Transition)
+When the AI agent completes the research task (Status: Completed) OR the user manually triggers a Graceful Shutdown to save the current results, the system must automatically transition the user from the In Progress view to the final results view.
+
+SPA Consistency: The Left Panel (Launcher/Briefing History) must remain in the UI but automatically collapse to its minimal state (e.g., w-[50px]) to maximize the screen real estate for the generated reports.
+
+1. Reports Module: Summary Page (Reference: File1)
+Route: /reports/summary/:id
+Role: The Executive Dashboard. This page provides an immediate, highly scannable synthesis of the entire research operation.
+
+A. The Context Header (Top Navigation Bar)
+
+Project Identity: Icon + Project Title (use truncate CSS if it exceeds available width) + Kebab Menu (⋮) for project actions (Rename, Duplicate, Delete).
+
+Module Switcher (Pills):
+
+[ Reports ]: Default active tab (Green background, white text).
+
+[ Sources: {N} ]: Inactive state. Displays the dynamic count of valid sources scraped. Clicking this routes to File2.
+
+[ Artifacts: {N} ]: Inactive state. Displays the count of generated files.
+
+Actions: [ Export ] and [ Share ] buttons on the right side.
+
+B. Page Sub-Navigation
+
+SUMMARY (Active tab)
+
+RESEARCH LOG (Inactive tab - for reviewing the agent's step-by-step thinking).
+
+Premium Hook: A right-aligned [ GENERATE EXTENDED REPORT ] button. This acts as an upsell entry point for premium features (e.g., PPTX export, Strategy Frameworks).
+
+C. Main Content Layout (Insight Cards)
+A vertically scrollable flex column (flex-col gap-4) containing distinct bordered cards. Text must be concise.
+
+Card 1: The Verdict: A direct, 1-2 sentence answer to the user's core prompt. (Icon: 🎯)
+
+Card 2: Key Takeaways: 3-5 bullet points. Format: Bold Header + 1 sentence explanation. (Icon: 💡)
+
+Card 3: Trust & Scope Indicators: Visual display of the average Confidence Score, number of verified sources, and date range. (Icon: 🛡️)
+
+Card 4: Strategic Recommendations: Actionable next steps based on the findings. (Icon: 🚀)
+
+2. Sources Module: Data Grid Page (Reference: File2)
+Route: /sources/:id
+Role: The Evidence Room. A detailed, interactive data table where the user can audit, filter, and extract deep data from every link the AI processed.
+
+A. Top Action Bar (The Toolbar)
+
+Master Checkbox: Select/Deselect all rows.
+
+Filter Button: Opens a popover to filter by Source Authority, Date, and Content Format.
+
+Sort By: Dropdown (Default: sorted by Confidence Score descending).
+
+Search Input: A client-side live search bar (onInput event) to find specific domains or titles within the grid.
+
+View Toggle: Switch between List View and Grid View.
+
+B. The Data Grid (Row Structure)
+Each row represents a parsed source and contains:
+
+Checkbox: For bulk actions (Include/Exclude, Delete).
+
+Type Icon / Favicon: Website logo or file icon (PDF, XLSX).
+
+Source Title: Clickable text. Truncated with an ellipsis.
+
+Metadata Tags: Date (Publication/fetch date), Location (Geo-scope), Language.
+
+Confidence Score (Trust Ring): A visual donut chart component showing the AI's trust rating (e.g., 95%). Hovering over this chart triggers a tooltip explaining the breakdown (Relevance + Domain Authority).
+
+Action Menu: A direct link icon (↗) to open the original URL in a new tab, and a Kebab menu (⋮) for row-specific actions.
+
+C. Floating Action (Enhance Research)
+A prominent button (e.g., [ Deep Extract ]) positioned either above the grid or within specific rows. This triggers a deep parse of tables, images, and nested documents for the selected sources.
