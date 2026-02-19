@@ -342,185 +342,183 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-    <div className="min-h-screen bg-background text-foreground flex">
-      {/* Desktop Sidebar */}
-      <aside 
-        className={cn(
-          "hidden md:block fixed inset-y-0 left-0 z-50 transition-all duration-300 ease-in-out bg-[#F5F5F7] border-r border-gray-200",
-          isCollapsed ? "w-[70px]" : "w-[300px]"
-        )}
-      >
-        <SidebarContent collapsed={isCollapsed} />
-      </aside>
+      <div className="min-h-screen bg-background text-foreground flex">
+        {/* Desktop Sidebar */}
+        <aside 
+          className={cn(
+            "hidden md:block fixed inset-y-0 left-0 z-50 transition-all duration-300 ease-in-out bg-[#F5F5F7] border-r border-gray-200",
+            isCollapsed ? "w-[70px]" : "w-[300px]"
+          )}
+        >
+          <SidebarContent collapsed={isCollapsed} />
+        </aside>
 
-      {/* Mobile Nav */}
-      <Sheet open={isMobileOpen} onOpenChange={setIsMobileOpen}>
-        <SheetTrigger asChild>
-          <Button variant="ghost" size="icon" className="md:hidden fixed top-4 left-4 z-50 bg-white shadow-sm border border-gray-200">
-            <Menu className="w-5 h-5" />
-          </Button>
-        </SheetTrigger>
-        <SheetContent side="left" className="p-0 w-[300px] bg-[#F5F5F7]">
-          <SidebarContent collapsed={false} />
-        </SheetContent>
-      </Sheet>
-
-      {/* Main Content */}
-      <main 
-        className={cn(
-          "flex-1 min-h-screen flex flex-col transition-all duration-300 ease-in-out",
-          isCollapsed ? "md:ml-[70px]" : "md:ml-[300px]"
-        )}
-      >
-        {/* Top Header - Contextual to the page */}
-        <header className="h-16 border-b border-gray-300 bg-[#F5F5F7] sticky top-0 z-40 px-4 flex items-center justify-between shadow-sm">
-          <div className="flex items-center gap-4">
-             <Link href="/research/dashboard">
-               <Button variant="outline" className="h-9 gap-2 bg-white border-gray-400 text-[#006E7D] hover:text-[#005a66] hover:bg-gray-50 px-3 shadow-sm rounded-sm">
-                 <LayoutDashboard className="w-4 h-4" />
-                 Dashboard
-               </Button>
-             </Link>
-             
-             <h1 className="text-sm font-medium text-gray-800">
-               <span className="font-bold">Smart Search:</span> {
-                 location === "/" ? "Dashboard" : 
-                 location.includes("dashboard") ? "Overview" :
-                 location.includes("assets") ? "Assets Repository" :
-                 location.includes("research-failed") ? "Failed" :
-                 location.includes("research-canceled") ? "Cancel" :
-                 location.includes("in-progress") ? "in progress" :
-                 location.includes("research-success") ? "Reports" :
-                 location.includes("sources") ? "Sources" :
-                 location.includes("search") ? "Launcher" : 
-                 location.includes("new") ? "Launcher" : "Page"}
-             </h1>
-          </div>
-          
-          <div className="fixed right-4 top-0 h-16 flex items-center gap-3 z-50">
-            <Button size="icon" className="h-9 w-9 bg-[#00802b] hover:bg-[#006622] rounded-md shadow-sm border border-[#006622]">
-              <Search className="w-5 h-5 text-white stroke-[2.5]" />
+        {/* Mobile Nav */}
+        <Sheet open={isMobileOpen} onOpenChange={setIsMobileOpen}>
+          <SheetTrigger asChild>
+            <Button variant="ghost" size="icon" className="md:hidden fixed top-4 left-4 z-50 bg-white shadow-sm border border-gray-200">
+              <Menu className="w-5 h-5" />
             </Button>
-            
-            <div className="relative">
-              <Button variant="outline" size="icon" className="h-9 w-12 bg-white border-gray-400 text-gray-600 hover:bg-gray-50 rounded-md gap-1 px-2 w-auto">
-                <Bell className="w-5 h-5 fill-current" />
-                <span className="text-xs font-bold text-[#00802b]">+3</span>
-              </Button>
+          </SheetTrigger>
+          <SheetContent side="left" className="p-0 w-[300px] bg-[#F5F5F7]">
+            <SidebarContent collapsed={false} />
+          </SheetContent>
+        </Sheet>
+
+        {/* Main Content */}
+        <main 
+          className={cn(
+            "flex-1 min-h-screen flex flex-col transition-all duration-300 ease-in-out",
+            isCollapsed ? "md:ml-[70px]" : "md:ml-[300px]"
+          )}
+        >
+          {/* Top Header - Contextual to the page */}
+          <header className="h-16 border-b border-gray-300 bg-[#F5F5F7] sticky top-0 z-40 px-4 flex items-center justify-between shadow-sm">
+            <div className="flex items-center gap-4">
+               <Link href="/research/dashboard">
+                 <Button variant="outline" className="h-9 gap-2 bg-white border-gray-400 text-[#006E7D] hover:text-[#005a66] hover:bg-gray-50 px-3 shadow-sm rounded-sm">
+                   <LayoutDashboard className="w-4 h-4" />
+                   Dashboard
+                 </Button>
+               </Link>
+               
+               <h1 className="text-sm font-medium text-gray-800">
+                 <span className="font-bold">Smart Search:</span> {
+                   location === "/" ? "Dashboard" : 
+                   location.includes("dashboard") ? "Overview" :
+                   location.includes("assets") ? "Assets Repository" :
+                   location.includes("research-failed") ? "Failed" :
+                   location.includes("research-canceled") ? "Cancel" :
+                   location.includes("in-progress") ? "in progress" :
+                   location.includes("research-success") ? "Reports" :
+                   location.includes("sources") ? "Sources" :
+                   location.includes("search") ? "Launcher" : 
+                   location.includes("new") ? "Launcher" : "Page"}
+               </h1>
             </div>
-
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="h-10 pl-2 pr-3 gap-2 bg-white border-gray-400 hover:bg-gray-50 rounded-md text-left flex items-center">
-                  <div className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center">
-                    <User className="w-5 h-5" />
-                  </div>
-                  <div className="flex flex-col items-start leading-none gap-0.5">
-                    <span className="text-xs font-bold text-gray-900">Ivan Petrov</span>
-                    <span className="text-[10px] text-gray-500">Company/Team name</span>
-                  </div>
-                  <ChevronDown className="w-4 h-4 text-black ml-1 fill-black" />
+            
+            <div className="fixed right-4 top-0 h-16 flex items-center gap-3 z-50">
+              <Button size="icon" className="h-9 w-9 bg-[#00802b] hover:bg-[#006622] rounded-md shadow-sm border border-[#006622]">
+                <Search className="w-5 h-5 text-white stroke-[2.5]" />
+              </Button>
+              
+              <div className="relative">
+                <Button variant="outline" size="icon" className="h-9 w-12 bg-white border-gray-400 text-gray-600 hover:bg-gray-50 rounded-md gap-1 px-2 w-auto">
+                  <Bell className="w-5 h-5 fill-current" />
+                  <span className="text-xs font-bold text-[#00802b]">+3</span>
                 </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-64 p-0 rounded-md border-gray-300 shadow-xl bg-[#F5F5F7]">
-                <div className="p-3 border-b border-gray-200 bg-white rounded-t-md">
-                   <p className="text-xs text-center font-semibold text-gray-500 mb-1">Balance</p>
-                   <div className="bg-[#E8F5E9] border border-[#C8E6C9] rounded-md p-2 text-center">
-                     <span className="text-[#2E7D32] font-bold text-sm">5.8K available</span>
-                     <span className="text-gray-500 text-xs mx-1">[10K]</span>
-                     <a href="#" className="text-[#008DA8] text-xs underline font-medium">buy more</a>
-                   </div>
-                </div>
-                <div className="p-1 space-y-0.5 bg-[#F5F5F7]">
-                  {[
-                    { label: "Profile & Settings", icon: User },
-                    { label: "Files & Attachments: 123", icon: FileText },
-                    { label: "Integrations", icon: Zap },
-                    { label: "Billing & Usage", icon: MoreVertical },
-                    { label: "Export Hub: 26", icon: Search },
-                    { label: "Log out", icon: PanelLeftClose }
-                  ].map((item, idx) => (
-                    <DropdownMenuItem key={idx} className="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 focus:bg-gray-200 focus:text-black cursor-pointer rounded-sm">
-                      <item.icon className="w-4 h-4 text-gray-500" />
-                      {item.label}
-                    </DropdownMenuItem>
-                  ))}
-                </div>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-        </header>
+              </div>
 
-        <div className="flex-1 p-6 md:p-8 overflow-auto bg-gray-50/50">
-          {children}
-        </div>
-      </main>
-    </div>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" className="h-10 pl-2 pr-3 gap-2 bg-white border-gray-400 hover:bg-gray-50 rounded-md text-left flex items-center">
+                    <div className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center">
+                      <User className="w-5 h-5" />
+                    </div>
+                    <div className="flex flex-col items-start leading-none gap-0.5">
+                      <span className="text-xs font-bold text-gray-900">Ivan Petrov</span>
+                      <span className="text-[10px] text-gray-500">Company/Team name</span>
+                    </div>
+                    <ChevronDown className="w-4 h-4 text-black ml-1 fill-black" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-64 p-0 rounded-md border-gray-300 shadow-xl bg-[#F5F5F7]">
+                  <div className="p-3 border-b border-gray-200 bg-white rounded-t-md">
+                     <p className="text-xs text-center font-semibold text-gray-500 mb-1">Balance</p>
+                     <div className="bg-[#E8F5E9] border border-[#C8E6C9] rounded-md p-2 text-center">
+                       <span className="text-[#2E7D32] font-bold text-sm">5.8K available</span>
+                       <span className="text-gray-500 text-xs mx-1">[10K]</span>
+                       <a href="#" className="text-[#008DA8] text-xs underline font-medium">buy more</a>
+                     </div>
+                  </div>
+                  <div className="p-1 space-y-0.5 bg-[#F5F5F7]">
+                    {[
+                      { label: "Profile & Settings", icon: User },
+                      { label: "Files & Attachments: 123", icon: FileText },
+                      { label: "Integrations", icon: Zap },
+                      { label: "Billing & Usage", icon: MoreVertical },
+                      { label: "Export Hub: 26", icon: Search },
+                      { label: "Log out", icon: PanelLeftClose }
+                    ].map((item, idx) => (
+                      <DropdownMenuItem key={idx} className="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 focus:bg-gray-200 focus:text-black cursor-pointer rounded-sm">
+                        <item.icon className="w-4 h-4 text-gray-500" />
+                        {item.label}
+                      </DropdownMenuItem>
+                    ))}
+                  </div>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          </header>
 
-    <Dialog open={detailsOpen} onOpenChange={setDetailsOpen}>
-      <DialogContent className="sm:max-w-[400px] bg-white border-gray-200">
-        <DialogHeader>
-          <DialogTitle className="text-gray-900">Research Details</DialogTitle>
-          <DialogDescription className="text-gray-500 text-sm">
-            Edit the name and pin status for this research item.
-          </DialogDescription>
-        </DialogHeader>
-        <div className="space-y-5 py-2">
-          <div className="space-y-2">
-            <Label htmlFor="rename" className="text-sm font-medium text-gray-700">Rename</Label>
-            <Input
-              id="rename"
-              value={renameValue}
-              onChange={(e) => setRenameValue(e.target.value)}
-              className="border-gray-300 focus:border-[#008DA8] focus:ring-[#008DA8]"
-              data-testid="input-rename"
-            />
+          <div className="flex-1 p-6 md:p-8 overflow-auto bg-gray-50/50 text-[15px]">
+            {children}
           </div>
-          <div className="flex items-center justify-between">
-            <Label htmlFor="pin-toggle" className="text-sm font-medium text-gray-700">Pinned</Label>
-            <ToggleSwitch
-              id="pin-toggle"
-              checked={isPinned}
-              onCheckedChange={setIsPinned}
-              data-testid="toggle-pin"
-            />
+        </main>
+      </div>
+      <Dialog open={detailsOpen} onOpenChange={setDetailsOpen}>
+        <DialogContent className="sm:max-w-[400px] bg-white border-gray-200">
+          <DialogHeader>
+            <DialogTitle className="text-gray-900">Research Details</DialogTitle>
+            <DialogDescription className="text-gray-500 text-sm">
+              Edit the name and pin status for this research item.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-5 py-2">
+            <div className="space-y-2">
+              <Label htmlFor="rename" className="text-sm font-medium text-gray-700">Rename</Label>
+              <Input
+                id="rename"
+                value={renameValue}
+                onChange={(e) => setRenameValue(e.target.value)}
+                className="border-gray-300 focus:border-[#008DA8] focus:ring-[#008DA8]"
+                data-testid="input-rename"
+              />
+            </div>
+            <div className="flex items-center justify-between">
+              <Label htmlFor="pin-toggle" className="text-sm font-medium text-gray-700">Pinned</Label>
+              <ToggleSwitch
+                id="pin-toggle"
+                checked={isPinned}
+                onCheckedChange={setIsPinned}
+                data-testid="toggle-pin"
+              />
+            </div>
           </div>
-        </div>
-        <DialogFooter className="gap-2">
-          <Button variant="outline" onClick={() => setDetailsOpen(false)} className="border-gray-300 text-gray-700" data-testid="button-cancel-details">
-            Cancel
-          </Button>
-          <Button onClick={() => setDetailsOpen(false)} className="bg-[#008DA8] hover:bg-[#006E7D] text-white" data-testid="button-save-details">
-            Save
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
-
-    <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
-      <DialogContent className="sm:max-w-[400px] bg-white border-gray-200">
-        <DialogHeader>
-          <DialogTitle className="text-gray-900">Delete Confirmation</DialogTitle>
-          <DialogDescription className="text-gray-500 text-sm">
-            Are you sure you want to delete this research? This action cannot be undone.
-          </DialogDescription>
-        </DialogHeader>
-        <div className="py-2">
-          <p className="text-sm text-gray-700 bg-gray-50 p-3 rounded-md border border-gray-200 line-clamp-2">
-            {selectedItem?.title}
-          </p>
-        </div>
-        <DialogFooter className="gap-2">
-          <Button variant="outline" onClick={() => setDeleteOpen(false)} className="border-gray-300 text-gray-700" data-testid="button-cancel-delete">
-            Cancel
-          </Button>
-          <Button variant="destructive" onClick={() => { if (selectedItem) setDeletedIds(prev => [...prev, selectedItem.id]); setDeleteOpen(false); }} className="bg-red-600 hover:bg-red-700" data-testid="button-confirm-delete">
-            Delete
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
-    <CloneRestartModal open={cloneOpen} onOpenChange={setCloneOpen} />
+          <DialogFooter className="gap-2">
+            <Button variant="outline" onClick={() => setDetailsOpen(false)} className="border-gray-300 text-gray-700" data-testid="button-cancel-details">
+              Cancel
+            </Button>
+            <Button onClick={() => setDetailsOpen(false)} className="bg-[#008DA8] hover:bg-[#006E7D] text-white" data-testid="button-save-details">
+              Save
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+      <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
+        <DialogContent className="sm:max-w-[400px] bg-white border-gray-200">
+          <DialogHeader>
+            <DialogTitle className="text-gray-900">Delete Confirmation</DialogTitle>
+            <DialogDescription className="text-gray-500 text-sm">
+              Are you sure you want to delete this research? This action cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="py-2">
+            <p className="text-sm text-gray-700 bg-gray-50 p-3 rounded-md border border-gray-200 line-clamp-2">
+              {selectedItem?.title}
+            </p>
+          </div>
+          <DialogFooter className="gap-2">
+            <Button variant="outline" onClick={() => setDeleteOpen(false)} className="border-gray-300 text-gray-700" data-testid="button-cancel-delete">
+              Cancel
+            </Button>
+            <Button variant="destructive" onClick={() => { if (selectedItem) setDeletedIds(prev => [...prev, selectedItem.id]); setDeleteOpen(false); }} className="bg-red-600 hover:bg-red-700" data-testid="button-confirm-delete">
+              Delete
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+      <CloneRestartModal open={cloneOpen} onOpenChange={setCloneOpen} />
     </>
   );
 }
