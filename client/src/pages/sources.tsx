@@ -283,13 +283,16 @@ export default function SourcesPage() {
 
       {/* Data Grid */}
       <div className="flex-1 overflow-y-auto">
-        <div className="divide-y divide-gray-100">
+        <div className="flex flex-col gap-2 p-3">
           {filteredSources.map((source) => (
             <div
               key={source.id}
               className={cn(
-                "flex items-center gap-3 px-4 py-2 hover:bg-gray-50 transition-colors group",
-                selectedIds.has(source.id) && "bg-blue-50/30"
+                "flex items-center gap-3 px-3 py-2.5 bg-white border rounded-md transition-colors group",
+                source.included
+                  ? "border-l-[3px] border-l-green-500 border-t-gray-200 border-r-gray-200 border-b-gray-200"
+                  : "border-l-[3px] border-l-orange-400 border-t-gray-200 border-r-gray-200 border-b-gray-200",
+                selectedIds.has(source.id) && "bg-blue-50/40"
               )}
               data-testid={`row-source-${source.id}`}
             >
@@ -302,15 +305,18 @@ export default function SourcesPage() {
               </button>
 
               <div className={cn(
-                "w-6 h-6 rounded-sm flex items-center justify-center shrink-0 text-[10px] font-bold",
-                source.included ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-500"
+                "w-6 h-6 rounded-sm flex items-center justify-center shrink-0",
+                source.included ? "bg-green-100" : "bg-orange-100"
               )}>
-                {source.included ? "N" : ""}
+                <Globe className={cn("w-3.5 h-3.5", source.included ? "text-green-600" : "text-orange-500")} />
               </div>
 
-              <img src={source.favicon} alt="" className="w-4 h-4 shrink-0" />
-
-              <span className="text-xs text-gray-500 shrink-0 w-10">icon</span>
+              <div className={cn(
+                "px-2 py-0.5 rounded-sm text-[10px] font-bold shrink-0 uppercase",
+                source.included ? "bg-green-100 text-green-700" : "bg-orange-100 text-orange-600"
+              )}>
+                {source.included ? "icon" : "icon"}
+              </div>
 
               <span className="text-sm font-medium text-gray-800 truncate flex-1 min-w-0" data-testid={`text-source-title-${source.id}`}>
                 {source.title}
@@ -321,11 +327,12 @@ export default function SourcesPage() {
                 {source.date}
               </div>
 
-              <span className="text-[11px] text-gray-500 shrink-0 w-24">
+              <div className="flex items-center gap-1 text-[11px] text-gray-500 shrink-0">
+                <Globe className="w-3 h-3" />
                 Location:{source.location}
-              </span>
+              </div>
 
-              <span className="text-[11px] text-gray-500 shrink-0 w-24">
+              <span className="text-[11px] text-gray-500 shrink-0">
                 Language: {source.language}
               </span>
 
