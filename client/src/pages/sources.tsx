@@ -579,7 +579,7 @@ export default function SourcesPage() {
       />
 
       <Dialog open={showDeepExtractModal} onOpenChange={setShowDeepExtractModal}>
-        <DialogContent className="max-w-[540px] p-0 overflow-hidden border-none bg-white rounded-lg shadow-2xl">
+        <DialogContent className="max-w-[400px] p-0 overflow-hidden border-none bg-white rounded-lg shadow-2xl">
           <DialogHeader className="p-4 flex flex-row items-center justify-between space-y-0 border-b">
             <DialogTitle className="text-xl font-bold text-gray-900">Deep Extract Data</DialogTitle>
             <button 
