@@ -79,7 +79,8 @@ export default function Launcher() {
   const [questionAnswer, setQuestionAnswer] = useState("");
   const [geoScope, setGeoScope] = useState("global");
   const [isAddFileModalOpen, setIsAddFileModalOpen] = useState(false);
-  const [confirmExitStep, setConfirmExitStep] = useState<string | null>(null); // State for exit confirmation modal
+  const [confirmExitStep, setConfirmExitStep] = useState<string | null>(null);
+  const [visibleStep, setVisibleStep] = useState(3);
   const [step1Files, setStep1Files] = useState<number[]>([1, 2, 3]); // Mock files for step 1
   const [isDragging, setIsDragging] = useState(false);
   const [step2Files, setStep2Files] = useState<File[]>([]);
@@ -616,6 +617,7 @@ export default function Launcher() {
       </div>
 
       {/* Step 1: Questionnaire (Dark Header Theme) */}
+      {visibleStep >= 1 && (
       <div className="w-full bg-white border border-gray-200 rounded-md shadow-sm overflow-hidden font-sans">
         {/* Step Header */}
         <div className="flex border-b border-gray-200 bg-[#5A6B7C] min-h-[34px]">
@@ -724,8 +726,10 @@ export default function Launcher() {
           </div>
         </div>
       </div>
+      )}
       
       {/* Configuration Accordion - Now Step 2 (Dark Header Theme) */}
+      {visibleStep >= 2 && (
       <div className="w-full bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
         <div>
           <div className="px-0 py-0 bg-white">
@@ -1106,8 +1110,10 @@ export default function Launcher() {
           </div>
         </div>
       </div>
+      )}
 
       {/* Step 3: Research Plan */}
+      {visibleStep >= 3 && (
       <div className="w-full bg-white border border-gray-200 rounded-md shadow-sm overflow-hidden font-sans">
         <div className="flex border-b border-gray-200 bg-[#5A6B7C] min-h-[34px]">
           <button 
@@ -1431,6 +1437,7 @@ export default function Launcher() {
           </div>
         </div>
       </div>
+      )}
 
       {/* Version History Panel */}
       <AnimatePresence>
@@ -1733,6 +1740,13 @@ export default function Launcher() {
                 variant="outline"
                 className="border-[#D4A373] text-[#D4A373] hover:bg-[#FFF8F0] hover:text-[#C59262] h-9 px-6 text-xs font-bold bg-white"
                 onClick={() => {
+                   const stepMap: Record<string, number> = {
+                     "Launcher": 0,
+                     "Step #1": 1,
+                     "Step #2": 2,
+                   };
+                   const targetStep = confirmExitStep ? stepMap[confirmExitStep] ?? 0 : 0;
+                   setVisibleStep(targetStep);
                    setConfirmExitStep(null);
                 }}
               >
