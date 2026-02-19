@@ -124,11 +124,24 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           {/* Research List */}
           <div className="flex-1 overflow-hidden bg-[#E6E1EF] mx-2 mb-2 border border-gray-300 rounded-sm">
             <ScrollArea className="h-full">
-              <div className="divide-y divide-gray-200/50">
-                {researchItems.map((item) => (
+              {/* Pinned Items */}
+              <div className="sticky top-0 z-10 bg-[#E6E1EF] divide-y divide-gray-200/50 border-b border-gray-300">
+                {researchItems.slice(0, 3).map((item) => (
                   <div key={item.id} className="flex items-start gap-2 p-3 hover:bg-white/50 cursor-pointer group transition-colors">
                     <img src={rocketIcon} alt="Rocket" className="w-4 h-4 mt-0.5 shrink-0 opacity-70" />
-                    <p className="text-[13px] leading-tight text-gray-800 line-clamp-3 font-medium flex-1">
+                    <p className="text-[13px] leading-tight text-gray-800 line-clamp-2 font-medium flex-1">
+                      {item.title}
+                    </p>
+                    <MoreVertical className="w-4 h-4 shrink-0 mt-0.5 text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer hover:text-gray-700" />
+                  </div>
+                ))}
+              </div>
+              {/* Remaining Items */}
+              <div className="divide-y divide-gray-200/50">
+                {researchItems.slice(3).map((item) => (
+                  <div key={item.id} className="flex items-start gap-2 p-3 hover:bg-white/50 cursor-pointer group transition-colors">
+                    <img src={rocketIcon} alt="Rocket" className="w-4 h-4 mt-0.5 shrink-0 opacity-70" />
+                    <p className="text-[13px] leading-tight text-gray-800 line-clamp-2 font-medium flex-1">
                       {item.title}
                     </p>
                     <item.icon className={cn(
