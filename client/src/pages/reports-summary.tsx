@@ -342,8 +342,7 @@ export default function ReportsSummary() {
                 data-testid="button-toggle-next-steps"
               >
                 <div className="flex items-center gap-2">
-                  <span className="text-sm font-bold text-gray-900">What should I do next?</span>
-                  <span className="text-sm text-[#008DA8]">(right arrows)</span>
+                  <span className="text-sm font-bold text-gray-900">Statistics</span>
                 </div>
                 {nextStepsExpanded ? (
                   <ChevronUp className="w-4 h-4 text-gray-500" />
