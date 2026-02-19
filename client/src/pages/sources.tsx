@@ -1262,7 +1262,26 @@ export default function SourcesPage() {
                 <Button variant="ghost" size="sm" className="text-[#008DA8] hover:text-[#007A92] hover:bg-transparent font-bold underline h-8 text-xs" onClick={() => setIsAddFileModalOpen(false)} data-testid="button-addfiles-cancel">
                   CANCEL
                 </Button>
-                <Button size="sm" className="bg-[#00802b] hover:bg-[#006622] text-white font-bold px-6 h-8 text-xs" onClick={() => setIsAddFileModalOpen(false)} data-testid="button-addfiles-save">
+                <Button size="sm" className="bg-[#00802b] hover:bg-[#006622] text-white font-bold px-6 h-8 text-xs" onClick={() => {
+                  if (activeUploadTab === "upload" && uploadedFiles.length > 0) {
+                    const newFiles = uploadedFiles.map(f => {
+                      const ext = f.name.split(".").pop()?.toUpperCase() || "FILE";
+                      const size = f.size >= 1048576 ? `${(f.size / 1048576).toFixed(1)} MB` : `${(f.size / 1024).toFixed(1)} KB`;
+                      return { name: f.name, type: ext, size };
+                    });
+                    setEnhanceFiles(prev => [...prev, ...newFiles]);
+                    setUploadedFiles([]);
+                  }
+                  if (activeUploadTab === "repository" && selectedRepoFiles.length > 0) {
+                    const newFiles = selectedRepoFiles.map(name => {
+                      const ext = name.split(".").pop()?.toUpperCase() || "FILE";
+                      return { name, type: ext, size: "—" };
+                    });
+                    setEnhanceFiles(prev => [...prev, ...newFiles]);
+                    setSelectedRepoFiles([]);
+                  }
+                  setIsAddFileModalOpen(false);
+                }} data-testid="button-addfiles-save">
                   Save & Add
                 </Button>
               </div>
