@@ -580,8 +580,8 @@ export default function SourcesPage() {
 
       <Dialog open={showDeepExtractModal} onOpenChange={setShowDeepExtractModal}>
         <DialogContent className="max-w-[400px] p-0 overflow-hidden border-none bg-white rounded-lg shadow-2xl">
-          <DialogHeader className="p-4 flex flex-row items-center justify-between space-y-0 border-b">
-            <DialogTitle className="text-xl font-bold text-gray-900">Deep Extract Data</DialogTitle>
+          <DialogHeader className="px-4 py-2.5 flex flex-row items-center justify-between space-y-0 border-b">
+            <DialogTitle className="text-base font-bold text-gray-900">Deep Extract Data</DialogTitle>
             <button 
               onClick={() => setShowDeepExtractModal(false)}
               className="p-1 hover:bg-gray-100 rounded-sm transition-colors"
@@ -590,12 +590,12 @@ export default function SourcesPage() {
             </button>
           </DialogHeader>
 
-          <div className="p-6 space-y-6">
-            <p className="text-sm text-gray-600">
+          <div className="px-4 py-3 space-y-3">
+            <p className="text-xs text-gray-600">
               Use AI to extract complex tables, charts, and preserve of HTML structure.
             </p>
 
-            <div className="relative h-24 w-full rounded-md overflow-hidden flex">
+            <div className="relative h-16 w-full rounded-md overflow-hidden flex">
               <div className="flex-1 bg-[#0095FF] relative group cursor-pointer">
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/10">
                   <span className="text-[10px] text-white font-medium uppercase tracking-wider">Semantic Analysis</span>
@@ -618,59 +618,59 @@ export default function SourcesPage() {
               Semantic Context Analysis. Evaluates how well the article answers your specific question using vector search.
             </p>
 
-            <div className="space-y-4">
-              <h3 className="text-sm font-bold text-gray-900">Extract & analyze from {selectedIds.size || filteredSources.length} sources:</h3>
+            <div className="space-y-2">
+              <h3 className="text-xs font-bold text-gray-900">Extract & analyze from {selectedIds.size || filteredSources.length} sources:</h3>
               
-              <div className="grid grid-cols-2 gap-x-8 gap-y-4">
+              <div className="grid grid-cols-2 gap-x-4 gap-y-2">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Switch id="web-content" defaultChecked className="data-[state=checked]:bg-[#00802b]" />
-                    <label htmlFor="web-content" className="text-sm font-medium text-gray-700">Web Content & Text</label>
+                    <label htmlFor="web-content" className="text-xs font-medium text-gray-700">Web Content & Text</label>
                     <Info className="w-3.5 h-3.5 text-[#008DA8] cursor-help" />
                   </div>
                 </div>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Switch id="visual-assets" className="data-[state=checked]:bg-[#00802b]" />
-                    <label htmlFor="visual-assets" className="text-sm font-medium text-gray-700">Visual Assets</label>
+                    <label htmlFor="visual-assets" className="text-xs font-medium text-gray-700">Visual Assets</label>
                     <Info className="w-3.5 h-3.5 text-[#008DA8] cursor-help" />
                   </div>
                 </div>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Switch id="tables" defaultChecked className="data-[state=checked]:bg-[#00802b]" />
-                    <label htmlFor="tables" className="text-sm font-medium text-gray-700">Tables & Datasets</label>
+                    <label htmlFor="tables" className="text-xs font-medium text-gray-700">Tables & Datasets</label>
                     <Info className="w-3.5 h-3.5 text-[#008DA8] cursor-help" />
                   </div>
                 </div>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Switch id="structured" className="data-[state=checked]:bg-[#00802b]" />
-                    <label htmlFor="structured" className="text-sm font-medium text-gray-700">Structured Data & Archives</label>
+                    <label htmlFor="structured" className="text-xs font-medium text-gray-700">Structured Data & Archives</label>
                     <Info className="w-3.5 h-3.5 text-[#008DA8] cursor-help" />
                   </div>
                 </div>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Switch id="embedded" className="data-[state=checked]:bg-[#00802b]" />
-                    <label htmlFor="embedded" className="text-sm font-medium text-gray-700">Embedded Documents</label>
+                    <label htmlFor="embedded" className="text-xs font-medium text-gray-700">Embedded Documents</label>
                     <Info className="w-3.5 h-3.5 text-[#008DA8] cursor-help" />
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className="flex items-center gap-2 text-orange-500 bg-orange-50/50 p-2 rounded-sm border border-orange-100">
-              <AlertTriangle className="w-4 h-4 shrink-0" />
-              <p className="text-[11px] font-medium">High volume selection. Processing may take 2-5 mins.</p>
+            <div className="flex items-center gap-2 text-orange-500 bg-orange-50/50 px-2 py-1.5 rounded-sm border border-orange-100">
+              <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
+              <p className="text-[10px] font-medium">High volume selection. Processing may take 2-5 mins.</p>
             </div>
 
-            <div className="flex items-center justify-between pt-4 border-t">
-              <div className="bg-gray-100 px-4 py-2 rounded text-sm font-bold text-gray-700">
+            <div className="flex items-center justify-between pt-3 border-t">
+              <div className="bg-gray-100 px-3 py-1.5 rounded text-xs font-bold text-gray-700">
                 Total Cost: $12.34
               </div>
               <Button 
-                className="bg-[#00802b] hover:bg-[#006622] text-white px-8 h-10 font-bold text-sm rounded-md"
+                className="bg-[#00802b] hover:bg-[#006622] text-white px-6 h-8 font-bold text-xs rounded-md"
                 onClick={() => setShowDeepExtractModal(false)}
               >
                 Apply & Launch
