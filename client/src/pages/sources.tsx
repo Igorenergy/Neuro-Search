@@ -40,9 +40,10 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { cn } from "@/lib/utils";
 import { loadLaunchConfig } from "@/lib/launch-config";
 import { ResearchBriefingSidebar } from "@/components/research-briefing-sidebar";
+import { SourceDetailsDrawer } from "@/components/source-details-drawer";
 
 
-interface SourceRow {
+export interface SourceRow {
   id: number;
   title: string;
   domain: string;
@@ -107,6 +108,8 @@ export default function SourcesPage() {
   const [filtersActive, setFiltersActive] = useState(3);
   const [showActionModal, setShowActionModal] = useState(false);
   const [selectedAction, setSelectedAction] = useState("include");
+  const [drawerSource, setDrawerSource] = useState<SourceRow | null>(null);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   const config = loadLaunchConfig();
   const projectTitle = config?.query
@@ -313,8 +316,10 @@ export default function SourcesPage() {
                 selectedIds.has(source.id) && "bg-blue-50/40"
               )}
               data-testid={`row-source-${source.id}`}
+              onClick={() => { setDrawerSource(source); setDrawerOpen(true); }}
+              style={{ cursor: "pointer" }}
             >
-              <button onClick={() => toggleSelect(source.id)} className="shrink-0">
+              <button onClick={(e) => { e.stopPropagation(); toggleSelect(source.id); }} className="shrink-0">
                 {selectedIds.has(source.id) ? (
                   <CheckSquare className="w-4 h-4 text-[#008DA8]" />
                 ) : (
@@ -367,7 +372,7 @@ export default function SourcesPage() {
                   <ConfidenceRing score={source.confidenceScore} />
                 </div>
 
-                <div className="flex items-center gap-1 shrink-0">
+                <div className="flex items-center gap-1 shrink-0" onClick={(e) => e.stopPropagation()}>
                   <button
                     className="p-1 hover:bg-gray-200 rounded transition-colors"
                     data-testid={`button-open-source-${source.id}`}
@@ -460,6 +465,12 @@ export default function SourcesPage() {
           </div>
         </DialogContent>
       </Dialog>
+
+      <SourceDetailsDrawer
+        source={drawerSource}
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+      />
     </div>
   );
 }

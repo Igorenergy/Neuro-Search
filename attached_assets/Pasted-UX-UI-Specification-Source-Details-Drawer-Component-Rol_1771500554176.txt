@@ -1,0 +1,85 @@
+UX/UI Specification: Source Details Drawer
+Component Role: A non-destructive, slide-out overlay panel that allows users to deep-dive into a specific source (document, webpage, or data file) without leaving the main "Sources" data grid context.
+
+1. Trigger & Animation
+Trigger: Activated by clicking anywhere on a source row in the Data Grid, or specifically clicking the document icon/title.
+
+Animation: Slides in from the right side of the screen (translateX(100%) to 0).
+
+Overlay: A semi-transparent dark backdrop (bg-black/40) covers the main page. Clicking the backdrop closes the Drawer.
+
+2. Top System Bar (Header)
+Left Side: Static text "Source details".
+
+Right Side:
+
+Width Selector (Window width): A dropdown (e.g., Auto / 50% / 80% / 100%).
+
+Logic: It must feature "Smart Memory". When a user changes the width, save this value to browser localStorage under a key like user_drawer_width. The next time the Drawer opens, it must automatically apply this saved width. The "Auto" option calculates width based on content type.
+
+Close Button: A prominent black square with a white [X].
+
+3. Source Identity & Action Toolbar
+Sticky below the system bar.
+
+Source Identity: * Icon/Favicon representing the file type or website.
+
+Title: Full source title (e.g., "Loopt - Startup Obituary..."). Text should wrap or truncate gracefully.
+
+Action Icons (Right-aligned):
+
+↗️ Open Original: Opens the source URL in a new browser tab.
+
+🔍 Search: Opens a local text search input within the drawer to find keywords inside the document.
+
+⬇️ Download: Downloads the raw source file to the user's local machine.
+
+⋮ Kebab Menu (More Actions): Contains system-level actions. Based on the specs, this includes:
+
+Exclude from context (Removes the file from LLM context without deleting it).
+
+Start chat session (Starts a Contextual RAG chat using only this source).
+
+Refresh Source Data (Forces the system to re-fetch the web page/API).
+
+Delete (Permanently removes the source, requires confirmation).
+
+4. Content Switcher
+A wide dropdown selector directly below the Action Toolbar (e.g., displaying "Summary of the source").
+
+UX Logic: Allows the user to quickly toggle the primary viewing mode (e.g., between the AI-generated Summary, the Full Extracted Text, or Structured JSON data).
+
+5. Navigation Tabs
+A horizontally scrollable tab list that controls the main content area below it.
+
+Tab 1: Preview (Active by default)
+
+Renders the readable content based on the Content Switcher above. Uses rich text formatting (Markdown rendering) with appropriate headers, emojis, and bullet points.
+
+Tab 2: Raw data [+3 files]
+
+Logic: The badge [+N files] indicates that the Deep Extract process found nested files (e.g., images, CSVs, or sub-documents) within this source. Clicking this tab displays a list or grid of these extracted raw assets.
+
+Tab 3: Artifacts: {N}
+
+Logic: Shows files generated specifically from this source. Clicking this tab displays a list of artifact names with direct links to view or download them.
++3
+
+Tab 4: Metadata
+
+
+Logic: Displays a strictly formatted technical sheet. Essential for establishing trust. Includes:
++3
+
+Verification: Confidence Score (e.g., 95%), Usage Count.
+
+Context: Main Language (e.g., English), Geo Scope (e.g., USA).
+
+Technical: Date Added, File Format (HTML, PDF), Original URL.
+
+6. Main Content Area (Scrollable Canvas)
+Takes up all remaining vertical space (flex-1).
+
+Has its own independent vertical scrollbar (overflow-y-auto).
+
+Padding should be generous (e.g., p-6 or p-8) to ensure optimal reading experience for long text documents.
