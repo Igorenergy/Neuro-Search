@@ -366,7 +366,7 @@ export default function SourcesPage() {
                 <ConfidenceRing score={source.confidenceScore} />
               </div>
 
-              <div className="flex items-center gap-1 shrink-0">
+              <div className="flex items-center gap-1 shrink-0 ml-auto">
                 <button
                   className="p-1 hover:bg-gray-200 rounded transition-colors"
                   data-testid={`button-open-source-${source.id}`}
