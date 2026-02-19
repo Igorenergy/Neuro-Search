@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useParams, Link } from "wouter";
 import {
   MoreVertical,
@@ -131,6 +131,30 @@ export default function SourcesPage() {
   const [isAddFileModalOpen, setIsAddFileModalOpen] = useState(false);
   const [activeUploadTab, setActiveUploadTab] = useState<"upload" | "repository">("upload");
   const [selectedRepoFiles, setSelectedRepoFiles] = useState<string[]>([]);
+  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setUploadedFiles(prev => [...prev, ...Array.from(e.target.files!)]);
+    }
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    if (e.dataTransfer.files) {
+      setUploadedFiles(prev => [...prev, ...Array.from(e.dataTransfer.files)]);
+    }
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+  };
+
+  const removeUploadedFile = (index: number) => {
+    setUploadedFiles(prev => prev.filter((_, i) => i !== index));
+  };
 
   const repoFiles = [
     "Annual Report 2024.pdf",
@@ -1159,7 +1183,22 @@ export default function SourcesPage() {
                   </div>
                 </div>
 
-                <div className="border-2 border-dashed border-gray-300 rounded-lg bg-gray-50 h-40 flex flex-col items-center justify-center gap-2 cursor-pointer hover:bg-gray-100 hover:border-gray-400 transition-colors" data-testid="area-upload-drop">
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  multiple
+                  accept=".pdf,.txt,.md,.mp3,.docx,.avif,.bmp,.gif,.ico,.jp2,.png,.webp,.tif,.tiff,.heic,.heif,.jpeg,.jpg,.jpe"
+                  className="hidden"
+                  onChange={handleFileSelect}
+                  data-testid="input-file-upload"
+                />
+                <div
+                  className="border-2 border-dashed border-gray-300 rounded-lg bg-gray-50 h-40 flex flex-col items-center justify-center gap-2 cursor-pointer hover:bg-gray-100 hover:border-gray-400 transition-colors"
+                  data-testid="area-upload-drop"
+                  onClick={() => fileInputRef.current?.click()}
+                  onDrop={handleDrop}
+                  onDragOver={handleDragOver}
+                >
                   <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mb-1">
                     <Upload className="w-5 h-5 text-blue-600" />
                   </div>
@@ -1171,6 +1210,24 @@ export default function SourcesPage() {
                     Supported file types: PDF, txt, Markdown, audio (e.g. MP3 files), docx, avif, .bmp, .gif, .ico, .jp2, .png, .webp, .tif, .tiff, .heic, .heif, .jpeg, .jpg, .jpe.
                   </p>
                 </div>
+
+                {uploadedFiles.length > 0 && (
+                  <div className="space-y-1.5">
+                    <span className="text-xs font-medium text-gray-600">{uploadedFiles.length} file{uploadedFiles.length > 1 ? "s" : ""} selected</span>
+                    <div className="space-y-1 max-h-28 overflow-y-auto">
+                      {uploadedFiles.map((file, index) => (
+                        <div key={index} className="flex items-center gap-2 bg-white border border-gray-200 rounded-md px-2.5 py-1.5 text-xs" data-testid={`uploaded-file-${index}`}>
+                          <FileText className="w-3.5 h-3.5 text-gray-400 shrink-0" />
+                          <span className="text-gray-700 truncate flex-1">{file.name}</span>
+                          <span className="text-gray-400 shrink-0">{(file.size / 1024).toFixed(1)} KB</span>
+                          <button onClick={(e) => { e.stopPropagation(); removeUploadedFile(index); }} className="text-gray-400 hover:text-red-500 transition-colors shrink-0" data-testid={`button-remove-file-${index}`}>
+                            <X className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </>
             ) : (
               <div className="border rounded-md bg-white p-2 h-[260px] overflow-y-auto">
