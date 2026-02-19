@@ -422,6 +422,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 <div className="p-1 space-y-0.5 bg-[#F5F5F7]">
                   {[
                     { label: "Profile & Settings", icon: User },
+                    { label: "Files & Attachments: 123", icon: FileText },
                     { label: "Integrations", icon: Zap },
                     { label: "Billing & Usage", icon: MoreVertical },
                     { label: "Export Hub: 26", icon: Search },
