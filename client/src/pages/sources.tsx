@@ -443,7 +443,7 @@ export default function SourcesPage() {
                 </div>
 
                 <div className="px-3 pb-2">
-                  <p className="text-sm font-medium text-gray-800 line-clamp-2 leading-tight" data-testid={`text-tile-title-${source.id}`}>
+                  <p className="text-sm font-medium text-gray-800 line-clamp-2 leading-tight mt-[5px] mb-[5px]" data-testid={`text-tile-title-${source.id}`}>
                     {source.title}
                   </p>
                   <p className="text-[11px] text-gray-400 mt-1 truncate">{source.domain}</p>
