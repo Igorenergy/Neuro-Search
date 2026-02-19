@@ -53,12 +53,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const [renameValue, setRenameValue] = useState("");
   const [isPinned, setIsPinned] = useState(false);
 
-  useEffect(() => {
-    const isResultsPage = location.includes("research-success") || location.includes("sources/");
-    if (isResultsPage) {
-      setIsCollapsed(true);
-    }
-  }, [location]);
 
   type ResearchStatus = "success" | "in-progress" | "failed" | "canceled";
 
