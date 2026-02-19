@@ -235,7 +235,7 @@ export default function Dashboard() {
         <h1 className="text-xl font-bold text-gray-900">Your Searches (20)</h1>
 
         <div className="flex items-center gap-2">
-          <span className="text-sm font-bold text-gray-800">Research type</span>
+          <span className="text-sm font-bold text-gray-800">Status</span>
           <Button
             variant="outline"
             className="h-8 bg-white border-gray-300 text-sm font-normal min-w-[100px] justify-between"
