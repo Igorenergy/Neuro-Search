@@ -118,10 +118,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             {/* Filter Bar */}
             <div className="flex items-center justify-between px-1">
               <span className="text-sm font-semibold text-black">Latest research</span>
-              <div className="flex items-center gap-1 bg-white border border-gray-300 px-2 py-0.5 rounded-sm text-xs cursor-pointer">
-                <span>All: 20</span>
-                <ChevronDown className="w-3 h-3 text-gray-500" />
-              </div>
             </div>
           </div>
 
