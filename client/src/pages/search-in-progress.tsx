@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from "react";
-import { useParams, Link } from "wouter";
+import { useParams, Link, useLocation } from "wouter";
 import {
   X,
   Check,
@@ -138,6 +138,7 @@ const scopeLabels: Record<string, string> = {
 
 export default function SmartSearchInProgress() {
   const params = useParams<{ id: string }>();
+  const [, navigate] = useLocation();
   const [leftExpanded, setLeftExpanded] = useState(true);
   const [showAbortModal, setShowAbortModal] = useState(false);
   const [showFinishModal, setShowFinishModal] = useState(false);
@@ -683,7 +684,10 @@ export default function SmartSearchInProgress() {
               </button>
               <Button
                 className="bg-green-600 hover:bg-green-700 text-white h-9 px-6 text-xs font-bold"
-                onClick={() => setShowFinishModal(false)}
+                onClick={() => {
+                  setShowFinishModal(false);
+                  navigate(`/reports/summary/${params.id || "new"}`);
+                }}
                 data-testid="button-confirm-finish"
               >
                 Yes, Generate Report
