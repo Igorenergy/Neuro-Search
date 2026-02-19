@@ -238,7 +238,7 @@ export default function Dashboard() {
               data-testid={`card-research-${item.id}`}
             >
               <div className="flex items-start justify-between mb-3">
-                <div className={cn("w-9 h-9 rounded-lg flex items-center justify-center", config.iconBg)}>
+                <div className="w-9 h-9 rounded-lg flex items-center justify-center">
                   <img src={rocketIcon} alt="Rocket" className="w-5 h-5 opacity-80" />
                 </div>
                 <div className="flex items-center gap-1">
