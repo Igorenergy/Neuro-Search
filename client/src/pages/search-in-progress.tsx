@@ -210,10 +210,10 @@ export default function SmartSearchInProgress() {
 
         {/* Expanded Content */}
         {leftExpanded && (
-          <div className="flex flex-col h-full overflow-y-auto p-4 pr-6 space-y-4">
-            <h3 className="text-sm font-bold text-gray-800">Research Briefing</h3>
+          <div className="flex flex-col h-full p-4 pr-6 space-y-4">
+            <h3 className="text-sm font-bold text-gray-800 sticky top-0 bg-white py-2 z-10 -mx-4 px-4 border-b border-gray-100">Research Briefing</h3>
 
-            <div className="space-y-3">
+            <div className="flex-1 overflow-y-auto space-y-3 pt-2">
               <div>
                 <span className="text-[10px] font-bold text-gray-400 uppercase">Query</span>
                 <p className="text-xs text-gray-700 mt-1 leading-relaxed" data-testid="text-briefing-query">
