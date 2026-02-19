@@ -193,22 +193,12 @@ export default function Dashboard() {
           <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center mb-3">
             <Plus className="w-5 h-5 text-[#008DA8]" />
           </div>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="h-9 gap-2 border-[#008DA8] text-[#008DA8] hover:bg-[#008DA8]/5 font-bold text-sm px-4">
-                <Plus className="w-4 h-4" />
-                Create Research
-                <ChevronDown className="w-3.5 h-3.5 ml-1" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="center" className="w-44 bg-[#1a1a1a] border-[#333] shadow-xl">
-              <Link href="/smart-search/new">
-                <DropdownMenuItem className="text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer" data-testid="menu-smart-search">
-                  Smart search
-                </DropdownMenuItem>
-              </Link>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <Link href="/smart-search/new">
+            <Button variant="outline" className="h-9 gap-2 border-[#008DA8] text-[#008DA8] hover:bg-[#008DA8]/5 font-bold text-sm px-4" data-testid="button-smart-search">
+              <Search className="w-4 h-4" />
+              Smart Search
+            </Button>
+          </Link>
         </div>
 
         {/* Research Item Tiles — in-progress first */}

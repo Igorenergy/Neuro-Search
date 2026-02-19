@@ -130,21 +130,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           {/* Actions Bar */}
           <div className="p-2 space-y-2">
             <div className="flex items-center gap-2">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" className="flex-1 justify-between bg-white border-gray-400 text-[#006E7D] font-bold hover:bg-gray-50 h-9 rounded-sm">
-                    <span className="flex items-center gap-1">
-                      <Plus className="w-4 h-4 stroke-[3]" /> Create Research
-                    </span>
-                    <ChevronDown className="w-4 h-4 text-black" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-[200px]">
-                  <Link href="/smart-search/new">
-                    <DropdownMenuItem className="cursor-pointer">Smart search </DropdownMenuItem>
-                  </Link>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <Link href="/smart-search/new" className="flex-1">
+                <Button variant="outline" className="w-full justify-center bg-white border-gray-400 text-[#006E7D] font-bold hover:bg-gray-50 h-9 rounded-sm gap-1">
+                  <Search className="w-4 h-4 stroke-[3]" /> Smart Search
+                </Button>
+              </Link>
               
               <Link href="/research/search">
                 <Button size="icon" className="h-9 w-9 bg-[#5F8D4E] hover:bg-[#4d753e] rounded-sm shrink-0">
