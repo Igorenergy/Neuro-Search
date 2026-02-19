@@ -154,8 +154,17 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <span className="text-sm font-semibold text-black">Latest research</span>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <button className={cn("p-1 rounded border border-transparent hover:border-gray-300 hover:bg-gray-200 active:bg-gray-300 transition-all", statusFilter !== "all" && "text-[#008DA8] border-gray-200 bg-white shadow-sm")} data-testid="button-filter-status">
-                    <Filter className="w-4 h-4" />
+                  <button 
+                    className={cn(
+                      "h-7 w-7 flex items-center justify-center rounded border transition-all",
+                      statusFilter === "all" 
+                        ? "bg-[#f8f9fa] border-gray-300 text-gray-600 hover:border-gray-400 hover:bg-white" 
+                        : "bg-white border-[#008DA8] text-[#008DA8] shadow-sm",
+                      "data-[state=open]:border-black data-[state=open]:bg-white data-[state=open]:text-black"
+                    )} 
+                    data-testid="button-filter-status"
+                  >
+                    <Filter className="w-3.5 h-3.5" />
                   </button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-36 bg-[#1a1a1a] border-[#333] shadow-xl p-0.5">
