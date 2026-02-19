@@ -349,7 +349,24 @@ export default function Launcher() {
           {(files.length > 0 || isScanning) && (
             <div className="flex flex-wrap gap-2 mt-2 px-1">
               {files.map((file, i) => (
-                <div key={i} className="flex items-center justify-between bg-[#008DA8] text-white px-3 py-1.5 rounded-sm shadow-sm relative overflow-hidden group min-w-[200px] max-w-[240px]">
+                <div
+                  key={i}
+                  className="flex items-center justify-between bg-[#008DA8] text-white px-3 py-1.5 rounded-sm shadow-sm relative overflow-hidden group min-w-[200px] max-w-[240px] cursor-pointer"
+                  onClick={() => {
+                    const previewFiles = files.map((f, idx) => ({
+                      id: `launcher-${idx}`,
+                      name: f.name,
+                      type: f.name.split(".").pop()?.toUpperCase() || "FILE",
+                      size: `${(f.size / 1024).toFixed(1)} KB`,
+                    }));
+                    openPreview({
+                      files: previewFiles,
+                      initialFileId: `launcher-${i}`,
+                      context: "input",
+                    });
+                  }}
+                  data-testid={`card-launcher-file-${i}`}
+                >
                   <div className="flex items-center gap-2 min-w-0">
                     <FileText className="w-5 h-5 text-white/80 shrink-0" strokeWidth={1.5} />
                     <div className="flex flex-col min-w-0">
@@ -357,7 +374,13 @@ export default function Launcher() {
                       <span className="text-[10px] font-medium leading-tight truncate opacity-80">{(file.size / 1024).toFixed(1)} KB</span>
                     </div>
                   </div>
-                  <button onClick={() => removeFile(i)} className="text-cyan-200 hover:text-white ml-2 shrink-0">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      removeFile(i);
+                    }}
+                    className="text-cyan-200 hover:text-white ml-2 shrink-0"
+                  >
                     <XCircle className="w-5 h-5 stroke-[1.5]" />
                   </button>
                 </div>
@@ -366,8 +389,25 @@ export default function Launcher() {
               {/* Mock previews to match image if no files uploaded yet for demo */}
               {files.length === 0 && (
                 <>
-                  {[1, 2, 3, 4].map((_, i) => (
-                    <div key={i} className="flex items-center justify-between bg-[#008DA8] text-white px-3 py-1.5 rounded-sm shadow-sm relative overflow-hidden group min-w-[200px] max-w-[240px]">
+                  {[1, 2, 3, 4].map((mockId) => (
+                    <div
+                      key={mockId}
+                      className="flex items-center justify-between bg-[#008DA8] text-white px-3 py-1.5 rounded-sm shadow-sm relative overflow-hidden group min-w-[200px] max-w-[240px] cursor-pointer"
+                      onClick={() => {
+                        const mockPreviewFiles = [1, 2, 3, 4].map((mId) => ({
+                          id: `mock-launcher-${mId}`,
+                          name: `File Preview ${mId}.pdf`,
+                          type: "PDF",
+                          size: "120.0 KB",
+                        }));
+                        openPreview({
+                          files: mockPreviewFiles,
+                          initialFileId: `mock-launcher-${mockId}`,
+                          context: "input",
+                        });
+                      }}
+                      data-testid={`card-mock-launcher-file-${mockId}`}
+                    >
                       <div className="flex items-center gap-2 min-w-0">
                         <FileText className="w-5 h-5 text-white/80 shrink-0" strokeWidth={1.5} />
                         <div className="flex flex-col min-w-0">
