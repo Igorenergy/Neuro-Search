@@ -206,25 +206,25 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                             <MoreVertical className="w-3.5 h-3.5 text-gray-500 cursor-pointer hover:text-gray-700" />
                           </button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-40 bg-white border-gray-200 shadow-lg">
+                        <DropdownMenuContent align="end" className="w-44 bg-[#1a1a1a] border-[#333] shadow-xl">
                           <DropdownMenuItem
-                            className="flex items-center gap-2 text-sm cursor-pointer"
+                            className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
                             onClick={(e) => { e.preventDefault(); setSelectedItem(item); setRenameValue(item.title); setIsPinned(true); setDetailsOpen(true); }}
                             data-testid={`details-${item.id}`}
                           >
-                            <FileText className="w-4 h-4 text-gray-500" />
+                            <FileText className="w-4 h-4 text-gray-400" />
                             Details
                           </DropdownMenuItem>
                           <DropdownMenuItem
-                            className="flex items-center gap-2 text-sm cursor-pointer"
+                            className="flex items-center gap-2 text-sm text-[#008DA8] hover:text-[#00b0cc] focus:text-[#00b0cc] focus:bg-[#333] cursor-pointer"
                             onClick={(e) => { e.preventDefault(); setCloneOpen(true); }}
                             data-testid={`clone-${item.id}`}
                           >
-                            <Copy className="w-4 h-4 text-gray-500" />
+                            <Copy className="w-4 h-4 text-[#008DA8]" />
                             Clone & Restart
                           </DropdownMenuItem>
                           <DropdownMenuItem
-                            className="flex items-center gap-2 text-sm text-red-600 focus:text-red-600 cursor-pointer"
+                            className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 focus:text-red-400 focus:bg-[#333] cursor-pointer"
                             onClick={(e) => { e.preventDefault(); setSelectedItem(item); setDeleteOpen(true); }}
                             data-testid={`delete-${item.id}`}
                           >
@@ -260,25 +260,25 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                             <MoreVertical className="w-3.5 h-3.5 text-gray-400 cursor-pointer hover:text-gray-700" />
                           </button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-40 bg-white border-gray-200 shadow-lg">
+                        <DropdownMenuContent align="end" className="w-44 bg-[#1a1a1a] border-[#333] shadow-xl">
                           <DropdownMenuItem
-                            className="flex items-center gap-2 text-sm cursor-pointer"
+                            className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
                             onClick={(e) => { e.preventDefault(); setSelectedItem(item); setRenameValue(item.title); setIsPinned(false); setDetailsOpen(true); }}
                             data-testid={`details-${item.id}`}
                           >
-                            <FileText className="w-4 h-4 text-gray-500" />
+                            <FileText className="w-4 h-4 text-gray-400" />
                             Details
                           </DropdownMenuItem>
                           <DropdownMenuItem
-                            className="flex items-center gap-2 text-sm cursor-pointer"
+                            className="flex items-center gap-2 text-sm text-[#008DA8] hover:text-[#00b0cc] focus:text-[#00b0cc] focus:bg-[#333] cursor-pointer"
                             onClick={(e) => { e.preventDefault(); setCloneOpen(true); }}
                             data-testid={`clone-${item.id}`}
                           >
-                            <Copy className="w-4 h-4 text-gray-500" />
+                            <Copy className="w-4 h-4 text-[#008DA8]" />
                             Clone & Restart
                           </DropdownMenuItem>
                           <DropdownMenuItem
-                            className="flex items-center gap-2 text-sm text-red-600 focus:text-red-600 cursor-pointer"
+                            className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 focus:text-red-400 focus:bg-[#333] cursor-pointer"
                             onClick={(e) => { e.preventDefault(); setSelectedItem(item); setDeleteOpen(true); }}
                             data-testid={`delete-${item.id}`}
                           >
