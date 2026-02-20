@@ -86,6 +86,7 @@ export default function Launcher() {
   const [isDragging, setIsDragging] = useState(false);
   const [step2Files, setStep2Files] = useState<File[]>([]);
   const [dataEngine, setDataEngine] = useState("ultimate");
+  const [modalFiles, setModalFiles] = useState<{name: string; type: string; size: string}[]>([]);
 
   const [planVersion, setPlanVersion] = useState(1);
   const [planText, setPlanText] = useState(
@@ -427,6 +428,49 @@ export default function Launcher() {
             </div>
           )}
 
+          {/* Modal-selected File Cards */}
+          {modalFiles.length > 0 && (
+            <div className="flex flex-wrap gap-2 mt-2 px-1">
+              {modalFiles.map((file, i) => (
+                <div
+                  key={`modal-${i}`}
+                  className="flex items-center justify-between bg-[#008DA8] text-white px-3 py-1.5 rounded-sm shadow-sm relative overflow-hidden group min-w-[200px] max-w-[240px] cursor-pointer"
+                  onClick={() => {
+                    const previewFiles = modalFiles.map((f, idx) => ({
+                      id: `modal-${idx}`,
+                      name: f.name,
+                      type: f.type,
+                      size: f.size,
+                    }));
+                    openPreview({
+                      files: previewFiles,
+                      initialFileId: `modal-${i}`,
+                      context: "input",
+                    });
+                  }}
+                  data-testid={`card-modal-file-${i}`}
+                >
+                  <div className="flex items-center gap-2 min-w-0">
+                    <FileText className="w-5 h-5 text-white/80 shrink-0" strokeWidth={1.5} />
+                    <div className="flex flex-col min-w-0">
+                      <span className="text-[10px] font-medium leading-tight truncate">{file.name}</span>
+                      <span className="text-[10px] font-medium leading-tight truncate opacity-80">{file.size}</span>
+                    </div>
+                  </div>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setModalFiles(prev => prev.filter((_, idx) => idx !== i));
+                    }}
+                    className="text-cyan-200 hover:text-white ml-2 shrink-0"
+                  >
+                    <XCircle className="w-5 h-5 stroke-[1.5]" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+
           {/* Controls Footer */}
           <div className="flex flex-wrap items-center justify-between gap-4 mt-4 px-2 pb-2 relative">
              
@@ -444,23 +488,24 @@ export default function Launcher() {
                   className="bg-white border border-green-600 rounded-md px-4 py-1 text-sm font-medium shadow-sm hover:bg-gray-50 flex items-center justify-center min-w-[100px]"
                   onClick={() => setIsAddFileModalOpen(true)}
                 >
-                  selected: {files.length > 0 ? files.length : 0}
+                  selected: {files.length + modalFiles.length}
                 </button>
 
                 <button 
                   className={cn(
                     "text-red-600 hover:text-red-700 relative ml-1 transition-opacity",
-                    files.length === 0 ? "opacity-0 pointer-events-none" : "opacity-100"
+                    (files.length + modalFiles.length) === 0 ? "opacity-0 pointer-events-none" : "opacity-100"
                   )}
                   onClick={() => {
                     setFiles([]);
+                    setModalFiles([]);
                     setDeepLinksFound(false);
                     setDeepCrawlEnabled(false);
                   }}
                 >
                   <XCircle className="w-6 h-6 fill-white" />
                   <span className="absolute -top-1.5 -right-1 bg-yellow-400 text-black text-[9px] font-bold px-1 rounded-sm border border-white shadow-sm leading-tight min-w-[14px] text-center">
-                    {files.length}
+                    {files.length + modalFiles.length}
                   </span>
                 </button>
              </div>
@@ -1448,7 +1493,7 @@ export default function Launcher() {
       </Dialog>
 
       {/* Add Files Modal */}
-      <AddFilesModal open={isAddFileModalOpen} onOpenChange={setIsAddFileModalOpen} />
+      <AddFilesModal open={isAddFileModalOpen} onOpenChange={setIsAddFileModalOpen} onSave={(newFiles) => setModalFiles(prev => [...prev, ...newFiles])} />
 
       {/* Confirm Exit Modal */}
       <Dialog open={!!confirmExitStep} onOpenChange={(open) => !open && setConfirmExitStep(null)}>
