@@ -359,7 +359,7 @@ export default function Dashboard() {
                             <DropdownMenuItem
                               className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 focus:text-red-400 focus:bg-[#333] cursor-pointer"
                               data-testid={`abort-${item.id}`}
-                              onClick={() => { setAbortItem({ id: item.id, title: item.title }); setAbortOpen(true); }}
+                              onSelect={(e) => { e.preventDefault(); setAbortItem({ id: item.id, title: item.title }); setAbortOpen(true); }}
                             >
                               <StopCircle className="w-4 h-4" />
                               Abort Research
@@ -367,7 +367,7 @@ export default function Dashboard() {
                             <DropdownMenuItem
                               className="flex items-center gap-2 text-sm text-[#22c55e] hover:text-[#16a34a] focus:text-[#16a34a] focus:bg-[#333] cursor-pointer"
                               data-testid={`finish-early-${item.id}`}
-                              onClick={() => { setAbortItem({ id: item.id, title: item.title }); setFinishEarlyOpen(true); }}
+                              onSelect={(e) => { e.preventDefault(); setAbortItem({ id: item.id, title: item.title }); setFinishEarlyOpen(true); }}
                             >
                               <FastForward className="w-4 h-4" />
                               Finish Early
