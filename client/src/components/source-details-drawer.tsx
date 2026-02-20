@@ -40,6 +40,7 @@ const DRAWER_WIDTH_KEY = "user_drawer_width";
 
 const widthOptions = [
   { label: "Auto", value: "auto" },
+  { label: "30%", value: "30%" },
   { label: "50%", value: "50%" },
   { label: "80%", value: "80%" },
   { label: "100%", value: "100%" },
