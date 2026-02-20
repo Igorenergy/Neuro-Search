@@ -97,12 +97,12 @@ function CollapsedSidebar({
     <div className="flex flex-col items-center gap-4 py-4 h-full">
       <Link href="/smart-search/new">
         <Button size="icon" variant="ghost" className="h-10 w-10 text-[#006E7D] hover:bg-[#006E7D]/10 transition-colors">
-          <Plus className="w-6 h-6" />
+          <Plus className="w-[30px] h-[30px]" />
         </Button>
       </Link>
       <Link href="/research/search">
         <Button size="icon" variant="ghost" className="h-10 w-10 text-[#5F8D4E] hover:bg-[#5F8D4E]/10 transition-colors">
-          <Search className="w-6 h-6" />
+          <Search className="w-[30px] h-[30px]" />
         </Button>
       </Link>
       <div className="w-8 h-[1px] bg-gray-300" />
