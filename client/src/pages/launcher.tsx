@@ -607,7 +607,7 @@ export default function Launcher() {
             <ArrowLeft className="w-3 h-3" /> Prev. step
           </button>
           <div className="px-6 py-2 bg-[#0097B2] text-white text-xs font-bold flex items-center justify-center">
-            STEP #2
+            STEP #1
           </div>
           <div className="px-6 py-2 bg-[#F0F2F5] text-[#5A6B7C] text-xs font-bold flex items-center justify-center border-r border-gray-300">
             REASONING
@@ -728,7 +728,7 @@ export default function Launcher() {
                 <ArrowLeft className="w-3 h-3" /> Prev. step
               </button>
               <div className="px-6 py-2 bg-[#0097B2] text-white text-xs font-bold flex items-center justify-center">
-                STEP #3
+                STEP #2
               </div>
               <div className="px-6 py-2 bg-[#F0F2F5] text-[#5A6B7C] text-xs font-bold flex items-center justify-center border-r border-gray-300">
                 REASONING
@@ -1222,8 +1222,8 @@ export default function Launcher() {
                           </SelectTrigger>
                           <SelectContent>
                             <SelectItem value="all">Any</SelectItem>
-                            <SelectItem value="step1">Step2</SelectItem>
-                            <SelectItem value="step2">Step3</SelectItem>
+                            <SelectItem value="step1">Step1</SelectItem>
+                            <SelectItem value="step2">Step2</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
