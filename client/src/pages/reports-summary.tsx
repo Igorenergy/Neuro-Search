@@ -284,13 +284,15 @@ export default function ReportsSummary() {
                   Весь текст должен укладываться в 300–450 слов (максимум 2000–2500 знаков). Визуально это должно занимать 1–1.5 экрана на десктопе, чтобы пользователю почти не приходилось скроллить.
                 </p>
               </div>
-              <button
-                className="text-xs font-bold text-[#008DA8] hover:text-[#006E7D] transition-colors underline underline-offset-2 shrink-0"
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-7 text-[11px] font-medium border-gray-300 text-[#008DA8] hover:text-[#006E7D] hover:bg-gray-50 transition-colors shrink-0"
                 onClick={() => setShowExtendedModal(true)}
                 data-testid="button-generate-extended"
               >
-                GENERATE EXTENDED REPORT
-              </button>
+                Generate extended report
+              </Button>
             </div>
 
             {/* Card 1: The Verdict */}
