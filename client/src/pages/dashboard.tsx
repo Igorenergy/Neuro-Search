@@ -97,6 +97,15 @@ export default function Dashboard() {
     { id: 9, title: "Мемуары Криптана: Ретродропи, стратегии и анализ", date: "23 нояб. 2025 г.", sources: 1, status: "success", hasAttachment: false, iconIdx: 4, query: "Ретроспективный анализ криптовалютных стратегий: ретродропы, DeFi-протоколы и инвестиционные подходы", engine: "Pro" },
     { id: 10, title: "Искусственный Интеллект и Будущее Технологий", date: "17 нояб. 2025 г.", sources: 24, status: "failed", hasAttachment: false, iconIdx: 5, query: "Обзор перспектив искусственного интеллекта: генеративные модели, AGI, этические вопросы и влияние на рынок труда", engine: "Ultimate" },
     { id: 11, title: "15 Жестоких Правд о Неконкурентных Рынках", date: "16 нояб. 2025 г.", sources: 1, status: "success", hasAttachment: false, iconIdx: 4, query: "Анализ 15 ключевых факторов неконкурентных рынков: барьеры входа, монополии и стратегии выживания", engine: "Standard" },
+    { id: 12, title: "Анализ Рынка Электромобилей: Tesla vs BYD vs Rivian — Конкурентный анализ и доля рынка", date: "15 нояб. 2025 г.", sources: 42, status: "success", hasAttachment: false, iconIdx: 1, query: "Сравнительный анализ лидеров рынка электромобилей: финансовые показатели, технологии и стратегии экспансии", engine: "Pro" },
+    { id: 13, title: "Кибербезопасность в Эпоху AI: Новые Угрозы и Стратегии Защиты данных", date: "14 нояб. 2025 г.", sources: 12, status: "canceled", hasAttachment: false, iconIdx: 0, query: "Исследование влияния AI на кибербезопасность: новые векторы атак и современные методы защиты корпоративных данных", engine: "Ultimate" },
+    { id: 14, title: "Глобальные Цепочки Поставок 2025: Реструктуризация и Геополитические вызовы", date: "12 нояб. 2025 г.", sources: 35, status: "success", hasAttachment: false, iconIdx: 2, query: "Анализ трансформации глобальных логистических цепочек под влиянием геополитики и новых торговых соглашений", engine: "Pro" },
+    { id: 15, title: "Метавселенная для Бизнеса: ROI Анализ Корпоративных Внедрений и пользовательского опыта", date: "10 нояб. 2025 г.", sources: 8, status: "failed", hasAttachment: false, iconIdx: 5, query: "Оценка эффективности внедрения метавселенных в корпоративный сектор: кейсы, затраты и возврат инвестиций", engine: "Standard" },
+    { id: 16, title: "Зелёная Энергетика: Инвестиционные Возможности в Солнечной и Ветровой энергетике", date: "8 нояб. 2025 г.", sources: 21, status: "success", hasAttachment: false, iconIdx: 4, query: "Обзор инвестиционного ландшафта возобновляемой энергетики: государственные субсидии и технологические прорывы", engine: "Pro" },
+    { id: 17, title: "Нейроинтерфейсы и BCI: Медицинские Применения и Этические Вопросы будущего", date: "5 нояб. 2025 г.", sources: 19, status: "success", hasAttachment: false, iconIdx: 3, query: "Анализ достижений в области нейротехнологий: от медицинских протезов до массового использования BCI", engine: "Ultimate" },
+    { id: 18, title: "Рынок SaaS B2B: Тренды Консолидации и Стратегии Выхода 2025–2027 годов", date: "3 нояб. 2025 г.", sources: 14, status: "canceled", hasAttachment: false, iconIdx: 1, query: "Прогноз развития рынка B2B SaaS: слияния, поглощения и новые ниши для технологических стартапов", engine: "Pro" },
+    { id: 19, title: "Автономное Вождение Level 4: Регуляторные Барьеры и Дорожная Карта развития", date: "1 нояб. 2025 г.", sources: 27, status: "success", hasAttachment: false, iconIdx: 2, query: "Исследование готовности инфраструктуры и законодательства к внедрению полностью автономного транспорта", engine: "Ultimate" },
+    { id: 20, title: "Цифровой Рубль и CBDC: Макроэкономический Анализ и Сценарии Внедрения в РФ", date: "28 окт. 2025 г.", sources: 16, status: "failed", hasAttachment: false, iconIdx: 0, query: "Анализ влияния цифровых валют центральных банков на банковскую систему и денежно-кредитную политику", engine: "Standard" },
   ];
 
   const archivedProjects: { id: number; title: string; date: string; sources: number; status: ResearchStatus }[] = [
@@ -331,55 +340,53 @@ export default function Dashboard() {
                     {item.date} • {item.sources} источников
                   </p>
                   <div className="shrink-0">
-                    {item.status !== "in-progress" && (
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild onClick={(e) => e.preventDefault()}>
-                          <button className="p-0.5 border-0 bg-transparent opacity-60 hover:opacity-100 transition-opacity" data-testid={`kebab-menu-${item.id}`}>
-                            <MoreVertical className="w-4 h-4 text-gray-500 cursor-pointer hover:text-gray-700" />
-                          </button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-44 bg-[#1a1a1a] border-[#333] shadow-xl">
-                          <DropdownMenuItem
-                            className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
-                            data-testid={`details-${item.id}`}
-                            onClick={() => { setSelectedItem({ id: item.id, title: item.title }); setRenameValue(item.title); setIsPinned(false); setDetailsOpen(true); }}
-                          >
-                            <FileText className="w-4 h-4 text-gray-400" />
-                            Details
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            className="flex items-center gap-2 text-sm text-[#008DA8] hover:text-[#00b0cc] focus:text-[#00b0cc] focus:bg-[#333] cursor-pointer"
-                            data-testid={`clone-${item.id}`}
-                            onClick={() => { setSelectedItem({ id: item.id, title: item.title }); setCloneOpen(true); }}
-                          >
-                            <Copy className="w-4 h-4 text-[#008DA8]" />
-                            Clone & Restart
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
-                            data-testid={`dash-archive-${item.id}`}
-                          >
-                            <Archive className="w-4 h-4 text-gray-400" />
-                            Archive Project
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
-                            data-testid={`dash-export-${item.id}`}
-                          >
-                            <Download className="w-4 h-4 text-gray-400" />
-                            Export Project
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 focus:text-red-400 focus:bg-[#333] cursor-pointer"
-                            data-testid={`delete-${item.id}`}
-                            onClick={() => { setSelectedItem({ id: item.id, title: item.title }); setDeleteOpen(true); }}
-                          >
-                            <Trash2 className="w-4 h-4" />
-                            Delete
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    )}
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild onClick={(e) => e.preventDefault()}>
+                        <button className="p-0.5 border-0 bg-transparent opacity-60 hover:opacity-100 transition-opacity" data-testid={`kebab-menu-${item.id}`}>
+                          <MoreVertical className="w-4 h-4 text-gray-500 cursor-pointer hover:text-gray-700" />
+                        </button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end" className="w-44 bg-[#1a1a1a] border-[#333] shadow-xl">
+                        <DropdownMenuItem
+                          className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
+                          data-testid={`details-${item.id}`}
+                          onClick={() => { setSelectedItem({ id: item.id, title: item.title }); setRenameValue(item.title); setIsPinned(false); setDetailsOpen(true); }}
+                        >
+                          <FileText className="w-4 h-4 text-gray-400" />
+                          Details
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          className="flex items-center gap-2 text-sm text-[#008DA8] hover:text-[#00b0cc] focus:text-[#00b0cc] focus:bg-[#333] cursor-pointer"
+                          data-testid={`clone-${item.id}`}
+                          onClick={() => { setSelectedItem({ id: item.id, title: item.title }); setCloneOpen(true); }}
+                        >
+                          <Copy className="w-4 h-4 text-[#008DA8]" />
+                          Clone & Restart
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
+                          data-testid={`dash-archive-${item.id}`}
+                        >
+                          <Archive className="w-4 h-4 text-gray-400" />
+                          Archive Project
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
+                          data-testid={`dash-export-${item.id}`}
+                        >
+                          <Download className="w-4 h-4 text-gray-400" />
+                          Export Project
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 focus:text-red-400 focus:bg-[#333] cursor-pointer"
+                          data-testid={`delete-${item.id}`}
+                          onClick={() => { setSelectedItem({ id: item.id, title: item.title }); setDeleteOpen(true); }}
+                        >
+                          <Trash2 className="w-4 h-4" />
+                          Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </div>
                 </div>
               </Link>
