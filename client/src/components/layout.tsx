@@ -144,7 +144,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </div>
 
             {/* Filter Bar */}
-            <div className="flex items-center justify-between px-1 mt-2">
+            <div className="flex items-center gap-2 px-1 mt-2">
               <span className="text-sm font-semibold text-black">Latest research</span>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
