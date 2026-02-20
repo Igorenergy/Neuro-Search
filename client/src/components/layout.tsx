@@ -151,18 +151,21 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   function renderCollapsedSidebar() {
     return (
-      <div className="flex flex-col items-center gap-4 py-4 h-full">
-        <Link href="/smart-search/new">
-          <Button size="icon" variant="ghost" className="h-10 w-10 text-[#006E7D] hover:bg-[#006E7D]/10 transition-colors">
-            <Plus className="w-[30px] h-[30px]" />
-          </Button>
-        </Link>
-        <Link href="/research/search">
-          <Button size="icon" variant="ghost" className="h-10 w-10 text-[#5F8D4E] hover:bg-[#5F8D4E]/10 transition-colors">
-            <Search className="w-[30px] h-[30px]" />
-          </Button>
-        </Link>
-        <div className="w-8 h-[1px] bg-gray-300" />
+      <div className="flex flex-col items-center py-4 h-full">
+        <div className="flex flex-col items-center gap-4 shrink-0">
+          <Link href="/smart-search/new">
+            <Button size="icon" variant="ghost" className="h-10 w-10 text-[#006E7D] hover:bg-[#006E7D]/10 transition-colors">
+              <Plus className="w-[30px] h-[30px]" />
+            </Button>
+          </Link>
+          <Link href="/research/search">
+            <Button size="icon" variant="ghost" className="h-10 w-10 text-[#5F8D4E] hover:bg-[#5F8D4E]/10 transition-colors">
+              <Search className="w-[30px] h-[30px]" />
+            </Button>
+          </Link>
+          <div className="w-8 h-[1px] bg-gray-300" />
+        </div>
+        <div className="mt-4 shrink-0 flex items-center justify-center">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button
@@ -204,9 +207,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             ))}
           </DropdownMenuContent>
         </DropdownMenu>
+        </div>
         <button
           className={cn(
-            "w-7 h-5 flex items-center justify-center rounded transition-all",
+            "mt-4 shrink-0 w-7 h-5 flex items-center justify-center rounded transition-all",
             canScrollUp ? "text-gray-500 hover:text-gray-800 hover:bg-gray-200 cursor-pointer" : "text-gray-300 cursor-default"
           )}
           onClick={() => scrollCollapsedBy("up")}
@@ -338,7 +342,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </div>
         <button
           className={cn(
-            "w-7 h-5 flex items-center justify-center rounded transition-all",
+            "shrink-0 w-7 h-5 flex items-center justify-center rounded transition-all",
             canScrollDown ? "text-gray-500 hover:text-gray-800 hover:bg-gray-200 cursor-pointer" : "text-gray-300 cursor-default"
           )}
           onClick={() => scrollCollapsedBy("down")}
@@ -347,7 +351,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         >
           <ChevronDown className="w-4 h-4" />
         </button>
-        <div className="pb-2 flex items-center justify-center">
+        <div className="shrink-0 pt-2 pb-2 flex items-center justify-center">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button className="w-[58px] h-8 flex items-center justify-center gap-1 rounded-sm text-gray-600 hover:text-black hover:bg-black/5 cursor-pointer transition-colors border border-gray-300" data-testid="button-collapsed-more-menu">
