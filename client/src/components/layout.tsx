@@ -199,7 +199,7 @@ function CollapsedSidebar({
               "#f97316";
 
             return (
-              <div key={item.id} className="relative group flex items-center" title={item.title}>
+              <div key={item.id} className="relative group flex items-center justify-start pl-1" title={item.title}>
                 <Link href={`${config.route}/${item.id}`}>
                   <div className="relative w-9 h-9 flex items-center justify-center cursor-pointer">
                     <div
@@ -214,7 +214,7 @@ function CollapsedSidebar({
                     </div>
                   </div>
                 </Link>
-                <div className="absolute left-[42px] top-1/2 -translate-y-1/2 flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-20">
+                <div className="absolute left-[34px] top-1/2 -translate-y-1/2 flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-20">
                   <button
                     className={cn(
                       "w-5 h-5 flex items-center justify-center rounded hover:bg-gray-200 transition-colors cursor-pointer",
