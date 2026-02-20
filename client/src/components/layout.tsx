@@ -169,6 +169,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button
+              title="Latest research filter"
               className={cn(
                 "h-7 w-7 flex items-center justify-center rounded border transition-all",
                 statusFilter === "all"
@@ -397,27 +398,29 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
           <div className="flex items-center gap-2 px-1 mt-2">
             <span className="text-sm font-semibold text-black">Latest research</span>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button 
-                  className={cn(
-                    "h-7 w-7 flex items-center justify-center rounded border transition-all",
-                    statusFilter === "all"
-                      ? "bg-[#f8f9fa] border-gray-300 text-gray-600 hover:border-gray-400 hover:bg-white"
-                      : statusFilter === "success"
-                      ? "bg-white border-[#22c55e] text-[#22c55e] shadow-sm"
-                      : statusFilter === "in-progress"
-                      ? "bg-white border-[#3b82f6] text-[#3b82f6] shadow-sm"
-                      : statusFilter === "failed"
-                      ? "bg-white border-[#ef4444] text-[#ef4444] shadow-sm"
-                      : "bg-white border-[#f97316] text-[#f97316] shadow-sm",
-                    "data-[state=open]:bg-white"
-                  )} 
-                  data-testid="button-filter-status"
-                >
-                  <Filter className="w-3.5 h-3.5" />
-                </button>
-              </DropdownMenuTrigger>
+            <div className="flex items-center gap-2 ml-auto">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button 
+                    title="Latest research filter"
+                    className={cn(
+                      "h-7 w-7 flex items-center justify-center rounded border transition-all",
+                      statusFilter === "all"
+                        ? "bg-[#f8f9fa] border-gray-300 text-gray-600 hover:border-gray-400 hover:bg-white"
+                        : statusFilter === "success"
+                        ? "bg-white border-[#22c55e] text-[#22c55e] shadow-sm"
+                        : statusFilter === "in-progress"
+                        ? "bg-white border-[#3b82f6] text-[#3b82f6] shadow-sm"
+                        : statusFilter === "failed"
+                        ? "bg-white border-[#ef4444] text-[#ef4444] shadow-sm"
+                        : "bg-white border-[#f97316] text-[#f97316] shadow-sm",
+                      "data-[state=open]:bg-white"
+                    )} 
+                    data-testid="button-filter-status"
+                  >
+                    <Filter className="w-3.5 h-3.5" />
+                  </button>
+                </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-36 bg-[#1a1a1a] border-[#333] shadow-xl p-0.5">
                 {([
                   { value: "all", label: "All", count: visibleResearchItems.length, textColor: "text-gray-100" },
@@ -439,6 +442,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
+        </div>
         </div>
 
         <div className="flex-1 overflow-hidden bg-[#E6E1EF] mx-2 mb-2 border border-gray-300 rounded-sm">
