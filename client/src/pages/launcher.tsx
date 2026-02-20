@@ -1214,17 +1214,22 @@ export default function Launcher() {
               >
                 <div className="border border-gray-200 rounded-md overflow-hidden">
                   <div className="bg-gray-50 px-3 py-2 border-b border-gray-200 flex items-center justify-between gap-2">
-                    <span className="text-xs font-bold text-gray-600">Attached Files: {attachedFiles.length}</span>
-                    <Select value={fileFilter} onValueChange={(v: "all" | "step1" | "step2") => setFileFilter(v)}>
-                      <SelectTrigger className="h-6 w-[140px] text-[10px] border-gray-300 bg-white" data-testid="select-file-filter">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">All</SelectItem>
-                        <SelectItem value="step1">Added at Step1</SelectItem>
-                        <SelectItem value="step2">Added at Step2</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <div className="flex items-center gap-4">
+                      <span className="text-xs font-bold text-gray-600">Attached Files: {attachedFiles.length}</span>
+                      <div className="flex items-center gap-2">
+                        <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider">Added at</span>
+                        <Select value={fileFilter} onValueChange={(v: "all" | "step1" | "step2") => setFileFilter(v)}>
+                          <SelectTrigger className="h-6 w-[80px] text-[10px] border-gray-300 bg-white" data-testid="select-file-filter">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="all">Any</SelectItem>
+                            <SelectItem value="step1">Step1</SelectItem>
+                            <SelectItem value="step2">Step2</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
                     {attachedFiles.length > 0 && (
                       <button
                         className="text-xs text-red-500 font-medium hover:text-red-700 hover:underline transition-colors"
