@@ -659,14 +659,14 @@ export default function ReportsSummary() {
                 data-testid="input-rename-report"
               />
             </div>
-            <div className="flex items-center justify-between">
-              <Label htmlFor="pin-toggle-report" className="text-sm font-medium text-gray-700">Pin to navigation menu</Label>
+            <div className="flex items-center gap-3">
               <ToggleSwitch
                 id="pin-toggle-report"
                 checked={isPinned}
                 onCheckedChange={setIsPinned}
                 data-testid="toggle-pin-report"
               />
+              <Label htmlFor="pin-toggle-report" className="text-sm font-medium text-gray-700 cursor-pointer">Pin to navigation menu</Label>
             </div>
           </div>
           <DialogFooter className="gap-2">

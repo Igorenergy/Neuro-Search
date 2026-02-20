@@ -461,14 +461,14 @@ export default function Dashboard() {
               data-testid="dash-input-rename"
             />
           </div>
-          <div className="flex items-center justify-between">
-            <Label htmlFor="dash-pin-toggle" className="text-sm font-medium text-gray-700">Pinned</Label>
+          <div className="flex items-center gap-3">
             <ToggleSwitch
               id="dash-pin-toggle"
               checked={isPinned}
               onCheckedChange={setIsPinned}
               data-testid="dash-toggle-pin"
             />
+            <Label htmlFor="dash-pin-toggle" className="text-sm font-medium text-gray-700 cursor-pointer">Pinned</Label>
           </div>
         </div>
         <DialogFooter className="gap-2">
