@@ -336,7 +336,7 @@ export default function ReportsSummary() {
         <Button
           variant="outline"
           size="sm"
-          className="h-7 text-[11px] font-medium border-gray-300 text-[#008DA8] hover:text-[#006E7D] hover:bg-gray-50 transition-colors shrink-0"
+          className="h-7 text-[11px] font-medium border-[#008DA8] text-[#008DA8] hover:text-white hover:bg-[#008DA8] transition-colors shrink-0 rounded-md px-3"
           onClick={() => setShowExtendedModal(true)}
           data-testid="button-generate-extended"
         >
