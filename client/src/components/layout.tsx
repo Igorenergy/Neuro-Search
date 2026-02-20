@@ -285,9 +285,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       {/* Header */}
       <div className={cn("flex items-center justify-between p-3 border-b border-gray-200 bg-[#EBEBEB]", collapsed && "flex-col gap-4")}>
         <div className="flex items-center gap-2 overflow-hidden">
-          <div className="w-8 h-8 bg-gray-200 border border-gray-400 flex items-center justify-center rounded-sm shrink-0">
-             <span className="text-[10px] font-bold text-gray-500">Logo</span>
-          </div>
           {!collapsed && <span className="font-bold text-lg text-gray-800 tracking-tight">Neuro-Search</span>}
         </div>
         <Button 
