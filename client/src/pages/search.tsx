@@ -1,7 +1,6 @@
 import { useState } from "react";
 import {
   Search,
-  Filter,
   MoreVertical,
   FileText,
   Info,
@@ -257,18 +256,10 @@ export default function SearchPage() {
           (<div>
             {/* Table Header */}
             <div className="grid grid-cols-[1fr_120px_120px_150px_40px] gap-4 px-6 py-4 border-b border-gray-200 bg-gray-50/50 text-sm font-bold text-gray-900">
-              <div className="flex items-center gap-1 cursor-pointer hover:text-[#008DA8]">
-                Name <Filter className="w-3 h-3" />
-              </div>
-              <div className="text-right flex items-center justify-end gap-1 cursor-pointer hover:text-[#008DA8]">
-                Sources <Filter className="w-3 h-3" />
-              </div>
-              <div className="text-right flex items-center justify-end gap-1 cursor-pointer hover:text-[#008DA8]">
-                Artifacts <Filter className="w-3 h-3" />
-              </div>
-              <div className="text-right flex items-center justify-end gap-1 cursor-pointer hover:text-[#008DA8]">
-                Created Date <Filter className="w-3 h-3" />
-              </div>
+              <div>Name</div>
+              <div className="text-right">Sources</div>
+              <div className="text-right">Artifacts</div>
+              <div className="text-right">Created Date</div>
               <div></div>
             </div>
             {/* Table Body */}
