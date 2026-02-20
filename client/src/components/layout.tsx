@@ -235,17 +235,17 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const [statusFilter, setStatusFilter] = useState<"all" | ResearchStatus>("all");
 
   const researchItems: { id: number; title: string; status: ResearchStatus }[] = [
-    { id: 1, title: "Реестр 492 Компаний: Полный анализ и стратегический обзор...", status: "success" },
-    { id: 2, title: "Мемуары Криптана: Ретроспективный анализ криптозимы и стратегии...", status: "success" },
-    { id: 3, title: "Мемуары Криптана: Ретроспективный анализ криптозимы и стратегии...", status: "in-progress" },
-    { id: 4, title: "Искусственный Интеллект и Будущее Технологий: Глубокий анализ...", status: "success" },
-    { id: 5, title: "15 Жестоких Правд о Неконкурентных Рынках: Как выжить и преуспеть ...", status: "failed" },
-    { id: 6, title: "Блокчейн в Финтехе 2025: Анализ Рисков, Прогноз ROI и Стратегии...", status: "success" },
-    { id: 7, title: "Биотехнологии 2.0: Инвестиции в Геномное Редактирование и Персп ...", status: "in-progress" },
-    { id: 8, title: "Стратегический Риск-менеджмент в Трейдинге: Психология, Инстру...", status: "canceled" },
-    { id: 9, title: "NFT как Инвестиционный Актив: Анализ Волатильности, Ликвиднос...", status: "success" },
-    { id: 10, title: "Фискальная Политика Евросоюза: Анализ Бюджета на 2026 год и Вли ...", status: "failed" },
-    { id: 11, title: "Квантовые Вычисления: Прорывы 2025 года и Влияние на Криптографию...", status: "success" },
+    { id: 1, title: "Американская Фабрика: Полный анализ и стратегический обзор", status: "success" },
+    { id: 2, title: "Startup: AI Deep Research — Анализ рынка и конкурентов", status: "success" },
+    { id: 3, title: "Research name one", status: "in-progress" },
+    { id: 4, title: "Abacus.AI: Корпоративный анализ и оценка платформы", status: "success" },
+    { id: 5, title: "Инновации, Капитал и Стратегии Роста в Технологическом Секторе", status: "failed" },
+    { id: 6, title: "Реестр 492 Компаний: Полный анализ и стратегический обзор", status: "success" },
+    { id: 7, title: "Research name two", status: "in-progress" },
+    { id: 8, title: "Потеря $1,8 млн на крипте: уроки и выводы для инвесторов", status: "canceled" },
+    { id: 9, title: "Мемуары Криптана: Ретродропи, стратегии и анализ", status: "success" },
+    { id: 10, title: "Искусственный Интеллект и Будущее Технологий", status: "failed" },
+    { id: 11, title: "15 Жестоких Правд о Неконкурентных Рынках", status: "success" },
     { id: 12, title: "Анализ Рынка Электромобилей: Tesla vs BYD vs Rivian — Конкурентные...", status: "success" },
     { id: 13, title: "Кибербезопасность в Эпоху AI: Новые Угрозы и Стратегии Защиты...", status: "canceled" },
     { id: 14, title: "Глобальные Цепочки Поставок 2025: Реструктуризация и Геополитические...", status: "success" },
@@ -388,7 +388,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                           <img src={rocketIcon} alt="Rocket" className="w-[15px] h-[15px] opacity-70" />
                         </div>
                       </div>
-                      <p className="text-[13px] leading-tight text-gray-800 line-clamp-2 font-medium flex-1">
+                      <p className="text-[13px] leading-tight text-gray-800 line-clamp-2 font-medium flex-1" title={item.title}>
                         {item.title}
                       </p>
                     </Link>
@@ -453,7 +453,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                           <img src={rocketIcon} alt="Rocket" className="w-[15px] h-[15px] opacity-70" />
                         </div>
                       </div>
-                      <p className="text-[13px] leading-tight text-gray-800 line-clamp-2 font-medium flex-1">
+                      <p className="text-[13px] leading-tight text-gray-800 line-clamp-2 font-medium flex-1" title={item.title}>
                         {item.title}
                       </p>
                     </Link>
