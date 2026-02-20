@@ -303,7 +303,7 @@ export default function Dashboard() {
               key={item.id}
               className={cn(
                 "rounded-lg border border-gray-200 shadow-sm p-4 flex flex-col min-h-[180px] group relative hover:shadow-md transition-shadow",
-                config.tileBg
+                item.status === "in-progress" ? "bg-[#D7D7D7]/75" : config.tileBg
               )}
               data-testid={`card-research-${item.id}`}
             >
