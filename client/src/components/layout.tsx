@@ -500,7 +500,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                         {item.title}
                       </p>
                     </Link>
-                    <div className="flex items-center gap-1 shrink-0 mt-0.5">
+                    <div className="flex flex-col items-center gap-1 shrink-0 mt-0.5">
                       {item.status === "in-progress" ? (
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild onClick={(e) => e.preventDefault()}>
@@ -530,7 +530,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                       ) : (
                         <>
                           <Pin
-                            className="w-3.5 h-3.5 text-gray-500 rotate-45 cursor-pointer hover:text-gray-700 -mr-[10px] relative -left-[10px]"
+                            className="w-3.5 h-3.5 text-gray-500 rotate-45 cursor-pointer hover:text-gray-700"
                             onClick={(e) => { e.stopPropagation(); togglePin(item.id); }}
                             data-testid={`pin-${item.id}`}
                           />
@@ -595,7 +595,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                         {item.title}
                       </p>
                     </Link>
-                    <div className="flex items-center gap-1 shrink-0 mt-0.5">
+                    <div className="flex flex-col items-center gap-1 shrink-0 mt-0.5">
                       {item.status === "in-progress" ? (
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild onClick={(e) => e.preventDefault()}>
