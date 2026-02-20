@@ -362,7 +362,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" side="right" className="w-52 bg-[#1a1a1a] border-[#333] shadow-xl mb-2 animate-in slide-in-from-bottom-2 duration-200">
               <DropdownMenuItem asChild className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer">
-                <Link href="/assets">
+                <Link href="/files-attachments">
                   <FileText className="w-4 h-4 text-gray-400" />
                   Files & Attachments
                 </Link>
@@ -672,7 +672,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" side="top" className="w-52 bg-[#1a1a1a] border-[#333] shadow-xl mb-2 animate-in slide-in-from-bottom-2 duration-200">
               <DropdownMenuItem asChild className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer">
-                <Link href="/assets">
+                <Link href="/files-attachments">
                   <FileText className="w-4 h-4 text-gray-400" />
                   Files & Attachments
                 </Link>
@@ -768,7 +768,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                  <span className="font-bold">Smart Search:</span> {
                    location === "/" ? "Dashboard" : 
                    location.includes("dashboard") ? "Overview" :
-                   location.includes("assets") ? "Assets Repository" :
+                   location.includes("files-attachments") ? "Files & Attachments" :
                    location.includes("research-failed") ? "Failed" :
                    location.includes("research-canceled") ? "Cancel" :
                    location.includes("in-progress") ? "in progress" :

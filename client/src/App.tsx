@@ -39,7 +39,7 @@ function Router() {
         <Route path="/research-failed/:id" component={SmartSearchFailed} />
         <Route path="/research-success/:id" component={ReportsSummary} />
         <Route path="/sources/:id" component={SourcesPage} />
-        <Route path="/assets" component={AssetsRepository} />
+        <Route path="/files-attachments" component={AssetsRepository} />
         {/* Fallback to 404 */}
         <Route component={NotFound} />
       </Switch>
