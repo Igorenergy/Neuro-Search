@@ -187,7 +187,7 @@ function CollapsedSidebar({
                     style={!isInProgress ? { borderColor: borderHoverColor } : undefined}
                   />
                   <div className="w-8 h-8 rounded-full bg-[#E6E1EF] flex items-center justify-center group-hover:bg-white transition-colors">
-                    <img src={rocketIcon} alt="Rocket" className="w-[20px] h-[20px] opacity-70" />
+                    <img src={rocketIcon} alt="Rocket" className="w-[25px] h-[25px] opacity-70" />
                   </div>
                 </div>
               </Link>
@@ -285,9 +285,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       {/* Header */}
       <div className={cn("flex items-center justify-between px-3 py-2 h-[57px] border-b border-gray-200 bg-[#EBEBEB]", collapsed && "flex-col gap-4")}>
         <div className="flex items-center gap-2 overflow-hidden h-8">
-          <div className="w-8 h-8 bg-gray-200 border border-gray-400 flex items-center justify-center rounded-sm shrink-0">
-             <span className="text-[10px] font-bold text-gray-500">Logo</span>
-          </div>
+          {!collapsed && (
+            <div className="w-8 h-8 bg-gray-200 border border-gray-400 flex items-center justify-center rounded-sm shrink-0">
+               <span className="text-[10px] font-bold text-gray-500">Logo</span>
+            </div>
+          )}
           {!collapsed && <span className="font-bold text-lg text-gray-800 tracking-tight">Neuro-Search</span>}
         </div>
         <Button 
