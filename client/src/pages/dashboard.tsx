@@ -85,18 +85,18 @@ export default function Dashboard() {
 
   const tileIcons = [Rocket, DollarSign, TrendingUp, ClipboardList, Zap, FileText];
 
-  const searches: { id: number; title: string; date: string; sources: number; status: ResearchStatus; hasAttachment: boolean; iconIdx: number }[] = [
-    { id: 1, title: "Американская Фабрика: Полный анализ и стратегический обзор", date: "5 дек. 2025 г.", sources: 4, status: "success", hasAttachment: true, iconIdx: 0 },
-    { id: 2, title: "Startup: AI Deep Research — Анализ рынка и конкурентов", date: "2 дек. 2025 г.", sources: 51, status: "success", hasAttachment: true, iconIdx: 1 },
-    { id: 3, title: "Untitled notebook", date: "5 дек. 2025 г.", sources: 0, status: "in-progress", hasAttachment: true, iconIdx: 3 },
-    { id: 4, title: "Abacus.AI: Корпоративный анализ и оценка платформы", date: "2 дек. 2025 г.", sources: 61, status: "success", hasAttachment: false, iconIdx: 3 },
-    { id: 5, title: "Инновации, Капитал и Стратегии Роста в Технологическом Секторе", date: "2 дек. 2025 г.", sources: 25, status: "failed", hasAttachment: true, iconIdx: 2 },
-    { id: 6, title: "Реестр 492 Компаний: Полный анализ и стратегический обзор", date: "2 дек. 2025 г.", sources: 2, status: "success", hasAttachment: false, iconIdx: 5 },
-    { id: 7, title: "Untitled notebook", date: "30 нояб. 2025 г.", sources: 0, status: "in-progress", hasAttachment: false, iconIdx: 3 },
-    { id: 8, title: "Потеря $1,8 млн на крипте: уроки и выводы для инвесторов", date: "24 нояб. 2025 г.", sources: 1, status: "canceled", hasAttachment: false, iconIdx: 2 },
-    { id: 9, title: "Мемуары Криптана: Ретродропи, стратегии и анализ", date: "23 нояб. 2025 г.", sources: 1, status: "success", hasAttachment: false, iconIdx: 4 },
-    { id: 10, title: "Искусственный Интеллект и Будущее Технологий", date: "17 нояб. 2025 г.", sources: 24, status: "failed", hasAttachment: false, iconIdx: 5 },
-    { id: 11, title: "15 Жестоких Правд о Неконкурентных Рынках", date: "16 нояб. 2025 г.", sources: 1, status: "success", hasAttachment: false, iconIdx: 4 },
+  const searches: { id: number; title: string; date: string; sources: number; status: ResearchStatus; hasAttachment: boolean; iconIdx: number; query: string; engine: string }[] = [
+    { id: 1, title: "Американская Фабрика: Полный анализ и стратегический обзор", date: "5 дек. 2025 г.", sources: 4, status: "success", hasAttachment: true, iconIdx: 0, query: "Провести полный стратегический анализ документального фильма «Американская фабрика», включая экономические и культурные аспекты", engine: "Ultimate" },
+    { id: 2, title: "Startup: AI Deep Research — Анализ рынка и конкурентов", date: "2 дек. 2025 г.", sources: 51, status: "success", hasAttachment: true, iconIdx: 1, query: "Анализ рынка AI Deep Research стартапов, ключевые конкуренты, бизнес-модели и инвестиционный потенциал в секторе", engine: "Pro" },
+    { id: 3, title: "Untitled notebook", date: "5 дек. 2025 г.", sources: 0, status: "in-progress", hasAttachment: true, iconIdx: 3, query: "", engine: "Standard" },
+    { id: 4, title: "Abacus.AI: Корпоративный анализ и оценка платформы", date: "2 дек. 2025 г.", sources: 61, status: "success", hasAttachment: false, iconIdx: 3, query: "Корпоративный анализ платформы Abacus.AI: технологический стек, рыночная позиция, ключевые продукты и конкурентные преимущества", engine: "Ultimate" },
+    { id: 5, title: "Инновации, Капитал и Стратегии Роста в Технологическом Секторе", date: "2 дек. 2025 г.", sources: 25, status: "failed", hasAttachment: true, iconIdx: 2, query: "Исследование инноваций и стратегий роста в технологическом секторе: венчурный капитал, тренды и прогнозы на 2025 год", engine: "Pro" },
+    { id: 6, title: "Реестр 492 Компаний: Полный анализ и стратегический обзор", date: "2 дек. 2025 г.", sources: 2, status: "success", hasAttachment: false, iconIdx: 5, query: "Составить реестр 492 компаний с полным анализом финансовых показателей, рыночной капитализации и стратегических позиций", engine: "Ultimate" },
+    { id: 7, title: "Untitled notebook", date: "30 нояб. 2025 г.", sources: 0, status: "in-progress", hasAttachment: false, iconIdx: 3, query: "", engine: "Standard" },
+    { id: 8, title: "Потеря $1,8 млн на крипте: уроки и выводы для инвесторов", date: "24 нояб. 2025 г.", sources: 1, status: "canceled", hasAttachment: false, iconIdx: 2, query: "Анализ случая потери $1,8 млн на криптовалютном рынке: причины, ошибки инвестора и практические выводы", engine: "Standard" },
+    { id: 9, title: "Мемуары Криптана: Ретродропи, стратегии и анализ", date: "23 нояб. 2025 г.", sources: 1, status: "success", hasAttachment: false, iconIdx: 4, query: "Ретроспективный анализ криптовалютных стратегий: ретродропы, DeFi-протоколы и инвестиционные подходы", engine: "Pro" },
+    { id: 10, title: "Искусственный Интеллект и Будущее Технологий", date: "17 нояб. 2025 г.", sources: 24, status: "failed", hasAttachment: false, iconIdx: 5, query: "Обзор перспектив искусственного интеллекта: генеративные модели, AGI, этические вопросы и влияние на рынок труда", engine: "Ultimate" },
+    { id: 11, title: "15 Жестоких Правд о Неконкурентных Рынках", date: "16 нояб. 2025 г.", sources: 1, status: "success", hasAttachment: false, iconIdx: 4, query: "Анализ 15 ключевых факторов неконкурентных рынков: барьеры входа, монополии и стратегии выживания", engine: "Standard" },
   ];
 
   const archivedProjects: { id: number; title: string; date: string; sources: number; status: ResearchStatus }[] = [
@@ -311,7 +311,21 @@ export default function Dashboard() {
                 </Link>
               </div>
               <Link href={`${config.route}/${item.id}`} className="flex flex-col flex-1 min-w-0 relative">
-                <div className="flex-1" />
+                <div className="flex-1 space-y-2">
+                  {item.query && (
+                    <p className="text-[11px] leading-relaxed text-gray-600" data-testid={`text-query-${item.id}`}>
+                      <span className="font-bold text-gray-700">Query: </span>
+                      {item.query.slice(0, 100)}{item.query.length > 100 ? "..." : ""}
+                    </p>
+                  )}
+                  <div className="flex items-center gap-2" data-testid={`text-engine-${item.id}`}>
+                    <span className="text-[11px] font-bold text-gray-700">Data Engine</span>
+                    <span className="text-[10px] font-semibold text-gray-600 border border-gray-300 rounded px-1.5 py-0.5 bg-white/60 flex items-center gap-1">
+                      <Zap className="w-3 h-3" />
+                      {item.engine}
+                    </span>
+                  </div>
+                </div>
                 <div className="flex items-end justify-between mt-2">
                   <p className="text-[11px] text-gray-500">
                     {item.date} • {item.sources} источников
