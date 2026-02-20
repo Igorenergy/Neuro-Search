@@ -40,7 +40,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Switch as ToggleSwitch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { Trash2, FileText, Copy, Filter, RefreshCw, Archive } from "lucide-react";
+import { Trash2, FileText, Copy, Filter, RefreshCw, Archive, Download } from "lucide-react";
 import rocketIcon from "@assets/image_1771405092616.png";
 import moreIcon from "@assets/изображение_1771596463092.png";
 import CloneRestartModal from "@/components/clone-restart-modal";
@@ -291,6 +291,20 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                               >
                                 <Copy className="w-4 h-4 text-[#008DA8]" />
                                 Clone & Restart
+                              </DropdownMenuItem>
+                              <DropdownMenuItem
+                                className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
+                                data-testid={`archive-${item.id}`}
+                              >
+                                <Archive className="w-4 h-4 text-gray-400" />
+                                Archive Project
+                              </DropdownMenuItem>
+                              <DropdownMenuItem
+                                className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
+                                data-testid={`export-${item.id}`}
+                              >
+                                <Download className="w-4 h-4 text-gray-400" />
+                                Export Project
                               </DropdownMenuItem>
                               <DropdownMenuItem
                                 className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 focus:text-red-400 focus:bg-[#333] cursor-pointer"
