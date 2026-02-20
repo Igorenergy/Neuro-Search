@@ -290,14 +290,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                           <>
                             <DropdownMenuItem
                               className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
-                              onSelect={() => { setTimeout(() => togglePin(item.id), 0); }}
-                              data-testid={`collapsed-pin-toggle-${item.id}`}
-                            >
-                              <Pin className="w-4 h-4 text-gray-400 rotate-45" />
-                              {itemIsPinned ? "Unpin" : "Pin to navigation"}
-                            </DropdownMenuItem>
-                            <DropdownMenuItem
-                              className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
                               onSelect={() => { setTimeout(() => { setSelectedItem(item); setIsPinned(itemIsPinned); setDetailsOpen(true); }, 0); }}
                               data-testid={`collapsed-details-${item.id}`}
                             >
