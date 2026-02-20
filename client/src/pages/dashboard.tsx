@@ -266,7 +266,7 @@ export default function Dashboard() {
         {/* Create Research Tile */}
         <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-4 flex flex-col items-center justify-center min-h-[180px]" data-testid="card-create-research">
           <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center mb-3">
-            <Search className="w-5 h-5 text-[#008DA8]" />
+            <Plus className="w-5 h-5 text-[#008DA8]" />
           </div>
           <Link href="/smart-search/new">
             <Button variant="ghost" className="h-9 gap-2 text-[#008DA8] hover:bg-[#008DA8]/5 font-bold text-sm px-4" data-testid="button-smart-search">
