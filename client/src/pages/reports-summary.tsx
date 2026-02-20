@@ -347,13 +347,13 @@ export default function ReportsSummary() {
       {/* Main Content */}
       {activeTab === "summary" ? (
         <div className="flex-1 overflow-y-auto">
-          <div className="max-w-[900px] mx-auto py-6 px-6 space-y-4">
+          <div className="py-6 px-6 space-y-4">
             {/* Strategic Overview Header */}
             <div className="mb-2">
               <h2 className="text-base font-bold text-gray-900" data-testid="text-overview-title">
                 Strategic Overview & Key Insights
               </h2>
-              <p className="text-xs text-gray-500 mt-1 leading-relaxed max-w-[700px]">
+              <p className="text-xs text-gray-500 mt-1 leading-relaxed">
                 Весь текст должен укладываться в 300–450 слов (максимум 2000–2500 знаков). Визуально это должно занимать 1–1.5 экрана на десктопе, чтобы пользователю почти не приходилось скроллить.
               </p>
             </div>
