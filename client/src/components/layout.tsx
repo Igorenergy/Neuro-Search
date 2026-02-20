@@ -283,7 +283,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const SidebarContent = ({ collapsed }: { collapsed?: boolean }) => (
     <div className="flex flex-col h-full bg-[#F5F5F7] border-r border-gray-200 text-gray-800 font-sans">
       {/* Header */}
-      <div className={cn("flex items-center justify-between px-3 py-2 h-[57px] border-b border-gray-200 bg-[#EBEBEB]", collapsed && "flex-col gap-4")}>
+      <div className={cn("flex items-center justify-between px-3 py-2 h-[57px] border-b border-gray-200 bg-[#EBEBEB]", collapsed && "flex-col gap-4 h-[114px]")}>
         <div className="flex items-center gap-2 overflow-hidden h-8">
           {!collapsed && (
             <div className="w-8 h-8 bg-gray-200 border border-gray-400 flex items-center justify-center rounded-sm shrink-0">
@@ -297,7 +297,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           size="icon" 
           className={cn(
             "w-12 text-black hover:bg-black/5 transition-transform flex items-center justify-center",
-            collapsed ? "h-24 -translate-y-[15.5px]" : "h-12"
+            collapsed ? "h-24" : "h-12"
           )}
           onClick={() => setIsCollapsed(!isCollapsed)}
         >
