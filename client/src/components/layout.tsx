@@ -40,8 +40,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Switch as ToggleSwitch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { Trash2, FileText, Copy, Filter, RefreshCw } from "lucide-react";
+import { Trash2, FileText, Copy, Filter, RefreshCw, Archive } from "lucide-react";
 import rocketIcon from "@assets/image_1771405092616.png";
+import moreIcon from "@assets/изображение_1771596463092.png";
 import CloneRestartModal from "@/components/clone-restart-modal";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -306,12 +307,27 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
           {/* Footer */}
           <div className="p-2 pt-0 flex items-center justify-center">
-            <Link href="/assets" className="w-full">
-              <Button variant="ghost" className={cn("w-full h-8 px-2 text-xs font-semibold text-gray-600 hover:text-black hover:bg-black/5 flex items-center justify-center gap-1", location.includes("assets") && "bg-black/5 text-black")}>
-                <FileText className="w-3.5 h-3.5" />
-                Files & Attachments: 123
-              </Button>
-            </Link>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button className="w-full h-8 px-3 text-xs font-semibold text-gray-600 hover:text-black hover:bg-black/5 flex items-center justify-center gap-1.5 rounded-sm cursor-pointer transition-colors" data-testid="button-more-menu">
+                  <img src={moreIcon} alt="More" className="w-4 h-4 opacity-60" />
+                  <span>More</span>
+                  <ChevronRight className="w-3 h-3 ml-auto" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start" side="right" className="w-52 bg-[#1a1a1a] border-[#333] shadow-xl">
+                <DropdownMenuItem asChild className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer">
+                  <Link href="/assets">
+                    <FileText className="w-4 h-4 text-gray-400" />
+                    Files & Attachments
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer" data-testid="menu-archived-projects">
+                  <Archive className="w-4 h-4 text-gray-400" />
+                  Archived Projects (20)
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </>
       ) : (
