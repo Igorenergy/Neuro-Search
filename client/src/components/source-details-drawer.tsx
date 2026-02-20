@@ -179,7 +179,7 @@ export function SourceDetailsDrawer({ source, open, onClose }: SourceDetailsDraw
 
   const tabs = [
     { id: "preview", label: "Preview" },
-    { id: "raw", label: "Raw data [+3 files]" },
+    { id: "raw", label: "Extracted data" },
     { id: "artifacts", label: "Artifacts: 2" },
     { id: "metadata", label: "Metadata" },
   ];
@@ -406,22 +406,107 @@ export function SourceDetailsDrawer({ source, open, onClose }: SourceDetailsDraw
           )}
 
           {activeTab === "raw" && (
-            <div className="p-6 space-y-3">
-              <p className="text-xs text-gray-500 mb-4">Extracted files found within this source:</p>
-              {mockRawFiles.map((file, i) => (
-                <div
-                  key={i}
-                  className="flex items-center gap-3 p-3 border border-gray-200 rounded-md hover:bg-gray-50 cursor-pointer transition-colors"
-                  data-testid={`raw-file-${i}`}
-                >
-                  <FileText className="w-5 h-5 text-gray-400 shrink-0" />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-gray-800 truncate">{file.name}</p>
-                    <p className="text-[11px] text-gray-500">{file.type} - {file.size}</p>
-                  </div>
-                  <Download className="w-4 h-4 text-gray-400" />
+            <div className="p-4 space-y-4">
+              <div className="flex items-center justify-between">
+                <p className="text-xs font-bold text-gray-500 uppercase tracking-wider">Extracted Data Points</p>
+                <span className="text-[10px] text-gray-400">Last extracted: 2 hours ago</span>
+              </div>
+
+              <div className="border border-gray-200 rounded-md overflow-hidden">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="bg-gray-50 border-b border-gray-200">
+                      <th className="text-left px-3 py-2 text-[11px] font-bold text-gray-500 uppercase">Field</th>
+                      <th className="text-left px-3 py-2 text-[11px] font-bold text-gray-500 uppercase">Value</th>
+                      <th className="text-left px-3 py-2 text-[11px] font-bold text-gray-500 uppercase">Confidence</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100">
+                    <tr className="hover:bg-gray-50">
+                      <td className="px-3 py-2 text-xs font-medium text-gray-700">Company Name</td>
+                      <td className="px-3 py-2 text-xs text-gray-900">Loopt Inc.</td>
+                      <td className="px-3 py-2"><span className="text-[10px] font-bold text-green-600 bg-green-50 px-1.5 py-0.5 rounded">98%</span></td>
+                    </tr>
+                    <tr className="hover:bg-gray-50">
+                      <td className="px-3 py-2 text-xs font-medium text-gray-700">Founded</td>
+                      <td className="px-3 py-2 text-xs text-gray-900">2005</td>
+                      <td className="px-3 py-2"><span className="text-[10px] font-bold text-green-600 bg-green-50 px-1.5 py-0.5 rounded">95%</span></td>
+                    </tr>
+                    <tr className="hover:bg-gray-50">
+                      <td className="px-3 py-2 text-xs font-medium text-gray-700">CEO / Founder</td>
+                      <td className="px-3 py-2 text-xs text-gray-900">Sam Altman</td>
+                      <td className="px-3 py-2"><span className="text-[10px] font-bold text-green-600 bg-green-50 px-1.5 py-0.5 rounded">97%</span></td>
+                    </tr>
+                    <tr className="hover:bg-gray-50">
+                      <td className="px-3 py-2 text-xs font-medium text-gray-700">Total Funding</td>
+                      <td className="px-3 py-2 text-xs text-gray-900">$30M (Series A-C)</td>
+                      <td className="px-3 py-2"><span className="text-[10px] font-bold text-yellow-600 bg-yellow-50 px-1.5 py-0.5 rounded">82%</span></td>
+                    </tr>
+                    <tr className="hover:bg-gray-50">
+                      <td className="px-3 py-2 text-xs font-medium text-gray-700">Industry</td>
+                      <td className="px-3 py-2 text-xs text-gray-900">Location-Based Social Networking</td>
+                      <td className="px-3 py-2"><span className="text-[10px] font-bold text-green-600 bg-green-50 px-1.5 py-0.5 rounded">93%</span></td>
+                    </tr>
+                    <tr className="hover:bg-gray-50">
+                      <td className="px-3 py-2 text-xs font-medium text-gray-700">Headquarters</td>
+                      <td className="px-3 py-2 text-xs text-gray-900">Mountain View, CA</td>
+                      <td className="px-3 py-2"><span className="text-[10px] font-bold text-green-600 bg-green-50 px-1.5 py-0.5 rounded">90%</span></td>
+                    </tr>
+                    <tr className="hover:bg-gray-50">
+                      <td className="px-3 py-2 text-xs font-medium text-gray-700">Acquisition</td>
+                      <td className="px-3 py-2 text-xs text-gray-900">Green Dot Corp. (2012, $43.4M)</td>
+                      <td className="px-3 py-2"><span className="text-[10px] font-bold text-green-600 bg-green-50 px-1.5 py-0.5 rounded">96%</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div className="space-y-2">
+                <p className="text-xs font-bold text-gray-500 uppercase tracking-wider">Key Entities</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {["Sam Altman", "Nick Sivo", "Alok Deshpande", "Y Combinator", "Sequoia Capital", "New Enterprise Associates", "Stanford University", "Green Dot Corp."].map((entity) => (
+                    <span key={entity} className="px-2 py-1 bg-[#008DA8]/10 text-[#008DA8] rounded text-[11px] font-medium" data-testid={`entity-tag-${entity}`}>
+                      {entity}
+                    </span>
+                  ))}
                 </div>
-              ))}
+              </div>
+
+              <div className="space-y-2">
+                <p className="text-xs font-bold text-gray-500 uppercase tracking-wider">Timeline Events</p>
+                <div className="space-y-2">
+                  {[
+                    { year: "2005", event: "Loopt founded by Sam Altman, Nick Sivo, and Alok Deshpande" },
+                    { year: "2006", event: "Accepted into Y Combinator's inaugural batch" },
+                    { year: "2007", event: "Launched on Sprint and Boost Mobile networks" },
+                    { year: "2009", event: "Expanded to AT&T, Verizon; reached 4M users" },
+                    { year: "2012", event: "Acquired by Green Dot Corporation for $43.4M" },
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-start gap-3 px-3 py-2 border border-gray-100 rounded-md" data-testid={`timeline-event-${i}`}>
+                      <span className="text-[11px] font-bold text-[#008DA8] bg-[#008DA8]/10 px-2 py-0.5 rounded shrink-0">{item.year}</span>
+                      <span className="text-xs text-gray-700">{item.event}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <p className="text-xs font-bold text-gray-500 uppercase tracking-wider">Attached Files</p>
+                {mockRawFiles.map((file, i) => (
+                  <div
+                    key={i}
+                    className="flex items-center gap-3 p-3 border border-gray-200 rounded-md hover:bg-gray-50 cursor-pointer transition-colors"
+                    data-testid={`raw-file-${i}`}
+                  >
+                    <FileText className="w-5 h-5 text-gray-400 shrink-0" />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-gray-800 truncate">{file.name}</p>
+                      <p className="text-[11px] text-gray-500">{file.type} - {file.size}</p>
+                    </div>
+                    <Download className="w-4 h-4 text-gray-400" />
+                  </div>
+                ))}
+              </div>
             </div>
           )}
 
