@@ -185,7 +185,7 @@ export default function SearchPage() {
           <h1 className="font-bold text-gray-900 text-[16px]">
             Search in researches
           </h1>
-          <div className="flex items-center gap-2 text-sm text-gray-500">
+          <div className="flex items-center gap-2 text-sm text-gray-500 mr-[20px]">
             <Info className="w-4 h-4" />
             <span>
               Looking for specific documents or media? Search in the{" "}
