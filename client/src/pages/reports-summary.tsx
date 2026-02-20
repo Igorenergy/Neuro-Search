@@ -25,10 +25,21 @@ import {
   Copy,
   Trash2,
   Zap,
+  Info,
+  Link2,
+  Upload,
+  XCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -51,6 +62,7 @@ import { cn } from "@/lib/utils";
 import { loadLaunchConfig } from "@/lib/launch-config";
 import ResearchBriefingPanel from "@/components/research-briefing-panel";
 import CloneRestartModal from "@/components/clone-restart-modal";
+import AddFilesModal from "@/components/add-files-modal";
 
 
 interface ThoughtNode {
@@ -154,6 +166,35 @@ export default function ReportsSummary() {
   const [renameValue, setRenameValue] = useState("");
   const [isPinned, setIsPinned] = useState(false);
   const [cloneOpen, setCloneOpen] = useState(false);
+  const [showEnhanceModal, setShowEnhanceModal] = useState(false);
+  const [enhanceScope, setEnhanceScope] = useState<"web" | "files">("web");
+  const [enhanceEngine, setEnhanceEngine] = useState("ultimate");
+  const [enhanceLanguages, setEnhanceLanguages] = useState<string[]>([]);
+  const [enhanceFiles, setEnhanceFiles] = useState<{name: string; type: string; size: number}[]>([
+    { name: "Competitive_Analysis_2025.pdf", type: "pdf", size: 2400000 },
+  ]);
+  const [enhanceBudgetCap, setEnhanceBudgetCap] = useState(true);
+  const [enhanceCostOpen, setEnhanceCostOpen] = useState(false);
+  const [isAddFileModalOpen, setIsAddFileModalOpen] = useState(false);
+
+  const enhanceLanguageOptions = [
+    { value: "auto", label: "Auto Detect" },
+    { value: "en", label: "English (EN)" },
+    { value: "ru", label: "Russian (RU)" },
+    { value: "de", label: "German (DE)" },
+    { value: "fr", label: "French (FR)" },
+    { value: "es", label: "Spanish (ES)" },
+    { value: "zh", label: "Chinese (ZH)" },
+    { value: "ja", label: "Japanese (JA)" },
+    { value: "ko", label: "Korean (KO)" },
+  ];
+
+  const getEnhanceEngineDesc = (e: string) => {
+    if (e === "ultimate") return "Maximum depth, full multi-agent analysis";
+    if (e === "pro") return "Balanced depth and speed";
+    return "Quick scan, basic analysis";
+  };
+
   const config = loadLaunchConfig();
 
   const projectTitle = config?.query
@@ -242,7 +283,7 @@ export default function ReportsSummary() {
 
       {/* Enhance Research + Progress */}
       <div className="flex items-center gap-4 px-4 py-2 border-b border-gray-200 bg-white shrink-0">
-        <Button variant="outline" size="sm" className="h-7 text-xs font-bold text-[#008DA8] border-[#008DA8] hover:bg-[#008DA8]/5 px-3" data-testid="button-enhance-research">
+        <Button variant="outline" size="sm" className="h-7 text-xs font-bold text-[#008DA8] border-[#008DA8] hover:bg-[#008DA8]/5 px-3" data-testid="button-enhance-research" onClick={() => setShowEnhanceModal(true)}>
           Enhance Research
         </Button>
         <div className="flex-1 flex items-center gap-2">
@@ -720,6 +761,265 @@ export default function ReportsSummary() {
         </DialogContent>
       </Dialog>
       <CloneRestartModal open={cloneOpen} onOpenChange={setCloneOpen} />
+
+      {showEnhanceModal && (
+        <>
+          <div
+            className="fixed inset-0 z-50 bg-black/40 transition-opacity duration-300"
+            onClick={() => setShowEnhanceModal(false)}
+            data-testid="overlay-enhance-drawer"
+          />
+          <div
+            className="fixed top-0 right-0 z-50 h-full w-[480px] bg-white shadow-2xl flex flex-col animate-in slide-in-from-right duration-300"
+          >
+            <div className="flex border-b border-gray-200 bg-[#5A6B7C] min-h-[34px] shrink-0">
+              <div className="px-6 py-2 bg-[#0097B2] text-white text-xs font-bold flex items-center justify-center">
+                ENHANCE RESEARCH
+              </div>
+              <div className="flex-1 bg-[#5A6B7C]" />
+              <button
+                onClick={() => setShowEnhanceModal(false)}
+                className="px-3 py-2 hover:bg-[#4a5b6c] transition-colors"
+                data-testid="button-enhance-close"
+              >
+                <X className="w-4 h-4 text-white" />
+              </button>
+            </div>
+
+            <div className="flex-1 overflow-y-auto px-5 py-5">
+              <div className="space-y-5">
+                <p className="text-sm text-gray-500">
+                  Adjust the depth of analysis and data sources to enhance your current research. This will optimize your budget and ensure maximum accuracy.
+                </p>
+
+                <div className="space-y-4">
+                  <div className="flex items-center gap-2 text-sm font-medium text-gray-700 border-b border-gray-200">
+                    <span className="py-2">SOURCES</span>
+                    <div className="flex items-center">
+                      <button
+                        className={cn(
+                          "h-9 text-xs font-medium px-4 border-b-2 transition-colors",
+                          enhanceScope === "web" ? "border-green-500 text-green-700 bg-green-50/50" : "border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50"
+                        )}
+                        onClick={() => setEnhanceScope("web")}
+                        data-testid="button-enhance-scope-web"
+                      >
+                        Web
+                      </button>
+                      <button
+                        className={cn(
+                          "h-9 text-xs font-medium px-4 border-b-2 transition-colors",
+                          enhanceScope === "files" ? "border-green-500 text-green-700 bg-green-50/50" : "border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50"
+                        )}
+                        onClick={() => setEnhanceScope("files")}
+                        data-testid="button-enhance-scope-files"
+                      >
+                        Files
+                      </button>
+                    </div>
+                  </div>
+
+                  {enhanceScope === "web" ? (
+                    <div className="border-2 border-[#0097B2] rounded-sm p-4 bg-white space-y-4 shadow-sm">
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-2">
+                          <ToggleSwitch defaultChecked className="scale-75 data-[state=checked]:bg-[#0097B2]" />
+                          <span className="text-sm text-gray-700">Web Pages & Websites: <span className="font-mono">{"\u221E"}</span></span>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <div className="flex items-center gap-1">
+                          <span className="text-sm font-medium text-gray-700">Search Language</span>
+                          <Info className="w-4 h-4 text-[#0097B2]" />
+                        </div>
+                        <Select
+                          value="auto"
+                          onValueChange={(val) => {
+                            if (val !== "auto" && !enhanceLanguages.includes(val)) {
+                              setEnhanceLanguages(prev => [...prev, val]);
+                            }
+                          }}
+                        >
+                          <SelectTrigger className="h-8 w-[140px] bg-white border-gray-300 text-xs" data-testid="select-enhance-language">
+                            <SelectValue placeholder="Auto Detect" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {enhanceLanguageOptions.filter(l => l.value === "auto" || !enhanceLanguages.includes(l.value)).map(l => (
+                              <SelectItem key={l.value} value={l.value}>{l.label}</SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        {enhanceLanguages.map(code => {
+                          const lang = enhanceLanguageOptions.find(l => l.value === code);
+                          const label = lang?.label || code;
+                          const match = label.match(/\(([^)]+)\)/);
+                          const short = match ? match[1] : code;
+                          return (
+                            <div key={code} className="bg-[#A0A0A0] text-black text-xs font-bold px-2 py-1 rounded-sm flex items-center gap-1">
+                              {short}
+                              <X className="w-3 h-3 text-red-600 cursor-pointer" onClick={() => setEnhanceLanguages(prev => prev.filter(l => l !== code))} />
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="border border-green-600 rounded-sm bg-white shadow-sm overflow-hidden">
+                      <div className="flex items-center justify-between p-2 border-b border-gray-200">
+                        <div className="flex items-center gap-2">
+                          <FileText className="w-5 h-5" strokeWidth={1.5} />
+                          <span className="text-sm font-medium text-[#274b8a]">Files & Assets: {enhanceFiles.length}/10</span>
+                        </div>
+                        {enhanceFiles.length > 0 && (
+                          <div className="flex items-center gap-2 text-xs text-gray-600">
+                            <span>Context window</span>
+                            <div className="w-32 h-4 bg-white border border-green-500 rounded-sm relative overflow-hidden">
+                              <div className="absolute inset-y-0 left-0 bg-green-500 transition-all" style={{ width: `${Math.round((enhanceFiles.length / 10) * 100)}%` }} />
+                              <span className="absolute inset-0 flex items-center justify-center text-[10px] font-medium text-gray-700 z-10">Usage: {Math.round((enhanceFiles.length / 10) * 100)}%</span>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                      <div className="p-3">
+                        <div className="space-y-2 mb-3">
+                          {enhanceFiles.map((file, i) => (
+                            <div
+                              key={`${file.name}-${i}`}
+                              className="flex items-center justify-between bg-[#008DA8] text-white px-3 py-2 rounded-sm cursor-pointer hover:bg-[#007A92] transition-colors"
+                              data-testid={`card-enhance-file-${i}`}
+                            >
+                              <div className="flex items-center gap-2 min-w-0">
+                                <FileText className="w-4 h-4 text-white/80 shrink-0" strokeWidth={1.5} />
+                                <span className="text-[10px] font-medium truncate">{file.name}</span>
+                              </div>
+                              <XCircle
+                                className="w-4 h-4 text-cyan-200 hover:text-white cursor-pointer shrink-0"
+                                onClick={(e) => { e.stopPropagation(); setEnhanceFiles(prev => prev.filter((_, idx) => idx !== i)); }}
+                              />
+                            </div>
+                          ))}
+                        </div>
+                        <Button variant="outline" className="border-green-600 text-green-700 hover:bg-green-50 h-8 text-xs font-medium" data-testid="button-enhance-upload" onClick={() => setIsAddFileModalOpen(true)}>
+                          <Upload className="w-3 h-3 mr-1" /> Upload files
+                        </Button>
+                      </div>
+                      <div className="bg-gray-50 p-2 border-t border-gray-200 flex items-center gap-2">
+                        <ToggleSwitch className="scale-75 data-[state=checked]:bg-green-600 bg-[#343a4669]" />
+                        <span className="text-xs font-medium flex items-center gap-1 text-[#3564bd]">
+                          <Link2 className="w-3 h-3" /> Extract & Research Embedded URLs <Info className="w-3 h-3 text-[#0097B2]" />
+                        </span>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="flex items-center gap-2 flex-wrap pt-2">
+                    <span className="text-sm font-bold text-gray-700">Data Engine</span>
+                    <Info className="w-3.5 h-3.5 text-gray-400" />
+                    <Select value={enhanceEngine} onValueChange={setEnhanceEngine}>
+                      <SelectTrigger className="h-8 w-[140px] bg-white border-gray-300 text-xs font-bold" data-testid="select-enhance-engine">
+                        <div className="flex items-center gap-1.5">
+                          {enhanceEngine === "ultimate" && <Zap className="w-3 h-3 text-yellow-500 fill-yellow-500" />}
+                          {enhanceEngine === "pro" && <Zap className="w-3 h-3 text-blue-500 fill-blue-500" />}
+                          {enhanceEngine === "fast" && <Zap className="w-3 h-3 text-green-500 fill-green-500" />}
+                          <span className="capitalize">{enhanceEngine === "fast" ? "Standard" : enhanceEngine === "pro" ? "Advanced" : "Ultimate"}</span>
+                        </div>
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="ultimate">Ultimate</SelectItem>
+                        <SelectItem value="pro">Advanced</SelectItem>
+                        <SelectItem value="fast">Standard</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <span className="text-xs text-[#008DA8]">{getEnhanceEngineDesc(enhanceEngine)}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="shrink-0 px-5 py-3 border-t border-gray-100 space-y-3">
+              <div className="text-left relative">
+                <span className="text-xs text-gray-500 font-medium mr-2">Estimated Cost:</span>
+                <span
+                  className="text-sm font-bold text-[#008DA8] border-b border-[#008DA8] border-dashed cursor-pointer"
+                  onClick={() => setEnhanceCostOpen(!enhanceCostOpen)}
+                  data-testid="text-enhance-cost"
+                >
+                  $15.40 - $18.40
+                </span>
+
+                {enhanceCostOpen && (
+                  <div className="absolute bottom-full left-0 mb-2 w-[440px] bg-white rounded-lg shadow-xl border border-gray-200 z-50 overflow-hidden text-left">
+                    <div className="flex">
+                      <div className="flex-1 p-4 border-r border-gray-100">
+                        <h4 className="text-xs font-bold text-gray-900 mb-3">Cost Breakdown</h4>
+                        <div className="space-y-2 text-xs">
+                          <div className="flex justify-between text-gray-600">
+                            <span>Fixed cost for Core generator:</span>
+                            <span>$2.00</span>
+                          </div>
+                          <div className="flex justify-between text-gray-600">
+                            <span>Matches cost (10 x $0.15):</span>
+                            <span>$1.50</span>
+                          </div>
+                          <div className="space-y-1">
+                            <div className="flex justify-between text-gray-600">
+                              <span>Enrichment Cost:</span>
+                              <span>$0.50</span>
+                            </div>
+                            <div className="flex justify-between text-gray-400 pl-2 text-[10px]">
+                              <span>Core2x (10 x $0.050):</span>
+                              <span>$0.50</span>
+                            </div>
+                            <div className="text-gray-300 pl-2 text-[10px]">company_summary</div>
+                          </div>
+                          <div className="flex justify-between font-bold text-gray-900 pt-2 border-t border-gray-100 mt-2">
+                            <span>Total:</span>
+                            <span>$4.00</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="w-[200px] p-4 bg-gray-50">
+                        <div className="flex justify-between items-start mb-2">
+                          <h4 className="text-xs font-bold text-gray-900">Budget Control</h4>
+                          <button onClick={() => setEnhanceCostOpen(false)} className="text-gray-400 hover:text-gray-600">
+                            <X className="w-4 h-4" />
+                          </button>
+                        </div>
+                        <div className="space-y-3 text-xs">
+                          <div className="text-gray-600 mb-1">Available Balance: <span className="font-bold text-black">$124.50</span></div>
+                          <div className="text-gray-600 mb-2">Current research: <span className="font-bold text-black">$15.4 - $18.4</span></div>
+                          <div className="flex items-center gap-2">
+                            <ToggleSwitch
+                              checked={enhanceBudgetCap}
+                              onCheckedChange={setEnhanceBudgetCap}
+                              className="scale-75 data-[state=checked]:bg-green-600"
+                            />
+                            <span className="text-orange-400 font-medium">Strict Budget Cap</span>
+                            <Info className="w-3 h-3 text-orange-400" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+              <Button
+                className="w-full bg-[#008DA8] hover:bg-[#007A92] text-white font-bold px-6 shadow-md"
+                onClick={() => setShowEnhanceModal(false)}
+                data-testid="button-enhance-launch"
+              >
+                Launch Enhanced Research
+              </Button>
+            </div>
+          </div>
+        </>
+      )}
+      <AddFilesModal
+        open={isAddFileModalOpen}
+        onOpenChange={setIsAddFileModalOpen}
+        onSave={(files) => setEnhanceFiles(prev => [...prev, ...files.map(f => ({ ...f, size: Number(f.size) || 0 }))])}
+      />
     </div>
   );
 }
