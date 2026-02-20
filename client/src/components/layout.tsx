@@ -381,9 +381,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                       <div 
                         className={cn(
                           "absolute inset-0 rounded-full border-2 transition-colors duration-200",
-                          isInProgress ? "border-[#3b82f6] border-t-transparent animate-[spin_3s_linear_infinite]" : "border-transparent group-hover:border-2"
+                          isInProgress ? "border-[#3b82f6] border-t-transparent animate-[spin_3s_linear_infinite]" : "border-transparent"
                         )}
-                        style={!isInProgress ? { borderColor: 'transparent' } : undefined}
+                        style={{ 
+                          borderColor: isInProgress ? undefined : 'transparent'
+                        }}
                         onMouseEnter={(e) => {
                           if (!isInProgress) {
                             e.currentTarget.style.borderColor = borderHoverColor;
