@@ -197,7 +197,7 @@ function CollapsedSidebar({
             return (
               <div key={item.id} className="relative group flex items-center justify-start pl-1" title={item.title}>
                 <Link href={`${config.route}/${item.id}`}>
-                  <div className="relative w-9 h-9 flex items-center justify-center cursor-pointer">
+                  <div className="relative w-9 h-9 flex items-center justify-center cursor-pointer transition-transform duration-200 group-hover:scale-[0.88]">
                     <div
                       className={cn(
                         "absolute inset-0 rounded-full border-2",
