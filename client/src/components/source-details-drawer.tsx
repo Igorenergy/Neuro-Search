@@ -203,6 +203,13 @@ export function SourceDetailsDrawer({ source, open, onClose }: SourceDetailsDraw
         style={{ width: getDrawerWidth(drawerWidth) }}
         data-testid="source-details-drawer"
       >
+        {/* Status indicator vertical line */}
+        <div 
+          className={cn(
+            "absolute left-0 top-0 bottom-0 w-[3px] z-10",
+            source.included ? "bg-green-500" : "bg-orange-400"
+          )}
+        />
         {/* 1. Top System Bar */}
         <div className="flex items-center justify-between px-4 py-2.5 border-b border-gray-200 bg-white shrink-0">
           <span className="text-sm font-bold text-gray-900" data-testid="text-drawer-title">Source details</span>
