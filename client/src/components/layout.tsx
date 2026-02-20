@@ -383,12 +383,16 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       ) : (
         /* Collapsed State Icons */
         (<div className="flex flex-col items-center gap-4 py-4">
-          <Button size="icon" variant="ghost" className="h-10 w-10 text-[#006E7D]">
-            <Plus className="w-6 h-6" />
-          </Button>
-          <Button size="icon" variant="ghost" className="h-10 w-10 text-[#5F8D4E]">
-            <Search className="w-6 h-6" />
-          </Button>
+          <Link href="/smart-search/new">
+            <Button size="icon" variant="ghost" className="h-10 w-10 text-[#006E7D]">
+              <Plus className="w-6 h-6" />
+            </Button>
+          </Link>
+          <Link href="/research/search">
+            <Button size="icon" variant="ghost" className="h-10 w-10 text-[#5F8D4E]">
+              <Search className="w-6 h-6" />
+            </Button>
+          </Link>
           <div className="w-8 h-[1px] bg-gray-300" />
           <ScrollArea className="flex-1 w-full px-2">
             <div className="flex flex-col items-center gap-3">
