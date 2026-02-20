@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { Link } from "wouter";
 import {
   Plus,
@@ -65,6 +65,21 @@ export default function Dashboard() {
   const [showArchived, setShowArchived] = useState(false);
   const archivedSectionRef = useRef<HTMLDivElement>(null);
   const activeGridRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const checkHash = () => {
+      if (window.location.hash === "#archived" && !showArchived) {
+        setShowArchived(true);
+        setTimeout(() => {
+          archivedSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, 100);
+        window.history.replaceState(null, "", window.location.pathname);
+      }
+    };
+    checkHash();
+    window.addEventListener("hashchange", checkHash);
+    return () => window.removeEventListener("hashchange", checkHash);
+  }, [showArchived]);
 
   const toggleArchived = useCallback(() => {
     if (!showArchived) {
