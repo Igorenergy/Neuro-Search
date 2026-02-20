@@ -640,7 +640,6 @@ export default function ReportsSummary() {
           </div>
         </DialogContent>
       </Dialog>
-
       <Dialog open={detailsOpen} onOpenChange={setDetailsOpen}>
         <DialogContent className="sm:max-w-[400px] bg-white border-gray-200">
           <DialogHeader>
@@ -661,7 +660,7 @@ export default function ReportsSummary() {
               />
             </div>
             <div className="flex items-center justify-between">
-              <Label htmlFor="pin-toggle-report" className="text-sm font-medium text-gray-700">Pinned</Label>
+              <Label htmlFor="pin-toggle-report" className="text-sm font-medium text-gray-700">Pin to navigation menu</Label>
               <ToggleSwitch
                 id="pin-toggle-report"
                 checked={isPinned}
@@ -680,7 +679,6 @@ export default function ReportsSummary() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-
       <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
         <DialogContent className="sm:max-w-[400px] bg-white border-gray-200">
           <DialogHeader>
@@ -704,7 +702,6 @@ export default function ReportsSummary() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-
       <CloneRestartModal open={cloneOpen} onOpenChange={setCloneOpen} />
     </div>
   );
