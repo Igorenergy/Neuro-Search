@@ -296,12 +296,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           variant="ghost" 
           size="icon" 
           className={cn(
-            "h-12 w-12 text-black hover:bg-black/5 transition-transform flex items-center justify-center border-4 border-red-600 rounded-none p-0",
+            "h-12 w-12 text-black hover:bg-black/5 transition-transform flex items-center justify-center",
             collapsed && "-translate-y-[15.5px]"
           )}
           onClick={() => setIsCollapsed(!isCollapsed)}
         >
-          <Menu className="w-10 h-10 stroke-[3]" />
+          <Menu className="w-8 h-8 stroke-[3]" />
         </Button>
       </div>
 
