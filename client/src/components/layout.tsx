@@ -48,293 +48,6 @@ import ResearchDetailsModal from "@/components/research-details-modal";
 
 type ResearchStatus = "success" | "in-progress" | "failed" | "canceled";
 
-function CollapsedSidebar({
-  sidebarVisibleItems,
-  visibleResearchItems,
-  statusConfig,
-  statusFilter,
-  setStatusFilter,
-  rocketIcon,
-  pinnedIds,
-  togglePin,
-  setSelectedItem,
-  setIsPinned,
-  setDetailsOpen,
-  setCloneOpen,
-  setDeleteOpen,
-  setAbortItem,
-  setAbortOpen,
-  setFinishEarlyOpen,
-}: {
-  sidebarVisibleItems: { id: number; title: string; status: ResearchStatus }[];
-  visibleResearchItems: { id: number; title: string; status: ResearchStatus }[];
-  statusConfig: Record<ResearchStatus, { hoverBorder: string; dotColor: string; route: string }>;
-  statusFilter: "all" | ResearchStatus;
-  setStatusFilter: (v: "all" | ResearchStatus) => void;
-  rocketIcon: string;
-  pinnedIds: number[];
-  togglePin: (id: number) => void;
-  setSelectedItem: (item: { id: number; title: string } | null) => void;
-  setIsPinned: (v: boolean) => void;
-  setDetailsOpen: (v: boolean) => void;
-  setCloneOpen: (v: boolean) => void;
-  setDeleteOpen: (v: boolean) => void;
-  setAbortItem: (item: { id: number; title: string } | null) => void;
-  setAbortOpen: (v: boolean) => void;
-  setFinishEarlyOpen: (v: boolean) => void;
-}) {
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const [canScrollUp, setCanScrollUp] = useState(false);
-  const [canScrollDown, setCanScrollDown] = useState(false);
-
-  const checkScroll = useCallback(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-    setCanScrollUp(el.scrollTop > 0);
-    setCanScrollDown(el.scrollTop + el.clientHeight < el.scrollHeight - 1);
-  }, []);
-
-  useEffect(() => {
-    checkScroll();
-    const el = scrollRef.current;
-    if (!el) return;
-    el.addEventListener("scroll", checkScroll);
-    const ro = new ResizeObserver(checkScroll);
-    ro.observe(el);
-    return () => {
-      el.removeEventListener("scroll", checkScroll);
-      ro.disconnect();
-    };
-  }, [checkScroll, sidebarVisibleItems]);
-
-  const scrollBy = (direction: "up" | "down") => {
-    const el = scrollRef.current;
-    if (!el) return;
-    el.scrollBy({ top: direction === "up" ? -100 : 100, behavior: "smooth" });
-  };
-
-  return (
-    <div className="flex flex-col items-center gap-4 py-4 h-full">
-      <Link href="/smart-search/new">
-        <Button size="icon" variant="ghost" className="h-10 w-10 text-[#006E7D] hover:bg-[#006E7D]/10 transition-colors">
-          <Plus className="w-[30px] h-[30px]" />
-        </Button>
-      </Link>
-      <Link href="/research/search">
-        <Button size="icon" variant="ghost" className="h-10 w-10 text-[#5F8D4E] hover:bg-[#5F8D4E]/10 transition-colors">
-          <Search className="w-[30px] h-[30px]" />
-        </Button>
-      </Link>
-      <div className="w-8 h-[1px] bg-gray-300" />
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <button
-            className={cn(
-              "h-7 w-7 flex items-center justify-center rounded border transition-all",
-              statusFilter === "all"
-                ? "bg-[#f8f9fa] border-gray-300 text-gray-600 hover:border-gray-400 hover:bg-white"
-                : statusFilter === "success"
-                ? "bg-white border-[#22c55e] text-[#22c55e] shadow-sm"
-                : statusFilter === "in-progress"
-                ? "bg-white border-[#3b82f6] text-[#3b82f6] shadow-sm"
-                : statusFilter === "failed"
-                ? "bg-white border-[#ef4444] text-[#ef4444] shadow-sm"
-                : "bg-white border-[#f97316] text-[#f97316] shadow-sm",
-              "data-[state=open]:bg-white"
-            )}
-            data-testid="button-collapsed-filter-status"
-          >
-            <Filter className="w-3.5 h-3.5" />
-          </button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="start" side="right" className="w-36 bg-[#1a1a1a] border-[#333] shadow-xl p-0.5">
-          {([
-            { value: "all" as const, label: "All", count: visibleResearchItems.length, textColor: "text-gray-100" },
-            { value: "success" as const, label: "Success", count: visibleResearchItems.filter(i => i.status === "success").length, textColor: "text-[#22c55e]" },
-            { value: "in-progress" as const, label: "In Progress", count: visibleResearchItems.filter(i => i.status === "in-progress").length, textColor: "text-[#3b82f6]" },
-            { value: "failed" as const, label: "Failed", count: visibleResearchItems.filter(i => i.status === "failed").length, textColor: "text-[#ef4444]" },
-            { value: "canceled" as const, label: "Canceled", count: visibleResearchItems.filter(i => i.status === "canceled").length, textColor: "text-[#f97316]" },
-          ]).map((opt) => (
-            <DropdownMenuItem
-              key={opt.value}
-              className={cn("text-xs cursor-pointer flex justify-between items-center px-2 py-1 hover:text-white focus:text-white focus:bg-[#333]", statusFilter === opt.value ? "font-bold text-[#008DA8] focus:text-[#008DA8]" : opt.textColor)}
-              onClick={() => setStatusFilter(opt.value)}
-              data-testid={`collapsed-filter-${opt.value}`}
-            >
-              <span>{opt.label}</span>
-              <span className="text-[9px] text-gray-500 ml-2">{opt.count}</span>
-            </DropdownMenuItem>
-          ))}
-        </DropdownMenuContent>
-      </DropdownMenu>
-      <button
-        className={cn(
-          "w-7 h-5 flex items-center justify-center rounded transition-all",
-          canScrollUp ? "text-gray-500 hover:text-gray-800 hover:bg-gray-200 cursor-pointer" : "text-gray-300 cursor-default"
-        )}
-        onClick={() => scrollBy("up")}
-        disabled={!canScrollUp}
-        data-testid="button-scroll-up"
-      >
-        <ChevronUp className="w-4 h-4" />
-      </button>
-      <div
-        ref={scrollRef}
-        className="flex-1 w-full px-2 overflow-y-auto scrollbar-none"
-        style={{ scrollbarWidth: "none" }}
-      >
-        <div className="flex flex-col items-center gap-3 py-1">
-          {sidebarVisibleItems.map(item => {
-            const config = statusConfig[item.status];
-            const isInProgress = item.status === "in-progress";
-            const isPinned = pinnedIds.includes(item.id);
-            const borderHoverColor =
-              item.status === "success" ? "#22c55e" :
-              item.status === "in-progress" ? "#3b82f6" :
-              item.status === "failed" ? "#ef4444" :
-              "#f97316";
-
-            return (
-              <div key={item.id} className="relative group flex items-center justify-start pl-1" title={item.title}>
-                <Link href={`${config.route}/${item.id}`}>
-                  <div className="relative w-[39.6px] h-[39.6px] flex items-center justify-center cursor-pointer transition-transform duration-200 group-hover:scale-[0.88]">
-                    <div
-                      className={cn(
-                        "absolute inset-0 rounded-full border-[2.2px]",
-                        isInProgress ? "border-[#3b82f6] border-t-transparent animate-[spin_3s_linear_infinite]" : ""
-                      )}
-                      style={!isInProgress ? { borderColor: borderHoverColor } : undefined}
-                    />
-                    <div className="w-[35.2px] h-[35.2px] rounded-full bg-[#E6E1EF] flex items-center justify-center group-hover:bg-white transition-colors">
-                      <img src={rocketIcon} alt="Rocket" className="w-[27.5px] h-[27.5px] opacity-70" />
-                    </div>
-                  </div>
-                </Link>
-                <div className="absolute left-[34px] top-1/2 -translate-y-1/2 flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-20" onClick={(e) => e.stopPropagation()}>
-                  {(!isInProgress || sidebarVisibleItems.filter(i => i.status === "in-progress").indexOf(item) >= 2) && (
-                    <button
-                      className={cn(
-                        "w-5 h-5 flex items-center justify-center rounded hover:bg-gray-200 transition-colors cursor-pointer",
-                        isPinned ? "text-gray-600" : "text-gray-400"
-                      )}
-                      onClick={(e) => { e.stopPropagation(); e.preventDefault(); togglePin(item.id); }}
-                      data-testid={`collapsed-pin-${item.id}`}
-                      title={isPinned ? "Unpin" : "Pin"}
-                    >
-                      <Pin className={cn("w-3 h-3", isPinned ? "rotate-45" : "rotate-45")} />
-                    </button>
-                  )}
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild onClick={(e) => { e.stopPropagation(); e.preventDefault(); }}>
-                      <button
-                        className="w-5 h-5 flex items-center justify-center rounded text-gray-400 hover:bg-gray-200 hover:text-gray-700 transition-colors cursor-pointer"
-                        data-testid={`collapsed-kebab-${item.id}`}
-                      >
-                        <MoreVertical className="w-3 h-3" />
-                      </button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="start" side="right" className="w-44 bg-[#1a1a1a] border-[#333] shadow-xl">
-                      {isInProgress ? (
-                        <>
-                          <DropdownMenuItem
-                            className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
-                            onSelect={() => { setTimeout(() => togglePin(item.id), 0); }}
-                            data-testid={`collapsed-pin-toggle-${item.id}`}
-                          >
-                            <Pin className="w-4 h-4 text-gray-400 rotate-45" />
-                            {isPinned ? "Unpin" : "Pin to navigation"}
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 focus:text-red-400 focus:bg-[#333] cursor-pointer"
-                            onSelect={() => { setTimeout(() => { setAbortItem(item); setAbortOpen(true); }, 0); }}
-                            data-testid={`collapsed-abort-${item.id}`}
-                          >
-                            <StopCircle className="w-4 h-4" />
-                            Abort Research
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            className="flex items-center gap-2 text-sm text-[#22c55e] hover:text-[#16a34a] focus:text-[#16a34a] focus:bg-[#333] cursor-pointer"
-                            onSelect={() => { setTimeout(() => { setAbortItem(item); setFinishEarlyOpen(true); }, 0); }}
-                            data-testid={`collapsed-finish-early-${item.id}`}
-                          >
-                            <FastForward className="w-4 h-4" />
-                            Finish Early
-                          </DropdownMenuItem>
-                        </>
-                      ) : (
-                        <>
-                          <DropdownMenuItem
-                            className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
-                            onSelect={() => { setTimeout(() => togglePin(item.id), 0); }}
-                            data-testid={`collapsed-pin-toggle-${item.id}`}
-                          >
-                            <Pin className="w-4 h-4 text-gray-400 rotate-45" />
-                            {isPinned ? "Unpin" : "Pin to navigation"}
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
-                            onSelect={() => { setTimeout(() => { setSelectedItem(item); setIsPinned(isPinned); setDetailsOpen(true); }, 0); }}
-                            data-testid={`collapsed-details-${item.id}`}
-                          >
-                            <FileText className="w-4 h-4 text-gray-400" />
-                            Details
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            className="flex items-center gap-2 text-sm text-[#008DA8] hover:text-[#00b0cc] focus:text-[#00b0cc] focus:bg-[#333] cursor-pointer"
-                            onSelect={() => { setTimeout(() => setCloneOpen(true), 0); }}
-                            data-testid={`collapsed-clone-${item.id}`}
-                          >
-                            <Copy className="w-4 h-4 text-[#008DA8]" />
-                            Clone & Restart
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
-                            data-testid={`collapsed-archive-${item.id}`}
-                          >
-                            <Archive className="w-4 h-4 text-gray-400" />
-                            Archive Project
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
-                            data-testid={`collapsed-export-${item.id}`}
-                          >
-                            <Download className="w-4 h-4 text-gray-400" />
-                            Export Project
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 focus:text-red-400 focus:bg-[#333] cursor-pointer"
-                            onSelect={() => { setTimeout(() => { setSelectedItem(item); setDeleteOpen(true); }, 0); }}
-                            data-testid={`collapsed-delete-${item.id}`}
-                          >
-                            <Trash2 className="w-4 h-4" />
-                            Delete
-                          </DropdownMenuItem>
-                        </>
-                      )}
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-      <button
-        className={cn(
-          "w-7 h-5 flex items-center justify-center rounded transition-all",
-          canScrollDown ? "text-gray-500 hover:text-gray-800 hover:bg-gray-200 cursor-pointer" : "text-gray-300 cursor-default"
-        )}
-        onClick={() => scrollBy("down")}
-        disabled={!canScrollDown}
-        data-testid="button-scroll-down"
-      >
-        <ChevronDown className="w-4 h-4" />
-      </button>
-      <div className="pb-2" />
-    </div>
-  );
-}
-
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
@@ -344,7 +57,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const [cloneOpen, setCloneOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<{ id: number; title: string } | null>(null);
   const [isPinned, setIsPinned] = useState(false);
-
 
   const statusConfig: Record<ResearchStatus, { hoverBorder: string; dotColor: string; route: string }> = {
     "success": { hoverBorder: "hover:border-green-500", dotColor: "bg-green-500", route: "/research-success" },
@@ -402,124 +114,398 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     return 0;
   });
 
-  const togglePin = (id: number) => {
+  const togglePin = useCallback((id: number) => {
     setPinnedIds(prev => prev.includes(id) ? prev.filter(pid => pid !== id) : [...prev, id]);
+  }, []);
+
+  const collapsedScrollRef = useRef<HTMLDivElement>(null);
+  const [canScrollUp, setCanScrollUp] = useState(false);
+  const [canScrollDown, setCanScrollDown] = useState(false);
+
+  const checkCollapsedScroll = useCallback(() => {
+    const el = collapsedScrollRef.current;
+    if (!el) return;
+    setCanScrollUp(el.scrollTop > 0);
+    setCanScrollDown(el.scrollTop + el.clientHeight < el.scrollHeight - 1);
+  }, []);
+
+  useEffect(() => {
+    if (!isCollapsed) return;
+    checkCollapsedScroll();
+    const el = collapsedScrollRef.current;
+    if (!el) return;
+    el.addEventListener("scroll", checkCollapsedScroll);
+    const ro = new ResizeObserver(checkCollapsedScroll);
+    ro.observe(el);
+    return () => {
+      el.removeEventListener("scroll", checkCollapsedScroll);
+      ro.disconnect();
+    };
+  }, [isCollapsed, checkCollapsedScroll, sidebarVisibleItems]);
+
+  const scrollCollapsedBy = (direction: "up" | "down") => {
+    const el = collapsedScrollRef.current;
+    if (!el) return;
+    el.scrollBy({ top: direction === "up" ? -100 : 100, behavior: "smooth" });
   };
 
-  const SidebarContent = ({ collapsed }: { collapsed?: boolean }) => (
-    <div className="flex flex-col h-full bg-[#F5F5F7] border-r border-gray-200 text-gray-800 font-sans">
-      {/* Header */}
-      <div className={cn("flex items-center justify-between px-3 py-2 h-[57px] border-b border-gray-200 bg-[#EBEBEB]", collapsed && "justify-center")}>
-        {!collapsed && (
-          <div className="flex items-center gap-2 overflow-hidden h-8">
-            <div className="w-8 h-8 bg-gray-200 border border-gray-400 flex items-center justify-center rounded-sm shrink-0">
-               <span className="text-[10px] font-bold text-gray-500">Logo</span>
-            </div>
-            <span className="font-bold text-lg text-gray-800 tracking-tight">Neuro-Search</span>
-          </div>
-        )}
-        <Button 
-          variant="ghost" 
-          size="icon" 
-          className="h-12 w-12 text-black hover:bg-black/5 transition-transform flex items-center justify-center"
-          onClick={() => setIsCollapsed(!isCollapsed)}
+  function renderCollapsedSidebar() {
+    return (
+      <div className="flex flex-col items-center gap-4 py-4 h-full">
+        <Link href="/smart-search/new">
+          <Button size="icon" variant="ghost" className="h-10 w-10 text-[#006E7D] hover:bg-[#006E7D]/10 transition-colors">
+            <Plus className="w-[30px] h-[30px]" />
+          </Button>
+        </Link>
+        <Link href="/research/search">
+          <Button size="icon" variant="ghost" className="h-10 w-10 text-[#5F8D4E] hover:bg-[#5F8D4E]/10 transition-colors">
+            <Search className="w-[30px] h-[30px]" />
+          </Button>
+        </Link>
+        <div className="w-8 h-[1px] bg-gray-300" />
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button
+              className={cn(
+                "h-7 w-7 flex items-center justify-center rounded border transition-all",
+                statusFilter === "all"
+                  ? "bg-[#f8f9fa] border-gray-300 text-gray-600 hover:border-gray-400 hover:bg-white"
+                  : statusFilter === "success"
+                  ? "bg-white border-[#22c55e] text-[#22c55e] shadow-sm"
+                  : statusFilter === "in-progress"
+                  ? "bg-white border-[#3b82f6] text-[#3b82f6] shadow-sm"
+                  : statusFilter === "failed"
+                  ? "bg-white border-[#ef4444] text-[#ef4444] shadow-sm"
+                  : "bg-white border-[#f97316] text-[#f97316] shadow-sm",
+                "data-[state=open]:bg-white"
+              )}
+              data-testid="button-collapsed-filter-status"
+            >
+              <Filter className="w-3.5 h-3.5" />
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="start" side="right" className="w-36 bg-[#1a1a1a] border-[#333] shadow-xl p-0.5">
+            {([
+              { value: "all" as const, label: "All", count: visibleResearchItems.length, textColor: "text-gray-100" },
+              { value: "success" as const, label: "Success", count: visibleResearchItems.filter(i => i.status === "success").length, textColor: "text-[#22c55e]" },
+              { value: "in-progress" as const, label: "In Progress", count: visibleResearchItems.filter(i => i.status === "in-progress").length, textColor: "text-[#3b82f6]" },
+              { value: "failed" as const, label: "Failed", count: visibleResearchItems.filter(i => i.status === "failed").length, textColor: "text-[#ef4444]" },
+              { value: "canceled" as const, label: "Canceled", count: visibleResearchItems.filter(i => i.status === "canceled").length, textColor: "text-[#f97316]" },
+            ]).map((opt) => (
+              <DropdownMenuItem
+                key={opt.value}
+                className={cn("text-xs cursor-pointer flex justify-between items-center px-2 py-1 hover:text-white focus:text-white focus:bg-[#333]", statusFilter === opt.value ? "font-bold text-[#008DA8] focus:text-[#008DA8]" : opt.textColor)}
+                onClick={() => setStatusFilter(opt.value)}
+                data-testid={`collapsed-filter-${opt.value}`}
+              >
+                <span>{opt.label}</span>
+                <span className="text-[9px] text-gray-500 ml-2">{opt.count}</span>
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
+        <button
+          className={cn(
+            "w-7 h-5 flex items-center justify-center rounded transition-all",
+            canScrollUp ? "text-gray-500 hover:text-gray-800 hover:bg-gray-200 cursor-pointer" : "text-gray-300 cursor-default"
+          )}
+          onClick={() => scrollCollapsedBy("up")}
+          disabled={!canScrollUp}
+          data-testid="button-scroll-up"
         >
-          <Menu className="w-8 h-8 stroke-[3]" />
-        </Button>
-      </div>
+          <ChevronUp className="w-4 h-4" />
+        </button>
+        <div
+          ref={collapsedScrollRef}
+          className="flex-1 w-full px-2 overflow-y-auto scrollbar-none"
+          style={{ scrollbarWidth: "none" }}
+        >
+          <div className="flex flex-col items-center gap-3 py-1">
+            {sidebarVisibleItems.map(item => {
+              const config = statusConfig[item.status];
+              const isInProgress = item.status === "in-progress";
+              const itemIsPinned = pinnedIds.includes(item.id);
+              const borderHoverColor =
+                item.status === "success" ? "#22c55e" :
+                item.status === "in-progress" ? "#3b82f6" :
+                item.status === "failed" ? "#ef4444" :
+                "#f97316";
 
-      {!collapsed ? (
-        <>
-          {/* Actions Bar */}
-          <div className="p-2 space-y-2">
-            <div className="flex items-center gap-2">
-              <Link href="/smart-search/new" className="flex-1">
-                <Button variant="outline" className="w-full justify-center bg-white border-gray-400 text-[#006E7D] font-bold hover:bg-gray-50 h-9 rounded-sm gap-1">
-                  <Plus className="w-4 h-4 stroke-[3]" /> Start new search
-                </Button>
-              </Link>
-              
-              <Link href="/research/search">
-                <Button size="icon" className="h-9 w-9 bg-[#5F8D4E] hover:bg-[#4d753e] rounded-sm shrink-0">
-                  <Search className="w-5 h-5 text-white stroke-[3]" />
-                </Button>
-              </Link>
-            </div>
-
-            {/* Filter Bar */}
-            <div className="flex items-center gap-2 px-1 mt-2">
-              <span className="text-sm font-semibold text-black">Latest research</span>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <button 
-                    className={cn(
-                      "h-7 w-7 flex items-center justify-center rounded border transition-all",
-                      statusFilter === "all"
-                        ? "bg-[#f8f9fa] border-gray-300 text-gray-600 hover:border-gray-400 hover:bg-white"
-                        : statusFilter === "success"
-                        ? "bg-white border-[#22c55e] text-[#22c55e] shadow-sm"
-                        : statusFilter === "in-progress"
-                        ? "bg-white border-[#3b82f6] text-[#3b82f6] shadow-sm"
-                        : statusFilter === "failed"
-                        ? "bg-white border-[#ef4444] text-[#ef4444] shadow-sm"
-                        : "bg-white border-[#f97316] text-[#f97316] shadow-sm",
-                      "data-[state=open]:bg-white"
-                    )} 
-                    data-testid="button-filter-status"
+              return (
+                <div key={item.id} className="relative group flex items-center justify-start pl-1" title={item.title}>
+                  <Link href={`${config.route}/${item.id}`}>
+                    <div className="relative w-[39.6px] h-[39.6px] flex items-center justify-center cursor-pointer transition-transform duration-200 group-hover:scale-[0.88]">
+                      <div
+                        className={cn(
+                          "absolute inset-0 rounded-full border-[2.2px]",
+                          isInProgress ? "border-[#3b82f6] border-t-transparent animate-[spin_3s_linear_infinite]" : ""
+                        )}
+                        style={!isInProgress ? { borderColor: borderHoverColor } : undefined}
+                      />
+                      <div className="w-[35.2px] h-[35.2px] rounded-full bg-[#E6E1EF] flex items-center justify-center group-hover:bg-white transition-colors">
+                        <img src={rocketIcon} alt="Rocket" className="w-[27.5px] h-[27.5px] opacity-70" />
+                      </div>
+                      {itemIsPinned && (
+                        <div className="absolute -top-0.5 -right-0.5 w-3 h-3 bg-[#008DA8] rounded-full flex items-center justify-center border border-[#F5F5F7]" data-testid={`pin-indicator-${item.id}`}>
+                          <Pin className="w-1.5 h-1.5 text-white rotate-45" />
+                        </div>
+                      )}
+                    </div>
+                  </Link>
+                  <div
+                    className="absolute left-[34px] top-1/2 -translate-y-1/2 flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-20"
+                    onClick={(e) => { e.stopPropagation(); e.preventDefault(); }}
                   >
-                    <Filter className="w-3.5 h-3.5" />
-                  </button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-36 bg-[#1a1a1a] border-[#333] shadow-xl p-0.5">
-                  {([
-                    { value: "all", label: "All", count: visibleResearchItems.length, textColor: "text-gray-100" },
-                    { value: "success", label: "Success", count: visibleResearchItems.filter(i => i.status === "success").length, textColor: "text-[#22c55e]" },
-                    { value: "in-progress", label: "In Progress", count: visibleResearchItems.filter(i => i.status === "in-progress").length, textColor: "text-[#3b82f6]" },
-                    { value: "failed", label: "Failed", count: visibleResearchItems.filter(i => i.status === "failed").length, textColor: "text-[#ef4444]" },
-                    { value: "canceled", label: "Canceled", count: visibleResearchItems.filter(i => i.status === "canceled").length, textColor: "text-[#f97316]" },
-                  ] as const).map((opt) => (
-                    <DropdownMenuItem
-                      key={opt.value}
-                      className={cn("text-xs cursor-pointer flex justify-between items-center px-2 py-1 hover:text-white focus:text-white focus:bg-[#333]", statusFilter === opt.value ? "font-bold text-[#008DA8] focus:text-[#008DA8]" : opt.textColor)}
-                      onClick={() => setStatusFilter(opt.value)}
-                      data-testid={`filter-${opt.value}`}
-                    >
-                      <span>{opt.label}</span>
-                      <span className="text-[9px] text-gray-500 ml-2">{opt.count}</span>
-                    </DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
+                    {(!isInProgress || sidebarVisibleItems.filter(i => i.status === "in-progress").indexOf(item) >= 2) && (
+                      <button
+                        className={cn(
+                          "w-5 h-5 flex items-center justify-center rounded hover:bg-gray-200 transition-colors cursor-pointer",
+                          itemIsPinned ? "text-[#008DA8]" : "text-gray-400"
+                        )}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          e.preventDefault();
+                          togglePin(item.id);
+                        }}
+                        data-testid={`collapsed-pin-${item.id}`}
+                        title={itemIsPinned ? "Unpin" : "Pin"}
+                      >
+                        <Pin className="w-3 h-3 rotate-45" />
+                      </button>
+                    )}
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <button
+                          className="w-5 h-5 flex items-center justify-center rounded text-gray-400 hover:bg-gray-200 hover:text-gray-700 transition-colors cursor-pointer"
+                          onClick={(e) => { e.stopPropagation(); e.preventDefault(); }}
+                          data-testid={`collapsed-kebab-${item.id}`}
+                        >
+                          <MoreVertical className="w-3 h-3" />
+                        </button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="start" side="right" className="w-44 bg-[#1a1a1a] border-[#333] shadow-xl">
+                        {isInProgress ? (
+                          <>
+                            <DropdownMenuItem
+                              className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
+                              onSelect={() => { setTimeout(() => togglePin(item.id), 0); }}
+                              data-testid={`collapsed-pin-toggle-${item.id}`}
+                            >
+                              <Pin className="w-4 h-4 text-gray-400 rotate-45" />
+                              {itemIsPinned ? "Unpin" : "Pin to navigation"}
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 focus:text-red-400 focus:bg-[#333] cursor-pointer"
+                              onSelect={() => { setTimeout(() => { setAbortItem(item); setAbortOpen(true); }, 0); }}
+                              data-testid={`collapsed-abort-${item.id}`}
+                            >
+                              <StopCircle className="w-4 h-4" />
+                              Abort Research
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              className="flex items-center gap-2 text-sm text-[#22c55e] hover:text-[#16a34a] focus:text-[#16a34a] focus:bg-[#333] cursor-pointer"
+                              onSelect={() => { setTimeout(() => { setAbortItem(item); setFinishEarlyOpen(true); }, 0); }}
+                              data-testid={`collapsed-finish-early-${item.id}`}
+                            >
+                              <FastForward className="w-4 h-4" />
+                              Finish Early
+                            </DropdownMenuItem>
+                          </>
+                        ) : (
+                          <>
+                            <DropdownMenuItem
+                              className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
+                              onSelect={() => { setTimeout(() => togglePin(item.id), 0); }}
+                              data-testid={`collapsed-pin-toggle-${item.id}`}
+                            >
+                              <Pin className="w-4 h-4 text-gray-400 rotate-45" />
+                              {itemIsPinned ? "Unpin" : "Pin to navigation"}
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
+                              onSelect={() => { setTimeout(() => { setSelectedItem(item); setIsPinned(itemIsPinned); setDetailsOpen(true); }, 0); }}
+                              data-testid={`collapsed-details-${item.id}`}
+                            >
+                              <FileText className="w-4 h-4 text-gray-400" />
+                              Details
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              className="flex items-center gap-2 text-sm text-[#008DA8] hover:text-[#00b0cc] focus:text-[#00b0cc] focus:bg-[#333] cursor-pointer"
+                              onSelect={() => { setTimeout(() => setCloneOpen(true), 0); }}
+                              data-testid={`collapsed-clone-${item.id}`}
+                            >
+                              <Copy className="w-4 h-4 text-[#008DA8]" />
+                              Clone & Restart
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
+                              data-testid={`collapsed-archive-${item.id}`}
+                            >
+                              <Archive className="w-4 h-4 text-gray-400" />
+                              Archive Project
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
+                              data-testid={`collapsed-export-${item.id}`}
+                            >
+                              <Download className="w-4 h-4 text-gray-400" />
+                              Export Project
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 focus:text-red-400 focus:bg-[#333] cursor-pointer"
+                              onSelect={() => { setTimeout(() => { setSelectedItem(item); setDeleteOpen(true); }, 0); }}
+                              data-testid={`collapsed-delete-${item.id}`}
+                            >
+                              <Trash2 className="w-4 h-4" />
+                              Delete
+                            </DropdownMenuItem>
+                          </>
+                        )}
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+        <button
+          className={cn(
+            "w-7 h-5 flex items-center justify-center rounded transition-all",
+            canScrollDown ? "text-gray-500 hover:text-gray-800 hover:bg-gray-200 cursor-pointer" : "text-gray-300 cursor-default"
+          )}
+          onClick={() => scrollCollapsedBy("down")}
+          disabled={!canScrollDown}
+          data-testid="button-scroll-down"
+        >
+          <ChevronDown className="w-4 h-4" />
+        </button>
+        <div className="pb-2" />
+      </div>
+    );
+  }
+
+  function renderExpandedSidebar() {
+    return (
+      <>
+        <div className="p-2 space-y-2">
+          <div className="flex items-center gap-2">
+            <Link href="/smart-search/new" className="flex-1">
+              <Button variant="outline" className="w-full justify-center bg-white border-gray-400 text-[#006E7D] font-bold hover:bg-gray-50 h-9 rounded-sm gap-1">
+                <Plus className="w-4 h-4 stroke-[3]" /> Start new search
+              </Button>
+            </Link>
+            
+            <Link href="/research/search">
+              <Button size="icon" className="h-9 w-9 bg-[#5F8D4E] hover:bg-[#4d753e] rounded-sm shrink-0">
+                <Search className="w-5 h-5 text-white stroke-[3]" />
+              </Button>
+            </Link>
           </div>
 
-          {/* Research List */}
-          <div className="flex-1 overflow-hidden bg-[#E6E1EF] mx-2 mb-2 border border-gray-300 rounded-sm">
-            <ScrollArea className="h-full">
-              {/* Pinned Items */}
-              {pinnedItems.length > 0 && (
-              <div className="sticky top-0 z-10 bg-[#E6E1EF] divide-y divide-gray-200/50 border-b border-gray-300">
-                {pinnedItems.map((item) => (
-                  <div key={item.id} className="flex items-start gap-2 p-3 hover:bg-white/50 cursor-pointer group transition-all rounded-sm">
-                    <Link href={`${statusConfig[item.status].route}/${item.id}`} className="flex items-center gap-2 flex-1 min-w-0">
-                      <div className="relative w-[33px] h-[33px] shrink-0 flex items-center justify-center">
-                        <div 
-                          className={cn(
-                            "absolute inset-0 rounded-full border-[2.2px]",
-                            item.status === "in-progress" ? "border-[#3b82f6] border-t-transparent animate-[spin_3s_linear_infinite]" : ""
-                          )}
-                          style={item.status !== "in-progress" ? { borderColor: item.status === 'success' ? '#22c55e' : item.status === 'failed' ? '#ef4444' : '#f97316' } : undefined}
-                        />
-                        <div className="w-[27.5px] h-[27.5px] rounded-full bg-[#E6E1EF] flex items-center justify-center">
-                          <img src={rocketIcon} alt="Rocket" className="w-[16.5px] h-[16.5px] opacity-70" />
-                        </div>
+          <div className="flex items-center gap-2 px-1 mt-2">
+            <span className="text-sm font-semibold text-black">Latest research</span>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <button 
+                  className={cn(
+                    "h-7 w-7 flex items-center justify-center rounded border transition-all",
+                    statusFilter === "all"
+                      ? "bg-[#f8f9fa] border-gray-300 text-gray-600 hover:border-gray-400 hover:bg-white"
+                      : statusFilter === "success"
+                      ? "bg-white border-[#22c55e] text-[#22c55e] shadow-sm"
+                      : statusFilter === "in-progress"
+                      ? "bg-white border-[#3b82f6] text-[#3b82f6] shadow-sm"
+                      : statusFilter === "failed"
+                      ? "bg-white border-[#ef4444] text-[#ef4444] shadow-sm"
+                      : "bg-white border-[#f97316] text-[#f97316] shadow-sm",
+                    "data-[state=open]:bg-white"
+                  )} 
+                  data-testid="button-filter-status"
+                >
+                  <Filter className="w-3.5 h-3.5" />
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-36 bg-[#1a1a1a] border-[#333] shadow-xl p-0.5">
+                {([
+                  { value: "all", label: "All", count: visibleResearchItems.length, textColor: "text-gray-100" },
+                  { value: "success", label: "Success", count: visibleResearchItems.filter(i => i.status === "success").length, textColor: "text-[#22c55e]" },
+                  { value: "in-progress", label: "In Progress", count: visibleResearchItems.filter(i => i.status === "in-progress").length, textColor: "text-[#3b82f6]" },
+                  { value: "failed", label: "Failed", count: visibleResearchItems.filter(i => i.status === "failed").length, textColor: "text-[#ef4444]" },
+                  { value: "canceled", label: "Canceled", count: visibleResearchItems.filter(i => i.status === "canceled").length, textColor: "text-[#f97316]" },
+                ] as const).map((opt) => (
+                  <DropdownMenuItem
+                    key={opt.value}
+                    className={cn("text-xs cursor-pointer flex justify-between items-center px-2 py-1 hover:text-white focus:text-white focus:bg-[#333]", statusFilter === opt.value ? "font-bold text-[#008DA8] focus:text-[#008DA8]" : opt.textColor)}
+                    onClick={() => setStatusFilter(opt.value)}
+                    data-testid={`filter-${opt.value}`}
+                  >
+                    <span>{opt.label}</span>
+                    <span className="text-[9px] text-gray-500 ml-2">{opt.count}</span>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </div>
+
+        <div className="flex-1 overflow-hidden bg-[#E6E1EF] mx-2 mb-2 border border-gray-300 rounded-sm">
+          <ScrollArea className="h-full">
+            {pinnedItems.length > 0 && (
+            <div className="sticky top-0 z-10 bg-[#E6E1EF] divide-y divide-gray-200/50 border-b border-gray-300">
+              {pinnedItems.map((item) => (
+                <div key={item.id} className="flex items-start gap-2 p-3 hover:bg-white/50 cursor-pointer group transition-all rounded-sm">
+                  <Link href={`${statusConfig[item.status].route}/${item.id}`} className="flex items-center gap-2 flex-1 min-w-0">
+                    <div className="relative w-[33px] h-[33px] shrink-0 flex items-center justify-center">
+                      <div 
+                        className={cn(
+                          "absolute inset-0 rounded-full border-[2.2px]",
+                          item.status === "in-progress" ? "border-[#3b82f6] border-t-transparent animate-[spin_3s_linear_infinite]" : ""
+                        )}
+                        style={item.status !== "in-progress" ? { borderColor: item.status === 'success' ? '#22c55e' : item.status === 'failed' ? '#ef4444' : '#f97316' } : undefined}
+                      />
+                      <div className="w-[27.5px] h-[27.5px] rounded-full bg-[#E6E1EF] flex items-center justify-center">
+                        <img src={rocketIcon} alt="Rocket" className="w-[16.5px] h-[16.5px] opacity-70" />
                       </div>
-                      <p className="text-[13px] leading-tight text-gray-800 line-clamp-2 font-medium flex-1" title={item.title}>
-                        {item.title}
-                      </p>
-                    </Link>
-                    <div className="flex flex-col items-center gap-1 shrink-0 mt-0.5">
-                      {item.status === "in-progress" ? (
+                    </div>
+                    <p className="text-[13px] leading-tight text-gray-800 line-clamp-2 font-medium flex-1" title={item.title}>
+                      {item.title}
+                    </p>
+                  </Link>
+                  <div className="flex flex-col items-center gap-1 shrink-0 mt-0.5">
+                    {item.status === "in-progress" ? (
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild onClick={(e) => e.preventDefault()}>
+                          <button className="p-0 border-0 bg-transparent" data-testid={`kebab-menu-${item.id}`}>
+                            <MoreVertical className="w-3.5 h-3.5 text-gray-500 cursor-pointer hover:text-gray-700" />
+                          </button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="w-44 bg-[#1a1a1a] border-[#333] shadow-xl">
+                          <DropdownMenuItem
+                            className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 focus:text-red-400 focus:bg-[#333] cursor-pointer"
+                            onSelect={() => { setTimeout(() => { setAbortItem(item); setAbortOpen(true); }, 0); }}
+                            data-testid={`abort-${item.id}`}
+                          >
+                            <StopCircle className="w-4 h-4" />
+                            Abort Research
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            className="flex items-center gap-2 text-sm text-[#22c55e] hover:text-[#16a34a] focus:text-[#16a34a] focus:bg-[#333] cursor-pointer"
+                            onSelect={() => { setTimeout(() => { setAbortItem(item); setFinishEarlyOpen(true); }, 0); }}
+                            data-testid={`finish-early-${item.id}`}
+                          >
+                            <FastForward className="w-4 h-4" />
+                            Finish Early
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    ) : (
+                      <>
+                        <Pin
+                          className="w-3.5 h-3.5 text-gray-500 rotate-45 cursor-pointer hover:text-gray-700"
+                          onClick={(e) => { e.stopPropagation(); togglePin(item.id); }}
+                          data-testid={`pin-${item.id}`}
+                        />
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild onClick={(e) => e.preventDefault()}>
                             <button className="p-0 border-0 bg-transparent" data-testid={`kebab-menu-${item.id}`}>
@@ -528,8 +514,78 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end" className="w-44 bg-[#1a1a1a] border-[#333] shadow-xl">
                             <DropdownMenuItem
+                              className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
+                              onSelect={() => { setTimeout(() => { setSelectedItem(item); setIsPinned(true); setDetailsOpen(true); }, 0); }}
+                              data-testid={`details-${item.id}`}
+                            >
+                              <FileText className="w-4 h-4 text-gray-400" />
+                              Details
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              className="flex items-center gap-2 text-sm text-[#008DA8] hover:text-[#00b0cc] focus:text-[#00b0cc] focus:bg-[#333] cursor-pointer"
+                              onSelect={() => { setTimeout(() => setCloneOpen(true), 0); }}
+                              data-testid={`clone-${item.id}`}
+                            >
+                              <Copy className="w-4 h-4 text-[#008DA8]" />
+                              Clone & Restart
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
                               className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 focus:text-red-400 focus:bg-[#333] cursor-pointer"
-                              onClick={(e) => { e.preventDefault(); setAbortItem(item); setAbortOpen(true); }}
+                              onSelect={() => { setTimeout(() => { setSelectedItem(item); setDeleteOpen(true); }, 0); }}
+                              data-testid={`delete-${item.id}`}
+                            >
+                              <Trash2 className="w-4 h-4" />
+                              Delete
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+            )}
+            <div className="divide-y divide-gray-200/50">
+              {unpinnedItems.map((item) => (
+                <div key={item.id} className="flex items-start gap-2 p-3 bg-white hover:bg-gray-100 cursor-pointer group transition-all rounded-sm">
+                  <Link href={`${statusConfig[item.status].route}/${item.id}`} className="flex items-center gap-2 flex-1 min-w-0">
+                    <div className="relative w-[33px] h-[33px] shrink-0 flex items-center justify-center">
+                      <div 
+                        className={cn(
+                          "absolute inset-0 rounded-full border-[2.2px]",
+                          item.status === "in-progress" ? "border-[#3b82f6] border-t-transparent animate-[spin_3s_linear_infinite]" : ""
+                        )}
+                        style={item.status !== "in-progress" ? { borderColor: item.status === 'success' ? '#22c55e' : item.status === 'failed' ? '#ef4444' : '#f97316' } : undefined}
+                      />
+                      <div className="w-[27.5px] h-[27.5px] rounded-full bg-[#E6E1EF] flex items-center justify-center">
+                        <img src={rocketIcon} alt="Rocket" className="w-[16.5px] h-[16.5px] opacity-70" />
+                      </div>
+                    </div>
+                    <p className="text-[13px] leading-tight text-gray-800 line-clamp-2 font-medium flex-1" title={item.title}>
+                      {item.title}
+                    </p>
+                  </Link>
+                  <div className="flex flex-col items-center gap-1 shrink-0 mt-0.5">
+                    {item.status === "in-progress" ? (
+                      <div className="flex flex-col items-center gap-1">
+                        {sidebarVisibleItems.filter(i => i.status === "in-progress").indexOf(item) >= 2 && (
+                          <Pin
+                            className="w-3.5 h-3.5 text-gray-400 rotate-45 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer hover:text-gray-700"
+                            onClick={(e) => { e.stopPropagation(); togglePin(item.id); }}
+                            data-testid={`pin-${item.id}`}
+                          />
+                        )}
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild onClick={(e) => e.preventDefault()}>
+                            <button className="p-0 border-0 bg-transparent opacity-0 group-hover:opacity-100 transition-opacity" data-testid={`kebab-menu-${item.id}`}>
+                              <MoreVertical className="w-3.5 h-3.5 text-gray-400 cursor-pointer hover:text-gray-700" />
+                            </button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end" className="w-44 bg-[#1a1a1a] border-[#333] shadow-xl">
+                            <DropdownMenuItem
+                              className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 focus:text-red-400 focus:bg-[#333] cursor-pointer"
+                              onSelect={() => { setTimeout(() => { setAbortItem(item); setAbortOpen(true); }, 0); }}
                               data-testid={`abort-${item.id}`}
                             >
                               <StopCircle className="w-4 h-4" />
@@ -537,7 +593,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                             </DropdownMenuItem>
                             <DropdownMenuItem
                               className="flex items-center gap-2 text-sm text-[#22c55e] hover:text-[#16a34a] focus:text-[#16a34a] focus:bg-[#333] cursor-pointer"
-                              onClick={(e) => { e.preventDefault(); setAbortItem(item); setFinishEarlyOpen(true); }}
+                              onSelect={() => { setTimeout(() => { setAbortItem(item); setFinishEarlyOpen(true); }, 0); }}
                               data-testid={`finish-early-${item.id}`}
                             >
                               <FastForward className="w-4 h-4" />
@@ -545,236 +601,129 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
-                      ) : (
-                        <>
-                          <Pin
-                            className="w-3.5 h-3.5 text-gray-500 rotate-45 cursor-pointer hover:text-gray-700"
-                            onClick={(e) => { e.stopPropagation(); togglePin(item.id); }}
-                            data-testid={`pin-${item.id}`}
-                          />
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild onClick={(e) => e.preventDefault()}>
-                              <button className="p-0 border-0 bg-transparent" data-testid={`kebab-menu-${item.id}`}>
-                                <MoreVertical className="w-3.5 h-3.5 text-gray-500 cursor-pointer hover:text-gray-700" />
-                              </button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end" className="w-44 bg-[#1a1a1a] border-[#333] shadow-xl">
-                              <DropdownMenuItem
-                                className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
-                                onClick={(e) => { e.preventDefault(); setSelectedItem(item); setIsPinned(true); setDetailsOpen(true); }}
-                                data-testid={`details-${item.id}`}
-                              >
-                                <FileText className="w-4 h-4 text-gray-400" />
-                                Details
-                              </DropdownMenuItem>
-                              <DropdownMenuItem
-                                className="flex items-center gap-2 text-sm text-[#008DA8] hover:text-[#00b0cc] focus:text-[#00b0cc] focus:bg-[#333] cursor-pointer"
-                                onClick={(e) => { e.preventDefault(); setCloneOpen(true); }}
-                                data-testid={`clone-${item.id}`}
-                              >
-                                <Copy className="w-4 h-4 text-[#008DA8]" />
-                                Clone & Restart
-                              </DropdownMenuItem>
-                              <DropdownMenuItem
-                                className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 focus:text-red-400 focus:bg-[#333] cursor-pointer"
-                                onClick={(e) => { e.preventDefault(); setSelectedItem(item); setDeleteOpen(true); }}
-                                data-testid={`delete-${item.id}`}
-                              >
-                                <Trash2 className="w-4 h-4" />
-                                Delete
-                              </DropdownMenuItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
-                        </>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-              )}
-              {/* Unpinned Items */}
-              <div className="divide-y divide-gray-200/50">
-                {unpinnedItems.map((item) => (
-                  <div key={item.id} className="flex items-start gap-2 p-3 bg-white hover:bg-gray-100 cursor-pointer group transition-all rounded-sm">
-                    <Link href={`${statusConfig[item.status].route}/${item.id}`} className="flex items-center gap-2 flex-1 min-w-0">
-                      <div className="relative w-[33px] h-[33px] shrink-0 flex items-center justify-center">
-                        <div 
-                          className={cn(
-                            "absolute inset-0 rounded-full border-[2.2px]",
-                            item.status === "in-progress" ? "border-[#3b82f6] border-t-transparent animate-[spin_3s_linear_infinite]" : ""
-                          )}
-                          style={item.status !== "in-progress" ? { borderColor: item.status === 'success' ? '#22c55e' : item.status === 'failed' ? '#ef4444' : '#f97316' } : undefined}
-                        />
-                        <div className="w-[27.5px] h-[27.5px] rounded-full bg-[#E6E1EF] flex items-center justify-center">
-                          <img src={rocketIcon} alt="Rocket" className="w-[16.5px] h-[16.5px] opacity-70" />
-                        </div>
                       </div>
-                      <p className="text-[13px] leading-tight text-gray-800 line-clamp-2 font-medium flex-1" title={item.title}>
-                        {item.title}
-                      </p>
-                    </Link>
-                    <div className="flex flex-col items-center gap-1 shrink-0 mt-0.5">
-                      {item.status === "in-progress" ? (
-                        <div className="flex flex-col items-center gap-1">
-                          {sidebarVisibleItems.filter(i => i.status === "in-progress").indexOf(item) >= 2 && (
-                            <Pin
-                              className="w-3.5 h-3.5 text-gray-400 rotate-45 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer hover:text-gray-700"
-                              onClick={(e) => { e.stopPropagation(); togglePin(item.id); }}
-                              data-testid={`pin-${item.id}`}
-                            />
-                          )}
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild onClick={(e) => e.preventDefault()}>
-                              <button className="p-0 border-0 bg-transparent opacity-0 group-hover:opacity-100 transition-opacity" data-testid={`kebab-menu-${item.id}`}>
-                                <MoreVertical className="w-3.5 h-3.5 text-gray-400 cursor-pointer hover:text-gray-700" />
-                              </button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end" className="w-44 bg-[#1a1a1a] border-[#333] shadow-xl">
-                              <DropdownMenuItem
-                                className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 focus:text-red-400 focus:bg-[#333] cursor-pointer"
-                                onClick={(e) => { e.preventDefault(); setAbortItem(item); setAbortOpen(true); }}
-                                data-testid={`abort-${item.id}`}
-                              >
-                                <StopCircle className="w-4 h-4" />
-                                Abort Research
-                              </DropdownMenuItem>
-                              <DropdownMenuItem
-                                className="flex items-center gap-2 text-sm text-[#22c55e] hover:text-[#16a34a] focus:text-[#16a34a] focus:bg-[#333] cursor-pointer"
-                                onClick={(e) => { e.preventDefault(); setAbortItem(item); setFinishEarlyOpen(true); }}
-                                data-testid={`finish-early-${item.id}`}
-                              >
-                                <FastForward className="w-4 h-4" />
-                                Finish Early
-                              </DropdownMenuItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
-                        </div>
-                      ) : (
-                        <>
-                          <Pin
-                            className="w-3.5 h-3.5 text-gray-400 rotate-45 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer hover:text-gray-700"
-                            onClick={(e) => { e.stopPropagation(); togglePin(item.id); }}
-                            data-testid={`pin-${item.id}`}
-                          />
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild onClick={(e) => e.preventDefault()}>
-                              <button className="p-0 border-0 bg-transparent opacity-0 group-hover:opacity-100 transition-opacity" data-testid={`kebab-menu-${item.id}`}>
-                                <MoreVertical className="w-3.5 h-3.5 text-gray-400 cursor-pointer hover:text-gray-700" />
-                              </button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end" className="w-44 bg-[#1a1a1a] border-[#333] shadow-xl">
-                              <DropdownMenuItem
-                                className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
-                                onClick={(e) => { e.preventDefault(); setSelectedItem(item); setIsPinned(false); setDetailsOpen(true); }}
-                                data-testid={`details-${item.id}`}
-                              >
-                                <FileText className="w-4 h-4 text-gray-400" />
-                                Details
-                              </DropdownMenuItem>
-                              <DropdownMenuItem
-                                className="flex items-center gap-2 text-sm text-[#008DA8] hover:text-[#00b0cc] focus:text-[#00b0cc] focus:bg-[#333] cursor-pointer"
-                                onClick={(e) => { e.preventDefault(); setCloneOpen(true); }}
-                                data-testid={`clone-${item.id}`}
-                              >
-                                <Copy className="w-4 h-4 text-[#008DA8]" />
-                                Clone & Restart
-                              </DropdownMenuItem>
-                              <DropdownMenuItem
-                                className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
-                                data-testid={`archive-${item.id}`}
-                              >
-                                <Archive className="w-4 h-4 text-gray-400" />
-                                Archive Project
-                              </DropdownMenuItem>
-                              <DropdownMenuItem
-                                className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
-                                data-testid={`export-${item.id}`}
-                              >
-                                <Download className="w-4 h-4 text-gray-400" />
-                                Export Project
-                              </DropdownMenuItem>
-                              <DropdownMenuItem
-                                className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 focus:text-red-400 focus:bg-[#333] cursor-pointer"
-                                onClick={(e) => { e.preventDefault(); setSelectedItem(item); setDeleteOpen(true); }}
-                                data-testid={`delete-${item.id}`}
-                              >
-                                <Trash2 className="w-4 h-4" />
-                                Delete
-                              </DropdownMenuItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
-                        </>
-                      )}
-                    </div>
+                    ) : (
+                      <>
+                        <Pin
+                          className="w-3.5 h-3.5 text-gray-400 rotate-45 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer hover:text-gray-700"
+                          onClick={(e) => { e.stopPropagation(); togglePin(item.id); }}
+                          data-testid={`pin-${item.id}`}
+                        />
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild onClick={(e) => e.preventDefault()}>
+                            <button className="p-0 border-0 bg-transparent opacity-0 group-hover:opacity-100 transition-opacity" data-testid={`kebab-menu-${item.id}`}>
+                              <MoreVertical className="w-3.5 h-3.5 text-gray-400 cursor-pointer hover:text-gray-700" />
+                            </button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end" className="w-44 bg-[#1a1a1a] border-[#333] shadow-xl">
+                            <DropdownMenuItem
+                              className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
+                              onSelect={() => { setTimeout(() => { setSelectedItem(item); setIsPinned(false); setDetailsOpen(true); }, 0); }}
+                              data-testid={`details-${item.id}`}
+                            >
+                              <FileText className="w-4 h-4 text-gray-400" />
+                              Details
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              className="flex items-center gap-2 text-sm text-[#008DA8] hover:text-[#00b0cc] focus:text-[#00b0cc] focus:bg-[#333] cursor-pointer"
+                              onSelect={() => { setTimeout(() => setCloneOpen(true), 0); }}
+                              data-testid={`clone-${item.id}`}
+                            >
+                              <Copy className="w-4 h-4 text-[#008DA8]" />
+                              Clone & Restart
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
+                              data-testid={`archive-${item.id}`}
+                            >
+                              <Archive className="w-4 h-4 text-gray-400" />
+                              Archive Project
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
+                              data-testid={`export-${item.id}`}
+                            >
+                              <Download className="w-4 h-4 text-gray-400" />
+                              Export Project
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 focus:text-red-400 focus:bg-[#333] cursor-pointer"
+                              onSelect={() => { setTimeout(() => { setSelectedItem(item); setDeleteOpen(true); }, 0); }}
+                              data-testid={`delete-${item.id}`}
+                            >
+                              <Trash2 className="w-4 h-4" />
+                              Delete
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </>
+                    )}
                   </div>
-                ))}
-              </div>
-            </ScrollArea>
-          </div>
+                </div>
+              ))}
+            </div>
+          </ScrollArea>
+        </div>
 
-          {/* Footer */}
-          <div className="p-2 pt-0 flex items-center justify-center">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button className="w-full h-8 px-3 text-xs font-semibold text-gray-600 hover:text-black hover:bg-black/5 flex items-center justify-center gap-1.5 rounded-sm cursor-pointer transition-colors" data-testid="button-more-menu">
-                  <img src={moreIcon} alt="More" className="w-4 h-4 opacity-60" />
-                  <span>More</span>
-                  <ChevronRight className="w-3 h-3 ml-auto" />
-                </button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="start" side="top" className="w-52 bg-[#1a1a1a] border-[#333] shadow-xl mb-2 animate-in slide-in-from-bottom-2 duration-200">
-                <DropdownMenuItem asChild className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer">
-                  <Link href="/assets">
-                    <FileText className="w-4 h-4 text-gray-400" />
-                    Files & Attachments
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer" data-testid="menu-archived-projects">
-                  <Archive className="w-4 h-4 text-gray-400" />
-                  Archived Projects (20)
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-        </>
-      ) : (
-        /* Collapsed State Icons */
-        (<CollapsedSidebar
-          sidebarVisibleItems={sidebarVisibleItems}
-          visibleResearchItems={visibleResearchItems}
-          statusConfig={statusConfig}
-          statusFilter={statusFilter}
-          setStatusFilter={setStatusFilter}
-          rocketIcon={rocketIcon}
-          pinnedIds={pinnedIds}
-          togglePin={togglePin}
-          setSelectedItem={setSelectedItem}
-          setIsPinned={setIsPinned}
-          setDetailsOpen={setDetailsOpen}
-          setCloneOpen={setCloneOpen}
-          setDeleteOpen={setDeleteOpen}
-          setAbortItem={setAbortItem}
-          setAbortOpen={setAbortOpen}
-          setFinishEarlyOpen={setFinishEarlyOpen}
-        />)
-      )}
-    </div>
-  );
+        <div className="p-2 pt-0 flex items-center justify-center">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="w-full h-8 px-3 text-xs font-semibold text-gray-600 hover:text-black hover:bg-black/5 flex items-center justify-center gap-1.5 rounded-sm cursor-pointer transition-colors" data-testid="button-more-menu">
+                <img src={moreIcon} alt="More" className="w-4 h-4 opacity-60" />
+                <span>More</span>
+                <ChevronRight className="w-3 h-3 ml-auto" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" side="top" className="w-52 bg-[#1a1a1a] border-[#333] shadow-xl mb-2 animate-in slide-in-from-bottom-2 duration-200">
+              <DropdownMenuItem asChild className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer">
+                <Link href="/assets">
+                  <FileText className="w-4 h-4 text-gray-400" />
+                  Files & Attachments
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer" data-testid="menu-archived-projects">
+                <Archive className="w-4 h-4 text-gray-400" />
+                Archived Projects (20)
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      </>
+    );
+  }
 
   return (
     <>
       <div className="min-h-screen bg-background text-foreground flex">
-        {/* Desktop Sidebar */}
         <aside 
           className={cn(
             "hidden md:block fixed inset-y-0 left-0 z-50 transition-all duration-300 ease-in-out bg-[#F5F5F7] border-r border-gray-200",
             isCollapsed ? "w-[70px]" : "w-[300px]"
           )}
         >
-          {SidebarContent({ collapsed: isCollapsed })}
+          <div className="flex flex-col h-full bg-[#F5F5F7] border-r border-gray-200 text-gray-800 font-sans">
+            <div className={cn("flex items-center justify-between px-3 py-2 h-[57px] border-b border-gray-200 bg-[#EBEBEB]", isCollapsed && "justify-center")}>
+              {!isCollapsed && (
+                <div className="flex items-center gap-2 overflow-hidden h-8">
+                  <div className="w-8 h-8 bg-gray-200 border border-gray-400 flex items-center justify-center rounded-sm shrink-0">
+                     <span className="text-[10px] font-bold text-gray-500">Logo</span>
+                  </div>
+                  <span className="font-bold text-lg text-gray-800 tracking-tight">Neuro-Search</span>
+                </div>
+              )}
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="h-12 w-12 text-black hover:bg-black/5 transition-transform flex items-center justify-center"
+                onClick={() => setIsCollapsed(!isCollapsed)}
+              >
+                <Menu className="w-8 h-8 stroke-[3]" />
+              </Button>
+            </div>
+            {isCollapsed ? renderCollapsedSidebar() : renderExpandedSidebar()}
+          </div>
         </aside>
 
-        {/* Mobile Nav */}
         <Sheet open={isMobileOpen} onOpenChange={setIsMobileOpen}>
           <SheetTrigger asChild>
             <Button variant="ghost" size="icon" className="md:hidden fixed top-4 left-4 z-50 bg-white shadow-sm border border-gray-200">
@@ -782,18 +731,34 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </Button>
           </SheetTrigger>
           <SheetContent side="left" className="p-0 w-[300px] bg-[#F5F5F7]">
-            {SidebarContent({ collapsed: false })}
+            <div className="flex flex-col h-full bg-[#F5F5F7] border-r border-gray-200 text-gray-800 font-sans">
+              <div className="flex items-center justify-between px-3 py-2 h-[57px] border-b border-gray-200 bg-[#EBEBEB]">
+                <div className="flex items-center gap-2 overflow-hidden h-8">
+                  <div className="w-8 h-8 bg-gray-200 border border-gray-400 flex items-center justify-center rounded-sm shrink-0">
+                     <span className="text-[10px] font-bold text-gray-500">Logo</span>
+                  </div>
+                  <span className="font-bold text-lg text-gray-800 tracking-tight">Neuro-Search</span>
+                </div>
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  className="h-12 w-12 text-black hover:bg-black/5 transition-transform flex items-center justify-center"
+                  onClick={() => setIsMobileOpen(false)}
+                >
+                  <Menu className="w-8 h-8 stroke-[3]" />
+                </Button>
+              </div>
+              {renderExpandedSidebar()}
+            </div>
           </SheetContent>
         </Sheet>
 
-        {/* Main Content */}
         <main 
           className={cn(
             "flex-1 min-h-screen flex flex-col transition-all duration-300 ease-in-out",
             isCollapsed ? "md:ml-[70px]" : "md:ml-[300px]"
           )}
         >
-          {/* Top Header - Contextual to the page */}
           <header className="h-16 border-b border-gray-300 bg-[#F5F5F7] sticky top-0 z-40 px-4 flex items-center justify-between shadow-sm">
             <div className="flex items-center gap-4">
                <Link href="/research/dashboard">
