@@ -189,10 +189,15 @@ export default function SearchPage() {
             <label className="text-sm font-semibold text-gray-700 block">
               Search query
             </label>
-            <div className="flex items-center gap-1.5 text-[#008DA8] cursor-pointer hover:underline">
+            <Button 
+              variant="outline" 
+              size="sm"
+              className="h-7 border-[#008DA8] text-[#008DA8] hover:bg-[#008DA8]/5 px-2 rounded-sm font-bold gap-1.5 mr-[10px]"
+              data-testid="button-filter-search"
+            >
               <Filter className="w-3.5 h-3.5" />
-              <span className="text-xs font-bold">filter (2)</span>
-            </div>
+              <span className="text-xs">filter (2)</span>
+            </Button>
           </div>
           <div className="relative">
             <div className="absolute left-3 top-1/2 -translate-y-1/2 p-1 bg-[#8BC34A]/20 rounded-sm">
