@@ -765,7 +765,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                </Link>
                
                <h1 className="text-sm font-medium text-gray-800">
-                 <span className="font-bold">Smart Search:</span> {
+                 {
                    location === "/" ? "Dashboard" : 
                    location.includes("dashboard") ? "Overview" :
                    location.includes("files-attachments") ? "Files & Attachments" :
