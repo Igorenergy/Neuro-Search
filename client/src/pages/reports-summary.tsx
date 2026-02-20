@@ -656,7 +656,7 @@ export default function ReportsSummary() {
                 id="rename-report"
                 value={renameValue}
                 onChange={(e) => setRenameValue(e.target.value)}
-                className="border-gray-300 focus:border-[#008DA8] focus:ring-[#008DA8]"
+                className="border-gray-300 focus:border-[#008DA8] focus:ring-[#008DA8] text-gray-900"
                 data-testid="input-rename-report"
               />
             </div>
