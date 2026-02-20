@@ -4,6 +4,7 @@ import {
   MoreVertical,
   Download,
   Share2,
+  Archive,
   Target,
   Lightbulb,
   Shield,
@@ -271,13 +272,19 @@ export default function ReportsSummary() {
           </Link>
         </div>
 
-        <div className="flex items-center gap-2 shrink-0">
-          <Button variant="outline" size="sm" className="h-8 text-xs gap-1.5 bg-white border-gray-300" data-testid="button-export">
-            <Download className="w-3.5 h-3.5" /> Export
+        <div className="flex items-center gap-1.5 shrink-0">
+          <Button variant="outline" size="sm" className="h-8 text-xs gap-1.5 bg-white border-green-600 text-green-700 hover:bg-green-50 font-bold px-4" data-testid="button-export">
+            Export
           </Button>
-          <Button variant="outline" size="sm" className="h-8 text-xs gap-1.5 bg-white border-gray-300" data-testid="button-share">
-            <Share2 className="w-3.5 h-3.5" /> Share
-          </Button>
+          <button className="w-8 h-8 flex items-center justify-center rounded-sm bg-[#0066CC] hover:bg-[#0055AA] transition-colors" data-testid="button-archive">
+            <Archive className="w-4 h-4 text-white" />
+          </button>
+          <button className="w-8 h-8 flex items-center justify-center rounded-sm bg-[#CC0000] hover:bg-[#AA0000] transition-colors" data-testid="button-delete">
+            <Trash2 className="w-4 h-4 text-white" />
+          </button>
+          <button className="w-8 h-8 flex items-center justify-center rounded-sm bg-[#333333] hover:bg-[#222222] transition-colors" data-testid="button-share">
+            <Share2 className="w-4 h-4 text-white" />
+          </button>
         </div>
       </div>
 
