@@ -305,7 +305,7 @@ export default function Dashboard() {
                       <img src={rocketIcon} alt="Rocket" className="w-[18px] h-[18px] opacity-70" />
                     </div>
                   </div>
-                  <p className="text-[13px] leading-snug text-gray-800 font-semibold line-clamp-1">
+                  <p className="text-[13px] leading-snug text-gray-800 font-semibold line-clamp-1" title={item.title}>
                     {item.title}
                   </p>
                 </Link>
@@ -417,7 +417,7 @@ export default function Dashboard() {
                   <img src={rocketIcon} alt="Rocket" className="w-5 h-5 opacity-60 shrink-0" />
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
-                      <p className="text-[13px] font-semibold text-gray-700 truncate">{item.title}</p>
+                      <p className="text-[13px] font-semibold text-gray-700 truncate" title={item.title}>{item.title}</p>
                       <Badge variant="secondary" className="text-[10px] px-1.5 py-0 h-5 bg-gray-200 text-gray-500 font-medium shrink-0 gap-1">
                         <Package className="w-3 h-3" />
                         Archived
