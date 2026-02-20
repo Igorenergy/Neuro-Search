@@ -95,8 +95,18 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   const visibleResearchItems = researchItems.filter(item => !deletedIds.includes(item.id));
   const filteredItems = statusFilter === "all" ? visibleResearchItems : visibleResearchItems.filter(item => item.status === statusFilter);
-  const pinnedItems = filteredItems.filter(item => pinnedIds.includes(item.id));
+  const pinnedItems = filteredItems.filter(item => pinnedIds.includes(item.id)).sort((a, b) => {
+    if (a.status === "in-progress" && b.status !== "in-progress") return -1;
+    if (a.status !== "in-progress" && b.status === "in-progress") return 1;
+    return 0;
+  });
   const unpinnedItems = filteredItems.filter(item => !pinnedIds.includes(item.id)).sort((a, b) => {
+    if (a.status === "in-progress" && b.status !== "in-progress") return -1;
+    if (a.status !== "in-progress" && b.status === "in-progress") return 1;
+    return 0;
+  });
+
+  const sidebarVisibleItems = [...pinnedItems, ...unpinnedItems].sort((a, b) => {
     if (a.status === "in-progress" && b.status !== "in-progress") return -1;
     if (a.status !== "in-progress" && b.status === "in-progress") return 1;
     return 0;
@@ -360,7 +370,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <div className="w-8 h-[1px] bg-gray-300" />
           <ScrollArea className="flex-1 w-full px-2">
             <div className="flex flex-col items-center gap-3">
-              {visibleResearchItems.map(item => {
+              {sidebarVisibleItems.map(item => {
                 const config = statusConfig[item.status];
                 const isInProgress = item.status === "in-progress";
                 const borderHoverColor = 
