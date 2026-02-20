@@ -73,13 +73,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const [abortItem, setAbortItem] = useState<{ id: number; title: string } | null>(null);
 
   const researchItems: { id: number; title: string; status: ResearchStatus }[] = [
+    { id: 3, title: "Research name one", status: "in-progress" },
+    { id: 7, title: "Research name two", status: "in-progress" },
     { id: 1, title: "Американская Фабрика: Полный анализ и стратегический обзор", status: "success" },
     { id: 2, title: "Startup: AI Deep Research — Анализ рынка и конкурентов", status: "success" },
-    { id: 3, title: "Research name one", status: "in-progress" },
     { id: 4, title: "Abacus.AI: Корпоративный анализ и оценка платформы", status: "success" },
     { id: 5, title: "Инновации, Капитал и Стратегии Роста в Технологическом Секторе", status: "failed" },
     { id: 6, title: "Реестр 492 Компаний: Полный анализ и стратегический обзор", status: "success" },
-    { id: 7, title: "Research name two", status: "in-progress" },
     { id: 8, title: "Потеря $1,8 млн на крипте: уроки и выводы для инвесторов", status: "canceled" },
     { id: 9, title: "Мемуары Криптана: Ретродропи, стратегии и анализ", status: "success" },
     { id: 10, title: "Искусственный Интеллект и Будущее Технологий", status: "failed" },
