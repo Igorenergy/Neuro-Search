@@ -209,8 +209,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <div className="sticky top-0 z-10 bg-[#E6E1EF] divide-y divide-gray-200/50 border-b border-gray-300">
                 {pinnedItems.map((item) => (
                   <div key={item.id} className="flex items-start gap-2 p-3 hover:bg-white/50 cursor-pointer group transition-all rounded-sm">
-                    <Link href={`${statusConfig[item.status].route}/${item.id}`} className="flex items-start gap-2 flex-1 min-w-0">
-                      <div className="relative w-6 h-6 shrink-0 mt-0.5 flex items-center justify-center">
+                    <Link href={`${statusConfig[item.status].route}/${item.id}`} className="flex items-center gap-2 flex-1 min-w-0">
+                      <div className="relative w-[30px] h-[30px] shrink-0 flex items-center justify-center">
                         <div 
                           className={cn(
                             "absolute inset-0 rounded-full border-2",
@@ -218,8 +218,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                           )}
                           style={item.status !== "in-progress" ? { borderColor: item.status === 'success' ? '#22c55e' : item.status === 'failed' ? '#ef4444' : '#f97316' } : undefined}
                         />
-                        <div className="w-5 h-5 rounded-full bg-[#E6E1EF] flex items-center justify-center">
-                          <img src={rocketIcon} alt="Rocket" className="w-3 h-3 opacity-70" />
+                        <div className="w-[25px] h-[25px] rounded-full bg-[#E6E1EF] flex items-center justify-center">
+                          <img src={rocketIcon} alt="Rocket" className="w-[15px] h-[15px] opacity-70" />
                         </div>
                       </div>
                       <p className="text-[13px] leading-tight text-gray-800 line-clamp-2 font-medium flex-1">
@@ -274,8 +274,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <div className="divide-y divide-gray-200/50">
                 {unpinnedItems.map((item) => (
                   <div key={item.id} className="flex items-start gap-2 p-3 bg-white hover:bg-gray-100 cursor-pointer group transition-all rounded-sm">
-                    <Link href={`${statusConfig[item.status].route}/${item.id}`} className="flex items-start gap-2 flex-1 min-w-0">
-                      <div className="relative w-6 h-6 shrink-0 mt-0.5 flex items-center justify-center">
+                    <Link href={`${statusConfig[item.status].route}/${item.id}`} className="flex items-center gap-2 flex-1 min-w-0">
+                      <div className="relative w-[30px] h-[30px] shrink-0 flex items-center justify-center">
                         <div 
                           className={cn(
                             "absolute inset-0 rounded-full border-2",
@@ -283,8 +283,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                           )}
                           style={item.status !== "in-progress" ? { borderColor: item.status === 'success' ? '#22c55e' : item.status === 'failed' ? '#ef4444' : '#f97316' } : undefined}
                         />
-                        <div className="w-5 h-5 rounded-full bg-[#E6E1EF] flex items-center justify-center">
-                          <img src={rocketIcon} alt="Rocket" className="w-3 h-3 opacity-70" />
+                        <div className="w-[25px] h-[25px] rounded-full bg-[#E6E1EF] flex items-center justify-center">
+                          <img src={rocketIcon} alt="Rocket" className="w-[15px] h-[15px] opacity-70" />
                         </div>
                       </div>
                       <p className="text-[13px] leading-tight text-gray-800 line-clamp-2 font-medium flex-1">
