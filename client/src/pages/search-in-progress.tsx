@@ -14,7 +14,6 @@ import {
   Database,
   Settings2,
   ExternalLink,
-  AlertTriangle,
   Loader2,
   ToggleRight,
   ChevronDown,
@@ -25,14 +24,12 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import {
-  Dialog,
-  DialogContent,
-} from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { loadLaunchConfig, type LaunchConfig } from "@/lib/launch-config";
 import { usePreviewStore } from "@/lib/preview-store";
 import ResearchBriefingPanel from "@/components/research-briefing-panel";
+import AbortResearchModal from "@/components/abort-research-modal";
+import FinishEarlyModal from "@/components/finish-early-modal";
 
 interface ThoughtNode {
   id: string;
@@ -419,79 +416,16 @@ export default function SmartSearchInProgress() {
           </div>
         </div>
       </div>
-      {/* Abort Research Modal */}
-      <Dialog open={showAbortModal} onOpenChange={setShowAbortModal}>
-        <DialogContent className="max-w-[420px] p-0 gap-0 bg-white overflow-hidden border border-gray-200 shadow-xl rounded-md">
-          <div className="flex items-center gap-2 p-3 border-b border-gray-100 bg-red-50">
-            <AlertTriangle className="w-5 h-5 text-red-500" />
-            <h2 className="text-base font-bold text-gray-900">Abort Research</h2>
-          </div>
-          <div className="p-5 space-y-4">
-            <p className="text-sm font-medium text-gray-800">
-              Are you sure you want to abort this research?
-            </p>
-            <p className="text-sm text-red-500 font-medium leading-relaxed">
-              All current progress will be permanently discarded. This action cannot be undone.
-            </p>
-            <div className="flex items-center justify-between pt-4">
-              <button
-                className="text-xs font-medium text-gray-900 underline hover:text-gray-700"
-                onClick={() => setShowAbortModal(false)}
-                data-testid="button-cancel-abort"
-              >
-                Cancel
-              </button>
-              <Button
-                variant="outline"
-                className="border-red-400 text-red-500 hover:bg-red-50 hover:text-red-600 h-9 px-6 text-xs font-bold bg-white"
-                onClick={() => {
-                  setShowAbortModal(false);
-                  navigate("/research-canceled/1");
-                }}
-                data-testid="button-confirm-abort"
-              >
-                Yes, Abort
-              </Button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
-      {/* Finish Early Modal */}
-      <Dialog open={showFinishModal} onOpenChange={setShowFinishModal}>
-        <DialogContent className="max-w-[420px] p-0 gap-0 bg-white overflow-hidden border border-gray-200 shadow-xl rounded-md">
-          <div className="flex items-center gap-2 p-3 border-b border-gray-100 bg-green-50">
-            <Check className="w-5 h-5 text-green-600" />
-            <h2 className="text-base font-bold text-gray-900">Finish Early</h2>
-          </div>
-          <div className="p-5 space-y-4">
-            <p className="text-sm font-medium text-gray-800">
-              Generate the report now based on current sources?
-            </p>
-            <p className="text-sm text-[#0097B2] font-medium leading-relaxed">
-              The AI will stop gathering new sources and compile a report from the data collected so far. You will still receive a complete, structured output.
-            </p>
-            <div className="flex items-center justify-between pt-4">
-              <button
-                className="text-xs font-medium text-gray-900 underline hover:text-gray-700"
-                onClick={() => setShowFinishModal(false)}
-                data-testid="button-cancel-finish"
-              >
-                Cancel
-              </button>
-              <Button
-                className="bg-green-600 hover:bg-green-700 text-white h-9 px-6 text-xs font-bold"
-                onClick={() => {
-                  setShowFinishModal(false);
-                  navigate(`/research-success/${params.id || "new"}`);
-                }}
-                data-testid="button-confirm-finish"
-              >
-                Yes, Generate Report
-              </Button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
+      <AbortResearchModal
+        open={showAbortModal}
+        onOpenChange={setShowAbortModal}
+        onConfirm={() => navigate("/research-canceled/1")}
+      />
+      <FinishEarlyModal
+        open={showFinishModal}
+        onOpenChange={setShowFinishModal}
+        onConfirm={() => navigate(`/research-success/${params.id || "new"}`)}
+      />
     </div>
   );
 }
