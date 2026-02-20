@@ -655,10 +655,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="p-2 pt-0 flex items-center justify-center">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="w-full h-8 px-3 text-xs font-semibold text-gray-600 hover:text-black hover:bg-black/5 flex items-center justify-center gap-1.5 rounded-sm cursor-pointer transition-colors" data-testid="button-more-menu">
-                <img src={moreIcon} alt="More" className="w-4 h-4 opacity-60" />
-                <span>More</span>
-                <ChevronRight className="w-3 h-3 ml-auto" />
+              <button className="w-full h-9 px-3 text-xs font-semibold text-gray-600 hover:text-black hover:bg-black/5 flex items-center justify-center gap-2 rounded-sm cursor-pointer transition-colors border border-gray-300" data-testid="button-more-menu">
+                <img src={moreIcon} alt="More Options" className="w-5 h-5 opacity-70" />
+                <span>More Options</span>
+                <ChevronRight className="w-3.5 h-3.5 ml-auto" />
               </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" side="top" className="w-52 bg-[#1a1a1a] border-[#333] shadow-xl mb-2 animate-in slide-in-from-bottom-2 duration-200">
