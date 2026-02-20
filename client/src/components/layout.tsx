@@ -210,7 +210,18 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 {pinnedItems.map((item) => (
                   <div key={item.id} className="flex items-start gap-2 p-3 hover:bg-white/50 cursor-pointer group transition-all rounded-sm">
                     <Link href={`${statusConfig[item.status].route}/${item.id}`} className="flex items-start gap-2 flex-1 min-w-0">
-                      <img src={rocketIcon} alt="Rocket" className="w-4 h-4 mt-0.5 shrink-0 opacity-70" />
+                      <div className="relative w-6 h-6 shrink-0 mt-0.5 flex items-center justify-center">
+                        <div 
+                          className={cn(
+                            "absolute inset-0 rounded-full border-2",
+                            item.status === "in-progress" ? "border-[#3b82f6] border-t-transparent animate-[spin_3s_linear_infinite]" : ""
+                          )}
+                          style={item.status !== "in-progress" ? { borderColor: item.status === 'success' ? '#22c55e' : item.status === 'failed' ? '#ef4444' : '#f97316' } : undefined}
+                        />
+                        <div className="w-5 h-5 rounded-full bg-[#E6E1EF] flex items-center justify-center">
+                          <img src={rocketIcon} alt="Rocket" className="w-3 h-3 opacity-70" />
+                        </div>
+                      </div>
                       <p className="text-[13px] leading-tight text-gray-800 line-clamp-2 font-medium flex-1">
                         {item.title}
                       </p>
@@ -264,7 +275,18 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 {unpinnedItems.map((item) => (
                   <div key={item.id} className="flex items-start gap-2 p-3 bg-white hover:bg-gray-100 cursor-pointer group transition-all rounded-sm">
                     <Link href={`${statusConfig[item.status].route}/${item.id}`} className="flex items-start gap-2 flex-1 min-w-0">
-                      <img src={rocketIcon} alt="Rocket" className="w-4 h-4 mt-0.5 shrink-0 opacity-70" />
+                      <div className="relative w-6 h-6 shrink-0 mt-0.5 flex items-center justify-center">
+                        <div 
+                          className={cn(
+                            "absolute inset-0 rounded-full border-2",
+                            item.status === "in-progress" ? "border-[#3b82f6] border-t-transparent animate-[spin_3s_linear_infinite]" : ""
+                          )}
+                          style={item.status !== "in-progress" ? { borderColor: item.status === 'success' ? '#22c55e' : item.status === 'failed' ? '#ef4444' : '#f97316' } : undefined}
+                        />
+                        <div className="w-5 h-5 rounded-full bg-[#E6E1EF] flex items-center justify-center">
+                          <img src={rocketIcon} alt="Rocket" className="w-3 h-3 opacity-70" />
+                        </div>
+                      </div>
                       <p className="text-[13px] leading-tight text-gray-800 line-clamp-2 font-medium flex-1">
                         {item.title}
                       </p>
