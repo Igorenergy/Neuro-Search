@@ -214,7 +214,7 @@ export default function Dashboard() {
             <Plus className="w-5 h-5 text-[#008DA8]" />
           </div>
           <Link href="/smart-search/new">
-            <Button variant="outline" className="h-9 gap-2 border-[#008DA8] text-[#008DA8] hover:bg-[#008DA8]/5 font-bold text-sm px-4" data-testid="button-smart-search">
+            <Button variant="ghost" className="h-9 gap-2 text-[#008DA8] hover:bg-[#008DA8]/5 font-bold text-sm px-4" data-testid="button-smart-search">
               <Search className="w-4 h-4" />
               Start new search
             </Button>
