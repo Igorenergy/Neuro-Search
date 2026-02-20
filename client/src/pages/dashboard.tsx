@@ -43,11 +43,11 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Switch as ToggleSwitch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import CloneRestartModal from "@/components/clone-restart-modal";
 import AbortResearchModal from "@/components/abort-research-modal";
 import FinishEarlyModal from "@/components/finish-early-modal";
+import ResearchDetailsModal from "@/components/research-details-modal";
 import rocketIcon from "@assets/image_1771405092616.png";
 
 export default function Dashboard() {
@@ -56,7 +56,6 @@ export default function Dashboard() {
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [cloneOpen, setCloneOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<{ id: number; title: string } | null>(null);
-  const [renameValue, setRenameValue] = useState("");
   const [isPinned, setIsPinned] = useState(false);
   const [deletedIds, setDeletedIds] = useState<number[]>([]);
   const [dashStatusFilter, setDashStatusFilter] = useState<"all" | "success" | "in-progress" | "failed" | "canceled">("all");
@@ -377,7 +376,7 @@ export default function Dashboard() {
                             <DropdownMenuItem
                               className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
                               data-testid={`details-${item.id}`}
-                              onClick={() => { setSelectedItem({ id: item.id, title: item.title }); setRenameValue(item.title); setIsPinned(false); setDetailsOpen(true); }}
+                              onClick={() => { setSelectedItem({ id: item.id, title: item.title }); setIsPinned(false); setDetailsOpen(true); }}
                             >
                               <FileText className="w-4 h-4 text-gray-400" />
                               Details
@@ -504,45 +503,12 @@ export default function Dashboard() {
       )}
     </div>
 
-    <Dialog open={detailsOpen} onOpenChange={setDetailsOpen}>
-      <DialogContent className="sm:max-w-[400px] bg-white border-gray-200">
-        <DialogHeader>
-          <DialogTitle className="text-gray-900">Research Details</DialogTitle>
-          <DialogDescription className="text-gray-500 text-sm">
-            Edit the name and pin status for this research item.
-          </DialogDescription>
-        </DialogHeader>
-        <div className="space-y-5 py-2">
-          <div className="space-y-2">
-            <Label htmlFor="dash-rename" className="text-sm font-medium text-gray-700">Rename</Label>
-            <Input
-              id="dash-rename"
-              value={renameValue}
-              onChange={(e) => setRenameValue(e.target.value)}
-              className="border-gray-300 focus:border-[#008DA8] focus:ring-[#008DA8] text-gray-900"
-              data-testid="dash-input-rename"
-            />
-          </div>
-          <div className="flex items-center gap-3">
-            <ToggleSwitch
-              id="dash-pin-toggle"
-              checked={isPinned}
-              onCheckedChange={setIsPinned}
-              data-testid="dash-toggle-pin"
-            />
-            <Label htmlFor="dash-pin-toggle" className="text-sm font-medium text-gray-700 cursor-pointer">Pinned</Label>
-          </div>
-        </div>
-        <DialogFooter className="gap-2">
-          <Button variant="outline" onClick={() => setDetailsOpen(false)} className="border-gray-300 text-gray-700" data-testid="dash-button-cancel-details">
-            Cancel
-          </Button>
-          <Button onClick={() => setDetailsOpen(false)} className="bg-[#008DA8] hover:bg-[#006E7D] text-white" data-testid="dash-button-save-details">
-            Save
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+    <ResearchDetailsModal
+      open={detailsOpen}
+      onOpenChange={setDetailsOpen}
+      title={selectedItem?.title ?? ""}
+      pinned={isPinned}
+    />
 
     <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
       <DialogContent className="sm:max-w-[400px] bg-white border-gray-200">

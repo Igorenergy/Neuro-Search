@@ -38,15 +38,13 @@ import {
   DialogFooter,
   DialogDescription,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Switch as ToggleSwitch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
 import { Trash2, FileText, Copy, Filter, RefreshCw, Archive, Download, StopCircle, FastForward } from "lucide-react";
 import rocketIcon from "@assets/image_1771405092616.png";
 import moreIcon from "@assets/изображение_1771596463092.png";
 import CloneRestartModal from "@/components/clone-restart-modal";
 import AbortResearchModal from "@/components/abort-research-modal";
 import FinishEarlyModal from "@/components/finish-early-modal";
+import ResearchDetailsModal from "@/components/research-details-modal";
 
 type ResearchStatus = "success" | "in-progress" | "failed" | "canceled";
 
@@ -60,7 +58,6 @@ function CollapsedSidebar({
   pinnedIds,
   togglePin,
   setSelectedItem,
-  setRenameValue,
   setIsPinned,
   setDetailsOpen,
   setCloneOpen,
@@ -78,7 +75,6 @@ function CollapsedSidebar({
   pinnedIds: number[];
   togglePin: (id: number) => void;
   setSelectedItem: (item: { id: number; title: string } | null) => void;
-  setRenameValue: (v: string) => void;
   setIsPinned: (v: boolean) => void;
   setDetailsOpen: (v: boolean) => void;
   setCloneOpen: (v: boolean) => void;
@@ -259,7 +255,7 @@ function CollapsedSidebar({
                         <>
                           <DropdownMenuItem
                             className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
-                            onClick={(e) => { e.preventDefault(); setSelectedItem(item); setRenameValue(item.title); setIsPinned(isPinned); setDetailsOpen(true); }}
+                            onClick={(e) => { e.preventDefault(); setSelectedItem(item); setIsPinned(isPinned); setDetailsOpen(true); }}
                             data-testid={`collapsed-details-${item.id}`}
                           >
                             <FileText className="w-4 h-4 text-gray-400" />
@@ -329,7 +325,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [cloneOpen, setCloneOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<{ id: number; title: string } | null>(null);
-  const [renameValue, setRenameValue] = useState("");
   const [isPinned, setIsPinned] = useState(false);
 
 
@@ -548,7 +543,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                             <DropdownMenuContent align="end" className="w-44 bg-[#1a1a1a] border-[#333] shadow-xl">
                               <DropdownMenuItem
                                 className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
-                                onClick={(e) => { e.preventDefault(); setSelectedItem(item); setRenameValue(item.title); setIsPinned(true); setDetailsOpen(true); }}
+                                onClick={(e) => { e.preventDefault(); setSelectedItem(item); setIsPinned(true); setDetailsOpen(true); }}
                                 data-testid={`details-${item.id}`}
                               >
                                 <FileText className="w-4 h-4 text-gray-400" />
@@ -643,7 +638,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                             <DropdownMenuContent align="end" className="w-44 bg-[#1a1a1a] border-[#333] shadow-xl">
                               <DropdownMenuItem
                                 className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
-                                onClick={(e) => { e.preventDefault(); setSelectedItem(item); setRenameValue(item.title); setIsPinned(false); setDetailsOpen(true); }}
+                                onClick={(e) => { e.preventDefault(); setSelectedItem(item); setIsPinned(false); setDetailsOpen(true); }}
                                 data-testid={`details-${item.id}`}
                               >
                                 <FileText className="w-4 h-4 text-gray-400" />
@@ -727,7 +722,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           pinnedIds={pinnedIds}
           togglePin={togglePin}
           setSelectedItem={setSelectedItem}
-          setRenameValue={setRenameValue}
           setIsPinned={setIsPinned}
           setDetailsOpen={setDetailsOpen}
           setCloneOpen={setCloneOpen}
@@ -852,45 +846,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </div>
         </main>
       </div>
-      <Dialog open={detailsOpen} onOpenChange={setDetailsOpen}>
-        <DialogContent className="sm:max-w-[400px] bg-white border-gray-200">
-          <DialogHeader>
-            <DialogTitle className="text-gray-900">Research Details</DialogTitle>
-            <DialogDescription className="text-gray-500 text-sm">
-              Edit the name and pin status for this research item.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="space-y-5 py-2">
-            <div className="space-y-2">
-              <Label htmlFor="rename" className="text-sm font-medium text-gray-700">Rename</Label>
-              <Input
-                id="rename"
-                value={renameValue}
-                onChange={(e) => setRenameValue(e.target.value)}
-                className="border-gray-300 focus:border-[#008DA8] focus:ring-[#008DA8]"
-                data-testid="input-rename"
-              />
-            </div>
-            <div className="flex items-center justify-between">
-              <Label htmlFor="pin-toggle" className="text-sm font-medium text-gray-700">Pinned</Label>
-              <ToggleSwitch
-                id="pin-toggle"
-                checked={isPinned}
-                onCheckedChange={setIsPinned}
-                data-testid="toggle-pin"
-              />
-            </div>
-          </div>
-          <DialogFooter className="gap-2">
-            <Button variant="outline" onClick={() => setDetailsOpen(false)} className="border-gray-300 text-gray-700" data-testid="button-cancel-details">
-              Cancel
-            </Button>
-            <Button onClick={() => setDetailsOpen(false)} className="bg-[#008DA8] hover:bg-[#006E7D] text-white" data-testid="button-save-details">
-              Save
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <ResearchDetailsModal
+        open={detailsOpen}
+        onOpenChange={setDetailsOpen}
+        title={selectedItem?.title ?? ""}
+        pinned={isPinned}
+      />
       <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
         <DialogContent className="sm:max-w-[400px] bg-white border-gray-200">
           <DialogHeader>
