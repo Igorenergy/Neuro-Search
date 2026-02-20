@@ -25,6 +25,7 @@ import {
   Copy,
   Trash2,
   Zap,
+  Settings,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
