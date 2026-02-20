@@ -350,8 +350,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="pb-2 flex items-center justify-center">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="w-10 h-8 flex items-center justify-center rounded-sm text-gray-600 hover:text-black hover:bg-black/5 cursor-pointer transition-colors" data-testid="button-collapsed-more-menu">
-                <img src={moreIcon} alt="More" className="w-4 h-4 opacity-60" />
+              <button className="w-[54px] h-9 flex items-center justify-center gap-1 rounded-sm text-gray-600 hover:text-black hover:bg-black/5 cursor-pointer transition-colors border border-gray-300 text-[10px] font-semibold" data-testid="button-collapsed-more-menu">
+                <img src={moreIcon} alt="More" className="w-5 h-5 opacity-70" />
               </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" side="right" className="w-52 bg-[#1a1a1a] border-[#333] shadow-xl mb-2 animate-in slide-in-from-bottom-2 duration-200">
@@ -656,8 +656,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button className="w-full h-9 px-3 text-xs font-semibold text-gray-600 hover:text-black hover:bg-black/5 flex items-center justify-center gap-2 rounded-sm cursor-pointer transition-colors border border-gray-300" data-testid="button-more-menu">
-                <img src={moreIcon} alt="More Options" className="w-5 h-5 opacity-70" />
-                <span>More Options</span>
+                <img src={moreIcon} alt="More" className="w-5 h-5 opacity-70" />
+                <span>More</span>
                 <ChevronRight className="w-3.5 h-3.5 ml-auto" />
               </button>
             </DropdownMenuTrigger>
