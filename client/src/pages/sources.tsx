@@ -31,6 +31,7 @@ import {
   Database,
   Check,
   Rocket,
+  Clock,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -48,6 +49,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
   Select,
@@ -263,7 +265,8 @@ export default function SourcesPage() {
 
       {/* Enhance Research Drawer (Modal) */}
       <Dialog open={showEnhanceModal} onOpenChange={setShowEnhanceModal}>
-        <DialogContent className="max-w-2xl bg-white p-0 overflow-hidden border-none shadow-2xl">
+        <DialogContent className="max-w-2xl bg-white p-0 overflow-hidden border-none shadow-2xl" aria-describedby={undefined}>
+          <DialogTitle className="sr-only">Enhance Research</DialogTitle>
           <div className="flex h-[500px]">
             {/* Left Sidebar */}
             <div className="w-48 bg-[#f8f9fa] border-r border-gray-200 p-4 flex flex-col gap-1">
