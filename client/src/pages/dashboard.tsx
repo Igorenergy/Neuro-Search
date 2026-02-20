@@ -305,9 +305,7 @@ export default function Dashboard() {
                   </div>
                 </div>
                 <div className="flex items-center gap-1">
-                  {item.status === "in-progress" ? (
-                    <RefreshCw className="w-3.5 h-3.5 text-blue-500 animate-[spin_10s_linear_infinite]" />
-                  ) : (
+                  {item.status !== "in-progress" && (
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild onClick={(e) => e.preventDefault()}>
                         <button className="p-0.5 border-0 bg-transparent opacity-60 hover:opacity-100 transition-opacity" data-testid={`kebab-menu-${item.id}`}>
