@@ -245,6 +245,22 @@ export default function SourcesPage() {
         </div>
       </div>
 
+      {/* Enhance Research + Progress */}
+      <div className="flex items-center gap-4 px-4 py-2 border-b border-gray-200 bg-white shrink-0">
+        <Button variant="outline" size="sm" className="h-7 text-xs font-bold text-[#008DA8] border-[#008DA8] hover:bg-[#008DA8]/5 px-3" data-testid="button-enhance-research" onClick={() => setShowEnhanceModal(true)}>
+          Enhance Research
+        </Button>
+        <div className="flex-1 flex items-center gap-2">
+          <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
+            <div className="h-full bg-[#008DA8] rounded-full" style={{ width: "35%" }} />
+          </div>
+        </div>
+        <span className="text-xs text-gray-500 shrink-0 flex items-center gap-1">
+          <Zap className="w-3 h-3 text-[#008DA8]" />
+          Step 1: Identifying knowledge gaps in current sources...
+        </span>
+      </div>
+
       {/* Toolbar */}
       <div className="flex items-center gap-3 px-4 py-2 border-b border-gray-200 bg-[#F0F8F0] shrink-0 flex-wrap">
         <button
@@ -340,22 +356,6 @@ export default function SourcesPage() {
         >
           <Download className="w-4 h-4 text-gray-500" />
         </button>
-      </div>
-
-      {/* Enhance Research + Progress */}
-      <div className="flex items-center gap-4 px-4 py-2 border-b border-gray-200 bg-white shrink-0">
-        <Button variant="outline" size="sm" className="h-7 text-xs font-bold text-[#008DA8] border-[#008DA8] hover:bg-[#008DA8]/5 px-3" data-testid="button-enhance-research" onClick={() => setShowEnhanceModal(true)}>
-          Enhance Research
-        </Button>
-        <div className="flex-1 flex items-center gap-2">
-          <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
-            <div className="h-full bg-[#008DA8] rounded-full" style={{ width: "35%" }} />
-          </div>
-        </div>
-        <span className="text-xs text-gray-500 shrink-0 flex items-center gap-1">
-          <Zap className="w-3 h-3 text-[#008DA8]" />
-          Step 1: Identifying knowledge gaps in current sources...
-        </span>
       </div>
 
       {/* Data Grid */}
