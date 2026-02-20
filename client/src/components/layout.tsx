@@ -315,7 +315,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   <ChevronRight className="w-3 h-3 ml-auto" />
                 </button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="start" side="right" className="w-52 bg-[#1a1a1a] border-[#333] shadow-xl">
+              <DropdownMenuContent align="start" side="top" className="w-52 bg-[#1a1a1a] border-[#333] shadow-xl mb-2 animate-in slide-in-from-bottom-2 duration-200">
                 <DropdownMenuItem asChild className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer">
                   <Link href="/assets">
                     <FileText className="w-4 h-4 text-gray-400" />
