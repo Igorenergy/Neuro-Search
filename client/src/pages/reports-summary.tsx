@@ -268,6 +268,15 @@ export default function ReportsSummary() {
           </button>
         </div>
 
+        <Button
+          variant="outline"
+          size="sm"
+          className="h-7 text-[11px] font-medium border-gray-300 text-[#008DA8] hover:text-[#006E7D] hover:bg-gray-50 transition-colors shrink-0"
+          onClick={() => setShowExtendedModal(true)}
+          data-testid="button-generate-extended"
+        >
+          Generate extended report
+        </Button>
       </div>
 
       {/* Main Content */}
@@ -275,24 +284,13 @@ export default function ReportsSummary() {
         <div className="flex-1 overflow-y-auto">
           <div className="max-w-[900px] mx-auto py-6 px-6 space-y-4">
             {/* Strategic Overview Header */}
-            <div className="mb-2 flex items-center justify-between gap-4">
-              <div>
-                <h2 className="text-base font-bold text-gray-900" data-testid="text-overview-title">
-                  Strategic Overview & Key Insights
-                </h2>
-                <p className="text-xs text-gray-500 mt-1 leading-relaxed max-w-[700px]">
-                  Весь текст должен укладываться в 300–450 слов (максимум 2000–2500 знаков). Визуально это должно занимать 1–1.5 экрана на десктопе, чтобы пользователю почти не приходилось скроллить.
-                </p>
-              </div>
-              <Button
-                variant="outline"
-                size="sm"
-                className="h-7 text-[11px] font-medium border-gray-300 text-[#008DA8] hover:text-[#006E7D] hover:bg-gray-50 transition-colors shrink-0"
-                onClick={() => setShowExtendedModal(true)}
-                data-testid="button-generate-extended"
-              >
-                Generate extended report
-              </Button>
+            <div className="mb-2">
+              <h2 className="text-base font-bold text-gray-900" data-testid="text-overview-title">
+                Strategic Overview & Key Insights
+              </h2>
+              <p className="text-xs text-gray-500 mt-1 leading-relaxed max-w-[700px]">
+                Весь текст должен укладываться в 300–450 слов (максимум 2000–2500 знаков). Визуально это должно занимать 1–1.5 экрана на десктопе, чтобы пользователю почти не приходилось скроллить.
+              </p>
             </div>
 
             {/* Card 1: The Verdict */}
