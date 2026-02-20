@@ -143,7 +143,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <div className="flex items-center gap-2">
               <Link href="/smart-search/new" className="flex-1">
                 <Button variant="outline" className="w-full justify-center bg-white border-gray-400 text-[#006E7D] font-bold hover:bg-gray-50 h-9 rounded-sm gap-1">
-                  <Search className="w-4 h-4 stroke-[3]" /> Start new search
+                  <Plus className="w-4 h-4 stroke-[3]" /> Start new search
                 </Button>
               </Link>
               
