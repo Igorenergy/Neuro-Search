@@ -1,0 +1,31 @@
+Context: The user scrolls to the bottom of the active Dashboard and clicks the [ Archived Projects ] button to reveal older, inactive researches.
+
+1. Trigger & Layout Behavior (No Disruptions)
+Active Projects: The primary grid of current, active projects must remain exactly as it is (no reload, no hiding, no state changes).
+
+The Reveal: A new vertical list of horizontal cards containing the archived projects is instantly appended below the active section and the trigger button.
+
+Button State: Upon clicking, the trigger button instantly toggles to [ Hide Archived Projects ] (and its arrow icon flips upwards).
+
+2. The Auto-Scroll Logic (Crucial UX)
+Action: Immediately after the archived list renders in the DOM, the browser must perform a Smooth Scroll (scroll-behavior: smooth) to the top of the newly revealed Archived section.
+
+Why: This ensures the user instantly sees the newly loaded content, even on smaller laptop screens where it might render below the fold. The scroll position should align the "Archived" section header just below the main sticky navigation bar.
+
+3. Archived UI: Horizontal Cards (Visual Distinction)
+To prevent the user from confusing active and archived projects within the same continuous scroll, the archived layout fundamentally changes its shape:
+
+Layout Structure (Table-like Cards): Instead of a multi-column grid, archived projects are displayed as a vertical stack of full-width, horizontal cards. They function like table rows for easy downward scanning, but retain the visual separation of individual cards (with gaps between them).
+
+Information Flow: Data inside the card is distributed horizontally left-to-right (e.g., Title & Date on the left -> Metrics in the center -> Call-to-Action and Kebab menu on the far right).
+
+Visual Dimming: Apply a muted styling (e.g., opacity-75 or bg-gray-50/bg-slate-50) to these horizontal cards to make them feel visually "inactive" or "cold" compared to the bright, active grid above.
+
+Status Badge: Every card in this list must have a subtle [ 📦 Archived ] badge next to the project title.
+
+Restricted Context Menu (⋮): Inside the archived cards, the action menu logic changes. The primary action becomes [ 🔓 Unarchive / Restore ], and all active editing tools (Enhance, Search, Edit) are strictly hidden or disabled.
+
+4. Hide Action (Reversibility)
+Action: If the user clicks [ Hide Archived Projects ], the horizontal list of archived cards simply collapses (is removed from the DOM).
+
+UX Polish: The page must smoothly scroll slightly back up to anchor at the bottom of the active projects grid, preventing the user from losing their place on the page.

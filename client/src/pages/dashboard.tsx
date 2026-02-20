@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useCallback } from "react";
 import { Link } from "wouter";
 import {
   Plus,
@@ -7,6 +7,7 @@ import {
   FileText,
   X,
   ChevronDown,
+  ChevronUp,
   Search,
   Filter,
   Copy,
@@ -17,6 +18,9 @@ import {
   Zap,
   ClipboardList,
   RefreshCw,
+  Archive,
+  Package,
+  Unlock,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -51,6 +55,23 @@ export default function Dashboard() {
   const [isPinned, setIsPinned] = useState(false);
   const [deletedIds, setDeletedIds] = useState<number[]>([]);
   const [dashStatusFilter, setDashStatusFilter] = useState<"all" | "success" | "in-progress" | "failed" | "canceled">("all");
+  const [showArchived, setShowArchived] = useState(false);
+  const archivedSectionRef = useRef<HTMLDivElement>(null);
+  const activeGridRef = useRef<HTMLDivElement>(null);
+
+  const toggleArchived = useCallback(() => {
+    if (!showArchived) {
+      setShowArchived(true);
+      setTimeout(() => {
+        archivedSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 50);
+    } else {
+      setShowArchived(false);
+      setTimeout(() => {
+        activeGridRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+      }, 50);
+    }
+  }, [showArchived]);
 
   type ResearchStatus = "success" | "in-progress" | "failed" | "canceled";
 
@@ -75,6 +96,29 @@ export default function Dashboard() {
     { id: 9, title: "Мемуары Криптана: Ретродропи, стратегии и анализ", date: "23 нояб. 2025 г.", sources: 1, status: "success", hasAttachment: false, iconIdx: 4 },
     { id: 10, title: "Искусственный Интеллект и Будущее Технологий", date: "17 нояб. 2025 г.", sources: 24, status: "failed", hasAttachment: false, iconIdx: 5 },
     { id: 11, title: "15 Жестоких Правд о Неконкурентных Рынках", date: "16 нояб. 2025 г.", sources: 1, status: "success", hasAttachment: false, iconIdx: 4 },
+  ];
+
+  const archivedProjects: { id: number; title: string; date: string; sources: number; status: ResearchStatus }[] = [
+    { id: 101, title: "Анализ Глобальных Тенденций в Секторе FinTech 2024", date: "15 окт. 2025 г.", sources: 34, status: "success" },
+    { id: 102, title: "Исследование Рынка Нефти: Прогнозы и Стратегии", date: "10 окт. 2025 г.", sources: 18, status: "success" },
+    { id: 103, title: "Конкурентный Анализ SaaS-платформ для HR", date: "5 окт. 2025 г.", sources: 42, status: "failed" },
+    { id: 104, title: "Обзор Стартапов в Области Квантовых Вычислений", date: "28 сент. 2025 г.", sources: 15, status: "success" },
+    { id: 105, title: "Рынок Электронной Коммерции в Азии: Тренды 2024–2025", date: "20 сент. 2025 г.", sources: 27, status: "success" },
+    { id: 106, title: "Стратегический Обзор Венчурного Капитала в Европе", date: "15 сент. 2025 г.", sources: 31, status: "canceled" },
+    { id: 107, title: "Кибербезопасность: Угрозы для Малого и Среднего Бизнеса", date: "10 сент. 2025 г.", sources: 22, status: "success" },
+    { id: 108, title: "Децентрализованные Финансы: Риски и Перспективы", date: "5 сент. 2025 г.", sources: 19, status: "failed" },
+    { id: 109, title: "Анализ Логистических Цепочек: Постпандемическая Оптимизация", date: "1 сент. 2025 г.", sources: 38, status: "success" },
+    { id: 110, title: "Цифровая Трансформация в Банковском Секторе", date: "25 авг. 2025 г.", sources: 45, status: "success" },
+    { id: 111, title: "Рынок Облачных Вычислений: AWS vs Azure vs GCP", date: "20 авг. 2025 г.", sources: 29, status: "success" },
+    { id: 112, title: "Искусственный Интеллект в Медицине: Применения и Этика", date: "15 авг. 2025 г.", sources: 33, status: "canceled" },
+    { id: 113, title: "Анализ Криптовалютного Рынка: Q3 2025", date: "10 авг. 2025 г.", sources: 16, status: "success" },
+    { id: 114, title: "Зеленая Энергетика: Инвестиционный Ландшафт 2025", date: "5 авг. 2025 г.", sources: 21, status: "success" },
+    { id: 115, title: "Стратегия Экспансии на Рынки Юго-Восточной Азии", date: "1 авг. 2025 г.", sources: 14, status: "failed" },
+    { id: 116, title: "Обзор Рынка Недвижимости: Коммерческий Сегмент", date: "25 июля 2025 г.", sources: 26, status: "success" },
+    { id: 117, title: "Анализ Конкуренции в Секторе EdTech", date: "20 июля 2025 г.", sources: 37, status: "success" },
+    { id: 118, title: "Роботизация Производства: ROI и Внедрение", date: "15 июля 2025 г.", sources: 20, status: "success" },
+    { id: 119, title: "Перспективы Рынка Полупроводников 2025–2030", date: "10 июля 2025 г.", sources: 41, status: "canceled" },
+    { id: 120, title: "Маркетинговые Стратегии для B2B SaaS Компаний", date: "5 июля 2025 г.", sources: 12, status: "success" },
   ];
 
   return (
@@ -217,7 +261,7 @@ export default function Dashboard() {
         </div>
       </div>
       {/* Research Tiles Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div ref={activeGridRef} className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
         {/* Create Research Tile */}
         <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-4 flex flex-col items-center justify-center min-h-[180px]" data-testid="card-create-research">
           <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center mb-3">
@@ -302,11 +346,85 @@ export default function Dashboard() {
           );
         })}
       </div>
-      <div className="flex justify-center pt-8 pb-12">
-        <Button className="bg-[#008DA8] hover:bg-[#007A92] text-white px-8 h-10 rounded-sm font-medium">
-          Show more (20)
+      <div className="flex justify-center pt-8 pb-4">
+        <Button
+          className="bg-[#008DA8] hover:bg-[#007A92] text-white px-8 h-10 rounded-sm font-medium gap-2"
+          onClick={toggleArchived}
+          data-testid="button-toggle-archived"
+        >
+          <Archive className="w-4 h-4" />
+          {showArchived ? "Hide Archived Projects" : "Archived Projects (20)"}
+          {showArchived ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
         </Button>
       </div>
+
+      {showArchived && (
+        <div ref={archivedSectionRef} className="pb-12">
+          <div className="flex items-center gap-2 mb-4">
+            <Archive className="w-5 h-5 text-gray-500" />
+            <h2 className="font-bold text-gray-700 text-[15px]">Archived Projects</h2>
+            <span className="text-xs text-gray-400 ml-1">(20)</span>
+          </div>
+          <div className="flex flex-col gap-3">
+            {archivedProjects.map((item) => (
+              <div
+                key={item.id}
+                className="flex items-center gap-4 bg-gray-50 border border-gray-200 rounded-lg px-5 py-4 opacity-75 hover:opacity-100 transition-opacity group"
+                data-testid={`card-archived-${item.id}`}
+              >
+                <div className="flex items-center gap-3 flex-1 min-w-0">
+                  <img src={rocketIcon} alt="Rocket" className="w-5 h-5 opacity-60 shrink-0" />
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2">
+                      <p className="text-[13px] font-semibold text-gray-700 truncate">{item.title}</p>
+                      <Badge variant="secondary" className="text-[10px] px-1.5 py-0 h-5 bg-gray-200 text-gray-500 font-medium shrink-0 gap-1">
+                        <Package className="w-3 h-3" />
+                        Archived
+                      </Badge>
+                    </div>
+                    <p className="text-[11px] text-gray-400 mt-0.5">{item.date}</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-6 shrink-0">
+                  <span className="text-[11px] text-gray-400">{item.sources} sources</span>
+
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild onClick={(e) => e.preventDefault()}>
+                      <button className="p-1 bg-transparent opacity-60 hover:opacity-100 transition-opacity" data-testid={`archived-kebab-${item.id}`}>
+                        <MoreVertical className="w-4 h-4 text-gray-500 cursor-pointer hover:text-gray-700" />
+                      </button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-48 bg-[#1a1a1a] border-[#333] shadow-xl">
+                      <DropdownMenuItem
+                        className="flex items-center gap-2 text-sm text-[#008DA8] hover:text-[#00b0cc] focus:text-[#00b0cc] focus:bg-[#333] cursor-pointer"
+                        data-testid={`unarchive-${item.id}`}
+                      >
+                        <Unlock className="w-4 h-4" />
+                        Unarchive / Restore
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
+                        data-testid={`archived-details-${item.id}`}
+                      >
+                        <FileText className="w-4 h-4 text-gray-400" />
+                        Details
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 focus:text-red-400 focus:bg-[#333] cursor-pointer"
+                        data-testid={`archived-delete-${item.id}`}
+                      >
+                        <Trash2 className="w-4 h-4" />
+                        Delete
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
 
     <Dialog open={detailsOpen} onOpenChange={setDetailsOpen}>
