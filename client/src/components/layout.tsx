@@ -362,11 +362,47 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <div className="w-8 h-[1px] bg-gray-300" />
           <ScrollArea className="flex-1 w-full px-2">
             <div className="flex flex-col items-center gap-3">
-              {visibleResearchItems.map(item => (
-                <div key={item.id} className="w-8 h-8 rounded-full bg-[#E6E1EF] flex items-center justify-center hover:bg-gray-200 cursor-pointer" title={item.title}>
-                  <img src={rocketIcon} alt="Rocket" className="w-4 h-4 opacity-70" />
-                </div>
-              ))}
+              {visibleResearchItems.map(item => {
+                const config = statusConfig[item.status];
+                const isInProgress = item.status === "in-progress";
+                const borderHoverColor = 
+                  item.status === "success" ? "#22c55e" :
+                  item.status === "in-progress" ? "#3b82f6" :
+                  item.status === "failed" ? "#ef4444" :
+                  "#f97316";
+
+                return (
+                  <Link key={item.id} href={`${config.route}/${item.id}`}>
+                    <div 
+                      className="relative w-9 h-9 flex items-center justify-center cursor-pointer group"
+                      title={item.title}
+                    >
+                      {/* Spinner for in-progress or static border for others */}
+                      <div 
+                        className={cn(
+                          "absolute inset-0 rounded-full border-2 transition-colors duration-200",
+                          isInProgress ? "border-[#3b82f6] border-t-transparent animate-[spin_3s_linear_infinite]" : "border-transparent group-hover:border-2"
+                        )}
+                        style={!isInProgress ? { borderColor: 'transparent' } : undefined}
+                        onMouseEnter={(e) => {
+                          if (!isInProgress) {
+                            e.currentTarget.style.borderColor = borderHoverColor;
+                          }
+                        }}
+                        onMouseLeave={(e) => {
+                          if (!isInProgress) {
+                            e.currentTarget.style.borderColor = 'transparent';
+                          }
+                        }}
+                      />
+                      {/* Inner circle with icon */}
+                      <div className="w-8 h-8 rounded-full bg-[#E6E1EF] flex items-center justify-center group-hover:bg-white transition-colors">
+                        <img src={rocketIcon} alt="Rocket" className="w-4 h-4 opacity-70" />
+                      </div>
+                    </div>
+                  </Link>
+                );
+              })}
             </div>
           </ScrollArea>
           <div className="mt-auto pb-4">
