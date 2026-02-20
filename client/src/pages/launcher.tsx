@@ -838,7 +838,7 @@ export default function Launcher() {
                          <div className="mb-4">
                             <div className="flex items-center justify-between mb-2">
                                <span className="text-xs font-bold">
-                                 Added at Step2: {step1Files.length} 
+                                 Added at Step1: {step1Files.length} 
                                  {step1Files.length > 0 && (
                                    <span className="text-red-600 underline cursor-pointer ml-1 font-normal" onClick={() => setStep1Files([])}>remove all</span>
                                  )}
@@ -1219,7 +1219,7 @@ export default function Launcher() {
                           <SelectContent>
                             <SelectItem value="all">Any</SelectItem>
                             <SelectItem value="step1">Step1</SelectItem>
-                            <SelectItem value="step2">Step2</SelectItem>
+                            <SelectItem value="step2">Step3</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
