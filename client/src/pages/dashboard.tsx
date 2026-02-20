@@ -21,6 +21,7 @@ import {
   Archive,
   Package,
   Unlock,
+  Download,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -320,6 +321,20 @@ export default function Dashboard() {
                         >
                           <Copy className="w-4 h-4 text-[#008DA8]" />
                           Clone & Restart
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
+                          data-testid={`dash-archive-${item.id}`}
+                        >
+                          <Archive className="w-4 h-4 text-gray-400" />
+                          Archive Project
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
+                          data-testid={`dash-export-${item.id}`}
+                        >
+                          <Download className="w-4 h-4 text-gray-400" />
+                          Export Project
                         </DropdownMenuItem>
                         <DropdownMenuItem
                           className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 focus:text-red-400 focus:bg-[#333] cursor-pointer"
