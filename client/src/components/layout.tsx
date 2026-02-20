@@ -295,10 +295,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <Button 
           variant="ghost" 
           size="icon" 
-          className={cn("h-8 w-8 text-black hover:bg-black/5 transition-transform", collapsed && "h-12 w-12 -translate-y-[15px] flex items-center justify-center")}
+          className={cn(
+            "h-12 w-12 text-black hover:bg-black/5 transition-transform flex items-center justify-center border-4 border-red-600 rounded-none p-0",
+            collapsed && "-translate-y-[15.5px]"
+          )}
           onClick={() => setIsCollapsed(!isCollapsed)}
         >
-          <Menu className={cn("w-8 h-8 stroke-[3]", collapsed && "w-10 h-10")} />
+          <Menu className="w-10 h-10 stroke-[3]" />
         </Button>
       </div>
 
