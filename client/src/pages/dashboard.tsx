@@ -292,8 +292,17 @@ export default function Dashboard() {
               data-testid={`card-research-${item.id}`}
             >
               <div className="flex items-start justify-between mb-3">
-                <div className="w-9 h-9 rounded-lg flex items-center justify-center">
-                  <img src={rocketIcon} alt="Rocket" className="w-5 h-5 opacity-80" />
+                <div className="relative w-[36px] h-[36px] shrink-0 flex items-center justify-center">
+                  <div 
+                    className={cn(
+                      "absolute inset-0 rounded-full border-2",
+                      item.status === "in-progress" ? "border-[#3b82f6] border-t-transparent animate-[spin_3s_linear_infinite]" : ""
+                    )}
+                    style={item.status !== "in-progress" ? { borderColor: item.status === 'success' ? '#22c55e' : item.status === 'failed' ? '#ef4444' : '#f97316' } : undefined}
+                  />
+                  <div className="w-[30px] h-[30px] rounded-full bg-white/80 flex items-center justify-center">
+                    <img src={rocketIcon} alt="Rocket" className="w-[18px] h-[18px] opacity-70" />
+                  </div>
                 </div>
                 <div className="flex items-center gap-1">
                   {item.status === "in-progress" ? (
