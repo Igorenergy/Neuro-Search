@@ -1153,9 +1153,7 @@ export default function Launcher() {
           >
             <ArrowLeft className="w-3 h-3" /> Prev. step
           </button>
-          <div className="px-6 py-2 bg-[#0097B2] text-white text-xs font-bold flex items-center justify-center">
-            STEP #3
-          </div>
+          <div className="px-6 py-2 bg-[#0097B2] text-white text-xs font-bold flex items-center justify-center">STEP #4</div>
           <div className="px-6 py-2 bg-[#F0F2F5] text-[#5A6B7C] text-xs font-bold flex items-center justify-center border-r border-gray-300">REASONING</div>
           <div className="flex-1 bg-[#5A6B7C] flex items-center justify-end px-4">
             <div className="flex items-center gap-2">
