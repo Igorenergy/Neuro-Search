@@ -41,7 +41,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Switch as ToggleSwitch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { Trash2, FileText, Copy, Filter, RefreshCw, Archive, Download } from "lucide-react";
+import { Trash2, FileText, Copy, Filter, RefreshCw, Archive, Download, AlertTriangle, CheckCircle, StopCircle, FastForward } from "lucide-react";
 import rocketIcon from "@assets/image_1771405092616.png";
 import moreIcon from "@assets/изображение_1771596463092.png";
 import CloneRestartModal from "@/components/clone-restart-modal";
@@ -233,6 +233,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const [deletedIds, setDeletedIds] = useState<number[]>([]);
   const [pinnedIds, setPinnedIds] = useState<number[]>([]);
   const [statusFilter, setStatusFilter] = useState<"all" | ResearchStatus>("all");
+  const [abortOpen, setAbortOpen] = useState(false);
+  const [finishEarlyOpen, setFinishEarlyOpen] = useState(false);
+  const [abortItem, setAbortItem] = useState<{ id: number; title: string } | null>(null);
 
   const researchItems: { id: number; title: string; status: ResearchStatus }[] = [
     { id: 1, title: "Американская Фабрика: Полный анализ и стратегический обзор", status: "success" },
@@ -393,44 +396,74 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                       </p>
                     </Link>
                     <div className="flex items-center gap-1 shrink-0 mt-0.5">
-                      <Pin
-                        className="w-3.5 h-3.5 text-gray-500 rotate-45 cursor-pointer hover:text-gray-700 -mr-[10px] relative -left-[10px]"
-                        onClick={(e) => { e.stopPropagation(); togglePin(item.id); }}
-                        data-testid={`pin-${item.id}`}
-                      />
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild onClick={(e) => e.preventDefault()}>
-                          <button className="p-0 border-0 bg-transparent" data-testid={`kebab-menu-${item.id}`}>
-                            <MoreVertical className="w-3.5 h-3.5 text-gray-500 cursor-pointer hover:text-gray-700" />
-                          </button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-44 bg-[#1a1a1a] border-[#333] shadow-xl">
-                          <DropdownMenuItem
-                            className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
-                            onClick={(e) => { e.preventDefault(); setSelectedItem(item); setRenameValue(item.title); setIsPinned(true); setDetailsOpen(true); }}
-                            data-testid={`details-${item.id}`}
-                          >
-                            <FileText className="w-4 h-4 text-gray-400" />
-                            Details
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            className="flex items-center gap-2 text-sm text-[#008DA8] hover:text-[#00b0cc] focus:text-[#00b0cc] focus:bg-[#333] cursor-pointer"
-                            onClick={(e) => { e.preventDefault(); setCloneOpen(true); }}
-                            data-testid={`clone-${item.id}`}
-                          >
-                            <Copy className="w-4 h-4 text-[#008DA8]" />
-                            Clone & Restart
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 focus:text-red-400 focus:bg-[#333] cursor-pointer"
-                            onClick={(e) => { e.preventDefault(); setSelectedItem(item); setDeleteOpen(true); }}
-                            data-testid={`delete-${item.id}`}
-                          >
-                            <Trash2 className="w-4 h-4" />
-                            Delete
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
+                      {item.status === "in-progress" ? (
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild onClick={(e) => e.preventDefault()}>
+                            <button className="p-0 border-0 bg-transparent" data-testid={`kebab-menu-${item.id}`}>
+                              <MoreVertical className="w-3.5 h-3.5 text-gray-500 cursor-pointer hover:text-gray-700" />
+                            </button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end" className="w-44 bg-[#1a1a1a] border-[#333] shadow-xl">
+                            <DropdownMenuItem
+                              className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 focus:text-red-400 focus:bg-[#333] cursor-pointer"
+                              onClick={(e) => { e.preventDefault(); setAbortItem(item); setAbortOpen(true); }}
+                              data-testid={`abort-${item.id}`}
+                            >
+                              <StopCircle className="w-4 h-4" />
+                              Abort Research
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              className="flex items-center gap-2 text-sm text-[#22c55e] hover:text-[#16a34a] focus:text-[#16a34a] focus:bg-[#333] cursor-pointer"
+                              onClick={(e) => { e.preventDefault(); setAbortItem(item); setFinishEarlyOpen(true); }}
+                              data-testid={`finish-early-${item.id}`}
+                            >
+                              <FastForward className="w-4 h-4" />
+                              Finish Early
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      ) : (
+                        <>
+                          <Pin
+                            className="w-3.5 h-3.5 text-gray-500 rotate-45 cursor-pointer hover:text-gray-700 -mr-[10px] relative -left-[10px]"
+                            onClick={(e) => { e.stopPropagation(); togglePin(item.id); }}
+                            data-testid={`pin-${item.id}`}
+                          />
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild onClick={(e) => e.preventDefault()}>
+                              <button className="p-0 border-0 bg-transparent" data-testid={`kebab-menu-${item.id}`}>
+                                <MoreVertical className="w-3.5 h-3.5 text-gray-500 cursor-pointer hover:text-gray-700" />
+                              </button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end" className="w-44 bg-[#1a1a1a] border-[#333] shadow-xl">
+                              <DropdownMenuItem
+                                className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
+                                onClick={(e) => { e.preventDefault(); setSelectedItem(item); setRenameValue(item.title); setIsPinned(true); setDetailsOpen(true); }}
+                                data-testid={`details-${item.id}`}
+                              >
+                                <FileText className="w-4 h-4 text-gray-400" />
+                                Details
+                              </DropdownMenuItem>
+                              <DropdownMenuItem
+                                className="flex items-center gap-2 text-sm text-[#008DA8] hover:text-[#00b0cc] focus:text-[#00b0cc] focus:bg-[#333] cursor-pointer"
+                                onClick={(e) => { e.preventDefault(); setCloneOpen(true); }}
+                                data-testid={`clone-${item.id}`}
+                              >
+                                <Copy className="w-4 h-4 text-[#008DA8]" />
+                                Clone & Restart
+                              </DropdownMenuItem>
+                              <DropdownMenuItem
+                                className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 focus:text-red-400 focus:bg-[#333] cursor-pointer"
+                                onClick={(e) => { e.preventDefault(); setSelectedItem(item); setDeleteOpen(true); }}
+                                data-testid={`delete-${item.id}`}
+                              >
+                                <Trash2 className="w-4 h-4" />
+                                Delete
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </>
+                      )}
                     </div>
                   </div>
                 ))}
@@ -458,7 +491,33 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                       </p>
                     </Link>
                     <div className="flex items-center gap-1 shrink-0 mt-0.5">
-                      {item.status !== "in-progress" && (
+                      {item.status === "in-progress" ? (
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild onClick={(e) => e.preventDefault()}>
+                            <button className="p-0 border-0 bg-transparent opacity-0 group-hover:opacity-100 transition-opacity" data-testid={`kebab-menu-${item.id}`}>
+                              <MoreVertical className="w-3.5 h-3.5 text-gray-400 cursor-pointer hover:text-gray-700" />
+                            </button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end" className="w-44 bg-[#1a1a1a] border-[#333] shadow-xl">
+                            <DropdownMenuItem
+                              className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 focus:text-red-400 focus:bg-[#333] cursor-pointer"
+                              onClick={(e) => { e.preventDefault(); setAbortItem(item); setAbortOpen(true); }}
+                              data-testid={`abort-${item.id}`}
+                            >
+                              <StopCircle className="w-4 h-4" />
+                              Abort Research
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              className="flex items-center gap-2 text-sm text-[#22c55e] hover:text-[#16a34a] focus:text-[#16a34a] focus:bg-[#333] cursor-pointer"
+                              onClick={(e) => { e.preventDefault(); setAbortItem(item); setFinishEarlyOpen(true); }}
+                              data-testid={`finish-early-${item.id}`}
+                            >
+                              <FastForward className="w-4 h-4" />
+                              Finish Early
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      ) : (
                         <>
                           <Pin
                             className="w-3.5 h-3.5 text-gray-400 rotate-45 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer hover:text-gray-700"
@@ -735,6 +794,68 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </DialogContent>
       </Dialog>
       <CloneRestartModal open={cloneOpen} onOpenChange={setCloneOpen} />
+      <Dialog open={abortOpen} onOpenChange={setAbortOpen}>
+        <DialogContent className="sm:max-w-[420px] bg-white border-gray-200 p-0 overflow-hidden">
+          <div className="border-b-2 border-red-200 px-6 pt-5 pb-4 flex items-center gap-3">
+            <div className="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center shrink-0">
+              <AlertTriangle className="w-5 h-5 text-red-600" />
+            </div>
+            <DialogTitle className="text-[17px] font-bold text-gray-900">Abort Research</DialogTitle>
+          </div>
+          <DialogDescription className="sr-only">Confirm aborting the current research</DialogDescription>
+          <div className="px-6 py-4 space-y-3">
+            <p className="text-sm text-gray-700">Are you sure you want to abort this research?</p>
+            <p className="text-sm text-red-600 font-medium">All current progress will be permanently discarded. This action cannot be undone.</p>
+          </div>
+          <div className="px-6 pb-5 flex items-center justify-between">
+            <button
+              className="text-sm text-gray-600 underline underline-offset-2 hover:text-gray-900 cursor-pointer"
+              onClick={() => setAbortOpen(false)}
+              data-testid="button-cancel-abort"
+            >
+              Cancel
+            </button>
+            <Button
+              className="bg-[#3b82f6] hover:bg-[#2563eb] text-white px-6 h-10 rounded-md font-medium"
+              onClick={() => { setAbortOpen(false); }}
+              data-testid="button-confirm-abort"
+            >
+              Yes, Abort
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+      <Dialog open={finishEarlyOpen} onOpenChange={setFinishEarlyOpen}>
+        <DialogContent className="sm:max-w-[420px] bg-white border-gray-200 p-0 overflow-hidden">
+          <div className="border-b-2 border-green-200 px-6 pt-5 pb-4 flex items-center gap-3">
+            <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center shrink-0">
+              <CheckCircle className="w-5 h-5 text-green-600" />
+            </div>
+            <DialogTitle className="text-[17px] font-bold text-gray-900">Finish Early</DialogTitle>
+          </div>
+          <DialogDescription className="sr-only">Confirm finishing the research early</DialogDescription>
+          <div className="px-6 py-4 space-y-3">
+            <p className="text-sm text-gray-700">Generate the report now based on current sources?</p>
+            <p className="text-sm text-[#0d9488] font-medium">The AI will stop gathering new sources and compile a report from the data collected so far. You will still receive a complete, structured output.</p>
+          </div>
+          <div className="px-6 pb-5 flex items-center justify-between">
+            <button
+              className="text-sm text-gray-600 underline underline-offset-2 hover:text-gray-900 cursor-pointer"
+              onClick={() => setFinishEarlyOpen(false)}
+              data-testid="button-cancel-finish-early"
+            >
+              Cancel
+            </button>
+            <Button
+              className="bg-[#22c55e] hover:bg-[#16a34a] text-white px-6 h-10 rounded-md font-medium"
+              onClick={() => { setFinishEarlyOpen(false); }}
+              data-testid="button-confirm-finish-early"
+            >
+              Yes, Generate Report
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
