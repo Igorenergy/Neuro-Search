@@ -347,7 +347,27 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         >
           <ChevronDown className="w-4 h-4" />
         </button>
-        <div className="pb-2" />
+        <div className="pb-2 flex items-center justify-center">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="w-10 h-8 flex items-center justify-center rounded-sm text-gray-600 hover:text-black hover:bg-black/5 cursor-pointer transition-colors" data-testid="button-collapsed-more-menu">
+                <img src={moreIcon} alt="More" className="w-4 h-4 opacity-60" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" side="right" className="w-52 bg-[#1a1a1a] border-[#333] shadow-xl mb-2 animate-in slide-in-from-bottom-2 duration-200">
+              <DropdownMenuItem asChild className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer">
+                <Link href="/assets">
+                  <FileText className="w-4 h-4 text-gray-400" />
+                  Files & Attachments
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer" data-testid="collapsed-menu-archived-projects">
+                <Archive className="w-4 h-4 text-gray-400" />
+                Archived Projects (20)
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
     );
   }
