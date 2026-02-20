@@ -187,7 +187,7 @@ function CollapsedSidebar({
                     style={!isInProgress ? { borderColor: borderHoverColor } : undefined}
                   />
                   <div className="w-8 h-8 rounded-full bg-[#E6E1EF] flex items-center justify-center group-hover:bg-white transition-colors">
-                    <img src={rocketIcon} alt="Rocket" className="w-4 h-4 opacity-70" />
+                    <img src={rocketIcon} alt="Rocket" className="w-[20px] h-[20px] opacity-70" />
                   </div>
                 </div>
               </Link>
