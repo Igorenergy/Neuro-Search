@@ -348,7 +348,7 @@ export default function Dashboard() {
                   </p>
                   <div className="shrink-0">
                     <DropdownMenu>
-                      <DropdownMenuTrigger asChild onClick={(e) => e.preventDefault()}>
+                      <DropdownMenuTrigger asChild onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}>
                         <button className="p-0.5 border-0 bg-transparent opacity-60 hover:opacity-100 transition-opacity" data-testid={`kebab-menu-${item.id}`}>
                           <MoreVertical className="w-4 h-4 text-gray-500 cursor-pointer hover:text-gray-700" />
                         </button>
@@ -359,7 +359,7 @@ export default function Dashboard() {
                             <DropdownMenuItem
                               className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 focus:text-red-400 focus:bg-[#333] cursor-pointer"
                               data-testid={`abort-${item.id}`}
-                              onSelect={(e) => { e.preventDefault(); setAbortItem({ id: item.id, title: item.title }); setAbortOpen(true); }}
+                              onClick={(e) => { e.stopPropagation(); setAbortItem({ id: item.id, title: item.title }); setTimeout(() => setAbortOpen(true), 0); }}
                             >
                               <StopCircle className="w-4 h-4" />
                               Abort Research
@@ -367,7 +367,7 @@ export default function Dashboard() {
                             <DropdownMenuItem
                               className="flex items-center gap-2 text-sm text-[#22c55e] hover:text-[#16a34a] focus:text-[#16a34a] focus:bg-[#333] cursor-pointer"
                               data-testid={`finish-early-${item.id}`}
-                              onSelect={(e) => { e.preventDefault(); setAbortItem({ id: item.id, title: item.title }); setFinishEarlyOpen(true); }}
+                              onClick={(e) => { e.stopPropagation(); setAbortItem({ id: item.id, title: item.title }); setTimeout(() => setFinishEarlyOpen(true), 0); }}
                             >
                               <FastForward className="w-4 h-4" />
                               Finish Early
