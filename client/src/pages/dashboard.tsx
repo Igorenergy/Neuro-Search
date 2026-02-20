@@ -50,6 +50,7 @@ export default function Dashboard() {
   const [renameValue, setRenameValue] = useState("");
   const [isPinned, setIsPinned] = useState(false);
   const [deletedIds, setDeletedIds] = useState<number[]>([]);
+  const [dashStatusFilter, setDashStatusFilter] = useState<"all" | "success" | "in-progress" | "failed" | "canceled">("all");
 
   type ResearchStatus = "success" | "in-progress" | "failed" | "canceled";
 
@@ -167,8 +168,16 @@ export default function Dashboard() {
                 <button
                   className={cn(
                     "h-8 w-8 flex items-center justify-center rounded border transition-all",
-                    "bg-[#f8f9fa] border-gray-300 text-gray-600 hover:border-gray-400 hover:bg-white",
-                    "data-[state=open]:border-black data-[state=open]:bg-white data-[state=open]:text-black"
+                    dashStatusFilter === "all"
+                      ? "bg-[#f8f9fa] border-gray-300 text-gray-600 hover:border-gray-400 hover:bg-white"
+                      : dashStatusFilter === "success"
+                      ? "bg-white border-[#22c55e] text-[#22c55e] shadow-sm"
+                      : dashStatusFilter === "in-progress"
+                      ? "bg-white border-[#3b82f6] text-[#3b82f6] shadow-sm"
+                      : dashStatusFilter === "failed"
+                      ? "bg-white border-[#ef4444] text-[#ef4444] shadow-sm"
+                      : "bg-white border-[#f97316] text-[#f97316] shadow-sm",
+                    "data-[state=open]:bg-white"
                   )}
                   data-testid="button-status-filter"
                 >
@@ -176,20 +185,21 @@ export default function Dashboard() {
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-40 bg-[#1a1a1a] border-[#333] shadow-xl p-0.5">
-                {[
-                  { label: "All", count: 20, textColor: "text-gray-300" },
-                  { label: "Success", count: 12, textColor: "text-green-500" },
-                  { label: "In Progress", count: 3, textColor: "text-blue-500" },
-                  { label: "Failed", count: 4, textColor: "text-red-500" },
-                  { label: "Canceled", count: 1, textColor: "text-orange-500" },
-                ].map((opt) => (
+                {([
+                  { value: "all", label: "All", count: 20, textColor: "text-gray-100" },
+                  { value: "success", label: "Success", count: 12, textColor: "text-[#22c55e]" },
+                  { value: "in-progress", label: "In Progress", count: 3, textColor: "text-[#3b82f6]" },
+                  { value: "failed", label: "Failed", count: 4, textColor: "text-[#ef4444]" },
+                  { value: "canceled", label: "Canceled", count: 1, textColor: "text-[#f97316]" },
+                ] as const).map((opt) => (
                   <DropdownMenuItem
-                    key={opt.label}
+                    key={opt.value}
                     className={cn(
                       "text-xs cursor-pointer flex justify-between items-center px-2 py-1.5 hover:text-white focus:text-white focus:bg-[#333]",
-                      opt.textColor
+                      dashStatusFilter === opt.value ? "font-bold text-[#008DA8] focus:text-[#008DA8]" : opt.textColor
                     )}
-                    data-testid={`filter-${opt.label.toLowerCase().replace(" ", "-")}`}
+                    onClick={() => setDashStatusFilter(opt.value)}
+                    data-testid={`filter-${opt.value}`}
                   >
                     <span>{opt.label}</span>
                     <span className="text-[10px] text-gray-500 ml-2">{opt.count}</span>

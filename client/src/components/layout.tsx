@@ -152,10 +152,16 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   <button 
                     className={cn(
                       "h-7 w-7 flex items-center justify-center rounded border transition-all",
-                      statusFilter === "all" 
-                        ? "bg-[#f8f9fa] border-gray-300 text-gray-600 hover:border-gray-400 hover:bg-white" 
-                        : "bg-white border-[#008DA8] text-[#008DA8] shadow-sm",
-                      "data-[state=open]:border-black data-[state=open]:bg-white data-[state=open]:text-black"
+                      statusFilter === "all"
+                        ? "bg-[#f8f9fa] border-gray-300 text-gray-600 hover:border-gray-400 hover:bg-white"
+                        : statusFilter === "success"
+                        ? "bg-white border-[#22c55e] text-[#22c55e] shadow-sm"
+                        : statusFilter === "in-progress"
+                        ? "bg-white border-[#3b82f6] text-[#3b82f6] shadow-sm"
+                        : statusFilter === "failed"
+                        ? "bg-white border-[#ef4444] text-[#ef4444] shadow-sm"
+                        : "bg-white border-[#f97316] text-[#f97316] shadow-sm",
+                      "data-[state=open]:bg-white"
                     )} 
                     data-testid="button-filter-status"
                   >
