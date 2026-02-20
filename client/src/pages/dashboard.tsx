@@ -422,7 +422,7 @@ export default function Dashboard() {
           );
         })}
       </div>
-      <div className="flex justify-center pt-8 pb-4">
+      <div className="flex justify-start pt-8 pb-4">
         <Button
           className="bg-[#008DA8] hover:bg-[#007A92] text-white px-8 h-10 rounded-sm font-medium gap-2"
           onClick={toggleArchived}
