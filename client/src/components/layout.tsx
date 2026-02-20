@@ -238,7 +238,7 @@ function CollapsedSidebar({
                         <>
                           <DropdownMenuItem
                             className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
-                            onClick={(e) => { e.preventDefault(); togglePin(item.id); }}
+                            onClick={(e) => { e.preventDefault(); setTimeout(() => togglePin(item.id), 0); }}
                             data-testid={`collapsed-pin-toggle-${item.id}`}
                           >
                             <Pin className="w-4 h-4 text-gray-400 rotate-45" />
@@ -246,7 +246,7 @@ function CollapsedSidebar({
                           </DropdownMenuItem>
                           <DropdownMenuItem
                             className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 focus:text-red-400 focus:bg-[#333] cursor-pointer"
-                            onClick={(e) => { e.preventDefault(); setAbortItem(item); setAbortOpen(true); }}
+                            onClick={(e) => { e.preventDefault(); setTimeout(() => { setAbortItem(item); setAbortOpen(true); }, 0); }}
                             data-testid={`collapsed-abort-${item.id}`}
                           >
                             <StopCircle className="w-4 h-4" />
@@ -254,7 +254,7 @@ function CollapsedSidebar({
                           </DropdownMenuItem>
                           <DropdownMenuItem
                             className="flex items-center gap-2 text-sm text-[#22c55e] hover:text-[#16a34a] focus:text-[#16a34a] focus:bg-[#333] cursor-pointer"
-                            onClick={(e) => { e.preventDefault(); setAbortItem(item); setFinishEarlyOpen(true); }}
+                            onClick={(e) => { e.preventDefault(); setTimeout(() => { setAbortItem(item); setFinishEarlyOpen(true); }, 0); }}
                             data-testid={`collapsed-finish-early-${item.id}`}
                           >
                             <FastForward className="w-4 h-4" />
@@ -265,7 +265,7 @@ function CollapsedSidebar({
                         <>
                           <DropdownMenuItem
                             className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
-                            onClick={(e) => { e.preventDefault(); togglePin(item.id); }}
+                            onClick={(e) => { e.preventDefault(); setTimeout(() => togglePin(item.id), 0); }}
                             data-testid={`collapsed-pin-toggle-${item.id}`}
                           >
                             <Pin className="w-4 h-4 text-gray-400 rotate-45" />
@@ -273,7 +273,7 @@ function CollapsedSidebar({
                           </DropdownMenuItem>
                           <DropdownMenuItem
                             className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
-                            onClick={(e) => { e.preventDefault(); setSelectedItem(item); setIsPinned(isPinned); setDetailsOpen(true); }}
+                            onClick={(e) => { e.preventDefault(); setTimeout(() => { setSelectedItem(item); setIsPinned(isPinned); setDetailsOpen(true); }, 0); }}
                             data-testid={`collapsed-details-${item.id}`}
                           >
                             <FileText className="w-4 h-4 text-gray-400" />
@@ -281,7 +281,7 @@ function CollapsedSidebar({
                           </DropdownMenuItem>
                           <DropdownMenuItem
                             className="flex items-center gap-2 text-sm text-[#008DA8] hover:text-[#00b0cc] focus:text-[#00b0cc] focus:bg-[#333] cursor-pointer"
-                            onClick={(e) => { e.preventDefault(); setCloneOpen(true); }}
+                            onClick={(e) => { e.preventDefault(); setTimeout(() => setCloneOpen(true), 0); }}
                             data-testid={`collapsed-clone-${item.id}`}
                           >
                             <Copy className="w-4 h-4 text-[#008DA8]" />
@@ -303,7 +303,7 @@ function CollapsedSidebar({
                           </DropdownMenuItem>
                           <DropdownMenuItem
                             className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 focus:text-red-400 focus:bg-[#333] cursor-pointer"
-                            onClick={(e) => { e.preventDefault(); setSelectedItem(item); setDeleteOpen(true); }}
+                            onClick={(e) => { e.preventDefault(); setTimeout(() => { setSelectedItem(item); setDeleteOpen(true); }, 0); }}
                             data-testid={`collapsed-delete-${item.id}`}
                           >
                             <Trash2 className="w-4 h-4" />
@@ -771,7 +771,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             isCollapsed ? "w-[70px]" : "w-[300px]"
           )}
         >
-          <SidebarContent collapsed={isCollapsed} />
+          {SidebarContent({ collapsed: isCollapsed })}
         </aside>
 
         {/* Mobile Nav */}
@@ -782,7 +782,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </Button>
           </SheetTrigger>
           <SheetContent side="left" className="p-0 w-[300px] bg-[#F5F5F7]">
-            <SidebarContent collapsed={false} />
+            {SidebarContent({ collapsed: false })}
           </SheetContent>
         </Sheet>
 
