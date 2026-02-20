@@ -469,7 +469,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </div>
           </header>
 
-          <div className="flex-1 p-6 md:p-8 overflow-auto bg-gray-50/50 text-[15px]">
+          <div className="flex-1 p-6 md:p-8 overflow-auto text-[15px] bg-[#fffffff5]">
             {children}
           </div>
         </main>
