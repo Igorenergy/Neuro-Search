@@ -424,13 +424,16 @@ export default function Dashboard() {
       </div>
       <div className="flex justify-start pt-8 pb-4">
         <Button
-          className="bg-[#008DA8] hover:bg-[#007A92] text-white px-8 h-10 rounded-sm font-medium gap-2"
+          variant="outline"
+          className="border-[#008DA8] text-[#008DA8] hover:bg-[#008DA8]/5 px-6 h-9 rounded-sm font-medium gap-2 bg-transparent"
           onClick={toggleArchived}
           data-testid="button-toggle-archived"
         >
-          <Archive className="w-4 h-4" />
-          {showArchived ? "Hide Archived Projects" : "Archived Projects (20)"}
-          {showArchived ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+          <Archive className="w-3.5 h-3.5" />
+          <span className="text-[13px]">
+            {showArchived ? "Hide Archived Projects" : "Archived Projects (20)"}
+          </span>
+          {showArchived ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
         </Button>
       </div>
 
