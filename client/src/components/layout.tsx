@@ -237,6 +237,14 @@ function CollapsedSidebar({
                       {isInProgress ? (
                         <>
                           <DropdownMenuItem
+                            className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
+                            onClick={(e) => { e.preventDefault(); togglePin(item.id); }}
+                            data-testid={`collapsed-pin-toggle-${item.id}`}
+                          >
+                            <Pin className="w-4 h-4 text-gray-400 rotate-45" />
+                            {isPinned ? "Unpin" : "Pin to navigation"}
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
                             className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 focus:text-red-400 focus:bg-[#333] cursor-pointer"
                             onClick={(e) => { e.preventDefault(); setAbortItem(item); setAbortOpen(true); }}
                             data-testid={`collapsed-abort-${item.id}`}
@@ -255,6 +263,14 @@ function CollapsedSidebar({
                         </>
                       ) : (
                         <>
+                          <DropdownMenuItem
+                            className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
+                            onClick={(e) => { e.preventDefault(); togglePin(item.id); }}
+                            data-testid={`collapsed-pin-toggle-${item.id}`}
+                          >
+                            <Pin className="w-4 h-4 text-gray-400 rotate-45" />
+                            {isPinned ? "Unpin" : "Pin to navigation"}
+                          </DropdownMenuItem>
                           <DropdownMenuItem
                             className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
                             onClick={(e) => { e.preventDefault(); setSelectedItem(item); setIsPinned(isPinned); setDetailsOpen(true); }}
