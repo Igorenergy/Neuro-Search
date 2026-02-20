@@ -58,11 +58,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   type ResearchStatus = "success" | "in-progress" | "failed" | "canceled";
 
-  const statusConfig: Record<ResearchStatus, { borderColor: string; dotColor: string; route: string }> = {
-    "success": { borderColor: "border-l-green-500", dotColor: "bg-green-500", route: "/research-success" },
-    "in-progress": { borderColor: "border-l-blue-500", dotColor: "bg-blue-500", route: "/research-in-progress" },
-    "failed": { borderColor: "border-l-red-500", dotColor: "bg-red-500", route: "/research-failed" },
-    "canceled": { borderColor: "border-l-orange-400", dotColor: "bg-orange-400", route: "/research-canceled" },
+  const statusConfig: Record<ResearchStatus, { hoverBorder: string; dotColor: string; route: string }> = {
+    "success": { hoverBorder: "hover:border-green-500", dotColor: "bg-green-500", route: "/research-success" },
+    "in-progress": { hoverBorder: "hover:border-blue-500", dotColor: "bg-blue-500", route: "/research-in-progress" },
+    "failed": { hoverBorder: "hover:border-red-500", dotColor: "bg-red-500", route: "/research-failed" },
+    "canceled": { hoverBorder: "hover:border-orange-400", dotColor: "bg-orange-400", route: "/research-canceled" },
   };
 
   const [deletedIds, setDeletedIds] = useState<number[]>([]);
@@ -191,7 +191,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               {pinnedItems.length > 0 && (
               <div className="sticky top-0 z-10 bg-[#E6E1EF] divide-y divide-gray-200/50 border-b border-gray-300">
                 {pinnedItems.map((item) => (
-                  <div key={item.id} className={cn("flex items-start gap-2 p-3 hover:bg-white/50 cursor-pointer group transition-colors border-l-[3px]", statusConfig[item.status].borderColor)}>
+                  <div key={item.id} className={cn("flex items-start gap-2 p-3 hover:bg-white/50 cursor-pointer group transition-all border-2 border-transparent rounded-sm", statusConfig[item.status].hoverBorder)}>
                     <Link href={`${statusConfig[item.status].route}/${item.id}`} className="flex items-start gap-2 flex-1 min-w-0">
                       <img src={rocketIcon} alt="Rocket" className="w-4 h-4 mt-0.5 shrink-0 opacity-70" />
                       <p className="text-[13px] leading-tight text-gray-800 line-clamp-2 font-medium flex-1">
@@ -245,7 +245,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               {/* Unpinned Items */}
               <div className="divide-y divide-gray-200/50">
                 {unpinnedItems.map((item) => (
-                  <div key={item.id} className={cn("flex items-start gap-2 p-3 bg-white hover:bg-gray-100 cursor-pointer group transition-colors border-l-[3px]", statusConfig[item.status].borderColor)}>
+                  <div key={item.id} className={cn("flex items-start gap-2 p-3 bg-white hover:bg-gray-100 cursor-pointer group transition-all border-2 border-transparent rounded-sm", statusConfig[item.status].hoverBorder)}>
                     <Link href={`${statusConfig[item.status].route}/${item.id}`} className="flex items-start gap-2 flex-1 min-w-0">
                       <img src={rocketIcon} alt="Rocket" className="w-4 h-4 mt-0.5 shrink-0 opacity-70" />
                       <p className="text-[13px] leading-tight text-gray-800 line-clamp-2 font-medium flex-1">
