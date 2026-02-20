@@ -31,7 +31,6 @@ import {
   Database,
   Check,
   Rocket,
-  Clock,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -49,7 +48,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
   Select,
@@ -262,122 +260,6 @@ export default function SourcesPage() {
           Step 1: Identifying knowledge gaps in current sources...
         </span>
       </div>
-
-      {/* Enhance Research Drawer (Modal) */}
-      <Dialog open={showEnhanceModal} onOpenChange={setShowEnhanceModal}>
-        <DialogContent className="max-w-2xl bg-white p-0 overflow-hidden border-none shadow-2xl" aria-describedby={undefined}>
-          <DialogTitle className="sr-only">Enhance Research</DialogTitle>
-          <div className="flex h-[500px]">
-            {/* Left Sidebar */}
-            <div className="w-48 bg-[#f8f9fa] border-r border-gray-200 p-4 flex flex-col gap-1">
-              <div className="text-[10px] font-bold text-gray-400 mb-2 px-2 uppercase tracking-wider">Research Scope</div>
-              <button 
-                className={cn("w-full flex items-center gap-2 px-3 py-2 rounded-md text-xs font-medium transition-colors", enhanceScope === "web" ? "bg-white shadow-sm text-[#008DA8] border border-gray-200" : "text-gray-600 hover:bg-gray-200/50")}
-                onClick={() => setEnhanceScope("web")}
-              >
-                <Globe className="w-3.5 h-3.5" />
-                Web Search
-              </button>
-              <button 
-                className={cn("w-full flex items-center gap-2 px-3 py-2 rounded-md text-xs font-medium transition-colors", enhanceScope === "files" ? "bg-white shadow-sm text-[#008DA8] border border-gray-200" : "text-gray-600 hover:bg-gray-200/50")}
-                onClick={() => setEnhanceScope("files")}
-              >
-                <FileText className="w-3.5 h-3.5" />
-                Local Files
-              </button>
-
-              <div className="mt-6 text-[10px] font-bold text-gray-400 mb-2 px-2 uppercase tracking-wider">Advanced</div>
-              <button className="w-full flex items-center gap-2 px-3 py-2 rounded-md text-xs font-medium text-gray-600 hover:bg-gray-200/50">
-                <Settings className="w-3.5 h-3.5" />
-                Custom Tools
-              </button>
-            </div>
-
-            {/* Main Content */}
-            <div className="flex-1 flex flex-col bg-white">
-              <div className="p-6 flex-1 overflow-y-auto space-y-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-                      <Zap className="w-5 h-5 text-[#008DA8]" />
-                      Enhance Research
-                    </h3>
-                    <p className="text-xs text-gray-500 mt-1">
-                      Deepen your investigation by adding more sources or analyzing existing ones with higher precision.
-                    </p>
-                  </div>
-                  <button onClick={() => setShowEnhanceModal(false)} className="p-1 hover:bg-gray-100 rounded">
-                    <X className="w-4 h-4 text-gray-400" />
-                  </button>
-                </div>
-
-                <div className="space-y-4">
-                  <div className="space-y-2">
-                    <Label className="text-xs font-bold text-gray-700">Research Engine</Label>
-                    <div className="grid grid-cols-3 gap-2">
-                      {["basic", "pro", "ultimate"].map((e) => (
-                        <button
-                          key={e}
-                          onClick={() => setEnhanceEngine(e)}
-                          className={cn(
-                            "px-3 py-2 rounded border text-center transition-all",
-                            enhanceEngine === e 
-                              ? "border-[#008DA8] bg-[#008DA8]/5 text-[#008DA8] font-bold" 
-                              : "border-gray-200 text-gray-500 hover:border-gray-300"
-                          )}
-                        >
-                          <div className="text-[10px] uppercase tracking-tighter mb-0.5">{e}</div>
-                          <div className="text-[10px] font-medium opacity-70">
-                            {e === "ultimate" ? "Full Depth" : e === "pro" ? "Balanced" : "Fast Scan"}
-                          </div>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label className="text-xs font-bold text-gray-700">Target Languages</Label>
-                    <div className="flex flex-wrap gap-2">
-                      {["English", "German", "Spanish", "Chinese", "Russian"].map((lang) => (
-                        <Badge 
-                          key={lang}
-                          variant="outline" 
-                          className="cursor-pointer hover:bg-gray-50 text-[10px] py-0 h-5"
-                        >
-                          {lang}
-                        </Badge>
-                      ))}
-                      <button className="text-[10px] text-[#008DA8] font-bold hover:underline">+ Add More</button>
-                    </div>
-                  </div>
-
-                  <div className="p-4 bg-blue-50/50 border border-blue-100 rounded-lg flex items-start gap-3">
-                    <Clock className="w-4 h-4 text-blue-500 mt-0.5" />
-                    <div>
-                      <div className="text-xs font-bold text-blue-900">Estimated Duration</div>
-                      <div className="text-[11px] text-blue-700">12-18 minutes for deep synthesis and cross-referencing.</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Footer */}
-              <div className="p-4 border-t border-gray-100 bg-gray-50/50 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <span className="text-[10px] text-gray-400 font-medium">ESTIMATED COST:</span>
-                  <span className="text-xs font-bold text-gray-900">$2.40</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Button variant="ghost" size="sm" className="h-8 text-xs font-medium" onClick={() => setShowEnhanceModal(false)}>Cancel</Button>
-                  <Button size="sm" className="h-8 text-xs font-bold bg-[#008DA8] hover:bg-[#006E7D] text-white px-4">
-                    Start Enhancement
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
 
       {/* Toolbar */}
       <div className="flex items-center gap-3 px-4 py-2 border-b border-gray-200 bg-[#F0F8F0] shrink-0 flex-wrap">
