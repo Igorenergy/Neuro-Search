@@ -180,7 +180,7 @@ export function SourceDetailsDrawer({ source, open, onClose }: SourceDetailsDraw
 
   const tabs = [
     { id: "preview", label: "Preview" },
-    { id: "raw", label: "Extracted data" },
+    { id: "raw", label: "Deep Extract" },
     { id: "artifacts", label: "Artifacts: 2" },
     { id: "metadata", label: "Metadata" },
   ];
