@@ -216,7 +216,7 @@ export default function Dashboard() {
           <Link href="/smart-search/new">
             <Button variant="outline" className="h-9 gap-2 border-[#008DA8] text-[#008DA8] hover:bg-[#008DA8]/5 font-bold text-sm px-4" data-testid="button-smart-search">
               <Search className="w-4 h-4" />
-              Smart Search
+              Start new search
             </Button>
           </Link>
         </div>
