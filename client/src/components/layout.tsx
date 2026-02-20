@@ -810,6 +810,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         onOpenChange={setDetailsOpen}
         title={selectedItem?.title ?? ""}
         pinned={isPinned}
+        onSave={(_name, pinned) => {
+          if (!selectedItem) return;
+          const currentlyPinned = pinnedIds.includes(selectedItem.id);
+          if (pinned && !currentlyPinned) {
+            setPinnedIds(prev => [...prev, selectedItem.id]);
+          } else if (!pinned && currentlyPinned) {
+            setPinnedIds(prev => prev.filter(id => id !== selectedItem.id));
+          }
+        }}
       />
       <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
         <DialogContent className="sm:max-w-[400px] bg-white border-gray-200">
