@@ -8,6 +8,7 @@ import {
   User, 
   Menu,
   ChevronDown,
+  ChevronUp,
   Paperclip,
   MoreVertical,
   Zap,
@@ -18,7 +19,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
@@ -45,6 +46,171 @@ import rocketIcon from "@assets/image_1771405092616.png";
 import moreIcon from "@assets/изображение_1771596463092.png";
 import CloneRestartModal from "@/components/clone-restart-modal";
 
+type ResearchStatus = "success" | "in-progress" | "failed" | "canceled";
+
+function CollapsedSidebar({
+  sidebarVisibleItems,
+  visibleResearchItems,
+  statusConfig,
+  statusFilter,
+  setStatusFilter,
+  rocketIcon,
+}: {
+  sidebarVisibleItems: { id: number; title: string; status: ResearchStatus }[];
+  visibleResearchItems: { id: number; title: string; status: ResearchStatus }[];
+  statusConfig: Record<ResearchStatus, { hoverBorder: string; dotColor: string; route: string }>;
+  statusFilter: "all" | ResearchStatus;
+  setStatusFilter: (v: "all" | ResearchStatus) => void;
+  rocketIcon: string;
+}) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [canScrollUp, setCanScrollUp] = useState(false);
+  const [canScrollDown, setCanScrollDown] = useState(false);
+
+  const checkScroll = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    setCanScrollUp(el.scrollTop > 0);
+    setCanScrollDown(el.scrollTop + el.clientHeight < el.scrollHeight - 1);
+  }, []);
+
+  useEffect(() => {
+    checkScroll();
+    const el = scrollRef.current;
+    if (!el) return;
+    el.addEventListener("scroll", checkScroll);
+    const ro = new ResizeObserver(checkScroll);
+    ro.observe(el);
+    return () => {
+      el.removeEventListener("scroll", checkScroll);
+      ro.disconnect();
+    };
+  }, [checkScroll, sidebarVisibleItems]);
+
+  const scrollBy = (direction: "up" | "down") => {
+    const el = scrollRef.current;
+    if (!el) return;
+    el.scrollBy({ top: direction === "up" ? -100 : 100, behavior: "smooth" });
+  };
+
+  return (
+    <div className="flex flex-col items-center gap-4 py-4 h-full">
+      <Link href="/smart-search/new">
+        <Button size="icon" variant="ghost" className="h-10 w-10 text-[#006E7D] hover:bg-[#006E7D]/10 transition-colors">
+          <Plus className="w-6 h-6" />
+        </Button>
+      </Link>
+      <Link href="/research/search">
+        <Button size="icon" variant="ghost" className="h-10 w-10 text-[#5F8D4E] hover:bg-[#5F8D4E]/10 transition-colors">
+          <Search className="w-6 h-6" />
+        </Button>
+      </Link>
+      <div className="w-8 h-[1px] bg-gray-300" />
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <button
+            className={cn(
+              "h-7 w-7 flex items-center justify-center rounded border transition-all",
+              statusFilter === "all"
+                ? "bg-[#f8f9fa] border-gray-300 text-gray-600 hover:border-gray-400 hover:bg-white"
+                : statusFilter === "success"
+                ? "bg-white border-[#22c55e] text-[#22c55e] shadow-sm"
+                : statusFilter === "in-progress"
+                ? "bg-white border-[#3b82f6] text-[#3b82f6] shadow-sm"
+                : statusFilter === "failed"
+                ? "bg-white border-[#ef4444] text-[#ef4444] shadow-sm"
+                : "bg-white border-[#f97316] text-[#f97316] shadow-sm",
+              "data-[state=open]:bg-white"
+            )}
+            data-testid="button-collapsed-filter-status"
+          >
+            <Filter className="w-3.5 h-3.5" />
+          </button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="start" side="right" className="w-36 bg-[#1a1a1a] border-[#333] shadow-xl p-0.5">
+          {([
+            { value: "all" as const, label: "All", count: visibleResearchItems.length, textColor: "text-gray-100" },
+            { value: "success" as const, label: "Success", count: visibleResearchItems.filter(i => i.status === "success").length, textColor: "text-[#22c55e]" },
+            { value: "in-progress" as const, label: "In Progress", count: visibleResearchItems.filter(i => i.status === "in-progress").length, textColor: "text-[#3b82f6]" },
+            { value: "failed" as const, label: "Failed", count: visibleResearchItems.filter(i => i.status === "failed").length, textColor: "text-[#ef4444]" },
+            { value: "canceled" as const, label: "Canceled", count: visibleResearchItems.filter(i => i.status === "canceled").length, textColor: "text-[#f97316]" },
+          ]).map((opt) => (
+            <DropdownMenuItem
+              key={opt.value}
+              className={cn("text-xs cursor-pointer flex justify-between items-center px-2 py-1 hover:text-white focus:text-white focus:bg-[#333]", statusFilter === opt.value ? "font-bold text-[#008DA8] focus:text-[#008DA8]" : opt.textColor)}
+              onClick={() => setStatusFilter(opt.value)}
+              data-testid={`collapsed-filter-${opt.value}`}
+            >
+              <span>{opt.label}</span>
+              <span className="text-[9px] text-gray-500 ml-2">{opt.count}</span>
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuContent>
+      </DropdownMenu>
+      <button
+        className={cn(
+          "w-7 h-5 flex items-center justify-center rounded transition-all",
+          canScrollUp ? "text-gray-500 hover:text-gray-800 hover:bg-gray-200 cursor-pointer" : "text-gray-300 cursor-default"
+        )}
+        onClick={() => scrollBy("up")}
+        disabled={!canScrollUp}
+        data-testid="button-scroll-up"
+      >
+        <ChevronUp className="w-4 h-4" />
+      </button>
+      <div
+        ref={scrollRef}
+        className="flex-1 w-full px-2 overflow-y-auto scrollbar-none"
+        style={{ scrollbarWidth: "none" }}
+      >
+        <div className="flex flex-col items-center gap-3 py-1">
+          {sidebarVisibleItems.map(item => {
+            const config = statusConfig[item.status];
+            const isInProgress = item.status === "in-progress";
+            const borderHoverColor =
+              item.status === "success" ? "#22c55e" :
+              item.status === "in-progress" ? "#3b82f6" :
+              item.status === "failed" ? "#ef4444" :
+              "#f97316";
+
+            return (
+              <Link key={item.id} href={`${config.route}/${item.id}`}>
+                <div
+                  className="relative w-9 h-9 flex items-center justify-center cursor-pointer group"
+                  title={item.title}
+                >
+                  <div
+                    className={cn(
+                      "absolute inset-0 rounded-full border-2",
+                      isInProgress ? "border-[#3b82f6] border-t-transparent animate-[spin_3s_linear_infinite]" : ""
+                    )}
+                    style={!isInProgress ? { borderColor: borderHoverColor } : undefined}
+                  />
+                  <div className="w-8 h-8 rounded-full bg-[#E6E1EF] flex items-center justify-center group-hover:bg-white transition-colors">
+                    <img src={rocketIcon} alt="Rocket" className="w-4 h-4 opacity-70" />
+                  </div>
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+      </div>
+      <button
+        className={cn(
+          "w-7 h-5 flex items-center justify-center rounded transition-all",
+          canScrollDown ? "text-gray-500 hover:text-gray-800 hover:bg-gray-200 cursor-pointer" : "text-gray-300 cursor-default"
+        )}
+        onClick={() => scrollBy("down")}
+        disabled={!canScrollDown}
+        data-testid="button-scroll-down"
+      >
+        <ChevronDown className="w-4 h-4" />
+      </button>
+      <div className="pb-2" />
+    </div>
+  );
+}
+
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
@@ -56,8 +222,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const [renameValue, setRenameValue] = useState("");
   const [isPinned, setIsPinned] = useState(false);
 
-
-  type ResearchStatus = "success" | "in-progress" | "failed" | "canceled";
 
   const statusConfig: Record<ResearchStatus, { hoverBorder: string; dotColor: string; route: string }> = {
     "success": { hoverBorder: "hover:border-green-500", dotColor: "bg-green-500", route: "/research-success" },
@@ -382,54 +546,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </>
       ) : (
         /* Collapsed State Icons */
-        (<div className="flex flex-col items-center gap-4 py-4">
-          <Link href="/smart-search/new">
-            <Button size="icon" variant="ghost" className="h-10 w-10 text-[#006E7D] hover:bg-[#006E7D]/10 transition-colors">
-              <Plus className="w-6 h-6" />
-            </Button>
-          </Link>
-          <Link href="/research/search">
-            <Button size="icon" variant="ghost" className="h-10 w-10 text-[#5F8D4E] hover:bg-[#5F8D4E]/10 transition-colors">
-              <Search className="w-6 h-6" />
-            </Button>
-          </Link>
-          <div className="w-8 h-[1px] bg-gray-300" />
-          <ScrollArea className="flex-1 w-full px-2">
-            <div className="flex flex-col items-center gap-3 py-2">
-              {sidebarVisibleItems.map(item => {
-                const config = statusConfig[item.status];
-                const isInProgress = item.status === "in-progress";
-                const borderHoverColor = 
-                  item.status === "success" ? "#22c55e" :
-                  item.status === "in-progress" ? "#3b82f6" :
-                  item.status === "failed" ? "#ef4444" :
-                  "#f97316";
-
-                return (
-                  <Link key={item.id} href={`${config.route}/${item.id}`}>
-                    <div 
-                      className="relative w-9 h-9 flex items-center justify-center cursor-pointer group"
-                      title={item.title}
-                    >
-                      <div 
-                        className={cn(
-                          "absolute inset-0 rounded-full border-2",
-                          isInProgress ? "border-[#3b82f6] border-t-transparent animate-[spin_3s_linear_infinite]" : ""
-                        )}
-                        style={!isInProgress ? { borderColor: borderHoverColor } : undefined}
-                      />
-                      <div className="w-8 h-8 rounded-full bg-[#E6E1EF] flex items-center justify-center group-hover:bg-white transition-colors">
-                        <img src={rocketIcon} alt="Rocket" className="w-4 h-4 opacity-70" />
-                      </div>
-                    </div>
-                  </Link>
-                );
-              })}
-            </div>
-          </ScrollArea>
-          <div className="mt-auto pb-4">
-          </div>
-        </div>)
+        (<CollapsedSidebar
+          sidebarVisibleItems={sidebarVisibleItems}
+          visibleResearchItems={visibleResearchItems}
+          statusConfig={statusConfig}
+          statusFilter={statusFilter}
+          setStatusFilter={setStatusFilter}
+          rocketIcon={rocketIcon}
+        />)
       )}
     </div>
   );
