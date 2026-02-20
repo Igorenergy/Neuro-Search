@@ -370,7 +370,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <DropdownMenuItem asChild className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer" data-testid="collapsed-menu-archived-projects">
                 <a href="/research/dashboard#archived" onClick={(e) => { e.preventDefault(); navigate("/research/dashboard"); setTimeout(() => { window.location.hash = "archived"; window.dispatchEvent(new HashChangeEvent("hashchange")); }, 100); }}>
                   <Archive className="w-4 h-4 text-gray-400" />
-                  Archived Projects (20)
+                  Archived Projects
                 </a>
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -682,7 +682,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <DropdownMenuItem asChild className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer" data-testid="menu-archived-projects">
                 <a href="/research/dashboard#archived" onClick={(e) => { e.preventDefault(); navigate("/research/dashboard"); setTimeout(() => { window.location.hash = "archived"; window.dispatchEvent(new HashChangeEvent("hashchange")); }, 100); }}>
                   <Archive className="w-4 h-4 text-gray-400" />
-                  Archived Projects (20)
+                  Archived Projects
                 </a>
               </DropdownMenuItem>
             </DropdownMenuContent>
