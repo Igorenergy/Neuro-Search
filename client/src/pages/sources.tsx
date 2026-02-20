@@ -479,8 +479,8 @@ export default function SourcesPage() {
                 className={cn(
                   "flex flex-col bg-white border rounded-md transition-all group cursor-pointer hover:shadow-md",
                   source.included
-                    ? "border-t-[3px] border-t-green-500 border-l-gray-200 border-r-gray-200 border-b-gray-200 hover:border-b-[3px] hover:border-b-green-500"
-                    : "border-t-[3px] border-t-orange-400 border-l-gray-200 border-r-gray-200 border-b-gray-200 hover:border-b-[3px] hover:border-b-orange-400",
+                    ? "border-l-[3px] border-l-green-500 border-t-gray-200 border-r-gray-200 border-b-gray-200 hover:border-r-[3px] hover:border-r-green-500"
+                    : "border-l-[3px] border-l-orange-400 border-t-gray-200 border-r-gray-200 border-b-gray-200 hover:border-r-[3px] hover:border-r-orange-400",
                   selectedIds.has(source.id) && "bg-blue-50/40"
                 )}
                 data-testid={`tile-source-${source.id}`}
