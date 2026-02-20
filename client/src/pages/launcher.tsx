@@ -87,6 +87,8 @@ export default function Launcher() {
   const [step2Files, setStep2Files] = useState<File[]>([]);
   const [dataEngine, setDataEngine] = useState("ultimate");
   const [modalFiles, setModalFiles] = useState<{name: string; type: string; size: string}[]>([]);
+  const [step2ModalFiles, setStep2ModalFiles] = useState<{name: string; type: string; size: string}[]>([]);
+  const [addFileContext, setAddFileContext] = useState<"launcher" | "step2">("launcher");
 
   const [planVersion, setPlanVersion] = useState(1);
   const [planText, setPlanText] = useState(
@@ -486,7 +488,7 @@ export default function Launcher() {
                 
                 <button 
                   className="bg-white border border-green-600 rounded-md px-4 py-1 text-sm font-medium shadow-sm hover:bg-gray-50 flex items-center justify-center min-w-[100px]"
-                  onClick={() => setIsAddFileModalOpen(true)}
+                  onClick={() => { setAddFileContext("launcher"); setIsAddFileModalOpen(true); }}
                 >
                   selected: {files.length + modalFiles.length}
                 </button>
@@ -827,9 +829,9 @@ export default function Launcher() {
                          <div>
                             <div className="flex items-center justify-between mb-2">
                                <span className="text-xs font-bold">
-                                 Added at this step: {step2Files.length}
-                                 {step2Files.length > 0 && (
-                                   <span className="text-red-600 underline cursor-pointer ml-1 font-normal" onClick={() => setStep2Files([])}>remove all</span>
+                                 Added at this step: {step2Files.length + step2ModalFiles.length}
+                                 {(step2Files.length + step2ModalFiles.length) > 0 && (
+                                   <span className="text-red-600 underline cursor-pointer ml-1 font-normal" onClick={() => { setStep2Files([]); setStep2ModalFiles([]); }}>remove all</span>
                                  )}
                                </span>
                             </div>
@@ -880,6 +882,49 @@ export default function Launcher() {
                                </div>
                             )}
 
+                            {step2ModalFiles.length > 0 && (
+                               <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-4">
+                                  {step2ModalFiles.map((file, i) => (
+                                     <div
+                                       key={`s2m-${i}`}
+                                       className="flex items-center justify-between bg-[#008DA8] text-white px-3 py-2 rounded-sm relative overflow-hidden group cursor-pointer"
+                                       onClick={() => {
+                                         const previewFiles = step2ModalFiles.map((f, idx) => ({
+                                           id: `step2modal-${idx}`,
+                                           name: f.name,
+                                           type: f.type,
+                                           size: f.size,
+                                         }));
+                                         openPreview({
+                                           files: previewFiles,
+                                           initialFileId: `step2modal-${i}`,
+                                           context: "input",
+                                         });
+                                       }}
+                                       data-testid={`card-step2-modal-file-${i}`}
+                                     >
+                                       <div className="flex items-center gap-2 min-w-0">
+                                         <FileText className="w-5 h-5 text-white/80 shrink-0" strokeWidth={1.5} />
+                                         <div className="flex flex-col min-w-0">
+                                           <span className="text-[10px] font-medium leading-tight truncate">{file.name}</span>
+                                           <span className="text-[10px] font-medium leading-tight opacity-80">{file.size}</span>
+                                         </div>
+                                       </div>
+                                       <button
+                                         className="text-cyan-200 hover:text-white ml-1 shrink-0"
+                                         onClick={(e) => {
+                                           e.preventDefault();
+                                           e.stopPropagation();
+                                           setStep2ModalFiles(prev => prev.filter((_, idx) => idx !== i));
+                                         }}
+                                       >
+                                         <XCircle className="w-5 h-5 stroke-[1.5]" />
+                                       </button>
+                                     </div>
+                                  ))}
+                               </div>
+                            )}
+
                             <div className="flex gap-4">
                                <div className="w-40 flex flex-col justify-center items-center gap-2">
                                   <input 
@@ -892,7 +937,7 @@ export default function Launcher() {
                                   <Button 
                                     variant="outline" 
                                     className="w-full border-green-600 text-green-700 hover:bg-green-50 h-8 text-xs font-medium"
-                                    onClick={() => setIsAddFileModalOpen(true)}
+                                    onClick={() => { setAddFileContext("step2"); setIsAddFileModalOpen(true); }}
                                   >
                                     Upload files
                                   </Button>
@@ -1493,7 +1538,13 @@ export default function Launcher() {
       </Dialog>
 
       {/* Add Files Modal */}
-      <AddFilesModal open={isAddFileModalOpen} onOpenChange={setIsAddFileModalOpen} onSave={(newFiles) => setModalFiles(prev => [...prev, ...newFiles])} />
+      <AddFilesModal open={isAddFileModalOpen} onOpenChange={setIsAddFileModalOpen} onSave={(newFiles) => {
+        if (addFileContext === "step2") {
+          setStep2ModalFiles(prev => [...prev, ...newFiles]);
+        } else {
+          setModalFiles(prev => [...prev, ...newFiles]);
+        }
+      }} />
 
       {/* Confirm Exit Modal */}
       <Dialog open={!!confirmExitStep} onOpenChange={(open) => !open && setConfirmExitStep(null)}>
