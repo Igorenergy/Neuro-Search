@@ -801,8 +801,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                      <p className="text-xs text-center font-semibold text-gray-500 mb-1">Balance</p>
                      <div className="bg-[#E8F5E9] border border-[#C8E6C9] rounded-md p-2 text-center">
                        <span className="text-[#2E7D32] font-bold text-sm">5.8K available</span>
-                       <span className="text-gray-500 text-xs mx-1">[10K]</span>
-                       <a href="#" className="text-[#008DA8] text-xs underline font-medium">buy more</a>
+
+                       <a href="#" className="text-[#008DA8] text-xs underline font-medium pl-[10px] pr-[10px]">buy more</a>
                      </div>
                   </div>
                   <div className="p-1 space-y-0.5 bg-[#F5F5F7]">
