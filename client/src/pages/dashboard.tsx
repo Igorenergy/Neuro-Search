@@ -291,20 +291,25 @@ export default function Dashboard() {
               )}
               data-testid={`card-research-${item.id}`}
             >
-              <div className="flex items-start justify-between mb-3">
-                <div className="relative w-[36px] h-[36px] shrink-0 flex items-center justify-center">
-                  <div 
-                    className={cn(
-                      "absolute inset-0 rounded-full border-2",
-                      item.status === "in-progress" ? "border-[#3b82f6] border-t-transparent animate-[spin_3s_linear_infinite]" : ""
-                    )}
-                    style={item.status !== "in-progress" ? { borderColor: item.status === 'success' ? '#22c55e' : item.status === 'failed' ? '#ef4444' : '#f97316' } : undefined}
-                  />
-                  <div className="w-[30px] h-[30px] rounded-full bg-white/80 flex items-center justify-center">
-                    <img src={rocketIcon} alt="Rocket" className="w-[18px] h-[18px] opacity-70" />
+              <div className="flex items-center justify-between mb-3 gap-3">
+                <Link href={`${config.route}/${item.id}`} className="flex items-center gap-3 flex-1 min-w-0 group-hover:opacity-80 transition-opacity">
+                  <div className="relative w-[36px] h-[36px] shrink-0 flex items-center justify-center">
+                    <div 
+                      className={cn(
+                        "absolute inset-0 rounded-full border-2",
+                        item.status === "in-progress" ? "border-[#3b82f6] border-t-transparent animate-[spin_3s_linear_infinite]" : ""
+                      )}
+                      style={item.status !== "in-progress" ? { borderColor: item.status === 'success' ? '#22c55e' : item.status === 'failed' ? '#ef4444' : '#f97316' } : undefined}
+                    />
+                    <div className="w-[30px] h-[30px] rounded-full bg-white/80 flex items-center justify-center">
+                      <img src={rocketIcon} alt="Rocket" className="w-[18px] h-[18px] opacity-70" />
+                    </div>
                   </div>
-                </div>
-                <div className="flex items-center gap-1">
+                  <p className="text-[13px] leading-snug text-gray-800 font-semibold line-clamp-1">
+                    {item.title}
+                  </p>
+                </Link>
+                <div className="flex items-center gap-1 shrink-0">
                   {item.status !== "in-progress" && (
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild onClick={(e) => e.preventDefault()}>
@@ -357,9 +362,7 @@ export default function Dashboard() {
                 </div>
               </div>
               <Link href={`${config.route}/${item.id}`} className="flex flex-col flex-1 min-w-0">
-                <p className="text-[13px] leading-snug text-gray-800 font-semibold line-clamp-2 mb-auto">
-                  {item.title}
-                </p>
+                <div className="flex-1" />
                 <p className="text-[11px] text-gray-500 mt-2">
                   {item.date} • {item.sources} источников
                 </p>
