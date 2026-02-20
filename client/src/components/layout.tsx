@@ -394,7 +394,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </Button>
           </Link>
           <div className="w-8 h-[1px] bg-gray-300" />
-          <ScrollArea className="flex-1 w-full px-2 overflow-y-auto">
+          <ScrollArea className="flex-1 w-full px-2">
             <div className="flex flex-col items-center gap-3 py-2">
               {sidebarVisibleItems.map(item => {
                 const config = statusConfig[item.status];
