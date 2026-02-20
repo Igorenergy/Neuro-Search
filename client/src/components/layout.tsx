@@ -393,67 +393,41 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <Search className="w-6 h-6" />
             </Button>
           </Link>
-          <div className="w-8 h-[1px] bg-gray-300 shrink-0" />
-          <div className="flex-1 w-full relative flex flex-col min-h-0 overflow-hidden group/scroll">
-            <button 
-              className="flex items-center justify-center py-1 text-gray-400 hover:text-gray-600 transition-all shrink-0 cursor-pointer opacity-0 group-hover/scroll:opacity-100"
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                const viewport = (e.currentTarget as HTMLButtonElement).parentElement?.querySelector('[data-radix-scroll-area-viewport]');
-                if (viewport) (viewport as HTMLElement).scrollBy({ top: -40, behavior: 'smooth' });
-              }}
-              data-testid="button-scroll-up"
-            >
-              <ChevronUp className="w-4 h-4" />
-            </button>
-            <ScrollArea className="flex-1 w-full px-2">
-              <div className="flex flex-col items-center gap-3 py-2">
-                {sidebarVisibleItems.map(item => {
-                  const config = statusConfig[item.status];
-                  const isInProgress = item.status === "in-progress";
-                  const borderHoverColor = 
-                    item.status === "success" ? "#22c55e" :
-                    item.status === "in-progress" ? "#3b82f6" :
-                    item.status === "failed" ? "#ef4444" :
-                    "#f97316";
+          <div className="w-8 h-[1px] bg-gray-300" />
+          <ScrollArea className="flex-1 w-full px-2">
+            <div className="flex flex-col items-center gap-3 py-2">
+              {sidebarVisibleItems.map(item => {
+                const config = statusConfig[item.status];
+                const isInProgress = item.status === "in-progress";
+                const borderHoverColor = 
+                  item.status === "success" ? "#22c55e" :
+                  item.status === "in-progress" ? "#3b82f6" :
+                  item.status === "failed" ? "#ef4444" :
+                  "#f97316";
 
-                  return (
-                    <Link key={item.id} href={`${config.route}/${item.id}`}>
+                return (
+                  <Link key={item.id} href={`${config.route}/${item.id}`}>
+                    <div 
+                      className="relative w-9 h-9 flex items-center justify-center cursor-pointer group"
+                      title={item.title}
+                    >
                       <div 
-                        className="relative w-9 h-9 flex items-center justify-center cursor-pointer group"
-                        title={item.title}
-                      >
-                        <div 
-                          className={cn(
-                            "absolute inset-0 rounded-full border-2",
-                            isInProgress ? "border-[#3b82f6] border-t-transparent animate-[spin_3s_linear_infinite]" : ""
-                          )}
-                          style={!isInProgress ? { borderColor: borderHoverColor } : undefined}
-                        />
-                        <div className="w-8 h-8 rounded-full bg-[#E6E1EF] flex items-center justify-center group-hover:bg-white transition-colors">
-                          <img src={rocketIcon} alt="Rocket" className="w-4 h-4 opacity-70" />
-                        </div>
+                        className={cn(
+                          "absolute inset-0 rounded-full border-2",
+                          isInProgress ? "border-[#3b82f6] border-t-transparent animate-[spin_3s_linear_infinite]" : ""
+                        )}
+                        style={!isInProgress ? { borderColor: borderHoverColor } : undefined}
+                      />
+                      <div className="w-8 h-8 rounded-full bg-[#E6E1EF] flex items-center justify-center group-hover:bg-white transition-colors">
+                        <img src={rocketIcon} alt="Rocket" className="w-4 h-4 opacity-70" />
                       </div>
-                    </Link>
-                  );
-                })}
-              </div>
-            </ScrollArea>
-            <button 
-              className="flex items-center justify-center py-1 text-gray-400 hover:text-gray-600 transition-all shrink-0 cursor-pointer opacity-0 group-hover/scroll:opacity-100"
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                const viewport = (e.currentTarget as HTMLButtonElement).parentElement?.querySelector('[data-radix-scroll-area-viewport]');
-                if (viewport) (viewport as HTMLElement).scrollBy({ top: 40, behavior: 'smooth' });
-              }}
-              data-testid="button-scroll-down"
-            >
-              <ChevronDown className="w-4 h-4" />
-            </button>
-          </div>
-          <div className="mt-auto pb-4 shrink-0">
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </ScrollArea>
+          <div className="mt-auto pb-4">
           </div>
         </div>)
       )}
