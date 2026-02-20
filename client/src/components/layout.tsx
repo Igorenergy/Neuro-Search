@@ -283,22 +283,19 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const SidebarContent = ({ collapsed }: { collapsed?: boolean }) => (
     <div className="flex flex-col h-full bg-[#F5F5F7] border-r border-gray-200 text-gray-800 font-sans">
       {/* Header */}
-      <div className={cn("flex items-center justify-between px-3 py-2 h-[57px] border-b border-gray-200 bg-[#EBEBEB]", collapsed && "flex-col gap-4 h-[114px]")}>
-        <div className="flex items-center gap-2 overflow-hidden h-8">
-          {!collapsed && (
+      <div className={cn("flex items-center justify-between px-3 py-2 h-[57px] border-b border-gray-200 bg-[#EBEBEB]", collapsed && "justify-center")}>
+        {!collapsed && (
+          <div className="flex items-center gap-2 overflow-hidden h-8">
             <div className="w-8 h-8 bg-gray-200 border border-gray-400 flex items-center justify-center rounded-sm shrink-0">
                <span className="text-[10px] font-bold text-gray-500">Logo</span>
             </div>
-          )}
-          {!collapsed && <span className="font-bold text-lg text-gray-800 tracking-tight">Neuro-Search</span>}
-        </div>
+            <span className="font-bold text-lg text-gray-800 tracking-tight">Neuro-Search</span>
+          </div>
+        )}
         <Button 
           variant="ghost" 
           size="icon" 
-          className={cn(
-            "w-12 text-black hover:bg-black/5 transition-transform flex items-center justify-center",
-            collapsed ? "h-24" : "h-12"
-          )}
+          className="h-12 w-12 text-black hover:bg-black/5 transition-transform flex items-center justify-center"
           onClick={() => setIsCollapsed(!isCollapsed)}
         >
           <Menu className="w-8 h-8 stroke-[3]" />
