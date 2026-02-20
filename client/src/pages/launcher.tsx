@@ -79,6 +79,63 @@ export default function Launcher() {
   // Step State
   const [questionAnswer, setQuestionAnswer] = useState("");
   const [geoScope, setGeoScope] = useState("global");
+  const [visibleQuestions, setVisibleQuestions] = useState(1);
+  const [questionAnswers, setQuestionAnswers] = useState<Record<number, string>>({});
+
+  const questionsData = [
+    {
+      id: 1,
+      title: "Geographic Scope.",
+      text: "Should we focus only on founders in Ukraine or include the diaspora abroad?",
+      chips: [
+        { key: "global", label: "Global", icon: true },
+        { key: "ukraine", label: "UA Ukraine Only" },
+        { key: "eu", label: "EU" },
+      ],
+    },
+    {
+      id: 2,
+      title: "Time Period.",
+      text: "What time range should we consider for the research data?",
+      chips: [
+        { key: "last-year", label: "Last 12 months" },
+        { key: "last-3-years", label: "Last 3 years" },
+        { key: "all-time", label: "All time" },
+      ],
+    },
+    {
+      id: 3,
+      title: "Industry Focus.",
+      text: "Should we narrow the research to specific industries or keep it broad?",
+      chips: [
+        { key: "tech", label: "Tech & SaaS" },
+        { key: "fintech", label: "FinTech" },
+        { key: "all", label: "All Industries" },
+      ],
+    },
+    {
+      id: 4,
+      title: "Funding Stage.",
+      text: "Which funding stages are most relevant for this research?",
+      chips: [
+        { key: "pre-seed", label: "Pre-Seed / Seed" },
+        { key: "series-a", label: "Series A+" },
+        { key: "any", label: "Any Stage" },
+      ],
+    },
+    {
+      id: 5,
+      title: "Output Format.",
+      text: "How would you like the final research to be structured?",
+      chips: [
+        { key: "detailed", label: "Detailed Report" },
+        { key: "summary", label: "Executive Summary" },
+        { key: "data-table", label: "Data Table / CSV" },
+      ],
+    },
+  ];
+
+  const totalQuestions = questionsData.length;
   const [isAddFileModalOpen, setIsAddFileModalOpen] = useState(false);
   const [confirmExitStep, setConfirmExitStep] = useState<string | null>(null);
   const [visibleStep, setVisibleStep] = useState(3);
@@ -565,74 +622,82 @@ export default function Launcher() {
             <span>Just a few questions to make your research perfect</span>
           </div>
 
-          {/* Question */}
+          {/* Questions */}
           <div className="space-y-3">
-            <div className="flex gap-2">
-              <div className="bg-[#008DA8] text-white w-6 h-6 flex items-center justify-center rounded-sm text-xs font-bold shrink-0 mt-0.5">1</div>
-              <p className="text-sm font-medium text-gray-800">
-                <span className="font-bold">Geographic Scope.</span> Should we focus only on founders in Ukraine or include the diaspora abroad?
-              </p>
-            </div>
+            {questionsData.slice(0, visibleQuestions).map((q) => {
+              const answer = q.id === 1 ? questionAnswer : (questionAnswers[q.id] || "");
+              const setAnswer = q.id === 1
+                ? (val: string) => setQuestionAnswer(val)
+                : (val: string) => setQuestionAnswers(prev => ({ ...prev, [q.id]: val }));
+              const remainingChips = q.chips.filter(chip => !answer.includes(chip.label));
 
-            {/* Answer Input */}
-            <div className="space-y-1">
-              <div className="flex justify-between text-xs font-bold text-gray-600 px-1">
-                <span>Your answers</span>
-                <span>{questionAnswer.length}/500</span>
-              </div>
-              <Textarea 
-                value={questionAnswer}
-                onChange={(e) => setQuestionAnswer(e.target.value)}
-                placeholder="Answers to the question"
-                className="bg-white border-gray-300 placeholder:text-gray-400 text-gray-800 min-h-[60px] resize-none focus-visible:ring-[#008DA8]"
-              />
-            </div>
+              return (
+                <div key={q.id} className="space-y-3">
+                  {q.id > 1 && <div className="border-t border-gray-100 pt-3" />}
+                  <div className="flex gap-2">
+                    <div className="bg-[#008DA8] text-white w-6 h-6 flex items-center justify-center rounded-sm text-xs font-bold shrink-0 mt-0.5">{q.id}</div>
+                    <p className="text-sm font-medium text-gray-800">
+                      <span className="font-bold">{q.title}</span> {q.text}
+                    </p>
+                  </div>
 
-            {/* Selection Pills */}
-            <div className="flex flex-wrap gap-2">
-              <button 
-                className={cn(
-                  "px-3 py-1 text-xs font-medium border rounded-sm flex items-center gap-1 transition-colors",
-                  geoScope === "global" 
-                    ? "bg-blue-100 border-blue-200 text-blue-800 shadow-inner" 
-                    : "bg-gray-50 border-gray-200 text-gray-600 hover:bg-gray-100"
-                )}
-                onClick={() => setGeoScope("global")}
-              >
-                <Globe className="w-3 h-3" /> Global
-              </button>
-              <button 
-                className={cn(
-                  "px-3 py-1 text-xs font-medium border rounded-sm transition-colors",
-                  geoScope === "ukraine" 
-                    ? "bg-blue-100 border-blue-200 text-blue-800 shadow-inner" 
-                    : "bg-gray-50 border-gray-200 text-gray-600 hover:bg-gray-100"
-                )}
-                onClick={() => setGeoScope("ukraine")}
-              >
-                [ UA Ukraine Only ]
-              </button>
-              <button 
-                className={cn(
-                  "px-3 py-1 text-xs font-medium border rounded-sm transition-colors",
-                  geoScope === "eu" 
-                    ? "bg-blue-100 border-blue-200 text-blue-800 shadow-inner" 
-                    : "bg-gray-50 border-gray-200 text-gray-600 hover:bg-gray-100"
-                )}
-                onClick={() => setGeoScope("eu")}
-              >
-                [ EU EU ]
-              </button>
-            </div>
+                  <div className="space-y-1">
+                    <div className="flex justify-between text-xs font-bold text-gray-600 px-1">
+                      <span>Your answers</span>
+                      <span>{answer.length}/500</span>
+                    </div>
+                    <Textarea
+                      value={answer}
+                      onChange={(e) => setAnswer(e.target.value)}
+                      placeholder="Answers to the question"
+                      className="bg-white border-gray-300 placeholder:text-gray-400 text-gray-800 min-h-[60px] resize-none focus-visible:ring-[#008DA8]"
+                      data-testid={`input-question-${q.id}`}
+                    />
+                  </div>
+
+                  {remainingChips.length > 0 && (
+                    <div className="flex flex-wrap gap-2">
+                      {remainingChips.map(chip => (
+                        <button
+                          key={chip.key}
+                          className="px-3 py-1 text-xs font-medium border rounded-sm flex items-center gap-1 transition-colors bg-gray-50 border-gray-200 text-gray-600 hover:bg-blue-100 hover:border-blue-200 hover:text-blue-800"
+                          onClick={() => {
+                            setAnswer(answer ? `${answer}\n${chip.label}` : chip.label);
+                            if (q.id === 1) setGeoScope(chip.key);
+                          }}
+                          data-testid={`chip-q${q.id}-${chip.key}`}
+                        >
+                          {(chip as any).icon && <Globe className="w-3 h-3" />}
+                          {(chip as any).icon ? chip.label : `[ ${chip.label} ]`}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
 
             {/* Action Buttons */}
             <div className="flex items-center justify-between pt-2">
-              <Button 
-                variant="outline" 
-                className="bg-white text-[#008DA8] border-[#008DA8] hover:bg-blue-50 h-8 text-xs font-bold px-6"
-              >
-                Next Question (2/5)
-              </Button>
+              {visibleQuestions < totalQuestions ? (
+                <Button 
+                  variant="outline" 
+                  className="bg-white text-[#008DA8] border-[#008DA8] hover:bg-blue-50 h-8 text-xs font-bold px-6"
+                  onClick={() => setVisibleQuestions(prev => Math.min(prev + 1, totalQuestions))}
+                  data-testid="button-next-question"
+                >
+                  Next Question ({visibleQuestions + 1}/{totalQuestions})
+                </Button>
+              ) : (
+                <Button 
+                  variant="outline" 
+                  className="bg-white text-green-700 border-green-600 hover:bg-green-50 h-8 text-xs font-bold px-6"
+                  onClick={() => setVisibleStep(prev => Math.max(prev, 2))}
+                  data-testid="button-finish-questions"
+                >
+                  Finish Questions
+                </Button>
+              )}
               
               <Button 
                 className="bg-gray-500 hover:bg-gray-600 text-white h-8 text-xs font-bold px-8 shadow-sm"
