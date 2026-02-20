@@ -296,8 +296,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           variant="ghost" 
           size="icon" 
           className={cn(
-            "h-12 w-12 text-black hover:bg-black/5 transition-transform flex items-center justify-center",
-            collapsed && "-translate-y-[15.5px]"
+            "w-12 text-black hover:bg-black/5 transition-transform flex items-center justify-center",
+            collapsed ? "h-24 -translate-y-[15.5px]" : "h-12"
           )}
           onClick={() => setIsCollapsed(!isCollapsed)}
         >
