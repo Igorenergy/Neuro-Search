@@ -256,23 +256,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     className="absolute left-[34px] top-1/2 -translate-y-1/2 flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-20"
                     onClick={(e) => { e.stopPropagation(); e.preventDefault(); }}
                   >
-                    {(!isInProgress || sidebarVisibleItems.filter(i => i.status === "in-progress").indexOf(item) >= 2) && (
-                      <button
-                        className={cn(
-                          "w-5 h-5 flex items-center justify-center rounded hover:bg-gray-200 transition-colors cursor-pointer",
-                          itemIsPinned ? "text-[#008DA8]" : "text-gray-400"
-                        )}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          e.preventDefault();
-                          togglePin(item.id);
-                        }}
-                        data-testid={`collapsed-pin-${item.id}`}
-                        title={itemIsPinned ? "Unpin" : "Pin"}
-                      >
-                        <Pin className="w-3 h-3 rotate-45" />
-                      </button>
-                    )}
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <button
@@ -286,14 +269,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                       <DropdownMenuContent align="start" side="right" className="w-44 bg-[#1a1a1a] border-[#333] shadow-xl">
                         {isInProgress ? (
                           <>
-                            <DropdownMenuItem
-                              className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
-                              onSelect={() => { setTimeout(() => togglePin(item.id), 0); }}
-                              data-testid={`collapsed-pin-toggle-${item.id}`}
-                            >
-                              <Pin className="w-4 h-4 text-gray-400 rotate-45" />
-                              {itemIsPinned ? "Unpin" : "Pin to navigation"}
-                            </DropdownMenuItem>
                             <DropdownMenuItem
                               className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 focus:text-red-400 focus:bg-[#333] cursor-pointer"
                               onSelect={() => { setTimeout(() => { setAbortItem(item); setAbortOpen(true); }, 0); }}
