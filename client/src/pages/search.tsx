@@ -7,6 +7,7 @@ import {
   Info,
   ArrowRight,
   FolderOpen,
+  Check,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,12 +17,27 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 
 export default function SearchPage() {
   const [query, setQuery] = useState("");
   const [isSemantic, setIsSemantic] = useState(true);
+  const [selectedFilters, setSelectedFilters] = useState<string[]>(["success", "in-progress"]);
+
+  const filterOptions: { value: string; label: string; color: string }[] = [
+    { value: "success", label: "Success", color: "text-[#22c55e]" },
+    { value: "in-progress", label: "In Progress", color: "text-[#3b82f6]" },
+    { value: "failed", label: "Failed", color: "text-[#ef4444]" },
+    { value: "canceled", label: "Canceled", color: "text-[#f97316]" },
+  ];
+
+  const toggleFilter = (value: string) => {
+    setSelectedFilters(prev =>
+      prev.includes(value) ? prev.filter(f => f !== value) : [...prev, value]
+    );
+  };
 
   // Mock Data matching the image
   const allResults = [
@@ -189,15 +205,51 @@ export default function SearchPage() {
             <label className="text-sm font-semibold text-gray-700 block">
               Search query
             </label>
-            <Button 
-              variant="outline" 
-              size="sm"
-              className="h-7 border-[#008DA8] text-[#008DA8] hover:bg-[#008DA8]/5 px-2 rounded-sm font-bold gap-1.5 mr-[10px]"
-              data-testid="button-filter-search"
-            >
-              <Filter className="w-3.5 h-3.5" />
-              <span className="text-xs">filter (2)</span>
-            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  className="h-7 border-[#008DA8] text-[#008DA8] hover:bg-[#008DA8]/5 px-2 rounded-sm font-bold gap-1.5 mr-[10px]"
+                  data-testid="button-filter-search"
+                >
+                  <Filter className="w-3.5 h-3.5" />
+                  <span className="text-xs">filter ({selectedFilters.length})</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48 bg-[#1a1a1a] border-[#333] shadow-xl p-1">
+                {filterOptions.map((opt) => (
+                  <DropdownMenuItem
+                    key={opt.value}
+                    className="flex items-center gap-2 text-sm cursor-pointer hover:text-white focus:text-white focus:bg-[#333] px-2 py-2"
+                    onSelect={(e) => { e.preventDefault(); toggleFilter(opt.value); }}
+                    data-testid={`search-filter-${opt.value}`}
+                  >
+                    <div className={cn(
+                      "w-4 h-4 border rounded-sm flex items-center justify-center shrink-0",
+                      selectedFilters.includes(opt.value) ? "bg-white border-white" : "border-gray-500"
+                    )}>
+                      {selectedFilters.includes(opt.value) && <Check className="w-3 h-3 text-black" />}
+                    </div>
+                    <span className={opt.color}>{opt.label}</span>
+                  </DropdownMenuItem>
+                ))}
+                <DropdownMenuSeparator className="bg-[#333]" />
+                <DropdownMenuItem
+                  className="flex items-center gap-2 text-sm text-gray-300 cursor-pointer hover:text-white focus:text-white focus:bg-[#333] px-2 py-2"
+                  onSelect={(e) => { e.preventDefault(); toggleFilter("archived"); }}
+                  data-testid="search-filter-archived"
+                >
+                  <div className={cn(
+                    "w-4 h-4 border rounded-sm flex items-center justify-center shrink-0",
+                    selectedFilters.includes("archived") ? "bg-white border-white" : "border-gray-500"
+                  )}>
+                    {selectedFilters.includes("archived") && <Check className="w-3 h-3 text-black" />}
+                  </div>
+                  <span>Archived</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
           <div className="relative">
             <div className="absolute left-3 top-1/2 -translate-y-1/2 p-1 bg-[#8BC34A]/20 rounded-sm">
