@@ -96,11 +96,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const visibleResearchItems = researchItems.filter(item => !deletedIds.includes(item.id));
   const filteredItems = statusFilter === "all" ? visibleResearchItems : visibleResearchItems.filter(item => item.status === statusFilter);
   const pinnedItems = filteredItems.filter(item => pinnedIds.includes(item.id));
-  const unpinnedItems = filteredItems.filter(item => !pinnedIds.includes(item.id)).sort((a, b) => {
-    if (a.status === "in-progress" && b.status !== "in-progress") return -1;
-    if (a.status !== "in-progress" && b.status === "in-progress") return 1;
-    return 0;
-  });
+  const unpinnedItems = filteredItems.filter(item => !pinnedIds.includes(item.id));
 
   const togglePin = (id: number) => {
     setPinnedIds(prev => prev.includes(id) ? prev.filter(pid => pid !== id) : [...prev, id]);
@@ -198,7 +194,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               {pinnedItems.length > 0 && (
               <div className="sticky top-0 z-10 bg-[#E6E1EF] divide-y divide-gray-200/50 border-b border-gray-300">
                 {pinnedItems.map((item) => (
-                  <div key={item.id} className={cn("flex items-start gap-2 p-3 hover:bg-white/50 cursor-pointer group transition-all border-2 border-transparent rounded-sm", statusConfig[item.status].hoverBorder)}>
+                  <div key={item.id} className="flex items-start gap-2 p-3 hover:bg-white/50 cursor-pointer group transition-all border-l-[3px] rounded-sm" style={{ borderLeftColor: item.status === 'success' ? '#22c55e' : item.status === 'in-progress' ? '#3b82f6' : item.status === 'failed' ? '#ef4444' : '#f97316' }}>
                     <Link href={`${statusConfig[item.status].route}/${item.id}`} className="flex items-start gap-2 flex-1 min-w-0">
                       <img src={rocketIcon} alt="Rocket" className="w-4 h-4 mt-0.5 shrink-0 opacity-70" />
                       <p className="text-[13px] leading-tight text-gray-800 line-clamp-2 font-medium flex-1">
@@ -252,7 +248,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               {/* Unpinned Items */}
               <div className="divide-y divide-gray-200/50">
                 {unpinnedItems.map((item) => (
-                  <div key={item.id} className={cn("flex items-start gap-2 p-3 bg-white hover:bg-gray-100 cursor-pointer group transition-all border-2 border-transparent rounded-sm", statusConfig[item.status].hoverBorder)}>
+                  <div key={item.id} className="flex items-start gap-2 p-3 bg-white hover:bg-gray-100 cursor-pointer group transition-all border-l-[3px] rounded-sm" style={{ borderLeftColor: item.status === 'success' ? '#22c55e' : item.status === 'in-progress' ? '#3b82f6' : item.status === 'failed' ? '#ef4444' : '#f97316' }}>
                     <Link href={`${statusConfig[item.status].route}/${item.id}`} className="flex items-start gap-2 flex-1 min-w-0">
                       <img src={rocketIcon} alt="Rocket" className="w-4 h-4 mt-0.5 shrink-0 opacity-70" />
                       <p className="text-[13px] leading-tight text-gray-800 line-clamp-2 font-medium flex-1">
@@ -377,27 +373,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                       className="relative w-9 h-9 flex items-center justify-center cursor-pointer group"
                       title={item.title}
                     >
-                      {/* Spinner for in-progress or static border for others */}
                       <div 
                         className={cn(
-                          "absolute inset-0 rounded-full border-2 transition-colors duration-200",
-                          isInProgress ? "border-[#3b82f6] border-t-transparent animate-[spin_3s_linear_infinite]" : "border-transparent"
+                          "absolute inset-0 rounded-full border-2",
+                          isInProgress ? "border-[#3b82f6] border-t-transparent animate-[spin_3s_linear_infinite]" : ""
                         )}
-                        style={{ 
-                          borderColor: isInProgress ? undefined : 'transparent'
-                        }}
-                        onMouseEnter={(e) => {
-                          if (!isInProgress) {
-                            e.currentTarget.style.borderColor = borderHoverColor;
-                          }
-                        }}
-                        onMouseLeave={(e) => {
-                          if (!isInProgress) {
-                            e.currentTarget.style.borderColor = 'transparent';
-                          }
-                        }}
+                        style={!isInProgress ? { borderColor: borderHoverColor } : undefined}
                       />
-                      {/* Inner circle with icon */}
                       <div className="w-8 h-8 rounded-full bg-[#E6E1EF] flex items-center justify-center group-hover:bg-white transition-colors">
                         <img src={rocketIcon} alt="Rocket" className="w-4 h-4 opacity-70" />
                       </div>
