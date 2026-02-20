@@ -151,8 +151,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   function renderCollapsedSidebar() {
     return (
-      <div className="flex flex-col items-center py-4 h-full">
-        <div className="flex flex-col items-center gap-4 shrink-0">
+      <div className="flex flex-col items-center h-full overflow-hidden">
+        <div className="flex flex-col items-center gap-4 shrink-0 pt-4">
           <Link href="/smart-search/new">
             <Button size="icon" variant="ghost" className="h-10 w-10 text-[#006E7D] hover:bg-[#006E7D]/10 transition-colors">
               <Plus className="w-[30px] h-[30px]" />
@@ -221,7 +221,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </button>
         <div
           ref={collapsedScrollRef}
-          className="flex-1 w-full px-2 overflow-y-auto scrollbar-none"
+          className="flex-1 min-h-0 w-full px-2 overflow-y-auto scrollbar-none"
           style={{ scrollbarWidth: "none" }}
         >
           <div className="flex flex-col items-center gap-3 py-1">
@@ -351,7 +351,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         >
           <ChevronDown className="w-4 h-4" />
         </button>
-        <div className="shrink-0 pt-2 pb-2 flex items-center justify-center">
+        <div className="shrink-0 mt-auto pt-2 pb-4 flex items-center justify-center">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button className="w-[58px] h-8 flex items-center justify-center gap-1 rounded-sm text-gray-600 hover:text-black hover:bg-black/5 cursor-pointer transition-colors border border-gray-300" data-testid="button-collapsed-more-menu">
