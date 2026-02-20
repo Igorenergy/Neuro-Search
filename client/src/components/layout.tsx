@@ -55,6 +55,17 @@ function CollapsedSidebar({
   statusFilter,
   setStatusFilter,
   rocketIcon,
+  pinnedIds,
+  togglePin,
+  setSelectedItem,
+  setRenameValue,
+  setIsPinned,
+  setDetailsOpen,
+  setCloneOpen,
+  setDeleteOpen,
+  setAbortItem,
+  setAbortOpen,
+  setFinishEarlyOpen,
 }: {
   sidebarVisibleItems: { id: number; title: string; status: ResearchStatus }[];
   visibleResearchItems: { id: number; title: string; status: ResearchStatus }[];
@@ -62,6 +73,17 @@ function CollapsedSidebar({
   statusFilter: "all" | ResearchStatus;
   setStatusFilter: (v: "all" | ResearchStatus) => void;
   rocketIcon: string;
+  pinnedIds: number[];
+  togglePin: (id: number) => void;
+  setSelectedItem: (item: { id: number; title: string } | null) => void;
+  setRenameValue: (v: string) => void;
+  setIsPinned: (v: boolean) => void;
+  setDetailsOpen: (v: boolean) => void;
+  setCloneOpen: (v: boolean) => void;
+  setDeleteOpen: (v: boolean) => void;
+  setAbortItem: (item: { id: number; title: string } | null) => void;
+  setAbortOpen: (v: boolean) => void;
+  setFinishEarlyOpen: (v: boolean) => void;
 }) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollUp, setCanScrollUp] = useState(false);
@@ -167,6 +189,7 @@ function CollapsedSidebar({
           {sidebarVisibleItems.map(item => {
             const config = statusConfig[item.status];
             const isInProgress = item.status === "in-progress";
+            const isPinned = pinnedIds.includes(item.id);
             const borderHoverColor =
               item.status === "success" ? "#22c55e" :
               item.status === "in-progress" ? "#3b82f6" :
@@ -174,23 +197,108 @@ function CollapsedSidebar({
               "#f97316";
 
             return (
-              <Link key={item.id} href={`${config.route}/${item.id}`}>
-                <div
-                  className="relative w-9 h-9 flex items-center justify-center cursor-pointer group"
-                  title={item.title}
-                >
-                  <div
-                    className={cn(
-                      "absolute inset-0 rounded-full border-2",
-                      isInProgress ? "border-[#3b82f6] border-t-transparent animate-[spin_3s_linear_infinite]" : ""
-                    )}
-                    style={!isInProgress ? { borderColor: borderHoverColor } : undefined}
-                  />
-                  <div className="w-8 h-8 rounded-full bg-[#E6E1EF] flex items-center justify-center group-hover:bg-white transition-colors">
-                    <img src={rocketIcon} alt="Rocket" className="w-[25px] h-[25px] opacity-70" />
+              <div key={item.id} className="relative group flex items-center" title={item.title}>
+                <Link href={`${config.route}/${item.id}`}>
+                  <div className="relative w-9 h-9 flex items-center justify-center cursor-pointer">
+                    <div
+                      className={cn(
+                        "absolute inset-0 rounded-full border-2",
+                        isInProgress ? "border-[#3b82f6] border-t-transparent animate-[spin_3s_linear_infinite]" : ""
+                      )}
+                      style={!isInProgress ? { borderColor: borderHoverColor } : undefined}
+                    />
+                    <div className="w-8 h-8 rounded-full bg-[#E6E1EF] flex items-center justify-center group-hover:bg-white transition-colors">
+                      <img src={rocketIcon} alt="Rocket" className="w-[25px] h-[25px] opacity-70" />
+                    </div>
                   </div>
+                </Link>
+                <div className="absolute left-[42px] top-1/2 -translate-y-1/2 flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-20">
+                  <button
+                    className={cn(
+                      "w-5 h-5 flex items-center justify-center rounded hover:bg-gray-200 transition-colors cursor-pointer",
+                      isPinned ? "text-gray-600" : "text-gray-400"
+                    )}
+                    onClick={(e) => { e.stopPropagation(); togglePin(item.id); }}
+                    data-testid={`collapsed-pin-${item.id}`}
+                    title={isPinned ? "Unpin" : "Pin"}
+                  >
+                    <Pin className={cn("w-3 h-3", isPinned ? "rotate-45" : "rotate-45")} />
+                  </button>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild onClick={(e) => e.preventDefault()}>
+                      <button
+                        className="w-5 h-5 flex items-center justify-center rounded text-gray-400 hover:bg-gray-200 hover:text-gray-700 transition-colors cursor-pointer"
+                        data-testid={`collapsed-kebab-${item.id}`}
+                      >
+                        <MoreVertical className="w-3 h-3" />
+                      </button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="start" side="right" className="w-44 bg-[#1a1a1a] border-[#333] shadow-xl">
+                      {isInProgress ? (
+                        <>
+                          <DropdownMenuItem
+                            className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 focus:text-red-400 focus:bg-[#333] cursor-pointer"
+                            onClick={(e) => { e.preventDefault(); setAbortItem(item); setAbortOpen(true); }}
+                            data-testid={`collapsed-abort-${item.id}`}
+                          >
+                            <StopCircle className="w-4 h-4" />
+                            Abort Research
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            className="flex items-center gap-2 text-sm text-[#22c55e] hover:text-[#16a34a] focus:text-[#16a34a] focus:bg-[#333] cursor-pointer"
+                            onClick={(e) => { e.preventDefault(); setAbortItem(item); setFinishEarlyOpen(true); }}
+                            data-testid={`collapsed-finish-early-${item.id}`}
+                          >
+                            <FastForward className="w-4 h-4" />
+                            Finish Early
+                          </DropdownMenuItem>
+                        </>
+                      ) : (
+                        <>
+                          <DropdownMenuItem
+                            className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
+                            onClick={(e) => { e.preventDefault(); setSelectedItem(item); setRenameValue(item.title); setIsPinned(isPinned); setDetailsOpen(true); }}
+                            data-testid={`collapsed-details-${item.id}`}
+                          >
+                            <FileText className="w-4 h-4 text-gray-400" />
+                            Details
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            className="flex items-center gap-2 text-sm text-[#008DA8] hover:text-[#00b0cc] focus:text-[#00b0cc] focus:bg-[#333] cursor-pointer"
+                            onClick={(e) => { e.preventDefault(); setCloneOpen(true); }}
+                            data-testid={`collapsed-clone-${item.id}`}
+                          >
+                            <Copy className="w-4 h-4 text-[#008DA8]" />
+                            Clone & Restart
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
+                            data-testid={`collapsed-archive-${item.id}`}
+                          >
+                            <Archive className="w-4 h-4 text-gray-400" />
+                            Archive Project
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
+                            data-testid={`collapsed-export-${item.id}`}
+                          >
+                            <Download className="w-4 h-4 text-gray-400" />
+                            Export Project
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 focus:text-red-400 focus:bg-[#333] cursor-pointer"
+                            onClick={(e) => { e.preventDefault(); setSelectedItem(item); setDeleteOpen(true); }}
+                            data-testid={`collapsed-delete-${item.id}`}
+                          >
+                            <Trash2 className="w-4 h-4" />
+                            Delete
+                          </DropdownMenuItem>
+                        </>
+                      )}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </div>
-              </Link>
+              </div>
             );
           })}
         </div>
@@ -614,6 +722,17 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           statusFilter={statusFilter}
           setStatusFilter={setStatusFilter}
           rocketIcon={rocketIcon}
+          pinnedIds={pinnedIds}
+          togglePin={togglePin}
+          setSelectedItem={setSelectedItem}
+          setRenameValue={setRenameValue}
+          setIsPinned={setIsPinned}
+          setDetailsOpen={setDetailsOpen}
+          setCloneOpen={setCloneOpen}
+          setDeleteOpen={setDeleteOpen}
+          setAbortItem={setAbortItem}
+          setAbortOpen={setAbortOpen}
+          setFinishEarlyOpen={setFinishEarlyOpen}
         />)
       )}
     </div>
