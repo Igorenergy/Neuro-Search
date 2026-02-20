@@ -1,6 +1,7 @@
 import { useState } from "react";
 import {
   Search,
+  Filter,
   MoreVertical,
   FileText,
   Info,
@@ -184,9 +185,15 @@ export default function SearchPage() {
 
         {/* Search Hero */}
         <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 space-y-4">
-          <label className="text-sm font-semibold text-gray-700 block">
-            Search query
-          </label>
+          <div className="flex items-center justify-between gap-2">
+            <label className="text-sm font-semibold text-gray-700 block">
+              Search query
+            </label>
+            <div className="flex items-center gap-1.5 text-[#008DA8] cursor-pointer hover:underline">
+              <Filter className="w-3.5 h-3.5" />
+              <span className="text-xs font-bold">filter (2)</span>
+            </div>
+          </div>
           <div className="relative">
             <div className="absolute left-3 top-1/2 -translate-y-1/2 p-1 bg-[#8BC34A]/20 rounded-sm">
               <Search className="w-5 h-5 text-[#558B2F]" />
