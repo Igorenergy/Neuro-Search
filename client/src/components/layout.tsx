@@ -260,9 +260,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                       </p>
                     </Link>
                     <div className="flex items-center gap-1 shrink-0 mt-0.5">
-                      {item.status === "in-progress" ? (
-                        <RefreshCw className="w-4 h-4 text-blue-500 animate-[spin_10s_linear_infinite]" data-testid={`refresh-${item.id}`} />
-                      ) : (
+                      {item.status !== "in-progress" && (
                         <>
                           <Pin
                             className="w-3.5 h-3.5 text-gray-400 rotate-45 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer hover:text-gray-700"
