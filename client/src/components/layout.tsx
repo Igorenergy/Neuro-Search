@@ -211,17 +211,19 @@ function CollapsedSidebar({
                   </div>
                 </Link>
                 <div className="absolute left-[34px] top-1/2 -translate-y-1/2 flex flex-col gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-20">
-                  <button
-                    className={cn(
-                      "w-5 h-5 flex items-center justify-center rounded hover:bg-gray-200 transition-colors cursor-pointer",
-                      isPinned ? "text-gray-600" : "text-gray-400"
-                    )}
-                    onClick={(e) => { e.stopPropagation(); togglePin(item.id); }}
-                    data-testid={`collapsed-pin-${item.id}`}
-                    title={isPinned ? "Unpin" : "Pin"}
-                  >
-                    <Pin className={cn("w-3 h-3", isPinned ? "rotate-45" : "rotate-45")} />
-                  </button>
+                  {(!isInProgress || sidebarVisibleItems.filter(i => i.status === "in-progress").indexOf(item) >= 2) && (
+                    <button
+                      className={cn(
+                        "w-5 h-5 flex items-center justify-center rounded hover:bg-gray-200 transition-colors cursor-pointer",
+                        isPinned ? "text-gray-600" : "text-gray-400"
+                      )}
+                      onClick={(e) => { e.stopPropagation(); togglePin(item.id); }}
+                      data-testid={`collapsed-pin-${item.id}`}
+                      title={isPinned ? "Unpin" : "Pin"}
+                    >
+                      <Pin className={cn("w-3 h-3", isPinned ? "rotate-45" : "rotate-45")} />
+                    </button>
+                  )}
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild onClick={(e) => e.preventDefault()}>
                       <button
@@ -597,31 +599,40 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     </Link>
                     <div className="flex flex-col items-center gap-1 shrink-0 mt-0.5">
                       {item.status === "in-progress" ? (
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild onClick={(e) => e.preventDefault()}>
-                            <button className="p-0 border-0 bg-transparent opacity-0 group-hover:opacity-100 transition-opacity" data-testid={`kebab-menu-${item.id}`}>
-                              <MoreVertical className="w-3.5 h-3.5 text-gray-400 cursor-pointer hover:text-gray-700" />
-                            </button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end" className="w-44 bg-[#1a1a1a] border-[#333] shadow-xl">
-                            <DropdownMenuItem
-                              className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 focus:text-red-400 focus:bg-[#333] cursor-pointer"
-                              onClick={(e) => { e.preventDefault(); setAbortItem(item); setAbortOpen(true); }}
-                              data-testid={`abort-${item.id}`}
-                            >
-                              <StopCircle className="w-4 h-4" />
-                              Abort Research
-                            </DropdownMenuItem>
-                            <DropdownMenuItem
-                              className="flex items-center gap-2 text-sm text-[#22c55e] hover:text-[#16a34a] focus:text-[#16a34a] focus:bg-[#333] cursor-pointer"
-                              onClick={(e) => { e.preventDefault(); setAbortItem(item); setFinishEarlyOpen(true); }}
-                              data-testid={`finish-early-${item.id}`}
-                            >
-                              <FastForward className="w-4 h-4" />
-                              Finish Early
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
+                        <div className="flex flex-col items-center gap-1">
+                          {sidebarVisibleItems.filter(i => i.status === "in-progress").indexOf(item) >= 2 && (
+                            <Pin
+                              className="w-3.5 h-3.5 text-gray-400 rotate-45 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer hover:text-gray-700"
+                              onClick={(e) => { e.stopPropagation(); togglePin(item.id); }}
+                              data-testid={`pin-${item.id}`}
+                            />
+                          )}
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild onClick={(e) => e.preventDefault()}>
+                              <button className="p-0 border-0 bg-transparent opacity-0 group-hover:opacity-100 transition-opacity" data-testid={`kebab-menu-${item.id}`}>
+                                <MoreVertical className="w-3.5 h-3.5 text-gray-400 cursor-pointer hover:text-gray-700" />
+                              </button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end" className="w-44 bg-[#1a1a1a] border-[#333] shadow-xl">
+                              <DropdownMenuItem
+                                className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 focus:text-red-400 focus:bg-[#333] cursor-pointer"
+                                onClick={(e) => { e.preventDefault(); setAbortItem(item); setAbortOpen(true); }}
+                                data-testid={`abort-${item.id}`}
+                              >
+                                <StopCircle className="w-4 h-4" />
+                                Abort Research
+                              </DropdownMenuItem>
+                              <DropdownMenuItem
+                                className="flex items-center gap-2 text-sm text-[#22c55e] hover:text-[#16a34a] focus:text-[#16a34a] focus:bg-[#333] cursor-pointer"
+                                onClick={(e) => { e.preventDefault(); setAbortItem(item); setFinishEarlyOpen(true); }}
+                                data-testid={`finish-early-${item.id}`}
+                              >
+                                <FastForward className="w-4 h-4" />
+                                Finish Early
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </div>
                       ) : (
                         <>
                           <Pin
