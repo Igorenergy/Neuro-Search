@@ -190,10 +190,12 @@ export default function SearchPage() {
             <span>
               Looking for specific documents or media? Search in the{" "}
               <a
-                href="#"
+                href="/files-attachments"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-[#008DA8] underline decoration-[#008DA8] underline-offset-2 font-medium"
               >
-                Assets Repository
+                Files & Attachments
               </a>
             </span>
           </div>
@@ -299,12 +301,15 @@ export default function SearchPage() {
             <p className="text-gray-500 mb-8 text-center max-w-md">
               However, we found{" "}
               <span className="font-bold text-gray-900">3 matching files</span>{" "}
-              in the Assets Repository.
+              in the Files & Attachments.
             </p>
             <div className="flex gap-4">
-              <Button className="gap-2 bg-[#008DA8] hover:bg-[#007A92] text-white">
+              <Button 
+                className="gap-2 bg-[#008DA8] hover:bg-[#007A92] text-white"
+                onClick={() => window.open("/files-attachments", "_blank")}
+              >
                 <FolderOpen className="w-4 h-4" />
-                Search in Assets & Archives
+                Search in Files & Attachments
               </Button>
               <Button
                 variant="outline"
