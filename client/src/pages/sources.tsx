@@ -65,6 +65,7 @@ import { usePreviewStore } from "@/lib/preview-store";
 import ResearchBriefingPanel from "@/components/research-briefing-panel";
 import { SourceDetailsDrawer } from "@/components/source-details-drawer";
 import AddFilesModal from "@/components/add-files-modal";
+import { ProjectContextMenu } from "@/components/project-context-menu";
 
 
 import type { SourceRow } from "@/lib/types";
@@ -204,18 +205,7 @@ export default function SourcesPage() {
           <h1 className="text-sm font-bold text-gray-900 truncate max-w-[400px]" data-testid="text-project-title">
             {projectTitle}
           </h1>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button className="shrink-0 p-1 hover:bg-gray-200 rounded transition-colors" data-testid="button-project-menu">
-                <MoreVertical className="w-4 h-4 text-gray-600" />
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="start">
-              <DropdownMenuItem>Rename</DropdownMenuItem>
-              <DropdownMenuItem>Duplicate</DropdownMenuItem>
-              <DropdownMenuItem className="text-red-600">Delete</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <ProjectContextMenu projectTitle={projectTitle} align="start" />
         </div>
 
         <div className="flex items-center gap-2 shrink-0">

@@ -63,6 +63,7 @@ import { cn } from "@/lib/utils";
 import { loadLaunchConfig } from "@/lib/launch-config";
 import ResearchBriefingPanel from "@/components/research-briefing-panel";
 import CloneRestartModal from "@/components/clone-restart-modal";
+import { ProjectContextMenu } from "@/components/project-context-menu";
 import AddFilesModal from "@/components/add-files-modal";
 
 
@@ -162,11 +163,6 @@ export default function ReportsSummary() {
   const [showExtendedModal, setShowExtendedModal] = useState(false);
   const [nextStepsExpanded, setNextStepsExpanded] = useState(false);
   const [leftExpanded, setLeftExpanded] = useState(false);
-  const [detailsOpen, setDetailsOpen] = useState(false);
-  const [deleteOpen, setDeleteOpen] = useState(false);
-  const [renameValue, setRenameValue] = useState("");
-  const [isPinned, setIsPinned] = useState(false);
-  const [cloneOpen, setCloneOpen] = useState(false);
   const [showEnhanceModal, setShowEnhanceModal] = useState(false);
   const [enhanceScope, setEnhanceScope] = useState<"web" | "files">("web");
   const [enhanceEngine, setEnhanceEngine] = useState("ultimate");
@@ -218,39 +214,7 @@ export default function ReportsSummary() {
           <h1 className="text-sm font-bold text-gray-900 truncate max-w-[400px]" data-testid="text-project-title">
             {projectTitle}
           </h1>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button className="shrink-0 p-1 hover:bg-gray-200 rounded transition-colors" data-testid="button-project-menu">
-                <MoreVertical className="w-4 h-4 text-gray-600" />
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="w-44 bg-[#1a1a1a] border-[#333] shadow-xl">
-              <DropdownMenuItem
-                className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
-                onClick={(e) => { e.preventDefault(); setRenameValue(projectTitle); setDetailsOpen(true); }}
-                data-testid="menu-details"
-              >
-                <FileText className="w-4 h-4 text-gray-400" />
-                Details
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                className="flex items-center gap-2 text-sm text-[#008DA8] hover:text-[#00b0cc] focus:text-[#00b0cc] focus:bg-[#333] cursor-pointer"
-                onClick={(e) => { e.preventDefault(); setCloneOpen(true); }}
-                data-testid="menu-clone"
-              >
-                <Copy className="w-4 h-4 text-[#008DA8]" />
-                Clone & Restart
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 focus:text-red-400 focus:bg-[#333] cursor-pointer"
-                onClick={(e) => { e.preventDefault(); setDeleteOpen(true); }}
-                data-testid="menu-delete"
-              >
-                <Trash2 className="w-4 h-4" />
-                Delete
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <ProjectContextMenu projectTitle={projectTitle} align="start" />
         </div>
 
         <div className="flex items-center gap-2 shrink-0">
@@ -705,69 +669,6 @@ export default function ReportsSummary() {
           </div>
         </DialogContent>
       </Dialog>
-      <Dialog open={detailsOpen} onOpenChange={setDetailsOpen}>
-        <DialogContent className="sm:max-w-[400px] bg-white border-gray-200">
-          <DialogHeader>
-            <DialogTitle className="text-gray-900">Research Details</DialogTitle>
-            <DialogDescription className="text-gray-500 text-sm">
-              Edit the name and pin status for this research item.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="space-y-5 py-2">
-            <div className="space-y-2">
-              <Label htmlFor="rename-report" className="text-sm font-medium text-gray-700">Rename</Label>
-              <Input
-                id="rename-report"
-                value={renameValue}
-                onChange={(e) => setRenameValue(e.target.value)}
-                className="border-gray-300 focus:border-[#008DA8] focus:ring-[#008DA8] text-gray-900"
-                data-testid="input-rename-report"
-              />
-            </div>
-            <div className="flex items-center gap-3">
-              <ToggleSwitch
-                id="pin-toggle-report"
-                checked={isPinned}
-                onCheckedChange={setIsPinned}
-                data-testid="toggle-pin-report"
-              />
-              <Label htmlFor="pin-toggle-report" className="text-sm font-medium text-gray-700 cursor-pointer">Pin to navigation menu</Label>
-            </div>
-          </div>
-          <DialogFooter className="gap-2">
-            <Button variant="outline" onClick={() => setDetailsOpen(false)} className="border-gray-300 text-gray-700" data-testid="button-cancel-details-report">
-              Cancel
-            </Button>
-            <Button onClick={() => setDetailsOpen(false)} className="bg-[#008DA8] hover:bg-[#006E7D] text-white" data-testid="button-save-details-report">
-              Save
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-      <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
-        <DialogContent className="sm:max-w-[400px] bg-white border-gray-200">
-          <DialogHeader>
-            <DialogTitle className="text-gray-900">Delete Confirmation</DialogTitle>
-            <DialogDescription className="text-gray-500 text-sm">
-              Are you sure you want to delete this research? This action cannot be undone.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="py-2">
-            <p className="text-sm text-gray-700 bg-gray-50 p-3 rounded-md border border-gray-200 line-clamp-2">
-              {projectTitle}
-            </p>
-          </div>
-          <DialogFooter className="gap-2">
-            <Button variant="outline" onClick={() => setDeleteOpen(false)} className="border-gray-300 text-gray-700" data-testid="button-cancel-delete-report">
-              Cancel
-            </Button>
-            <Button variant="destructive" onClick={() => setDeleteOpen(false)} className="bg-red-600 hover:bg-red-700" data-testid="button-confirm-delete-report">
-              Delete
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-      <CloneRestartModal open={cloneOpen} onOpenChange={setCloneOpen} />
 
       {showEnhanceModal && (
         <>
