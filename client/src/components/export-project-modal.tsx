@@ -57,36 +57,36 @@ export default function ExportProjectModal({
   artifactsCount = 16,
 }: ExportProjectModalProps) {
   const [exportState, setExportState] = useState<ExportState>("selection");
-  const [exportMode, setExportMode] = useState<"full" | "selected">("selected");
+  const [exportMode, setExportMode] = useState<"full" | "selected">("full");
 
   const [reports, setReports] = useState<ReportOption[]>([
     { id: "executive", label: "Executive Summary", checked: true },
-    { id: "research-log", label: "Research log", checked: false },
+    { id: "research-log", label: "Research log", checked: true },
     { id: "extended-report", label: "Generated extended report", checked: true },
   ]);
 
-  const [sourcesAll, setSourcesAll] = useState(false);
-  const [sourceByActivity, setSourceByActivity] = useState(false);
-  const [sourceIncluded, setSourceIncluded] = useState(false);
-  const [sourceExcluded, setSourceExcluded] = useState(false);
-  const [sourceByType, setSourceByType] = useState(false);
+  const [sourcesAll, setSourcesAll] = useState(true);
+  const [sourceByActivity, setSourceByActivity] = useState(true);
+  const [sourceIncluded, setSourceIncluded] = useState(true);
+  const [sourceExcluded, setSourceExcluded] = useState(true);
+  const [sourceByType, setSourceByType] = useState(true);
   const [sourceTypes, setSourceTypes] = useState<SourceFilter[]>([
     { id: "html", label: "html/htm", checked: true },
-    { id: "doc", label: "doc/docx", checked: false },
-    { id: "xls", label: "xls/xlsx", checked: false },
-    { id: "pdf", label: "pdf", checked: false },
-    { id: "csv", label: "csv", checked: false },
-    { id: "md", label: "md (markdown)", checked: false },
-    { id: "archives", label: "archives", checked: false },
+    { id: "doc", label: "doc/docx", checked: true },
+    { id: "xls", label: "xls/xlsx", checked: true },
+    { id: "pdf", label: "pdf", checked: true },
+    { id: "csv", label: "csv", checked: true },
+    { id: "md", label: "md (markdown)", checked: true },
+    { id: "archives", label: "archives", checked: true },
   ]);
   const [attachDeepData, setAttachDeepData] = useState(true);
 
-  const [artifactsAll, setArtifactsAll] = useState(false);
+  const [artifactsAll, setArtifactsAll] = useState(true);
   const [artifacts, setArtifacts] = useState<ArtifactFile[]>([
-    { id: "f1", label: "Document Files Name 1", checked: false },
-    { id: "f2", label: "Document Files Name 2", checked: false },
-    { id: "f3", label: "Document Files Name 3", checked: false },
-    { id: "f4", label: "Document Files Name 4", checked: false },
+    { id: "f1", label: "Document Files Name 1", checked: true },
+    { id: "f2", label: "Document Files Name 2", checked: true },
+    { id: "f3", label: "Document Files Name 3", checked: true },
+    { id: "f4", label: "Document Files Name 4", checked: true },
   ]);
 
   const [generationStep, setGenerationStep] = useState(0);
