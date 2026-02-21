@@ -1,0 +1,50 @@
+UX/UI Specification: "Share Project" Modal
+Context: This modal is triggered when a user clicks the [ 🔗 Share ] button located in the top-right header of an active research project. Its goal is to allow collaboration while keeping strict control over data privacy and credit consumption.
+
+1. Layout & Structure
+The modal should be clean, focused, and divided into two primary interaction zones: Direct Invites (top) and Link Sharing (bottom).
+
+2. Section: Direct Invite (Team & Clients)
+This section allows the user to grant access to specific individuals via email.
+
+UI Elements:
+
+Email Input Field: A placeholder reading: "Enter email addresses..." (supports comma-separated multiple emails).
+
+Role Selector (Dropdown): Positioned inside or right next to the input field.
+
+👁️ Viewer (Default): Can read the report, view sources, and export data (if the owner allows). Cannot run new AI searches.
+
+✏️ Editor: Can add new sources, run Deep Extracts, and use the AI Chat.
+
+Submit Button: [ Send Invite ].
+
+Billing/Credit Logic (Crucial UX): * If the user selects Editor, a subtle warning/tooltip must appear below the input:
+
+⚠️ Note: Editors will consume your workspace credits when running new AI tasks.
+
+Active Users List: Below the input, display a minimalist list of people who already have access, showing their Avatar, Name/Email, and their current Role (which the owner can change or revoke here).
+
+3. Section: General Access (Link Sharing)
+This section is for quickly grabbing a link to drop into Slack or an email.
+
+Access Level Toggle / Dropdown:
+
+🔒 Restricted (Default): Only people added in the "Direct Invite" section can open this link.
+
+🌐 Anyone with the link: Anyone on the internet with this exact URL can view the project.
+
+Link Area: A read-only input field showing the unique project URL.
+
+Action Button: [ 📋 Copy Link ]. Upon clicking, it briefly changes to [ ✅ Copied! ] to provide instant positive feedback.
+
+4. The Upsell Hook (Premium/Expert Tier)
+B2B users often need to share reports with external clients or stakeholders without showing your SaaS platform's branding. This is a perfect place for an upsell.
+
+Premium Feature: "Client Presentation Mode"
+
+UI Element: A toggle switch at the very bottom of the modal: [ ] Enable White-Label Sharing 👑.
+
+Logic: * If a Standard user clicks it, an upsell tooltip appears: "Remove our branding and share this research with your custom company logo. Available on the Expert tier. [ Upgrade ]".
+
+If an Expert user enables it, the shared link generates a clean, read-only webpage without the Deep Search navigation bars, showing only the data and the user's custom logo.
