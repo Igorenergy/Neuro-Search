@@ -382,7 +382,7 @@ export default function Dashboard() {
                             <DropdownMenuItem
                               className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
                               data-testid={`details-${item.id}`}
-                              onClick={() => { setSelectedItem({ id: item.id, title: item.title }); setIsPinned(false); setDetailsOpen(true); }}
+                              onClick={(e) => { e.stopPropagation(); setSelectedItem({ id: item.id, title: item.title }); setIsPinned(false); setTimeout(() => setDetailsOpen(true), 0); }}
                             >
                               <FileText className="w-4 h-4 text-gray-400" />
                               Details
@@ -390,7 +390,7 @@ export default function Dashboard() {
                             <DropdownMenuItem
                               className="flex items-center gap-2 text-sm text-[#008DA8] hover:text-[#00b0cc] focus:text-[#00b0cc] focus:bg-[#333] cursor-pointer"
                               data-testid={`clone-${item.id}`}
-                              onClick={() => { setSelectedItem({ id: item.id, title: item.title }); setCloneOpen(true); }}
+                              onClick={(e) => { e.stopPropagation(); setSelectedItem({ id: item.id, title: item.title }); setTimeout(() => setCloneOpen(true), 0); }}
                             >
                               <Copy className="w-4 h-4 text-[#008DA8]" />
                               Clone & Restart
@@ -398,6 +398,7 @@ export default function Dashboard() {
                             <DropdownMenuItem
                               className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
                               data-testid={`dash-archive-${item.id}`}
+                              onClick={(e) => { e.stopPropagation(); }}
                             >
                               <Archive className="w-4 h-4 text-gray-400" />
                               Archive Project
@@ -405,6 +406,7 @@ export default function Dashboard() {
                             <DropdownMenuItem
                               className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
                               data-testid={`dash-export-${item.id}`}
+                              onClick={(e) => { e.stopPropagation(); }}
                             >
                               <Download className="w-4 h-4 text-gray-400" />
                               Export Project
@@ -412,7 +414,7 @@ export default function Dashboard() {
                             <DropdownMenuItem
                               className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 focus:text-red-400 focus:bg-[#333] cursor-pointer"
                               data-testid={`delete-${item.id}`}
-                              onClick={() => { setSelectedItem({ id: item.id, title: item.title }); setDeleteOpen(true); }}
+                              onClick={(e) => { e.stopPropagation(); setSelectedItem({ id: item.id, title: item.title }); setTimeout(() => setDeleteOpen(true), 0); }}
                             >
                               <Trash2 className="w-4 h-4" />
                               Delete
