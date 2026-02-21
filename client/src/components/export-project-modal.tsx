@@ -276,7 +276,7 @@ export default function ExportProjectModal({
                   disabled={isFullMode}
                 />
                 {reportsExpanded && (
-                  <div className={cn("mt-1 ml-2 mr-2 mb-2 p-3 border border-gray-200 rounded-sm space-y-2", isFullMode && "opacity-60 pointer-events-none")}>
+                  <div className={cn("mt-[-1px] p-3 border border-gray-200 rounded-sm space-y-2 relative z-0", isFullMode && "opacity-60 pointer-events-none")}>
                     {reports.map(report => (
                     <label key={report.id} className="flex items-center gap-2 cursor-pointer">
                       <Checkbox
@@ -306,7 +306,7 @@ export default function ExportProjectModal({
                   disabled={isFullMode}
                 />
                 {sourcesExpanded && (
-                  <div className={cn("mt-1 ml-2 mr-2 mb-2 p-3 border border-gray-200 rounded-sm space-y-3", isFullMode && "opacity-60 pointer-events-none")}>
+                  <div className={cn("mt-[-1px] p-3 border border-gray-200 rounded-sm space-y-3 relative z-0", isFullMode && "opacity-60 pointer-events-none")}>
                     <div className="space-y-2">
                     <label className="flex items-center gap-2 cursor-pointer">
                       <Checkbox
@@ -403,7 +403,7 @@ export default function ExportProjectModal({
                   disabled={isFullMode}
                 />
                 {artifactsExpanded && (
-                  <div className={cn("mt-1 ml-2 mr-2 mb-2 p-3 border border-gray-200 rounded-sm", isFullMode && "opacity-60 pointer-events-none")}>
+                  <div className={cn("mt-[-1px] p-3 border border-gray-200 rounded-sm relative z-0", isFullMode && "opacity-60 pointer-events-none")}>
                     <div className="grid grid-cols-2 gap-2">
                     {artifacts.map(artifact => (
                       <label key={artifact.id} className="flex items-center gap-2 cursor-pointer">
