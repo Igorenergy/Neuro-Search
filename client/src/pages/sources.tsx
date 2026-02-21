@@ -645,7 +645,7 @@ export default function SourcesPage() {
               onClick={() => setShowDeepExtractModal(false)}
               className="p-1 hover:bg-gray-100 rounded-sm transition-colors"
             >
-              <X className="w-5 h-5 text-white bg-black rounded-[2px]" />
+              <X className="w-5 h-5 text-gray-400" />
             </button>
           </DialogHeader>
 
@@ -746,7 +746,7 @@ export default function SourcesPage() {
               onClick={() => setShowConfidenceModal(false)}
               className="p-1 hover:bg-gray-100 rounded-sm transition-colors"
             >
-              <X className="w-5 h-5 text-white bg-black rounded-[2px]" />
+              <X className="w-5 h-5 text-gray-400" />
             </button>
           </DialogHeader>
 
