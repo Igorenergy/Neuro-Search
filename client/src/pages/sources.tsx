@@ -377,7 +377,7 @@ export default function SourcesPage() {
               <div
                 key={source.id}
                 className={cn(
-                  "flex items-center gap-3 px-3 py-2.5 bg-white border rounded-md transition-all group hover:shadow-md",
+                  "flex items-center gap-3 px-3 py-2.5 bg-white border rounded-md transition-all group hover:shadow-md cursor-pointer",
                   source.included
                     ? "border-l-[3px] border-l-green-500 border-t-gray-200 border-r-gray-200 border-b-gray-200 hover:border-r-[3px] hover:border-r-green-500"
                     : "border-l-[3px] border-l-orange-400 border-t-gray-200 border-r-gray-200 border-b-gray-200 hover:border-r-[3px] hover:border-r-orange-400",
@@ -385,13 +385,12 @@ export default function SourcesPage() {
                 )}
                 data-testid={`row-source-${source.id}`}
                 onClick={() => { setDrawerSource(source); setDrawerOpen(true); }}
-                style={{ cursor: "pointer" }}
               >
-                <button onClick={(e) => { e.stopPropagation(); toggleSelect(source.id); }} className="shrink-0">
+                <button onClick={(e) => { e.stopPropagation(); toggleSelect(source.id); }} className="shrink-0 p-1">
                   {selectedIds.has(source.id) ? (
-                    <CheckSquare className="w-4 h-4 text-[#008DA8]" />
+                    <CheckSquare className="w-[21px] h-[21px] text-[#008DA8]" />
                   ) : (
-                    <Square className="w-4 h-4 text-gray-300" />
+                    <Square className="w-[21px] h-[21px] text-gray-300" />
                   )}
                 </button>
 
@@ -517,11 +516,11 @@ export default function SourcesPage() {
 
                 <div className="flex items-center justify-between px-3 py-2 border-t border-gray-100 mt-auto">
                   <div className="flex items-center gap-2">
-                    <button onClick={(e) => { e.stopPropagation(); toggleSelect(source.id); }} className="shrink-0">
+                    <button onClick={(e) => { e.stopPropagation(); toggleSelect(source.id); }} className="shrink-0 p-1">
                       {selectedIds.has(source.id) ? (
-                        <CheckSquare className="w-4 h-4 text-[#008DA8]" />
+                        <CheckSquare className="w-[21px] h-[21px] text-[#008DA8]" />
                       ) : (
-                        <Square className="w-4 h-4 text-gray-300" />
+                        <Square className="w-[21px] h-[21px] text-gray-300" />
                       )}
                     </button>
                     <div className="flex items-center gap-1">
