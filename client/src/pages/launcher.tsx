@@ -1481,61 +1481,6 @@ export default function Launcher() {
       </div>
       )}
 
-      {/* Version History Panel */}
-      <AnimatePresence>
-        {showVersionHistory && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.2 }}
-            className="overflow-hidden"
-          >
-            <div className="w-full bg-white border border-gray-200 rounded-md shadow-sm p-4 space-y-3">
-              <div className="flex items-center justify-between">
-                <h4 className="text-sm font-bold text-gray-800">Plan Version History</h4>
-                <button onClick={() => setShowVersionHistory(false)} className="text-gray-400 hover:text-gray-600">
-                  <X className="w-4 h-4" />
-                </button>
-              </div>
-              <div className="space-y-2">
-                {Array.from({ length: totalVersions }, (_, i) => i + 1).reverse().map((v) => (
-                  <div 
-                    key={v}
-                    className={cn(
-                      "flex items-center justify-between px-3 py-2 rounded-sm border cursor-pointer transition-colors",
-                      v === planVersion 
-                        ? "border-[#008DA8] bg-blue-50/50" 
-                        : "border-gray-100 hover:bg-gray-50"
-                    )}
-                    onClick={() => {
-                      setPlanVersion(v);
-                      setShowVersionHistory(false);
-                    }}
-                    data-testid={`card-version-${v}`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <span className={cn(
-                        "text-xs font-bold",
-                        v === planVersion ? "text-[#008DA8]" : "text-gray-600"
-                      )}>
-                        Version {v}
-                      </span>
-                      {v === planVersion && (
-                        <span className="text-[10px] font-medium text-[#008DA8] bg-blue-100 px-1.5 py-0.5 rounded-sm">Current</span>
-                      )}
-                      {v === 1 && (
-                        <span className="text-[10px] font-medium text-green-700 bg-green-100 px-1.5 py-0.5 rounded-sm">Active</span>
-                      )}
-                    </div>
-                    <span className="text-[10px] text-gray-400">12 steps</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
 
       {/* Queue Status Block */}
       <Card className="p-0 border-gray-200 shadow-sm" data-testid="card-queue-status">
