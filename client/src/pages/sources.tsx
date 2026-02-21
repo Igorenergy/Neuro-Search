@@ -576,7 +576,7 @@ export default function SourcesPage() {
       </div>
       {/* Modal: Select Action */}
       <Dialog open={showActionModal} onOpenChange={setShowActionModal}>
-        <DialogContent className="max-w-[320px] p-0 overflow-hidden border-none bg-white rounded-lg shadow-xl">
+        <DialogContent className="max-w-[320px] p-0 overflow-hidden border-none bg-white rounded-lg shadow-xl [&>button]:hidden">
           <DialogHeader className="p-4 flex flex-row items-center justify-between space-y-0 border-b">
             <DialogTitle className="text-base font-bold text-gray-900">Select action</DialogTitle>
             <button 
