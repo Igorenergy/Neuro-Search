@@ -251,7 +251,7 @@ export default function ReportsSummary() {
           <button className="w-8 h-8 flex items-center justify-center rounded-sm bg-[#CC0000] hover:bg-[#AA0000] transition-colors" data-testid="button-delete" onClick={() => setDeleteModalOpen(true)}>
             <Trash2 className="w-4 h-4 text-white" />
           </button>
-          <button className="w-8 h-8 flex items-center justify-center rounded-sm bg-[#333333] hover:bg-[#222222] transition-colors" data-testid="button-share">
+          <button className="w-8 h-8 flex items-center justify-center rounded-sm bg-[#333333] hover:bg-[#222222] transition-colors" data-testid="button-share" onClick={() => setExportModalOpen(true)}>
             <Share2 className="w-4 h-4 text-white" />
           </button>
         </div>
