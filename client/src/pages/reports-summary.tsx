@@ -340,7 +340,7 @@ export default function ReportsSummary() {
           onClick={() => setShowExtendedModal(true)}
           data-testid="button-generate-extended"
         >
-          Generate extended report
+          Generate full report
         </Button>
       </div>
 
