@@ -628,7 +628,16 @@ export default function SourcesPage() {
             <div className="flex justify-center">
               <Button 
                 className="bg-[#00802b] hover:bg-[#006622] text-white px-10 h-9 font-bold text-sm rounded-md"
-                onClick={() => setShowActionModal(false)}
+                onClick={() => {
+                  setSources(prev => prev.map(s => {
+                    if (!selectedIds.has(s.id)) return s;
+                    if (selectedAction === "include") return { ...s, included: true };
+                    if (selectedAction === "exclude") return { ...s, included: false };
+                    if (selectedAction === "reverse") return { ...s, included: !s.included };
+                    return s;
+                  }));
+                  setShowActionModal(false);
+                }}
               >
                 Apply
               </Button>
