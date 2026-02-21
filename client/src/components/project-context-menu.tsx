@@ -3,7 +3,6 @@ import {
   MoreVertical,
   FileText,
   Copy,
-  Trash2,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -24,7 +23,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch as ToggleSwitch } from "@/components/ui/switch";
 import CloneRestartModal from "@/components/clone-restart-modal";
-import RemoveProjectModal from "@/components/remove-project-modal";
 
 interface ProjectContextMenuProps {
   projectTitle: string;
@@ -33,7 +31,6 @@ interface ProjectContextMenuProps {
 
 export function ProjectContextMenu({ projectTitle, align = "start" }: ProjectContextMenuProps) {
   const [detailsOpen, setDetailsOpen] = useState(false);
-  const [deleteOpen, setDeleteOpen] = useState(false);
   const [cloneOpen, setCloneOpen] = useState(false);
   const [renameValue, setRenameValue] = useState("");
   const [isPinned, setIsPinned] = useState(false);
@@ -62,14 +59,6 @@ export function ProjectContextMenu({ projectTitle, align = "start" }: ProjectCon
           >
             <Copy className="w-4 h-4 text-[#008DA8]" />
             Clone & Restart
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 focus:text-red-400 focus:bg-[#333] cursor-pointer"
-            onClick={(e) => { e.preventDefault(); setDeleteOpen(true); }}
-            data-testid="menu-delete"
-          >
-            <Trash2 className="w-4 h-4" />
-            Delete Project
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -113,13 +102,6 @@ export function ProjectContextMenu({ projectTitle, align = "start" }: ProjectCon
           </DialogFooter>
         </DialogContent>
       </Dialog>
-
-      <RemoveProjectModal 
-        open={deleteOpen} 
-        onOpenChange={setDeleteOpen} 
-        title={projectTitle}
-        defaultMode="delete"
-      />
 
       <CloneRestartModal open={cloneOpen} onOpenChange={setCloneOpen} />
     </>
