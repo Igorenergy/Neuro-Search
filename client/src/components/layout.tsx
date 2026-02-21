@@ -41,7 +41,6 @@ import {
 import { Trash2, FileText, Copy, Filter, RefreshCw, Archive, Download, StopCircle, FastForward } from "lucide-react";
 import rocketIcon from "@assets/image_1771405092616.png";
 import moreIcon from "@assets/изображение_1771596463092.png";
-import { ProjectMenuContent } from "@/components/project-menu";
 import CloneRestartModal from "@/components/clone-restart-modal";
 import AbortResearchModal from "@/components/abort-research-modal";
 import FinishEarlyModal from "@/components/finish-early-modal";
@@ -272,20 +271,69 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                           <MoreVertical className="w-3 h-3" />
                         </button>
                       </DropdownMenuTrigger>
-                      <ProjectMenuContent
-                        itemId={String(item.id)}
-                        status={isInProgress ? "in-progress" : undefined}
-                        align="start"
-                        side="right"
-                        prefix="collapsed"
-                        showArchive
-                        showExport
-                        onDetails={() => { setTimeout(() => { setSelectedItem(item); setIsPinned(itemIsPinned); setDetailsOpen(true); }, 0); }}
-                        onClone={() => { setTimeout(() => setCloneOpen(true), 0); }}
-                        onDelete={() => { setTimeout(() => { setSelectedItem(item); setDeleteOpen(true); }, 0); }}
-                        onAbort={() => { setTimeout(() => { setAbortItem(item); setAbortOpen(true); }, 0); }}
-                        onFinishEarly={() => { setTimeout(() => { setAbortItem(item); setFinishEarlyOpen(true); }, 0); }}
-                      />
+                      <DropdownMenuContent align="start" side="right" className="w-44 bg-[#1a1a1a] border-[#333] shadow-xl">
+                        {isInProgress ? (
+                          <>
+                            <DropdownMenuItem
+                              className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 focus:text-red-400 focus:bg-[#333] cursor-pointer"
+                              onSelect={() => { setTimeout(() => { setAbortItem(item); setAbortOpen(true); }, 0); }}
+                              data-testid={`collapsed-abort-${item.id}`}
+                            >
+                              <StopCircle className="w-4 h-4" />
+                              Abort Research
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              className="flex items-center gap-2 text-sm text-[#22c55e] hover:text-[#16a34a] focus:text-[#16a34a] focus:bg-[#333] cursor-pointer"
+                              onSelect={() => { setTimeout(() => { setAbortItem(item); setFinishEarlyOpen(true); }, 0); }}
+                              data-testid={`collapsed-finish-early-${item.id}`}
+                            >
+                              <FastForward className="w-4 h-4" />
+                              Finish Early
+                            </DropdownMenuItem>
+                          </>
+                        ) : (
+                          <>
+                            <DropdownMenuItem
+                              className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
+                              onSelect={() => { setTimeout(() => { setSelectedItem(item); setIsPinned(itemIsPinned); setDetailsOpen(true); }, 0); }}
+                              data-testid={`collapsed-details-${item.id}`}
+                            >
+                              <FileText className="w-4 h-4 text-gray-400" />
+                              Details
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              className="flex items-center gap-2 text-sm text-[#008DA8] hover:text-[#00b0cc] focus:text-[#00b0cc] focus:bg-[#333] cursor-pointer"
+                              onSelect={() => { setTimeout(() => setCloneOpen(true), 0); }}
+                              data-testid={`collapsed-clone-${item.id}`}
+                            >
+                              <Copy className="w-4 h-4 text-[#008DA8]" />
+                              Clone & Restart
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
+                              data-testid={`collapsed-archive-${item.id}`}
+                            >
+                              <Archive className="w-4 h-4 text-gray-400" />
+                              Archive Project
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
+                              data-testid={`collapsed-export-${item.id}`}
+                            >
+                              <Download className="w-4 h-4 text-gray-400" />
+                              Export Project
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 focus:text-red-400 focus:bg-[#333] cursor-pointer"
+                              onSelect={() => { setTimeout(() => { setSelectedItem(item); setDeleteOpen(true); }, 0); }}
+                              data-testid={`collapsed-delete-${item.id}`}
+                            >
+                              <Trash2 className="w-4 h-4" />
+                              Delete
+                            </DropdownMenuItem>
+                          </>
+                        )}
+                      </DropdownMenuContent>
                     </DropdownMenu>
                   </div>
                 </div>
@@ -430,13 +478,24 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                             <MoreVertical className="w-3.5 h-3.5 text-gray-500 cursor-pointer hover:text-gray-700" />
                           </button>
                         </DropdownMenuTrigger>
-                        <ProjectMenuContent
-                          itemId={String(item.id)}
-                          status="in-progress"
-                          align="end"
-                          onAbort={() => { setTimeout(() => { setAbortItem(item); setAbortOpen(true); }, 0); }}
-                          onFinishEarly={() => { setTimeout(() => { setAbortItem(item); setFinishEarlyOpen(true); }, 0); }}
-                        />
+                        <DropdownMenuContent align="end" className="w-44 bg-[#1a1a1a] border-[#333] shadow-xl">
+                          <DropdownMenuItem
+                            className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 focus:text-red-400 focus:bg-[#333] cursor-pointer"
+                            onSelect={() => { setTimeout(() => { setAbortItem(item); setAbortOpen(true); }, 0); }}
+                            data-testid={`abort-${item.id}`}
+                          >
+                            <StopCircle className="w-4 h-4" />
+                            Abort Research
+                          </DropdownMenuItem>
+                          <DropdownMenuItem
+                            className="flex items-center gap-2 text-sm text-[#22c55e] hover:text-[#16a34a] focus:text-[#16a34a] focus:bg-[#333] cursor-pointer"
+                            onSelect={() => { setTimeout(() => { setAbortItem(item); setFinishEarlyOpen(true); }, 0); }}
+                            data-testid={`finish-early-${item.id}`}
+                          >
+                            <FastForward className="w-4 h-4" />
+                            Finish Early
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
                       </DropdownMenu>
                     ) : (
                       <>
@@ -451,13 +510,32 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                               <MoreVertical className="w-3.5 h-3.5 text-gray-500 cursor-pointer hover:text-gray-700" />
                             </button>
                           </DropdownMenuTrigger>
-                          <ProjectMenuContent
-                            itemId={String(item.id)}
-                            align="end"
-                            onDetails={() => { setTimeout(() => { setSelectedItem(item); setIsPinned(true); setDetailsOpen(true); }, 0); }}
-                            onClone={() => { setTimeout(() => setCloneOpen(true), 0); }}
-                            onDelete={() => { setTimeout(() => { setSelectedItem(item); setDeleteOpen(true); }, 0); }}
-                          />
+                          <DropdownMenuContent align="end" className="w-44 bg-[#1a1a1a] border-[#333] shadow-xl">
+                            <DropdownMenuItem
+                              className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
+                              onSelect={() => { setTimeout(() => { setSelectedItem(item); setIsPinned(true); setDetailsOpen(true); }, 0); }}
+                              data-testid={`details-${item.id}`}
+                            >
+                              <FileText className="w-4 h-4 text-gray-400" />
+                              Details
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              className="flex items-center gap-2 text-sm text-[#008DA8] hover:text-[#00b0cc] focus:text-[#00b0cc] focus:bg-[#333] cursor-pointer"
+                              onSelect={() => { setTimeout(() => setCloneOpen(true), 0); }}
+                              data-testid={`clone-${item.id}`}
+                            >
+                              <Copy className="w-4 h-4 text-[#008DA8]" />
+                              Clone & Restart
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 focus:text-red-400 focus:bg-[#333] cursor-pointer"
+                              onSelect={() => { setTimeout(() => { setSelectedItem(item); setDeleteOpen(true); }, 0); }}
+                              data-testid={`delete-${item.id}`}
+                            >
+                              <Trash2 className="w-4 h-4" />
+                              Delete
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
                         </DropdownMenu>
                       </>
                     )}
@@ -502,13 +580,24 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                               <MoreVertical className="w-3.5 h-3.5 text-gray-400 cursor-pointer hover:text-gray-700" />
                             </button>
                           </DropdownMenuTrigger>
-                          <ProjectMenuContent
-                            itemId={String(item.id)}
-                            status="in-progress"
-                            align="end"
-                            onAbort={() => { setTimeout(() => { setAbortItem(item); setAbortOpen(true); }, 0); }}
-                            onFinishEarly={() => { setTimeout(() => { setAbortItem(item); setFinishEarlyOpen(true); }, 0); }}
-                          />
+                          <DropdownMenuContent align="end" className="w-44 bg-[#1a1a1a] border-[#333] shadow-xl">
+                            <DropdownMenuItem
+                              className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 focus:text-red-400 focus:bg-[#333] cursor-pointer"
+                              onSelect={() => { setTimeout(() => { setAbortItem(item); setAbortOpen(true); }, 0); }}
+                              data-testid={`abort-${item.id}`}
+                            >
+                              <StopCircle className="w-4 h-4" />
+                              Abort Research
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              className="flex items-center gap-2 text-sm text-[#22c55e] hover:text-[#16a34a] focus:text-[#16a34a] focus:bg-[#333] cursor-pointer"
+                              onSelect={() => { setTimeout(() => { setAbortItem(item); setFinishEarlyOpen(true); }, 0); }}
+                              data-testid={`finish-early-${item.id}`}
+                            >
+                              <FastForward className="w-4 h-4" />
+                              Finish Early
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
                         </DropdownMenu>
                       </div>
                     ) : (
@@ -524,15 +613,46 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                               <MoreVertical className="w-3.5 h-3.5 text-gray-400 cursor-pointer hover:text-gray-700" />
                             </button>
                           </DropdownMenuTrigger>
-                          <ProjectMenuContent
-                            itemId={String(item.id)}
-                            align="end"
-                            showArchive
-                            showExport
-                            onDetails={() => { setTimeout(() => { setSelectedItem(item); setIsPinned(false); setDetailsOpen(true); }, 0); }}
-                            onClone={() => { setTimeout(() => setCloneOpen(true), 0); }}
-                            onDelete={() => { setTimeout(() => { setSelectedItem(item); setDeleteOpen(true); }, 0); }}
-                          />
+                          <DropdownMenuContent align="end" className="w-44 bg-[#1a1a1a] border-[#333] shadow-xl">
+                            <DropdownMenuItem
+                              className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
+                              onSelect={() => { setTimeout(() => { setSelectedItem(item); setIsPinned(false); setDetailsOpen(true); }, 0); }}
+                              data-testid={`details-${item.id}`}
+                            >
+                              <FileText className="w-4 h-4 text-gray-400" />
+                              Details
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              className="flex items-center gap-2 text-sm text-[#008DA8] hover:text-[#00b0cc] focus:text-[#00b0cc] focus:bg-[#333] cursor-pointer"
+                              onSelect={() => { setTimeout(() => setCloneOpen(true), 0); }}
+                              data-testid={`clone-${item.id}`}
+                            >
+                              <Copy className="w-4 h-4 text-[#008DA8]" />
+                              Clone & Restart
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
+                              data-testid={`archive-${item.id}`}
+                            >
+                              <Archive className="w-4 h-4 text-gray-400" />
+                              Archive Project
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
+                              data-testid={`export-${item.id}`}
+                            >
+                              <Download className="w-4 h-4 text-gray-400" />
+                              Export Project
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 focus:text-red-400 focus:bg-[#333] cursor-pointer"
+                              onSelect={() => { setTimeout(() => { setSelectedItem(item); setDeleteOpen(true); }, 0); }}
+                              data-testid={`delete-${item.id}`}
+                            >
+                              <Trash2 className="w-4 h-4" />
+                              Delete
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
                         </DropdownMenu>
                       </>
                     )}
