@@ -45,6 +45,7 @@ export default function Dashboard() {
   const [showBanner, setShowBanner] = useState(true);
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
+  const [removeDefaultMode, setRemoveDefaultMode] = useState<"archive" | "delete">("archive");
   const [cloneOpen, setCloneOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<{ id: number; title: string } | null>(null);
   const [isPinned, setIsPinned] = useState(false);
@@ -376,6 +377,22 @@ export default function Dashboard() {
                               <FastForward className="w-4 h-4" />
                               Finish Early
                             </DropdownMenuItem>
+                            <DropdownMenuItem
+                              className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
+                              data-testid={`dash-archive-inprogress-${item.id}`}
+                              onClick={(e) => { e.stopPropagation(); setSelectedItem({ id: item.id, title: item.title }); setRemoveDefaultMode("archive"); setTimeout(() => setDeleteOpen(true), 0); }}
+                            >
+                              <Archive className="w-4 h-4 text-gray-400" />
+                              Archive Project
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 focus:text-red-400 focus:bg-[#333] cursor-pointer"
+                              data-testid={`delete-inprogress-${item.id}`}
+                              onClick={(e) => { e.stopPropagation(); setSelectedItem({ id: item.id, title: item.title }); setRemoveDefaultMode("delete"); setTimeout(() => setDeleteOpen(true), 0); }}
+                            >
+                              <Trash2 className="w-4 h-4" />
+                              Delete
+                            </DropdownMenuItem>
                           </>
                         ) : (
                           <>
@@ -398,7 +415,7 @@ export default function Dashboard() {
                             <DropdownMenuItem
                               className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
                               data-testid={`dash-archive-${item.id}`}
-                              onClick={(e) => { e.stopPropagation(); }}
+                              onClick={(e) => { e.stopPropagation(); setSelectedItem({ id: item.id, title: item.title }); setRemoveDefaultMode("archive"); setTimeout(() => setDeleteOpen(true), 0); }}
                             >
                               <Archive className="w-4 h-4 text-gray-400" />
                               Archive Project
@@ -414,7 +431,7 @@ export default function Dashboard() {
                             <DropdownMenuItem
                               className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 focus:text-red-400 focus:bg-[#333] cursor-pointer"
                               data-testid={`delete-${item.id}`}
-                              onClick={(e) => { e.stopPropagation(); setSelectedItem({ id: item.id, title: item.title }); setTimeout(() => setDeleteOpen(true), 0); }}
+                              onClick={(e) => { e.stopPropagation(); setSelectedItem({ id: item.id, title: item.title }); setRemoveDefaultMode("delete"); setTimeout(() => setDeleteOpen(true), 0); }}
                             >
                               <Trash2 className="w-4 h-4" />
                               Delete
@@ -526,6 +543,7 @@ export default function Dashboard() {
       open={deleteOpen}
       onOpenChange={setDeleteOpen}
       title={selectedItem?.title ?? ""}
+      defaultMode={removeDefaultMode}
       onConfirm={() => { if (selectedItem) setDeletedIds(prev => [...prev, selectedItem.id]); }}
     />
 

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Archive, Trash2 } from "lucide-react";
 import {
   Dialog,
@@ -21,8 +21,11 @@ interface RemoveProjectModalProps {
 export default function RemoveProjectModal({ open, onOpenChange, title, onConfirm, defaultMode = "archive" }: RemoveProjectModalProps) {
   const [mode, setMode] = useState<"archive" | "delete">(defaultMode);
 
+  useEffect(() => {
+    if (open) setMode(defaultMode);
+  }, [open, defaultMode]);
+
   const handleOpenChange = (val: boolean) => {
-    if (!val) setMode(defaultMode);
     onOpenChange(val);
   };
 
