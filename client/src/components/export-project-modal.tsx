@@ -227,7 +227,19 @@ export default function ExportProjectModal({
                     type="radio"
                     name="export-mode"
                     checked={exportMode === "full"}
-                    onChange={() => setExportMode("full")}
+                    onChange={() => {
+                      setExportMode("full");
+                      setReports(prev => prev.map(r => ({ ...r, checked: true })));
+                      setSourcesAll(true);
+                      setSourceByActivity(true);
+                      setSourceIncluded(true);
+                      setSourceExcluded(true);
+                      setSourceByType(true);
+                      setSourceTypes(prev => prev.map(s => ({ ...s, checked: true })));
+                      setAttachDeepData(true);
+                      setArtifactsAll(true);
+                      setArtifacts(prev => prev.map(a => ({ ...a, checked: true })));
+                    }}
                     className="accent-[#008DA8]"
                     data-testid="radio-full-archive"
                   />
