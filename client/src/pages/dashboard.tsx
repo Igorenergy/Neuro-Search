@@ -39,6 +39,7 @@ import AbortResearchModal from "@/components/abort-research-modal";
 import FinishEarlyModal from "@/components/finish-early-modal";
 import ResearchDetailsModal from "@/components/research-details-modal";
 import RemoveProjectModal from "@/components/remove-project-modal";
+import ExportProjectModal from "@/components/export-project-modal";
 import rocketIcon from "@assets/image_1771405092616.png";
 
 export default function Dashboard() {
@@ -53,6 +54,7 @@ export default function Dashboard() {
   const [dashStatusFilter, setDashStatusFilter] = useState<"all" | "success" | "in-progress" | "failed" | "canceled">("all");
   const [abortOpen, setAbortOpen] = useState(false);
   const [finishEarlyOpen, setFinishEarlyOpen] = useState(false);
+  const [exportOpen, setExportOpen] = useState(false);
   const [abortItem, setAbortItem] = useState<{ id: number; title: string } | null>(null);
   const [showArchived, setShowArchived] = useState(false);
   const archivedSectionRef = useRef<HTMLDivElement>(null);
@@ -423,7 +425,7 @@ export default function Dashboard() {
                             <DropdownMenuItem
                               className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
                               data-testid={`dash-export-${item.id}`}
-                              onClick={(e) => { e.stopPropagation(); }}
+                              onClick={(e) => { e.stopPropagation(); setSelectedItem({ id: item.id, title: item.title }); setTimeout(() => setExportOpen(true), 0); }}
                             >
                               <Download className="w-4 h-4 text-gray-400" />
                               Export Project
@@ -551,6 +553,12 @@ export default function Dashboard() {
 
     <AbortResearchModal open={abortOpen} onOpenChange={setAbortOpen} />
     <FinishEarlyModal open={finishEarlyOpen} onOpenChange={setFinishEarlyOpen} />
+
+    <ExportProjectModal
+      open={exportOpen}
+      onOpenChange={setExportOpen}
+      title={selectedItem?.title ?? ""}
+    />
   </>
   );
 }
