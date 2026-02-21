@@ -24,6 +24,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch as ToggleSwitch } from "@/components/ui/switch";
 import CloneRestartModal from "@/components/clone-restart-modal";
+import DeleteConfirmModal from "@/components/delete-confirm-modal";
 
 interface ProjectContextMenuProps {
   projectTitle: string;
@@ -113,29 +114,7 @@ export function ProjectContextMenu({ projectTitle, align = "start" }: ProjectCon
         </DialogContent>
       </Dialog>
 
-      <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
-        <DialogContent className="sm:max-w-[400px] bg-white border-gray-200">
-          <DialogHeader>
-            <DialogTitle className="text-gray-900">Delete Confirmation</DialogTitle>
-            <DialogDescription className="text-gray-500 text-sm">
-              Are you sure you want to delete this research? This action cannot be undone.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="py-2">
-            <p className="text-sm text-gray-700 bg-gray-50 p-3 rounded-md border border-gray-200 line-clamp-2">
-              {projectTitle}
-            </p>
-          </div>
-          <DialogFooter className="gap-2">
-            <Button variant="outline" onClick={() => setDeleteOpen(false)} className="border-gray-300 text-gray-700" data-testid="button-cancel-delete-report">
-              Cancel
-            </Button>
-            <Button variant="destructive" onClick={() => setDeleteOpen(false)} className="bg-red-600 hover:bg-red-700" data-testid="button-confirm-delete-report">
-              Delete
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <DeleteConfirmModal open={deleteOpen} onOpenChange={setDeleteOpen} title={projectTitle} />
 
       <CloneRestartModal open={cloneOpen} onOpenChange={setCloneOpen} />
     </>
