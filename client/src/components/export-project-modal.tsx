@@ -1,11 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { Download, Check, Loader2 } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Download, Check, Loader2, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Switch as ToggleSwitch } from "@/components/ui/switch";
@@ -163,9 +157,9 @@ export default function ExportProjectModal({
     setArtifacts(prev => prev.map(a => a.id === id ? { ...a, checked: !a.checked } : a));
   };
 
-  const handleOpenChange = (val: boolean) => {
+  const handleClose = () => {
     if (exportState === "generating") return;
-    onOpenChange(val);
+    onOpenChange(false);
   };
 
   const SectionHeader = ({ label, count, total, checked, onCheckedChange, color, expanded, onToggle, disabled }: {
@@ -206,25 +200,33 @@ export default function ExportProjectModal({
     </div>
   );
 
+  if (!open) return null;
+
   return (
-    <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogContent className="sm:max-w-[500px] bg-white border-gray-200 p-0 gap-0 [&>button]:hidden max-h-[90vh] flex flex-col">
-        <DialogHeader className="px-5 pt-4 pb-0 shrink-0">
-          <div className="flex items-center justify-between">
-            <DialogTitle className="text-[17px] font-bold text-gray-900">Export Project Data</DialogTitle>
-            <button
-              onClick={() => handleOpenChange(false)}
-              className="w-7 h-7 flex items-center justify-center bg-black rounded-[2px] hover:bg-gray-800 transition-colors"
-              data-testid="button-close-export"
-            >
-              <span className="text-white text-sm font-bold leading-none">&#x2715;</span>
-            </button>
+    <>
+      <div
+        className="fixed inset-0 z-50 bg-black/40 transition-opacity duration-300"
+        onClick={handleClose}
+        data-testid="overlay-export-drawer"
+      />
+      <div className="fixed top-0 right-0 z-50 h-full w-[480px] bg-white shadow-2xl flex flex-col animate-in slide-in-from-right duration-300">
+        <div className="flex border-b border-gray-200 bg-[#5A6B7C] min-h-[34px] shrink-0">
+          <div className="px-6 py-2 bg-[#008DA8] text-white text-xs font-bold flex items-center justify-center">
+            EXPORT PROJECT DATA
           </div>
-        </DialogHeader>
+          <div className="flex-1 bg-[#5A6B7C]" />
+          <button
+            onClick={handleClose}
+            className="px-3 py-2 hover:bg-[#4a5b6c] transition-colors"
+            data-testid="button-close-export"
+          >
+            <X className="w-4 h-4 text-white" />
+          </button>
+        </div>
 
         {exportState === "selection" && (
           <>
-            <div className="flex-1 overflow-y-auto px-5 pt-3 pb-4 space-y-4">
+            <div className="flex-1 overflow-y-auto px-5 pt-4 pb-4 space-y-4">
               <div className="flex items-start gap-3 bg-gray-50 border border-gray-200 rounded-md p-3">
                 <img src={rocketIcon} alt="" className="w-6 h-6 mt-0.5 shrink-0" />
                 <p className="text-sm text-gray-700 leading-snug line-clamp-2">{title}</p>
@@ -490,7 +492,7 @@ export default function ExportProjectModal({
         )}
 
         {exportState === "generating" && (
-          <div className="px-5 py-8 space-y-6">
+          <div className="flex-1 flex flex-col items-center justify-center px-5 py-8 space-y-6">
             <h3 className="text-base font-bold text-gray-900 text-center">Preparing for the download</h3>
 
             <div className="flex items-center gap-6 px-4">
@@ -516,7 +518,6 @@ export default function ExportProjectModal({
                 {GENERATION_STEPS.map((step, idx) => {
                   const isCompleted = idx < generationStep || (idx === GENERATION_STEPS.length - 1 && progress >= 100);
                   const isCurrent = idx === generationStep && progress < 100;
-                  const isPending = idx > generationStep;
 
                   return (
                     <div key={idx} className="flex items-start gap-2">
@@ -555,7 +556,7 @@ export default function ExportProjectModal({
         )}
 
         {exportState === "success" && (
-          <div className="px-5 py-8 space-y-6">
+          <div className="flex-1 flex flex-col items-center justify-center px-5 py-8 space-y-6">
             <div className="flex flex-col items-center gap-4">
               <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center">
                 <Check className="w-8 h-8 text-green-600" />
@@ -566,7 +567,7 @@ export default function ExportProjectModal({
               </div>
             </div>
 
-            <div className="flex flex-col gap-2 px-4">
+            <div className="flex flex-col gap-2 px-4 w-full">
               <Button
                 className="w-full bg-green-600 hover:bg-green-700 text-white font-bold"
                 data-testid="button-download-files"
@@ -577,7 +578,7 @@ export default function ExportProjectModal({
               <Button
                 variant="outline"
                 className="w-full border-gray-300 text-gray-600"
-                onClick={() => handleOpenChange(false)}
+                onClick={handleClose}
                 data-testid="button-close-success"
               >
                 Close
@@ -585,7 +586,7 @@ export default function ExportProjectModal({
             </div>
           </div>
         )}
-      </DialogContent>
-    </Dialog>
+      </div>
+    </>
   );
 }
