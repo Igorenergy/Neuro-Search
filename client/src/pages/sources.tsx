@@ -739,7 +739,7 @@ export default function SourcesPage() {
         </DialogContent>
       </Dialog>
       <Dialog open={showConfidenceModal} onOpenChange={setShowConfidenceModal}>
-        <DialogContent className="w-[500px] max-w-[500px] h-[250px] p-0 overflow-hidden border-none bg-white rounded-lg shadow-2xl">
+        <DialogContent className="w-[500px] max-w-[500px] h-[250px] p-0 overflow-hidden border-none bg-white rounded-lg shadow-2xl [&>button]:hidden">
           <DialogHeader className="px-4 py-2.5 flex flex-row items-center justify-between space-y-0 border-b">
             <DialogTitle className="text-base font-bold text-gray-900">Confidence Score</DialogTitle>
             <button 
