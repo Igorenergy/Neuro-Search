@@ -306,7 +306,7 @@ export default function SourcesPage() {
         <div className="w-px h-5 bg-gray-300" />
 
         <span className="text-xs font-bold text-gray-700">
-          INCLUDED: {includedCount} [{totalCount}]
+          Included ({includedCount}), Excluded ({totalCount - includedCount})
         </span>
 
         <div className="flex-1" />
