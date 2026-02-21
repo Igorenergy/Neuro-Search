@@ -67,6 +67,7 @@ import { ProjectContextMenu } from "@/components/project-context-menu";
 import AddFilesModal from "@/components/add-files-modal";
 import RemoveProjectModal from "@/components/remove-project-modal";
 import ExportProjectModal from "@/components/export-project-modal";
+import ShareProjectModal from "@/components/share-project-modal";
 
 
 interface ThoughtNode {
@@ -178,6 +179,7 @@ export default function ReportsSummary() {
   const [archiveModalOpen, setArchiveModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [exportModalOpen, setExportModalOpen] = useState(false);
+  const [shareModalOpen, setShareModalOpen] = useState(false);
 
   const enhanceLanguageOptions = [
     { value: "auto", label: "Auto Detect" },
@@ -251,7 +253,7 @@ export default function ReportsSummary() {
           <button className="w-8 h-8 flex items-center justify-center rounded-sm bg-[#CC0000] hover:bg-[#AA0000] transition-colors" data-testid="button-delete" onClick={() => setDeleteModalOpen(true)}>
             <Trash2 className="w-4 h-4 text-white" />
           </button>
-          <button className="w-8 h-8 flex items-center justify-center rounded-sm bg-[#333333] hover:bg-[#222222] transition-colors" data-testid="button-share" onClick={() => setExportModalOpen(true)}>
+          <button className="w-8 h-8 flex items-center justify-center rounded-sm bg-[#333333] hover:bg-[#222222] transition-colors" data-testid="button-share" onClick={() => setShareModalOpen(true)}>
             <Share2 className="w-4 h-4 text-white" />
           </button>
         </div>
@@ -948,6 +950,11 @@ export default function ReportsSummary() {
       <ExportProjectModal
         open={exportModalOpen}
         onOpenChange={setExportModalOpen}
+        title={projectTitle}
+      />
+      <ShareProjectModal
+        open={shareModalOpen}
+        onOpenChange={setShareModalOpen}
         title={projectTitle}
       />
     </div>
