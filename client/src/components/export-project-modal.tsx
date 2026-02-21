@@ -89,6 +89,7 @@ export default function ExportProjectModal({
     { id: "f4", label: "Document Files Name 4", checked: true },
   ]);
 
+  const [premiumInfoOpen, setPremiumInfoOpen] = useState(false);
   const [generationStep, setGenerationStep] = useState(0);
   const [progress, setProgress] = useState(0);
 
@@ -379,24 +380,33 @@ export default function ExportProjectModal({
               <div className="space-y-2 pt-2">
                 <div className="flex items-baseline gap-2">
                   <span className="text-sm font-bold text-[#008DA8]">Export price: ${exportPrice.toFixed(2)}</span>
-                  <button className="text-xs text-gray-500 underline hover:text-gray-700" data-testid="button-premium-info">
-                    What's included in Premium Export?
+                  <button
+                    className="text-xs text-gray-500 hover:text-gray-700 flex items-center gap-1"
+                    onClick={() => setPremiumInfoOpen(!premiumInfoOpen)}
+                    data-testid="button-premium-info"
+                  >
+                    <span className="underline">What's included in Premium Export?</span>
+                    <svg className={cn("w-3 h-3 transition-transform", premiumInfoOpen && "rotate-180")} viewBox="0 0 16 16" fill="currentColor">
+                      <path d="M3 6l5 5 5-5H3z"/>
+                    </svg>
                   </button>
                 </div>
-                <div className="bg-[#F0F7F9] border border-[#D0E8ED] rounded-sm p-3 space-y-1.5">
-                  <p className="text-xs text-gray-600 flex items-start gap-1.5">
-                    <span className="text-[#008DA8] shrink-0 mt-0.5">&#x1F4C1;</span>
-                    <span><span className="font-semibold">Structured Folders:</span> All files are neatly organized. No manual sorting needed.</span>
-                  </p>
-                  <p className="text-xs text-gray-600 flex items-start gap-1.5">
-                    <span className="text-[#008DA8] shrink-0 mt-0.5">&#x1F4CA;</span>
-                    <span><span className="font-semibold">Merged Master File:</span> Instead of dozens of scattered CSVs, get one consolidated Excel workbook.</span>
-                  </p>
-                  <p className="text-xs text-gray-600 flex items-start gap-1.5">
-                    <span className="text-[#008DA8] shrink-0 mt-0.5">&#x1F4D1;</span>
-                    <span><span className="font-semibold">Auto-Generated Index:</span> A smart table of contents to instantly navigate your results.</span>
-                  </p>
-                </div>
+                {premiumInfoOpen && (
+                  <div className="bg-[#F0F7F9] border border-[#D0E8ED] rounded-sm p-3 space-y-1.5">
+                    <p className="text-xs text-gray-600 flex items-start gap-1.5">
+                      <span className="text-[#008DA8] shrink-0 mt-0.5">&#x1F4C1;</span>
+                      <span><span className="font-semibold">Structured Folders:</span> All files are neatly organized. No manual sorting needed.</span>
+                    </p>
+                    <p className="text-xs text-gray-600 flex items-start gap-1.5">
+                      <span className="text-[#008DA8] shrink-0 mt-0.5">&#x1F4CA;</span>
+                      <span><span className="font-semibold">Merged Master File:</span> Instead of dozens of scattered CSVs, get one consolidated Excel workbook.</span>
+                    </p>
+                    <p className="text-xs text-gray-600 flex items-start gap-1.5">
+                      <span className="text-[#008DA8] shrink-0 mt-0.5">&#x1F4D1;</span>
+                      <span><span className="font-semibold">Auto-Generated Index:</span> A smart table of contents to instantly navigate your results.</span>
+                    </p>
+                  </div>
+                )}
 
                 {isInsufficientFunds && (
                   <div className="flex items-center gap-2 bg-orange-50 border border-orange-200 rounded-sm px-3 py-2">
