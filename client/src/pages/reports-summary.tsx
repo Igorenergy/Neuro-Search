@@ -175,6 +175,7 @@ export default function ReportsSummary() {
   const [enhanceCostOpen, setEnhanceCostOpen] = useState(false);
   const [isAddFileModalOpen, setIsAddFileModalOpen] = useState(false);
   const [archiveModalOpen, setArchiveModalOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
   const enhanceLanguageOptions = [
     { value: "auto", label: "Auto Detect" },
@@ -245,7 +246,7 @@ export default function ReportsSummary() {
           <button className="w-8 h-8 flex items-center justify-center rounded-sm bg-[#0066CC] hover:bg-[#0055AA] transition-colors" data-testid="button-archive" onClick={() => setArchiveModalOpen(true)}>
             <Archive className="w-4 h-4 text-white" />
           </button>
-          <button className="w-8 h-8 flex items-center justify-center rounded-sm bg-[#CC0000] hover:bg-[#AA0000] transition-colors" data-testid="button-delete">
+          <button className="w-8 h-8 flex items-center justify-center rounded-sm bg-[#CC0000] hover:bg-[#AA0000] transition-colors" data-testid="button-delete" onClick={() => setDeleteModalOpen(true)}>
             <Trash2 className="w-4 h-4 text-white" />
           </button>
           <button className="w-8 h-8 flex items-center justify-center rounded-sm bg-[#333333] hover:bg-[#222222] transition-colors" data-testid="button-share">
@@ -935,6 +936,12 @@ export default function ReportsSummary() {
         onOpenChange={setArchiveModalOpen}
         title={projectTitle}
         defaultMode="archive"
+      />
+      <RemoveProjectModal
+        open={deleteModalOpen}
+        onOpenChange={setDeleteModalOpen}
+        title={projectTitle}
+        defaultMode="delete"
       />
     </div>
   );
