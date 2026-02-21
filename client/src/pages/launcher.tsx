@@ -1169,6 +1169,7 @@ export default function Launcher() {
                 className="flex items-center gap-1 text-xs text-white/80 hover:text-white transition-colors"
                 onClick={() => setShowVersionHistory(!showVersionHistory)}
                 data-testid="button-version-history"
+                title="Plan Version History"
               >
                 <History className="w-3.5 h-3.5" />
                 <span>v{planVersion}/{totalVersions}</span>
