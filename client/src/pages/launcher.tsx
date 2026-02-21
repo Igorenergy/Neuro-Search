@@ -1019,7 +1019,7 @@ export default function Launcher() {
                          </div>
                       </div>
 
-                      <div className={cn("bg-gray-50 p-2 border-t border-gray-200 flex items-center gap-2 transition-opacity", !filesEnabled && "opacity-40 pointer-events-none")}>
+                      <div className={cn("bg-gray-50 p-2 flex items-center gap-2 transition-opacity", !filesEnabled && "opacity-40 pointer-events-none")}>
                          <Switch className="scale-75 data-[state=checked]:bg-green-600" />
                          <span className="text-xs font-medium flex items-center gap-1">
                            <LinkIcon className="w-3 h-3" /> Extract & Research Embedded URLs <Info className="w-3 h-3 text-[#0097B2]" />
