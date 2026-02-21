@@ -461,7 +461,9 @@ export default function SourcesPage() {
                         <DropdownMenuItem className="gap-2" onClick={() => setShowConfidenceModal(true)}>
                           <Shield className="w-4 h-4" /> Confidence Score
                         </DropdownMenuItem>
-                        <DropdownMenuItem className="gap-2">
+                        <DropdownMenuItem className="gap-2" onClick={() => {
+                          setSources(prev => prev.map(s => s.id === source.id ? { ...s, included: !s.included } : s));
+                        }}>
                           {source.included ? (
                             <><XCircle className="w-4 h-4 text-orange-400" /> Exclude</>
                           ) : (
@@ -553,7 +555,9 @@ export default function SourcesPage() {
                         <DropdownMenuItem className="gap-2" onClick={() => setShowConfidenceModal(true)}>
                           <Shield className="w-4 h-4" /> Confidence Score
                         </DropdownMenuItem>
-                        <DropdownMenuItem className="gap-2">
+                        <DropdownMenuItem className="gap-2" onClick={() => {
+                          setSources(prev => prev.map(s => s.id === source.id ? { ...s, included: !s.included } : s));
+                        }}>
                           {source.included ? (
                             <><XCircle className="w-4 h-4 text-orange-400" /> Exclude</>
                           ) : (
