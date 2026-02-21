@@ -67,6 +67,8 @@ export default function Launcher() {
   const { openPreview } = usePreviewStore();
   const [query, setQuery] = useState("");
   const [scope, setScope] = useState<"web" | "assets" | "hybrid">("web");
+  const [webEnabled, setWebEnabled] = useState(true);
+  const [filesEnabled, setFilesEnabled] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
   const [isScanning, setIsScanning] = useState(false);
   const [deepLinksFound, setDeepLinksFound] = useState(false);
@@ -758,7 +760,7 @@ export default function Launcher() {
                          )}
                          onClick={() => setScope("assets")}
                        >
-                         Files
+                         Files ({step1Files.length + step2Files.length + step2ModalFiles.length})
                        </button>
                     </div>
                  </div>
