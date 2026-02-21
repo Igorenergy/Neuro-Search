@@ -766,17 +766,23 @@ export default function Launcher() {
                  </div>
                  
                  {scope === "web" ? (
-                   <div className="border-2 border-[#0097B2] rounded-sm p-4 bg-white space-y-4 shadow-sm relative">
-                      <div className="flex items-center justify-between mb-2">
+                   <div className={cn("border-2 rounded-sm p-0 bg-white shadow-sm overflow-hidden", webEnabled ? "border-[#0097B2]" : "border-gray-300")}>
+                      <div className="flex items-center justify-between p-2 border-b border-gray-200">
                          <div className="flex items-center gap-2">
-                            <Switch defaultChecked className="scale-75 data-[state=checked]:bg-[#0097B2]" />
+                            <Switch 
+                              checked={webEnabled} 
+                              onCheckedChange={(checked) => {
+                                setWebEnabled(checked);
+                                if (checked) setFilesEnabled(false);
+                              }}
+                              className="scale-75 data-[state=checked]:bg-[#0097B2]" 
+                            />
                             <Globe className="w-4 h-4 text-[#0097B2]" />
                             <span className="text-sm text-gray-700">Web Pages & Websites: <span className="font-mono">∞</span></span>
                          </div>
                       </div>
                       
-                      <div className="space-y-4">
-                         
+                      <div className={cn("p-4 space-y-4 transition-opacity", !webEnabled && "opacity-40 pointer-events-none")}>
                          <div className="flex items-center gap-2">
                              <div className="flex items-center gap-1">
                                 <span className="text-sm font-medium text-gray-700">Search Language</span>
@@ -799,11 +805,6 @@ export default function Launcher() {
                              <div className="flex items-center gap-2 flex-wrap">
                                 {selectedLanguages.filter(l => l !== 'auto').map(langCode => {
                                     const lang = languages.find(l => l.value === langCode);
-                                    // Extract just the code from the label "Language (Code)" -> "Code"
-                                    // Or just use the code from value? The mockup shows "Ua", "Ru". 
-                                    // If label is "Ukrainian (Ua)", we want "Ua".
-                                    // Let's parse it or use a mapping. 
-                                    // For simplicity and matching the exact string "Ua", "Ru" from the label parenthesis:
                                     const label = lang?.label || langCode;
                                     const match = label.match(/\(([^)]+)\)/);
                                     const shortCode = match ? match[1] : langCode;
@@ -819,12 +820,19 @@ export default function Launcher() {
                       </div>
                    </div>
                  ) : (
-                   <div className="border border-green-600 rounded-sm p-0 bg-white shadow-sm overflow-hidden">
+                   <div className={cn("border rounded-sm p-0 bg-white shadow-sm overflow-hidden", filesEnabled ? "border-green-600" : "border-gray-300")}>
                       <div className="flex items-center justify-between p-2 border-b border-gray-200">
                         <div className="flex items-center gap-2">
-                           <Switch className="scale-75 data-[state=checked]:bg-green-600" />
+                           <Switch 
+                             checked={filesEnabled} 
+                             onCheckedChange={(checked) => {
+                               setFilesEnabled(checked);
+                               if (checked) setWebEnabled(false);
+                             }}
+                             className="scale-75 data-[state=checked]:bg-green-600" 
+                           />
                            <FileText className="w-5 h-5" strokeWidth={1.5} />
-                           <span className="text-sm font-medium">Files & Attachments: 3/10</span>
+                           <span className="text-sm font-medium">Files & Attachments: {step1Files.length + step2Files.length + step2ModalFiles.length}/10</span>
                         </div>
                         <div className="flex items-center gap-2 w-auto">
                            <div className="flex items-center gap-2 text-xs text-gray-600">
@@ -838,7 +846,7 @@ export default function Launcher() {
                         </div>
                       </div>
 
-                      <div className="p-3 bg-white">
+                      <div className={cn("p-3 bg-white transition-opacity", !filesEnabled && "opacity-40 pointer-events-none")}>
                          <div className="mb-4">
                             <div className="flex items-center justify-between mb-2">
                                <span className="text-xs font-bold">
@@ -1011,7 +1019,7 @@ export default function Launcher() {
                          </div>
                       </div>
 
-                      <div className="bg-gray-50 p-2 border-t border-gray-200 flex items-center gap-2">
+                      <div className={cn("bg-gray-50 p-2 border-t border-gray-200 flex items-center gap-2 transition-opacity", !filesEnabled && "opacity-40 pointer-events-none")}>
                          <Switch className="scale-75 data-[state=checked]:bg-green-600" />
                          <span className="text-xs font-medium flex items-center gap-1">
                            <LinkIcon className="w-3 h-3" /> Extract & Research Embedded URLs <Info className="w-3 h-3 text-[#0097B2]" />
