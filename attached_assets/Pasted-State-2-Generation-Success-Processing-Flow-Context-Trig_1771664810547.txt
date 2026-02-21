@@ -1,0 +1,46 @@
+State 2: Generation & Success (Processing Flow)
+Context: Triggered immediately after the user clicks the "Pay & Generate" button. The modal strictly prevents the user from modifying their order or double-clicking the payment button while the backend processes the request.
+
+1. Transition & UI Locking (Preventing Errors)
+
+Action: The left column (Checkboxes) and right column (Order Summary) are instantly visually muted (e.g., opacity drops to 50%) and become disabled.
+
+Why: To prevent the user from adding more formats after the payment has already been deducted from their balance.
+
+2. Dynamic Progress Indicator (Agentic Feedback)
+
+UI Element: The center of the modal (or the space above the primary button) reveals a sleek Progress Bar or a pulsing Circular Spinner.
+
+Micro-copy (Status Updates): Instead of a static "Loading..." text, the modal displays dynamic, real-time text updates that reflect the backend Agent's work. This builds perceived value:
+
+0-3s: ⏳ "Extracting structured data..."
+
+3-8s: 📊 "Rendering AI charts and metrics..."
+
+8-12s: 📑 "Compiling Executive Summary PDF..."
+
+12-15s: 📦 "Zipping source files..."
+
+3. Button Behavior (During Generation)
+
+The primary CTA button changes state to prevent double-charging:
+
+Visuals: Turns grey (disabled) with a subtle loading animation inside it.
+
+Text: [ ⚙️ Generating Artifacts... ]
+
+4. The Success State (Resolution)
+
+Trigger: The backend signals that all files are ready and the URLs are generated.
+
+UI Changes: * The progress spinner transforms into a large, satisfying Green Checkmark ✅.
+
+The status text updates to: "Export complete! Your files are ready."
+
+Button Behavior: * The primary button turns a distinct success color (e.g., Emerald Green or your brand's primary highlight).
+
+Text: [ 💾 Download Files ] (If multiple formats were selected, this downloads the .zip bundle).
+
+Auto-Action (UX Polish): The browser should automatically initiate the file download. The [ Download ] button remains on the screen purely as a fallback in case the browser's popup blocker stopped the automatic download.
+
+Secondary Action: A subtle [ Close ] button appears to let the user return to their active dashboard.

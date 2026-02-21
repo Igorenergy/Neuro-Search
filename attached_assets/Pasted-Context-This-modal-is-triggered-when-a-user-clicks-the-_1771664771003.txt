@@ -1,0 +1,63 @@
+Context: This modal is triggered when a user clicks the [ 📥 Export ] button located in the header of an active research project or on the Reports Summary page. Its primary goal is to let users extract their gathered intelligence while transparently charging them credits for the data formatting.
+
+1. Layout & Structure
+The modal should be divided into two main columns (or top/bottom sections on smaller screens) to clearly separate Selection from Billing.
+
+Left Column (Configuration): A checklist of export formats and options.
+
+Right Column (Order Summary): A sticky receipt-style breakdown showing the estimated cost of the selected exports.
+
+2. Section: Select Export Formats (The Options)
+Users can select multiple formats simultaneously using Checkboxes [x]. Each format has a specific value and a micro-price attached to it.
+
+[x] Executive Summary (PDF / Presentation)
+
+Description: A professionally styled, boardroom-ready document containing the AI-generated summaries, key findings, and charts.
+
+Customization (Sub-options): If selected, reveals a dropdown for styling (e.g., Standard Corporate, Minimalist) and an option to [x] Include Citations.
+
+[x] Structured Data (CSV / Excel)
+
+Description: All extracted data tables, competitor metrics, and quantitative findings formatted for spreadsheet analysis.
+
+[x] Raw Sources Archive (ZIP Bundle)
+
+Description: Downloads a complete .zip folder containing all original PDF files, scraped HTML-to-Markdown texts, and reference links used by the AI during the research.
+
+3. Section: Order Summary & Billing Logic (Monetization)
+This section is crucial for trust. The user must understand exactly what they are paying for before their balance is deducted.
+
+Dynamic Receipt UI: As the user toggles the checkboxes on the left, the Right Column updates instantly.
+
+PDF Report: ............... $2.00
+
+CSV Data Tables: ......... $0.50
+
+Total Cost: ................. $2.50
+
+Current Balance Indicator: Below the total, show their available funds: (Available Credits: $42.50).
+
+Insufficient Funds Logic: If the Total Cost exceeds the Available Credits, the primary action button turns gray (disabled), and an inline warning appears: ⚠️ Insufficient balance. [ Top up your account ] to proceed.
+
+4. Primary Actions & Loading States
+Primary Button: The main Call-to-Action (CTA) should reiterate the cost to prevent accidental clicks.
+
+Text: [ 💳 Pay $2.50 & Generate Export ]
+
+Loading State (Asynchronous Generation):
+
+When clicked, the modal transitions into a Generation State.
+
+The UI displays a sleek progress bar or a circular spinner.
+
+Micro-copy changes: "Compiling your PDF..." ➔ "Zipping source files..." ➔ "Finalizing download..."
+
+Why: Document generation (especially PDFs with AI charts) takes a few seconds. Keeping the user inside the modal prevents them from refreshing the page.
+
+Success State:
+
+Once complete, the spinner is replaced by a green checkmark ✅.
+
+The button changes to [ 💾 Download File ].
+
+UX Polish: Automatically trigger the browser download, and keep the button there just in case the browser blocks the popup.
