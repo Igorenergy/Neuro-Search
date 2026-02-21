@@ -766,23 +766,23 @@ export default function Launcher() {
                  </div>
                  
                  {scope === "web" ? (
-                   <div className={cn("border-2 rounded-sm p-0 bg-white shadow-sm overflow-hidden", webEnabled ? "border-[#0097B2]" : "border-gray-300")}>
-                      <div className="flex items-center justify-between p-2 border-b border-gray-200">
-                         <div className="flex items-center gap-2">
-                            <Switch 
-                              checked={webEnabled} 
-                              onCheckedChange={(checked) => {
-                                setWebEnabled(checked);
-                                if (checked) setFilesEnabled(false);
-                              }}
-                              className="scale-75 data-[state=checked]:bg-[#0097B2]" 
-                            />
-                            <Globe className="w-4 h-4 text-[#0097B2]" />
-                            <span className="text-sm text-gray-700">Web Pages & Websites: <span className="font-mono">∞</span></span>
+                      <div className={cn("border-2 rounded-sm p-0 bg-white shadow-sm overflow-hidden", webEnabled ? "border-[#0097B2]" : "border-gray-300")}>
+                         <div className="flex items-center justify-between p-2 border-b border-gray-200">
+                            <div className="flex items-center gap-2">
+                               <Switch 
+                                 checked={webEnabled} 
+                                 onCheckedChange={(checked) => {
+                                   setWebEnabled(checked);
+                                   if (checked) setFilesEnabled(false);
+                                 }}
+                                 className="scale-75 data-[state=checked]:bg-[#0097B2]" 
+                               />
+                               <Globe className="w-4 h-4 text-[#0097B2]" />
+                               <span className="text-sm text-gray-700">Web Pages & Websites: <span className="font-mono">∞</span></span>
+                            </div>
                          </div>
-                      </div>
-                      
-                      <div className={cn("p-4 space-y-4 transition-opacity", !webEnabled && "opacity-40 pointer-events-none")}>
+                         
+                         <div className={cn("p-4 space-y-4 transition-opacity", !webEnabled && "opacity-40 pointer-events-none")}>
                          <div className="flex items-center gap-2">
                              <div className="flex items-center gap-1">
                                 <span className="text-sm font-medium text-gray-700">Search Language</span>
