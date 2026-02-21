@@ -89,6 +89,9 @@ export default function ExportProjectModal({
     { id: "f4", label: "Document Files Name 4", checked: true },
   ]);
 
+  const [reportsExpanded, setReportsExpanded] = useState(false);
+  const [sourcesExpanded, setSourcesExpanded] = useState(false);
+  const [artifactsExpanded, setArtifactsExpanded] = useState(false);
   const [premiumInfoOpen, setPremiumInfoOpen] = useState(false);
   const [generationStep, setGenerationStep] = useState(0);
   const [progress, setProgress] = useState(0);
@@ -164,13 +167,15 @@ export default function ExportProjectModal({
     onOpenChange(val);
   };
 
-  const SectionHeader = ({ label, count, total, checked, onCheckedChange, color }: {
+  const SectionHeader = ({ label, count, total, checked, onCheckedChange, color, expanded, onToggle }: {
     label: string;
     count: number;
     total: number;
     checked: boolean;
     onCheckedChange: (v: boolean) => void;
     color: string;
+    expanded: boolean;
+    onToggle: () => void;
   }) => (
     <div className={cn("flex items-center justify-between px-3 py-2 border rounded-sm", `border-[${color}]`, "bg-white")}
       style={{ borderColor: color }}
@@ -184,8 +189,8 @@ export default function ExportProjectModal({
         />
         <span className="text-sm font-bold text-gray-800">{label}: {count} [{total}]</span>
       </div>
-      <button className="text-gray-500 hover:text-gray-700 transition-colors" data-testid={`button-toggle-${label.toLowerCase()}`}>
-        <svg className="w-4 h-4" viewBox="0 0 16 16" fill="currentColor">
+      <button onClick={onToggle} className="text-gray-500 hover:text-gray-700 transition-colors" data-testid={`button-toggle-${label.toLowerCase()}`}>
+        <svg className={cn("w-4 h-4 transition-transform", expanded && "rotate-180")} viewBox="0 0 16 16" fill="currentColor">
           <path d="M3 6l5 5 5-5H3z"/>
         </svg>
       </button>
@@ -249,7 +254,10 @@ export default function ExportProjectModal({
                   checked={reports.every(r => r.checked)}
                   onCheckedChange={(v) => setReports(prev => prev.map(r => ({ ...r, checked: v })))}
                   color="#008DA8"
+                  expanded={reportsExpanded}
+                  onToggle={() => setReportsExpanded(!reportsExpanded)}
                 />
+                {reportsExpanded && (
                 <div className="pl-4 py-2 space-y-2">
                   {reports.map(report => (
                     <label key={report.id} className="flex items-center gap-2 cursor-pointer">
@@ -263,6 +271,7 @@ export default function ExportProjectModal({
                     </label>
                   ))}
                 </div>
+                )}
               </div>
 
               <div className="space-y-1">
@@ -273,7 +282,10 @@ export default function ExportProjectModal({
                   checked={sourcesAll}
                   onCheckedChange={setSourcesAll}
                   color="#D4A017"
+                  expanded={sourcesExpanded}
+                  onToggle={() => setSourcesExpanded(!sourcesExpanded)}
                 />
+                {sourcesExpanded && (
                 <div className="pl-4 py-2 space-y-3">
                   <div className="space-y-2">
                     <label className="flex items-center gap-2 cursor-pointer">
@@ -346,6 +358,7 @@ export default function ExportProjectModal({
                     <span className="text-sm text-[#008DA8] font-medium">Attach Deep extracted data</span>
                   </div>
                 </div>
+                )}
               </div>
 
               <div className="space-y-1">
@@ -359,7 +372,10 @@ export default function ExportProjectModal({
                     setArtifacts(prev => prev.map(a => ({ ...a, checked: v })));
                   }}
                   color="#CC4400"
+                  expanded={artifactsExpanded}
+                  onToggle={() => setArtifactsExpanded(!artifactsExpanded)}
                 />
+                {artifactsExpanded && (
                 <div className="pl-4 py-2">
                   <div className="grid grid-cols-2 gap-2">
                     {artifacts.map(artifact => (
@@ -375,6 +391,7 @@ export default function ExportProjectModal({
                     ))}
                   </div>
                 </div>
+                )}
               </div>
 
               <div className="space-y-2 pt-2">
