@@ -177,23 +177,26 @@ export default function ExportProjectModal({
     expanded: boolean;
     onToggle: () => void;
   }) => (
-    <div className={cn("flex items-center justify-between px-3 py-2 border rounded-sm", `border-[${color}]`, "bg-white")}
+    <div
+      className={cn("flex items-center justify-between px-3 py-2 border rounded-sm cursor-pointer select-none", `border-[${color}]`, "bg-white")}
       style={{ borderColor: color }}
+      onClick={onToggle}
+      data-testid={`button-toggle-${label.toLowerCase()}`}
     >
       <div className="flex items-center gap-2">
-        <Checkbox
-          checked={checked}
-          onCheckedChange={(v) => onCheckedChange(v === true)}
-          className="border-gray-400 data-[state=checked]:bg-[#008DA8] data-[state=checked]:border-[#008DA8]"
-          data-testid={`checkbox-${label.toLowerCase()}-all`}
-        />
+        <div onClick={(e) => e.stopPropagation()}>
+          <Checkbox
+            checked={checked}
+            onCheckedChange={(v) => onCheckedChange(v === true)}
+            className="border-gray-400 data-[state=checked]:bg-[#008DA8] data-[state=checked]:border-[#008DA8]"
+            data-testid={`checkbox-${label.toLowerCase()}-all`}
+          />
+        </div>
         <span className="text-sm font-bold text-gray-800">{label}: {count} [{total}]</span>
       </div>
-      <button onClick={onToggle} className="text-gray-500 hover:text-gray-700 transition-colors" data-testid={`button-toggle-${label.toLowerCase()}`}>
-        <svg className={cn("w-4 h-4 transition-transform", expanded && "rotate-180")} viewBox="0 0 16 16" fill="currentColor">
-          <path d="M3 6l5 5 5-5H3z"/>
-        </svg>
-      </button>
+      <svg className={cn("w-4 h-4 text-gray-500 transition-transform", expanded && "rotate-180")} viewBox="0 0 16 16" fill="currentColor">
+        <path d="M3 6l5 5 5-5H3z"/>
+      </svg>
     </div>
   );
 
