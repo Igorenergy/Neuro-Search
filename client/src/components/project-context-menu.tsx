@@ -114,7 +114,12 @@ export function ProjectContextMenu({ projectTitle, align = "start" }: ProjectCon
         </DialogContent>
       </Dialog>
 
-      <RemoveProjectModal open={deleteOpen} onOpenChange={setDeleteOpen} title={projectTitle} />
+      <RemoveProjectModal 
+        open={deleteOpen} 
+        onOpenChange={setDeleteOpen} 
+        title={projectTitle}
+        defaultMode="delete"
+      />
 
       <CloneRestartModal open={cloneOpen} onOpenChange={setCloneOpen} />
     </>
