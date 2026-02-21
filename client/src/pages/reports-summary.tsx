@@ -66,6 +66,7 @@ import CloneRestartModal from "@/components/clone-restart-modal";
 import { ProjectContextMenu } from "@/components/project-context-menu";
 import AddFilesModal from "@/components/add-files-modal";
 import RemoveProjectModal from "@/components/remove-project-modal";
+import ExportProjectModal from "@/components/export-project-modal";
 
 
 interface ThoughtNode {
@@ -176,6 +177,7 @@ export default function ReportsSummary() {
   const [isAddFileModalOpen, setIsAddFileModalOpen] = useState(false);
   const [archiveModalOpen, setArchiveModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [exportModalOpen, setExportModalOpen] = useState(false);
 
   const enhanceLanguageOptions = [
     { value: "auto", label: "Auto Detect" },
@@ -240,7 +242,7 @@ export default function ReportsSummary() {
         </div>
 
         <div className="flex items-center gap-1.5 shrink-0">
-          <Button variant="outline" size="sm" className="h-8 text-xs gap-1.5 bg-white border-green-600 text-green-700 hover:bg-green-50 font-bold px-4" data-testid="button-export">
+          <Button variant="outline" size="sm" className="h-8 text-xs gap-1.5 bg-white border-green-600 text-green-700 hover:bg-green-50 font-bold px-4" data-testid="button-export" onClick={() => setExportModalOpen(true)}>
             Export
           </Button>
           <button className="w-8 h-8 flex items-center justify-center rounded-sm bg-[#0066CC] hover:bg-[#0055AA] transition-colors" data-testid="button-archive" onClick={() => setArchiveModalOpen(true)}>
@@ -942,6 +944,11 @@ export default function ReportsSummary() {
         onOpenChange={setDeleteModalOpen}
         title={projectTitle}
         defaultMode="delete"
+      />
+      <ExportProjectModal
+        open={exportModalOpen}
+        onOpenChange={setExportModalOpen}
+        title={projectTitle}
       />
     </div>
   );
