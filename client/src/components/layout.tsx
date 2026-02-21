@@ -38,6 +38,7 @@ import CloneRestartModal from "@/components/clone-restart-modal";
 import AbortResearchModal from "@/components/abort-research-modal";
 import FinishEarlyModal from "@/components/finish-early-modal";
 import ResearchDetailsModal from "@/components/research-details-modal";
+import ExportProjectModal from "@/components/export-project-modal";
 
 type ResearchStatus = "success" | "in-progress" | "failed" | "canceled";
 
@@ -51,6 +52,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const [cloneOpen, setCloneOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<{ id: number; title: string } | null>(null);
   const [isPinned, setIsPinned] = useState(false);
+  const [exportOpen, setExportOpen] = useState(false);
 
   const statusConfig: Record<ResearchStatus, { hoverBorder: string; dotColor: string; route: string }> = {
     "success": { hoverBorder: "hover:border-green-500", dotColor: "bg-green-500", route: "/research-success" },
@@ -636,6 +638,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                             <DropdownMenuItem
                               className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
                               data-testid={`export-${item.id}`}
+                              onSelect={() => { setTimeout(() => { setSelectedItem(item); setExportOpen(true); }, 0); }}
                             >
                               <Download className="w-4 h-4 text-gray-400" />
                               Export Project
@@ -859,6 +862,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <CloneRestartModal open={cloneOpen} onOpenChange={setCloneOpen} />
       <AbortResearchModal open={abortOpen} onOpenChange={setAbortOpen} />
       <FinishEarlyModal open={finishEarlyOpen} onOpenChange={setFinishEarlyOpen} />
+      <ExportProjectModal
+        open={exportOpen}
+        onOpenChange={setExportOpen}
+        title={selectedItem?.title ?? ""}
+      />
     </>
   );
 }
