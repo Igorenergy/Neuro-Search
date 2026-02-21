@@ -638,7 +638,7 @@ export default function SourcesPage() {
         onClose={() => setDrawerOpen(false)}
       />
       <Dialog open={showDeepExtractModal} onOpenChange={setShowDeepExtractModal}>
-        <DialogContent className="max-w-[400px] p-0 overflow-hidden border-none bg-white rounded-lg shadow-2xl">
+        <DialogContent className="max-w-[400px] p-0 overflow-hidden border-none bg-white rounded-lg shadow-2xl [&>button]:hidden">
           <DialogHeader className="px-4 py-2.5 flex flex-row items-center justify-between space-y-0 border-b">
             <DialogTitle className="text-base font-bold text-gray-900">Deep Extract Data</DialogTitle>
             <button 
