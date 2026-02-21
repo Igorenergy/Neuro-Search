@@ -38,7 +38,7 @@ import CloneRestartModal from "@/components/clone-restart-modal";
 import AbortResearchModal from "@/components/abort-research-modal";
 import FinishEarlyModal from "@/components/finish-early-modal";
 import ResearchDetailsModal from "@/components/research-details-modal";
-import DeleteConfirmModal from "@/components/delete-confirm-modal";
+import RemoveProjectModal from "@/components/remove-project-modal";
 import rocketIcon from "@assets/image_1771405092616.png";
 
 export default function Dashboard() {
@@ -522,7 +522,7 @@ export default function Dashboard() {
       pinned={isPinned}
     />
 
-    <DeleteConfirmModal
+    <RemoveProjectModal
       open={deleteOpen}
       onOpenChange={setDeleteOpen}
       title={selectedItem?.title ?? ""}

@@ -1,0 +1,68 @@
+UX/UI Specification: Smart Search Launcher
+Context: This modal/window appears when the user clicks the [ + New Search ] button. It is the command center where the user defines the scope and parameters of the AI research before spending credits.
+
+1. Section: Data Sources (Cross-Source Synthesis Logic)
+This section controls where the AI looks for information. It serves as a primary upsell trigger for the Expert tier.
+
+Standard Mode (Default State):
+
+UI Element: Source types are displayed as mutually exclusive Radio Buttons (•).
+
+Logic: The user can only select one category of sources per project: (•) My Files OR ( ) Web Search OR ( ) External DBs.
+
+Note: If "My Files" is selected, the user can still upload multiple PDF files. The restriction applies to mixing different types of data.
+
+The Upsell Trigger:
+
+Positioned directly above or next to the source options is a premium toggle switch: [ ] Multi-Source Synthesis 👑.
+
+Expert Mode (Active State):
+
+Transition: Upon activating the toggle, the UI smoothly animates the Radio Buttons into Checkboxes [x].
+
+Logic: The user can now select multiple data pipelines simultaneously (e.g., [x] My Files AND [x] Web Search). The AI will perform cross-document analysis, comparing internal PDFs with live internet data.
+
+2. Section: Search Region (Geo-Targeting Logic)
+This section controls the geographic lens of the research, utilizing proxy routing and localized search parameters.
+
+Standard Mode (Default State):
+
+UI Element: A dropdown selector labeled "Location".
+
+State: The selector is visually disabled (greyed out) and locked to the default value: 🌐 Global Market (Default).
+
+The Upsell Trigger:
+
+Next to the location dropdown is a premium toggle switch: [ ] Localized Geo-Search 👑.
+
+Expert Mode (Active State):
+
+Transition: Upon activating the toggle, the dropdown unlocks and becomes interactive.
+
+Logic: The user can select a specific region (e.g., 🇩🇪 Germany (DE) or 🇯🇵 Japan (JP)).
+
+Under the Hood (System Action): Selecting a specific country instructs the backend to route search queries through local proxy servers (to bypass regional blocking) and enforces the AI to query and scrape data in the target region's native language.
+
+3. The Upsell Flow (Paywall Interaction)
+How the system handles a "Standard" user attempting to access "Expert" features.
+
+Action: A user on the Standard tier clicks either the Multi-Source Synthesis or Localized Geo-Search toggle.
+
+UI Behavior: The toggle does not switch to the "On" position. Instead, a sleek, centered Modal (or a Rich Tooltip) immediately appears.
+
+Copywriter Draft: > Unlock Expert Capabilities 👑
+
+Cross-source synthesis and deep regional geo-search require advanced AI reasoning models and dedicated proxy routing.
+
+Upgrade to the Expert tier to unleash the full analytical power of your workspace.
+
+[ Upgrade to Expert ]   [ Continue with Standard ]
+
+Resolution: If the user clicks "Continue with Standard," the modal closes, and the launcher remains in its default, restricted state.
+
+4. Section: Research Prompt & Launch
+Text Area: A large input field for the user to type their specific research question or instructions. Includes 3-4 clickable [ Suggested Prompts ] chips above it to help users overcome the blank-page syndrome.
+
+Launch Button: The primary CTA button [ 🚀 Launch Deep Search ].
+
+Cost Indicator: Right below or inside the button, there should be a dynamic micro-copy indicating the estimated cost: (Estimated cost: $2.50 from your balance) to ensure complete billing transparency before the research begins.

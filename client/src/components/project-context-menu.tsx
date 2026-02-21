@@ -24,7 +24,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch as ToggleSwitch } from "@/components/ui/switch";
 import CloneRestartModal from "@/components/clone-restart-modal";
-import DeleteConfirmModal from "@/components/delete-confirm-modal";
+import RemoveProjectModal from "@/components/remove-project-modal";
 
 interface ProjectContextMenuProps {
   projectTitle: string;
@@ -114,7 +114,7 @@ export function ProjectContextMenu({ projectTitle, align = "start" }: ProjectCon
         </DialogContent>
       </Dialog>
 
-      <DeleteConfirmModal open={deleteOpen} onOpenChange={setDeleteOpen} title={projectTitle} />
+      <RemoveProjectModal open={deleteOpen} onOpenChange={setDeleteOpen} title={projectTitle} />
 
       <CloneRestartModal open={cloneOpen} onOpenChange={setCloneOpen} />
     </>
