@@ -391,7 +391,7 @@ export default function Dashboard() {
                               onClick={(e) => { e.stopPropagation(); setSelectedItem({ id: item.id, title: item.title }); setRemoveDefaultMode("delete"); setTimeout(() => setDeleteOpen(true), 0); }}
                             >
                               <Trash2 className="w-4 h-4" />
-                              Delete
+                              Delete Project
                             </DropdownMenuItem>
                           </>
                         ) : (
@@ -434,7 +434,7 @@ export default function Dashboard() {
                               onClick={(e) => { e.stopPropagation(); setSelectedItem({ id: item.id, title: item.title }); setRemoveDefaultMode("delete"); setTimeout(() => setDeleteOpen(true), 0); }}
                             >
                               <Trash2 className="w-4 h-4" />
-                              Delete
+                              Delete Project
                             </DropdownMenuItem>
                           </>
                         )}
@@ -517,10 +517,10 @@ export default function Dashboard() {
                       <DropdownMenuItem
                         className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 focus:text-red-400 focus:bg-[#333] cursor-pointer"
                         data-testid={`archived-delete-${item.id}`}
-                        onClick={() => { setSelectedItem({ id: item.id, title: item.title }); setDeleteOpen(true); }}
+                        onClick={() => { setSelectedItem({ id: item.id, title: item.title }); setRemoveDefaultMode("delete"); setDeleteOpen(true); }}
                       >
                         <Trash2 className="w-4 h-4" />
-                        Delete
+                        Delete Project
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>

@@ -69,7 +69,7 @@ export function ProjectContextMenu({ projectTitle, align = "start" }: ProjectCon
             data-testid="menu-delete"
           >
             <Trash2 className="w-4 h-4" />
-            Delete
+            Delete Project
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

@@ -34,7 +34,7 @@ export default function RemoveProjectModal({ open, onOpenChange, title, onConfir
       <DialogContent className="sm:max-w-[460px] bg-white border-gray-200 p-0 gap-0 [&>button]:hidden">
         <DialogHeader className="px-6 pt-5 pb-0">
           <div className="flex items-center justify-between">
-            <DialogTitle className="text-[17px] font-bold text-gray-900">Remove Project</DialogTitle>
+            <DialogTitle className="text-[17px] font-bold text-gray-900">Delete Project</DialogTitle>
             <button
               onClick={() => handleOpenChange(false)}
               className="w-7 h-7 flex items-center justify-center bg-black rounded-[2px] hover:bg-gray-800 transition-colors"
