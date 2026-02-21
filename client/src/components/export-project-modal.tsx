@@ -180,7 +180,11 @@ export default function ExportProjectModal({
     disabled?: boolean;
   }) => (
     <div
-      className={cn("flex items-center justify-between px-3 py-2 border rounded-sm cursor-pointer select-none border-gray-300 bg-white", disabled && "opacity-60")}
+      className={cn(
+        "flex items-center justify-between px-3 py-2 border rounded-sm cursor-pointer select-none border-gray-300 transition-colors relative z-10",
+        expanded ? "bg-[#F3F4F6] rounded-b-none" : "bg-white",
+        disabled && "opacity-60"
+      )}
       onClick={onToggle}
       data-testid={`button-toggle-${label.toLowerCase()}`}
     >
@@ -276,7 +280,7 @@ export default function ExportProjectModal({
                   disabled={isFullMode}
                 />
                 {reportsExpanded && (
-                  <div className={cn("mt-[-1px] p-3 border border-gray-200 rounded-sm space-y-2 relative z-0", isFullMode && "opacity-60 pointer-events-none")}>
+                  <div className={cn("mt-[-1px] p-3 border border-gray-200 border-t-0 rounded-b-sm space-y-2 relative z-0 bg-white", isFullMode && "opacity-60 pointer-events-none")}>
                     {reports.map(report => (
                     <label key={report.id} className="flex items-center gap-2 cursor-pointer">
                       <Checkbox
@@ -306,7 +310,7 @@ export default function ExportProjectModal({
                   disabled={isFullMode}
                 />
                 {sourcesExpanded && (
-                  <div className={cn("mt-[-1px] p-3 border border-gray-200 rounded-sm space-y-3 relative z-0", isFullMode && "opacity-60 pointer-events-none")}>
+                  <div className={cn("mt-[-1px] p-3 border border-gray-200 border-t-0 rounded-b-sm space-y-3 relative z-0 bg-white", isFullMode && "opacity-60 pointer-events-none")}>
                     <div className="space-y-2">
                     <label className="flex items-center gap-2 cursor-pointer">
                       <Checkbox
@@ -403,7 +407,7 @@ export default function ExportProjectModal({
                   disabled={isFullMode}
                 />
                 {artifactsExpanded && (
-                  <div className={cn("mt-[-1px] p-3 border border-gray-200 rounded-sm relative z-0", isFullMode && "opacity-60 pointer-events-none")}>
+                  <div className={cn("mt-[-1px] p-3 border border-gray-200 border-t-0 rounded-b-sm relative z-0 bg-white", isFullMode && "opacity-60 pointer-events-none")}>
                     <div className="grid grid-cols-2 gap-2">
                     {artifacts.map(artifact => (
                       <label key={artifact.id} className="flex items-center gap-2 cursor-pointer">
