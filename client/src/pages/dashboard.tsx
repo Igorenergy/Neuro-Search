@@ -22,6 +22,7 @@ import {
   Package,
   Unlock,
   Download,
+  Share2,
   StopCircle,
   FastForward,
 } from "lucide-react";
@@ -40,6 +41,7 @@ import FinishEarlyModal from "@/components/finish-early-modal";
 import ResearchDetailsModal from "@/components/research-details-modal";
 import RemoveProjectModal from "@/components/remove-project-modal";
 import ExportProjectModal from "@/components/export-project-modal";
+import ShareProjectModal from "@/components/share-project-modal";
 import rocketIcon from "@assets/image_1771405092616.png";
 
 export default function Dashboard() {
@@ -55,6 +57,7 @@ export default function Dashboard() {
   const [abortOpen, setAbortOpen] = useState(false);
   const [finishEarlyOpen, setFinishEarlyOpen] = useState(false);
   const [exportOpen, setExportOpen] = useState(false);
+  const [shareOpen, setShareOpen] = useState(false);
   const [abortItem, setAbortItem] = useState<{ id: number; title: string } | null>(null);
   const [showArchived, setShowArchived] = useState(false);
   const archivedSectionRef = useRef<HTMLDivElement>(null);
@@ -431,6 +434,14 @@ export default function Dashboard() {
                               Export Project
                             </DropdownMenuItem>
                             <DropdownMenuItem
+                              className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
+                              data-testid={`dash-share-${item.id}`}
+                              onClick={(e) => { e.stopPropagation(); setSelectedItem({ id: item.id, title: item.title }); setTimeout(() => setShareOpen(true), 0); }}
+                            >
+                              <Share2 className="w-4 h-4 text-gray-400" />
+                              Share Project
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
                               className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 focus:text-red-400 focus:bg-[#333] cursor-pointer"
                               data-testid={`delete-${item.id}`}
                               onClick={(e) => { e.stopPropagation(); setSelectedItem({ id: item.id, title: item.title }); setRemoveDefaultMode("delete"); setTimeout(() => setDeleteOpen(true), 0); }}
@@ -557,6 +568,12 @@ export default function Dashboard() {
     <ExportProjectModal
       open={exportOpen}
       onOpenChange={setExportOpen}
+      title={selectedItem?.title ?? ""}
+    />
+
+    <ShareProjectModal
+      open={shareOpen}
+      onOpenChange={setShareOpen}
       title={selectedItem?.title ?? ""}
     />
   </>

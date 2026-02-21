@@ -31,7 +31,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import RemoveProjectModal from "@/components/remove-project-modal";
-import { Trash2, FileText, Copy, Filter, RefreshCw, Archive, Download, StopCircle, FastForward } from "lucide-react";
+import { Trash2, FileText, Copy, Filter, RefreshCw, Archive, Download, Share2, StopCircle, FastForward } from "lucide-react";
 import rocketIcon from "@assets/image_1771405092616.png";
 import moreIcon from "@assets/изображение_1771596463092.png";
 import CloneRestartModal from "@/components/clone-restart-modal";
@@ -39,6 +39,7 @@ import AbortResearchModal from "@/components/abort-research-modal";
 import FinishEarlyModal from "@/components/finish-early-modal";
 import ResearchDetailsModal from "@/components/research-details-modal";
 import ExportProjectModal from "@/components/export-project-modal";
+import ShareProjectModal from "@/components/share-project-modal";
 
 type ResearchStatus = "success" | "in-progress" | "failed" | "canceled";
 
@@ -53,6 +54,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const [selectedItem, setSelectedItem] = useState<{ id: number; title: string } | null>(null);
   const [isPinned, setIsPinned] = useState(false);
   const [exportOpen, setExportOpen] = useState(false);
+  const [shareOpen, setShareOpen] = useState(false);
 
   const statusConfig: Record<ResearchStatus, { hoverBorder: string; dotColor: string; route: string }> = {
     "success": { hoverBorder: "hover:border-green-500", dotColor: "bg-green-500", route: "/research-success" },
@@ -316,9 +318,18 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                             <DropdownMenuItem
                               className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
                               data-testid={`collapsed-export-${item.id}`}
+                              onSelect={() => { setTimeout(() => { setSelectedItem(item); setExportOpen(true); }, 0); }}
                             >
                               <Download className="w-4 h-4 text-gray-400" />
                               Export Project
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
+                              data-testid={`collapsed-share-${item.id}`}
+                              onSelect={() => { setTimeout(() => { setSelectedItem(item); setShareOpen(true); }, 0); }}
+                            >
+                              <Share2 className="w-4 h-4 text-gray-400" />
+                              Share Project
                             </DropdownMenuItem>
                             <DropdownMenuItem
                               className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 focus:text-red-400 focus:bg-[#333] cursor-pointer"
@@ -644,6 +655,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                               Export Project
                             </DropdownMenuItem>
                             <DropdownMenuItem
+                              className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer"
+                              data-testid={`share-${item.id}`}
+                              onSelect={() => { setTimeout(() => { setSelectedItem(item); setShareOpen(true); }, 0); }}
+                            >
+                              <Share2 className="w-4 h-4 text-gray-400" />
+                              Share Project
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
                               className="flex items-center gap-2 text-sm text-red-500 hover:text-red-400 focus:text-red-400 focus:bg-[#333] cursor-pointer"
                               onSelect={() => { setTimeout(() => { setSelectedItem(item); setRemoveDefaultMode("delete"); setDeleteOpen(true); }, 0); }}
                               data-testid={`delete-${item.id}`}
@@ -865,6 +884,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <ExportProjectModal
         open={exportOpen}
         onOpenChange={setExportOpen}
+        title={selectedItem?.title ?? ""}
+      />
+      <ShareProjectModal
+        open={shareOpen}
+        onOpenChange={setShareOpen}
         title={selectedItem?.title ?? ""}
       />
     </>
