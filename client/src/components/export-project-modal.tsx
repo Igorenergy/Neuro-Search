@@ -103,6 +103,7 @@ export default function ExportProjectModal({
   const exportPrice = 123.54;
   const estimatedSize = "~2.5 MB";
 
+  const isFullMode = exportMode === "full";
   const isInsufficientFunds = exportPrice > availableBalance;
 
   useEffect(() => {
@@ -167,7 +168,7 @@ export default function ExportProjectModal({
     onOpenChange(val);
   };
 
-  const SectionHeader = ({ label, count, total, checked, onCheckedChange, color, expanded, onToggle }: {
+  const SectionHeader = ({ label, count, total, checked, onCheckedChange, color, expanded, onToggle, disabled }: {
     label: string;
     count: number;
     total: number;
@@ -176,9 +177,10 @@ export default function ExportProjectModal({
     color: string;
     expanded: boolean;
     onToggle: () => void;
+    disabled?: boolean;
   }) => (
     <div
-      className={cn("flex items-center justify-between px-3 py-2 border rounded-sm cursor-pointer select-none", `border-[${color}]`, "bg-white")}
+      className={cn("flex items-center justify-between px-3 py-2 border rounded-sm cursor-pointer select-none", `border-[${color}]`, "bg-white", disabled && "opacity-60")}
       style={{ borderColor: color }}
       onClick={onToggle}
       data-testid={`button-toggle-${label.toLowerCase()}`}
@@ -188,6 +190,7 @@ export default function ExportProjectModal({
           <Checkbox
             checked={checked}
             onCheckedChange={(v) => onCheckedChange(v === true)}
+            disabled={disabled}
             className="border-gray-400 data-[state=checked]:bg-[#008DA8] data-[state=checked]:border-[#008DA8]"
             data-testid={`checkbox-${label.toLowerCase()}-all`}
           />
@@ -271,14 +274,16 @@ export default function ExportProjectModal({
                   color="#008DA8"
                   expanded={reportsExpanded}
                   onToggle={() => setReportsExpanded(!reportsExpanded)}
+                  disabled={isFullMode}
                 />
                 {reportsExpanded && (
-                <div className="pl-4 py-2 space-y-2">
+                <div className={cn("pl-4 py-2 space-y-2", isFullMode && "opacity-60 pointer-events-none")}>
                   {reports.map(report => (
                     <label key={report.id} className="flex items-center gap-2 cursor-pointer">
                       <Checkbox
                         checked={report.checked}
                         onCheckedChange={() => toggleReport(report.id)}
+                        disabled={isFullMode}
                         className="border-gray-400 data-[state=checked]:bg-[#008DA8] data-[state=checked]:border-[#008DA8]"
                         data-testid={`checkbox-report-${report.id}`}
                       />
@@ -299,14 +304,16 @@ export default function ExportProjectModal({
                   color="#D4A017"
                   expanded={sourcesExpanded}
                   onToggle={() => setSourcesExpanded(!sourcesExpanded)}
+                  disabled={isFullMode}
                 />
                 {sourcesExpanded && (
-                <div className="pl-4 py-2 space-y-3">
+                <div className={cn("pl-4 py-2 space-y-3", isFullMode && "opacity-60 pointer-events-none")}>
                   <div className="space-y-2">
                     <label className="flex items-center gap-2 cursor-pointer">
                       <Checkbox
                         checked={sourceByActivity}
                         onCheckedChange={(v) => setSourceByActivity(v === true)}
+                        disabled={isFullMode}
                         className="border-gray-400 data-[state=checked]:bg-[#008DA8] data-[state=checked]:border-[#008DA8]"
                         data-testid="checkbox-by-activity"
                       />
@@ -318,6 +325,7 @@ export default function ExportProjectModal({
                           <Checkbox
                             checked={sourceIncluded}
                             onCheckedChange={(v) => setSourceIncluded(v === true)}
+                            disabled={isFullMode}
                             className="border-gray-400 data-[state=checked]:bg-[#008DA8] data-[state=checked]:border-[#008DA8]"
                             data-testid="checkbox-included"
                           />
@@ -327,6 +335,7 @@ export default function ExportProjectModal({
                           <Checkbox
                             checked={sourceExcluded}
                             onCheckedChange={(v) => setSourceExcluded(v === true)}
+                            disabled={isFullMode}
                             className="border-gray-400 data-[state=checked]:bg-[#008DA8] data-[state=checked]:border-[#008DA8]"
                             data-testid="checkbox-excluded"
                           />
@@ -341,6 +350,7 @@ export default function ExportProjectModal({
                       <Checkbox
                         checked={sourceByType}
                         onCheckedChange={(v) => setSourceByType(v === true)}
+                        disabled={isFullMode}
                         className="border-gray-400 data-[state=checked]:bg-[#008DA8] data-[state=checked]:border-[#008DA8]"
                         data-testid="checkbox-by-type"
                       />
@@ -353,6 +363,7 @@ export default function ExportProjectModal({
                             <Checkbox
                               checked={st.checked}
                               onCheckedChange={() => toggleSourceType(st.id)}
+                              disabled={isFullMode}
                               className="border-gray-400 data-[state=checked]:bg-[#008DA8] data-[state=checked]:border-[#008DA8]"
                               data-testid={`checkbox-source-type-${st.id}`}
                             />
@@ -367,6 +378,7 @@ export default function ExportProjectModal({
                     <ToggleSwitch
                       checked={attachDeepData}
                       onCheckedChange={setAttachDeepData}
+                      disabled={isFullMode}
                       className="scale-75 data-[state=checked]:bg-[#008DA8]"
                       data-testid="switch-deep-data"
                     />
@@ -389,15 +401,17 @@ export default function ExportProjectModal({
                   color="#CC4400"
                   expanded={artifactsExpanded}
                   onToggle={() => setArtifactsExpanded(!artifactsExpanded)}
+                  disabled={isFullMode}
                 />
                 {artifactsExpanded && (
-                <div className="pl-4 py-2">
+                <div className={cn("pl-4 py-2", isFullMode && "opacity-60 pointer-events-none")}>
                   <div className="grid grid-cols-2 gap-2">
                     {artifacts.map(artifact => (
                       <label key={artifact.id} className="flex items-center gap-2 cursor-pointer">
                         <Checkbox
                           checked={artifact.checked}
                           onCheckedChange={() => toggleArtifact(artifact.id)}
+                          disabled={isFullMode}
                           className="border-gray-400 data-[state=checked]:bg-[#008DA8] data-[state=checked]:border-[#008DA8]"
                           data-testid={`checkbox-artifact-${artifact.id}`}
                         />
