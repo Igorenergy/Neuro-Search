@@ -65,6 +65,7 @@ import ResearchBriefingPanel from "@/components/research-briefing-panel";
 import CloneRestartModal from "@/components/clone-restart-modal";
 import { ProjectContextMenu } from "@/components/project-context-menu";
 import AddFilesModal from "@/components/add-files-modal";
+import RemoveProjectModal from "@/components/remove-project-modal";
 
 
 interface ThoughtNode {
@@ -173,6 +174,7 @@ export default function ReportsSummary() {
   const [enhanceBudgetCap, setEnhanceBudgetCap] = useState(true);
   const [enhanceCostOpen, setEnhanceCostOpen] = useState(false);
   const [isAddFileModalOpen, setIsAddFileModalOpen] = useState(false);
+  const [archiveModalOpen, setArchiveModalOpen] = useState(false);
 
   const enhanceLanguageOptions = [
     { value: "auto", label: "Auto Detect" },
@@ -240,7 +242,7 @@ export default function ReportsSummary() {
           <Button variant="outline" size="sm" className="h-8 text-xs gap-1.5 bg-white border-green-600 text-green-700 hover:bg-green-50 font-bold px-4" data-testid="button-export">
             Export
           </Button>
-          <button className="w-8 h-8 flex items-center justify-center rounded-sm bg-[#0066CC] hover:bg-[#0055AA] transition-colors" data-testid="button-archive">
+          <button className="w-8 h-8 flex items-center justify-center rounded-sm bg-[#0066CC] hover:bg-[#0055AA] transition-colors" data-testid="button-archive" onClick={() => setArchiveModalOpen(true)}>
             <Archive className="w-4 h-4 text-white" />
           </button>
           <button className="w-8 h-8 flex items-center justify-center rounded-sm bg-[#CC0000] hover:bg-[#AA0000] transition-colors" data-testid="button-delete">
@@ -927,6 +929,12 @@ export default function ReportsSummary() {
         open={isAddFileModalOpen}
         onOpenChange={setIsAddFileModalOpen}
         onSave={(files) => setEnhanceFiles(prev => [...prev, ...files.map(f => ({ ...f, size: Number(f.size) || 0 }))])}
+      />
+      <RemoveProjectModal
+        open={archiveModalOpen}
+        onOpenChange={setArchiveModalOpen}
+        title={projectTitle}
+        defaultMode="archive"
       />
     </div>
   );
