@@ -768,6 +768,7 @@ export default function Launcher() {
                       <div className="flex items-center justify-between mb-2">
                          <div className="flex items-center gap-2">
                             <Switch defaultChecked className="scale-75 data-[state=checked]:bg-[#0097B2]" />
+                            <Globe className="w-4 h-4 text-[#0097B2]" />
                             <span className="text-sm text-gray-700">Web Pages & Websites: <span className="font-mono">∞</span></span>
                          </div>
                       </div>
