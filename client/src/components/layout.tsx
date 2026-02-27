@@ -33,7 +33,6 @@ import {
 import RemoveProjectModal from "@/components/remove-project-modal";
 import { Trash2, FileText, Copy, Filter, RefreshCw, Archive, Download, Share2, StopCircle, FastForward } from "lucide-react";
 import rocketIcon from "@assets/image_1771405092616.png";
-import moreIcon from "@assets/изображение_1771596463092.png";
 import CloneRestartModal from "@/components/clone-restart-modal";
 import AbortResearchModal from "@/components/abort-research-modal";
 import FinishEarlyModal from "@/components/finish-early-modal";
@@ -364,7 +363,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button className="w-[58px] h-8 flex items-center justify-center gap-1 rounded-sm text-gray-600 hover:text-black hover:bg-black/5 cursor-pointer transition-colors border border-gray-300" data-testid="button-collapsed-more-menu">
-                <img src={moreIcon} alt="More" className="w-4 h-4 opacity-60" />
+                <MoreVertical className="w-4 h-4 opacity-60" />
                 <span className="text-[10px] font-semibold">More</span>
               </button>
             </DropdownMenuTrigger>
@@ -685,7 +684,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <button className="w-full h-9 px-3 text-xs font-semibold text-gray-600 hover:text-black hover:bg-black/5 flex items-center justify-center gap-2 rounded-sm cursor-pointer transition-colors border border-gray-300" data-testid="button-more-menu">
-                <img src={moreIcon} alt="More" className="w-5 h-5 opacity-70" />
+                <MoreVertical className="w-5 h-5 opacity-70" />
                 <span>More</span>
                 <ChevronRight className="w-3.5 h-3.5 ml-auto" />
               </button>
