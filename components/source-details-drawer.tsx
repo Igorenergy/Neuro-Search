@@ -31,6 +31,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 import type { SourceRow } from "@/lib/types";
+import { useSourceDetails } from "@/hooks/use-source-details";
 
 interface SourceDetailsDrawerProps {
   source: SourceRow | null;
@@ -53,67 +54,6 @@ function getDrawerWidth(value: string): string {
   return value;
 }
 
-const mockPreviewContent = `Startup Obituary : Loopt
-Sam Altman's First Startup Venture and the Rise and Fall of Early Days of Location-Based Social Networking
-Ram Gangisetty February 26, 2025
-
-Loopt, co-founded in 2005 by Sam Altman, Nick Sivo, and Alok Deshpande, was one of the earliest startups to explore the potential of location-based social networking. Designed to answer a simple yet powerful question—"Where are my friends right now?"—Loopt Included users to share their real-time location with friends through their mobile devices.
-Though it never reached the commercial heights of later social media giants, Loopt played a pioneering role in mobile networking technology and served as the launching pad for Altman's influential career in Silicon Valley.
-
-Founding and Early Days
-
-Origin: Founded while Altman was a sophomore at Stanford University, Loopt was born from the desire to help people discover the real-time locations of their friends. Altman dropped out of Stanford after joining the first batch of Y Combinator (YC) startups, receiving $6,000 per founder in funding.
-
-Co-Founders:
-Sam Altman: CEO and visionary behind the product's design and functionality.
-Nick Sivo: Technical co-founder and primary software engineer.
-Alok Deshpande: Helped with early product development and partnerships.
-
-Initial Funding:
-Loopt quickly attracted attention from venture capitalists, raising:
-$5 million Series A funding from Sequoia Capital and New Enterprise Associates (NEA) in 2006.
-Additional funding rounds pushed total venture capital to over $30 million by 2009.
-
-Features and Innovations
-
-Real-Time Location Sharing: Loopt allowed users to share their live location with a select list of friends, offering a way to facilitate spontaneous meetups.
-Privacy Controls: A major concern with location-sharing apps, Loopt provided customizable privacy settings to let users control who could see their location at any given time.
-
-Platform Availability:
-Loopt launched across major U.S. carriers including Boost Mobile, Sprint, and Verizon. Later, it expanded to popular platforms like:
-iOS (featured at Apple's WWDC 2008)
-BlackBerry and Android
-
-Social Network Integrations: Integrated with platforms like Facebook and Twitter to allow seamless sharing across multiple apps.
-Loopt Pulse (2010): An iPad-specific product that offered recommendations for local events, restaurants, and entertainment based on user pReferences & Citations and location.
-GraffitiGeo Acquisition (2009): This acquisition added location-based reviews and social gaming features to Loopt's platform.
-
-Challenges and Shortcomings
-
-Despite early enthusiasm and solid funding, Loopt faced several obstacles:
-
-User Adoption Struggles
-While innovative, users were hesitant to share their location data in real-time, limiting Loopt's ability to gain mass adoption.
-
-Competitive Market
-The rise of competitors like Foursquare and Gowalla siphoned off potential users. Later, Facebook Places entered the market, leveraging its massive user base to dominate location-based services.
-
-Business Model Flaws
-Loopt's monetization strategy relied on targeted advertising and partnerships, but it struggled to convert user data into meaningful revenue streams.
-
-Technological Shifts
-The evolution of user pReferences & Citations, from real-time location sharing to check-in models (popularized by Foursquare), made Loopt's core offering feel outdated.`;
-
-const mockRawFiles = [
-  { name: "loopt_financial_data.csv", size: "245 KB", type: "CSV" },
-  { name: "screenshot_homepage.png", size: "1.2 MB", type: "Image" },
-  { name: "press_release_2008.pdf", size: "890 KB", type: "PDF" },
-];
-
-const mockArtifacts = [
-  { name: "Executive Summary - Loopt Analysis", type: "PDF", date: "10.05.2025" },
-  { name: "Competitor Comparison Matrix", type: "XLSX", date: "10.05.2025" },
-];
 
 function ConfidenceRingLarge({ score }: { score: number }) {
   const size = 48;
@@ -144,6 +84,11 @@ function ConfidenceRingLarge({ score }: { score: number }) {
 }
 
 export function SourceDetailsDrawer({ source, open, onClose }: SourceDetailsDrawerProps) {
+  const { data: sourceDetails } = useSourceDetails(source?.id ?? null);
+  const previewContent = sourceDetails?.content ?? "";
+  const rawFiles = sourceDetails?.rawFiles ?? [];
+  const sourceArtifacts = sourceDetails?.artifacts ?? [];
+
   const [drawerWidth, setDrawerWidth] = useState(() => {
     if (typeof window !== "undefined") {
       return localStorage.getItem(DRAWER_WIDTH_KEY) || "auto";
@@ -341,7 +286,7 @@ export function SourceDetailsDrawer({ source, open, onClose }: SourceDetailsDraw
                 {openAccordions.has("summary") && (
                   <div className="px-4 pb-4">
                     <div className="prose prose-sm max-w-none text-gray-800 leading-relaxed">
-                      {mockPreviewContent.split("\n\n").map((paragraph, i) => {
+                      {previewContent.split("\n\n").map((paragraph, i) => {
                         if (i === 0) {
                           return <h3 key={i} className="text-base font-bold text-gray-900 mb-1">{paragraph}</h3>;
                         }
@@ -375,7 +320,7 @@ export function SourceDetailsDrawer({ source, open, onClose }: SourceDetailsDraw
                 {openAccordions.has("full") && (
                   <div className="px-4 pb-4">
                     <div className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap font-mono">
-                      {mockPreviewContent}
+                      {previewContent}
                     </div>
                   </div>
                 )}
@@ -403,8 +348,8 @@ export function SourceDetailsDrawer({ source, open, onClose }: SourceDetailsDraw
   confidence_score: source.confidenceScore,
   type: source.type,
   included: source.included,
-  content_length: mockPreviewContent.length,
-  word_count: mockPreviewContent.split(/\s+/).length,
+  content_length: previewContent.length,
+  word_count: previewContent.split(/\s+/).length,
   extracted_entities: ["Sam Altman", "Loopt", "Y Combinator", "Sequoia Capital", "Stanford University"],
   topics: ["startup", "location-based services", "mobile networking", "venture capital"]
 }, null, 2)}
@@ -502,7 +447,7 @@ export function SourceDetailsDrawer({ source, open, onClose }: SourceDetailsDraw
 
               <div className="space-y-2">
                 <p className="text-xs font-bold text-gray-500 uppercase tracking-wider">Attached Files</p>
-                {mockRawFiles.map((file, i) => (
+                {rawFiles.map((file, i) => (
                   <div
                     key={i}
                     className="flex items-center gap-3 p-3 border border-gray-200 rounded-md hover:bg-gray-50 cursor-pointer transition-colors"
@@ -523,7 +468,7 @@ export function SourceDetailsDrawer({ source, open, onClose }: SourceDetailsDraw
           {activeTab === "artifacts" && (
             <div className="p-6 space-y-3">
               <p className="text-xs text-gray-500 mb-4">Generated artifacts from this source:</p>
-              {mockArtifacts.map((artifact, i) => (
+              {sourceArtifacts.map((artifact, i) => (
                 <div
                   key={i}
                   className="flex items-center gap-3 p-3 border border-gray-200 rounded-md hover:bg-gray-50 cursor-pointer transition-colors"

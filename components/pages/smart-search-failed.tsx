@@ -34,70 +34,8 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import ResearchBriefingPanel from "@/components/research-briefing-panel";
-
-type ErrorScenario = "waf_blocked" | "timeout" | "empty_extraction" | "token_limit";
-
-interface SourceItem {
-  url: string;
-  domain: string;
-  status: "success" | "failed";
-  tokens: number;
-  error?: string;
-}
-
-const mockSources: SourceItem[] = [
-  { url: "https://openai.com/research", domain: "openai.com", status: "success", tokens: 4200 },
-  { url: "https://anthropic.com/claude", domain: "anthropic.com", status: "success", tokens: 3800 },
-  { url: "https://deepmind.google/technologies", domain: "deepmind.google", status: "success", tokens: 5100 },
-  { url: "https://platform.openai.com/docs", domain: "platform.openai.com", status: "success", tokens: 2900 },
-  { url: "https://docs.perplexity.ai/guides", domain: "docs.perplexity.ai", status: "success", tokens: 3400 },
-  { url: "https://huggingface.co/blog", domain: "huggingface.co", status: "success", tokens: 4600 },
-  { url: "https://arxiv.org/abs/2401.12345", domain: "arxiv.org", status: "success", tokens: 6200 },
-  { url: "https://techcrunch.com/2025/ai-market", domain: "techcrunch.com", status: "failed", tokens: 0, error: "HTTP 403 — Cloudflare WAF" },
-  { url: "https://crunchbase.com/organization/openai", domain: "crunchbase.com", status: "failed", tokens: 0, error: "CAPTCHA challenge detected" },
-  { url: "https://pitchbook.com/profiles/anthropic", domain: "pitchbook.com", status: "failed", tokens: 0, error: "HTTP 504 — Gateway Timeout" },
-];
-
-const mockErrorLog = `{
-  "error_code": "err_waf_blocked",
-  "step": "fetch_url",
-  "failed_sources": [
-    {
-      "url": "https://techcrunch.com/2025/ai-market",
-      "status": 403,
-      "error": "Cloudflare WAF block detected",
-      "headers": {
-        "cf-ray": "8a1b2c3d4e5f6g7h",
-        "server": "cloudflare",
-        "cf-mitigated": "challenge"
-      },
-      "retry_count": 3,
-      "last_attempt": "2025-02-19T14:32:18Z"
-    },
-    {
-      "url": "https://crunchbase.com/organization/openai",
-      "status": 403,
-      "error": "CAPTCHA challenge required",
-      "headers": {
-        "x-captcha-required": "true",
-        "cf-ray": "9b2c3d4e5f6g7h8i"
-      },
-      "retry_count": 2,
-      "last_attempt": "2025-02-19T14:32:22Z"
-    },
-    {
-      "url": "https://pitchbook.com/profiles/anthropic",
-      "status": 504,
-      "error": "Gateway timeout after 30000ms",
-      "retry_count": 3,
-      "last_attempt": "2025-02-19T14:33:01Z"
-    }
-  ],
-  "successful_sources": 7,
-  "total_tokens_collected": 30200,
-  "agent_session_id": "sess_a1b2c3d4e5f6",
-  "timestamp": "2025-02-19T14:33:05Z"
-}`;
+import { useResearchErrors } from "@/hooks/use-research-errors";
+import type { FailedSourceItem, ErrorScenario } from "@/lib/types";
 
 const errorScenarios: Record<ErrorScenario, {
   severity: "critical" | "warning" | "caution";
@@ -141,6 +79,9 @@ export default function SmartSearchFailed() {
   const params = useParams<{ id: string }>();
   const router = useRouter();
   const navigate = (path: string) => router.push(path);
+  const { data: errorData } = useResearchErrors(params.id || "1");
+  const allSources = errorData?.sources ?? [];
+  const errorLogJson = errorData?.errorLog ?? "";
   const [leftExpanded, setLeftExpanded] = useState(false);
   const [activeScenario, setActiveScenario] = useState<ErrorScenario>("waf_blocked");
   const [showDevConsole, setShowDevConsole] = useState(false);
@@ -153,8 +94,8 @@ export default function SmartSearchFailed() {
 
   const scenario = errorScenarios[activeScenario];
   const styles = severityStyles[scenario.severity];
-  const successfulSources = mockSources.filter(s => s.status === "success");
-  const failedSources = mockSources.filter(s => s.status === "failed");
+  const successfulSources = allSources.filter(s => s.status === "success");
+  const failedSources = allSources.filter(s => s.status === "failed");
   const totalTokens = successfulSources.reduce((sum, s) => sum + s.tokens, 0);
 
   const handleRetry = () => {
@@ -173,7 +114,7 @@ export default function SmartSearchFailed() {
   };
 
   const copyLogs = () => {
-    navigator.clipboard.writeText(mockErrorLog);
+    navigator.clipboard.writeText(errorLogJson);
     setLogsCopied(true);
     setTimeout(() => setLogsCopied(false), 2000);
   };
@@ -318,7 +259,7 @@ export default function SmartSearchFailed() {
                         </div>
                       </div>
                       <p className="text-xs text-gray-500 leading-relaxed">Abort the failed links and proceed to report generation with the remaining {successfulSources.length} valid data sources.</p>
-                      <Button variant="outline" className="w-full h-9 text-xs font-bold border-gray-300 text-gray-700 hover:bg-gray-50 gap-2" onClick={() => navigate(`/research-success/${params.id || "1"}`)} data-testid="button-skip-sources">
+                      <Button variant="outline" className="w-full h-9 text-xs font-bold border-gray-300 text-gray-700 hover:bg-gray-50 gap-2" onClick={() => navigate(`/sources/${params.id || "1"}`)} data-testid="button-skip-sources">
                         <SkipForward className="w-3.5 h-3.5" /> Skip & Generate Report
                       </Button>
                     </div>
@@ -465,7 +406,7 @@ export default function SmartSearchFailed() {
                     {logsCopied ? <><Check className="w-3 h-3" /> Copied!</> : <><Copy className="w-3 h-3" /> Copy Logs</>}
                   </button>
                   <pre className="bg-slate-900 text-green-400 font-mono text-[11px] p-4 overflow-x-auto leading-relaxed max-h-[300px] overflow-y-auto" data-testid="text-error-logs">
-                    {mockErrorLog}
+                    {errorLogJson}
                   </pre>
                 </div>
               )}
@@ -477,14 +418,14 @@ export default function SmartSearchFailed() {
                 <div className="flex items-center gap-2">
                   <h3 className="text-xs font-bold text-gray-700">Recovered Context</h3>
                   <Badge className="bg-green-100 text-green-700 text-[10px] font-bold border border-green-200 gap-1">
-                    <CheckCircle2 className="w-2.5 h-2.5" /> {successfulSources.length} of {mockSources.length} sources
+                    <CheckCircle2 className="w-2.5 h-2.5" /> {successfulSources.length} of {allSources.length} sources
                   </Badge>
                   <span className="text-[10px] text-gray-400">{totalTokens.toLocaleString()} tokens collected</span>
                 </div>
               </div>
 
               <div className="divide-y divide-gray-100">
-                {mockSources.map((source, i) => (
+                {allSources.map((source, i) => (
                   <div
                     key={i}
                     className={cn("flex items-center gap-3 px-4 py-2.5 text-xs", source.status === "failed" && "bg-red-50/50")}
@@ -513,7 +454,7 @@ export default function SmartSearchFailed() {
               <div className="px-4 py-3 border-t border-gray-200 bg-gray-50 flex items-center justify-end">
                 <Button
                   className="bg-[#00802b] hover:bg-[#006622] text-white h-9 px-6 text-xs font-bold gap-2"
-                  onClick={() => navigate(`/research-success/${params.id || "1"}`)}
+                  onClick={() => navigate(`/sources/${params.id || "1"}`)}
                   data-testid="button-proceed-partial"
                 >
                   <ArrowRight className="w-3.5 h-3.5" /> Proceed with Partial Data

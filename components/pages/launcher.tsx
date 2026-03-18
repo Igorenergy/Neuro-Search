@@ -62,6 +62,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
+import type { AttachedFile } from "@/lib/types";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Launcher() {
@@ -87,7 +88,12 @@ export default function Launcher() {
   const [visibleQuestions, setVisibleQuestions] = useState(1);
   const [questionAnswers, setQuestionAnswers] = useState<Record<number, string>>({});
 
-  const questionsData = [
+  const questionsData: {
+    id: number;
+    title: string;
+    text: string;
+    chips: { key: string; label: string; icon?: boolean }[];
+  }[] = [
     {
       id: 1,
       title: "Geographic Scope.",
@@ -153,6 +159,7 @@ export default function Launcher() {
   const [addFileContext, setAddFileContext] = useState<"launcher" | "step2">("launcher");
 
   const [planVersion, setPlanVersion] = useState(1);
+  // TODO: Replace with API call to fetch/generate research plan
   const [planText, setPlanText] = useState(
 `(1) Conduct a detailed analysis of the functionality of the website sepalai.com, focusing on its core operations and user interface.
 (2) Examine the business model of sepalai.com, including revenue streams such as subscriptions, commissions, or freemium elements.
@@ -238,7 +245,7 @@ export default function Launcher() {
   };
 
 
-  const [attachedFiles, setAttachedFiles] = useState([
+  const [attachedFiles, setAttachedFiles] = useState<AttachedFile[]>([
     { name: "Market Analysis Q3.pdf", type: "PDF", size: "2.4 MB", step: "step1" as const },
     { name: "Competitor Report 2024.docx", type: "DOCX", size: "1.8 MB", step: "step1" as const },
     { name: "User Interviews.txt", type: "TXT", size: "340 KB", step: "step1" as const },
@@ -670,8 +677,8 @@ export default function Launcher() {
                           }}
                           data-testid={`chip-q${q.id}-${chip.key}`}
                         >
-                          {(chip as any).icon && <Globe className="w-3 h-3" />}
-                          {(chip as any).icon ? chip.label : `[ ${chip.label} ]`}
+                          {chip.icon && <Globe className="w-3 h-3" />}
+                          {chip.icon ? chip.label : `[ ${chip.label} ]`}
                         </button>
                       ))}
                     </div>

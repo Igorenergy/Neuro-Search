@@ -1,10 +1,12 @@
+import type { AttachedFile } from "@/lib/types";
+
 export interface LaunchConfig {
   query: string;
   researchType: "search" | "sheet";
   dataEngine: string;
   geoScope: string;
   selectedLanguages: string[];
-  attachedFiles: { name: string; type: string; size: string; step: "step1" | "step2" }[];
+  attachedFiles: AttachedFile[];
   planText: string;
   planVersion: number;
   totalVersions: number;
@@ -37,7 +39,7 @@ export function loadLaunchConfig(): LaunchConfig | null {
 export interface CloneDraftState {
   query: string;
   engine: string;
-  files: { name: string; type: string; size: string; step: "step1" | "step2" }[];
+  files: AttachedFile[];
   deepCrawlEnabled: boolean;
   showReasoning: boolean;
   geoScope: string;

@@ -31,31 +31,17 @@ import {
   DropdownMenuSeparator
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
+import { useDataRepository } from "@/hooks/use-data-repository";
 
 export default function AssetsRepository() {
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [selectedItem, setSelectedItem] = useState<number | null>(null);
   const [isAddFileModalOpen, setIsAddFileModalOpen] = useState(false);
 
-  // Mock Data
-  const folders = [
-    { id: 1, name: "Market Research 2024", count: 12 },
-    { id: 2, name: "Competitor Analysis", count: 8 },
-    { id: 3, name: "Q3 Financials", count: 5 },
-    { id: 4, name: "Startup Due Diligence", count: 24 },
-    { id: 5, name: "Raw Datasets", count: 3 },
-    { id: 6, name: "Generated Reports", count: 15 },
-    { id: 7, name: "Legal Documents", count: 7 },
-    { id: 8, name: "Investor Decks", count: 10 },
-  ];
-
-  const files = [
-    { id: 101, name: "nvidia_annual_report.pdf", type: "pdf", date: "Today, 10:23 AM", size: "4.2 MB" },
-    { id: 102, name: "leads_export_v2.csv", type: "csv", date: "Yesterday, 4:15 PM", size: "1.8 MB" },
-    { id: 103, name: "project_roadmap.docx", type: "doc", date: "Dec 4, 2025", size: "245 KB" },
-    { id: 104, name: "q3_revenue_chart.png", type: "image", date: "Dec 3, 2025", size: "1.2 MB" },
-    { id: 105, name: "meeting_notes_dec.txt", type: "txt", date: "Dec 2, 2025", size: "12 KB" },
-  ];
+  const { data: repoData, isLoading } = useDataRepository();
+  const folders = repoData?.folders ?? [];
+  const files = repoData?.files ?? [];
+  const storageStats = repoData?.storage ?? { usedGb: 0, totalGb: 15, usedPercent: 0 };
 
   const getFileIcon = (type: string) => {
     switch (type) {
@@ -92,8 +78,8 @@ export default function AssetsRepository() {
             <Cloud className="w-4 h-4" />
             Storage
           </div>
-          <Progress value={41} className="h-2 mb-2 bg-gray-100" />
-          <p className="text-xs text-gray-500 mb-3">6.18 GB of 15 GB used</p>
+          <Progress value={storageStats.usedPercent} className="h-2 mb-2 bg-gray-100" />
+          <p className="text-xs text-gray-500 mb-3">{storageStats.usedGb} GB of {storageStats.totalGb} GB used</p>
           <Button variant="outline" size="sm" className="w-full text-xs h-8 border-primary/20 text-primary hover:bg-primary/5">
             Upgrade Storage
           </Button>

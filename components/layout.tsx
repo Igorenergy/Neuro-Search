@@ -44,8 +44,9 @@ import ResearchDetailsModal from "@/components/research-details-modal";
 import ExportProjectModal from "@/components/export-project-modal";
 import ShareProjectModal from "@/components/share-project-modal";
 import CreateProjectModal from "@/components/create-project-modal";
-
-type ResearchStatus = "success" | "in-progress" | "failed" | "canceled";
+import { useSidebarProjects } from "@/hooks/use-projects";
+import { useCurrentUser } from "@/hooks/use-current-user";
+import type { ResearchStatus } from "@/lib/types";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const location = usePathname();
@@ -63,11 +64,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const [shareOpen, setShareOpen] = useState(false);
   const [createOpen, setCreateOpen] = useState(false);
 
-  const statusConfig: Record<ResearchStatus, { hoverBorder: string; dotColor: string; route: string }> = {
-    "success": { hoverBorder: "hover:border-green-500", dotColor: "bg-green-500", route: "/research-success" },
-    "in-progress": { hoverBorder: "hover:border-blue-500", dotColor: "bg-blue-500", route: "/research-in-progress" },
-    "failed": { hoverBorder: "hover:border-red-500", dotColor: "bg-red-500", route: "/research-failed" },
-    "canceled": { hoverBorder: "hover:border-orange-400", dotColor: "bg-orange-400", route: "/research-canceled" },
+  const defaultStatusEntry = { hoverBorder: "hover:border-gray-400", dotColor: "bg-gray-400", route: "/sources" };
+  const statusConfig: Record<string, { hoverBorder: string; dotColor: string; route: string }> = {
+    "success": { hoverBorder: "hover:border-green-500", dotColor: "bg-green-500", route: "/sources" },
+    "in-progress": { hoverBorder: "hover:border-blue-500", dotColor: "bg-blue-500", route: "/sources" },
+    "failed": { hoverBorder: "hover:border-red-500", dotColor: "bg-red-500", route: "/sources" },
+    "canceled": { hoverBorder: "hover:border-orange-400", dotColor: "bg-orange-400", route: "/sources" },
+    "draft": { hoverBorder: "hover:border-gray-400", dotColor: "bg-gray-400", route: "/sources" },
   };
 
   const [deletedIds, setDeletedIds] = useState<number[]>([]);
@@ -77,28 +80,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const [finishEarlyOpen, setFinishEarlyOpen] = useState(false);
   const [abortItem, setAbortItem] = useState<{ id: number; title: string } | null>(null);
 
-  const researchItems: { id: number; title: string; status: ResearchStatus }[] = [
-    { id: 3, title: "Research name one", status: "in-progress" },
-    { id: 7, title: "Research name two", status: "in-progress" },
-    { id: 1, title: "Американская Фабрика: Полный анализ и стратегический обзор", status: "success" },
-    { id: 2, title: "Startup: AI Deep Research — Анализ рынка и конкурентов", status: "success" },
-    { id: 4, title: "Abacus.AI: Корпоративный анализ и оценка платформы", status: "success" },
-    { id: 5, title: "Инновации, Капитал и Стратегии Роста в Технологическом Секторе", status: "failed" },
-    { id: 6, title: "Реестр 492 Компаний: Полный анализ и стратегический обзор", status: "success" },
-    { id: 8, title: "Потеря $1,8 млн на крипте: уроки и выводы для инвесторов", status: "canceled" },
-    { id: 9, title: "Мемуары Криптана: Ретродропи, стратегии и анализ", status: "success" },
-    { id: 10, title: "Искусственный Интеллект и Будущее Технологий", status: "failed" },
-    { id: 11, title: "15 Жестоких Правд о Неконкурентных Рынках", status: "success" },
-    { id: 12, title: "Анализ Рынка Электромобилей: Tesla vs BYD vs Rivian — Конкурентный анализ и доля рынка", status: "success" },
-    { id: 13, title: "Кибербезопасность в Эпоху AI: Новые Угрозы и Стратегии Защиты данных", status: "canceled" },
-    { id: 14, title: "Глобальные Цепочки Поставок 2025: Реструктуризация и Геополитические вызовы", status: "success" },
-    { id: 15, title: "Метавселенная для Бизнеса: ROI Анализ Корпоративных Внедрений и пользовательского опыта", status: "failed" },
-    { id: 16, title: "Зелёная Энергетика: Инвестиционные Возможности в Солнечной и Ветровой энергетике", status: "success" },
-    { id: 17, title: "Нейроинтерфейсы и BCI: Медицинские Применения и Этические Вопросы будущего", status: "success" },
-    { id: 18, title: "Рынок SaaS B2B: Тренды Консолидации и Стратегии Выхода 2025–2027 годов", status: "canceled" },
-    { id: 19, title: "Автономное Вождение Level 4: Регуляторные Барьеры и Дорожная Карта развития", status: "success" },
-    { id: 20, title: "Цифровой Рубль и CBDC: Макроэкономический Анализ и Сценарии Внедрения в РФ", status: "failed" },
-  ];
+  const researchItems = useSidebarProjects();
+  const { data: currentUser } = useCurrentUser();
 
   const visibleResearchItems = researchItems.filter(item => !deletedIds.includes(item.id));
   const filteredItems = statusFilter === "all" ? visibleResearchItems : visibleResearchItems.filter(item => item.status === statusFilter);
@@ -230,7 +213,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         >
           <div className="flex flex-col items-center gap-3 py-1">
             {sidebarVisibleItems.map(item => {
-              const config = statusConfig[item.status];
+              const config = statusConfig[item.status] || defaultStatusEntry;
               const isInProgress = item.status === "in-progress";
               const itemIsPinned = pinnedIds.includes(item.id);
               const borderHoverColor =
@@ -464,7 +447,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <div className="sticky top-0 z-10 bg-[#E6E1EF] divide-y divide-gray-200/50 border-b border-gray-300">
               {pinnedItems.map((item) => (
                 <div key={item.id} className="flex items-start gap-2 p-3 hover:bg-white/50 cursor-pointer group transition-all rounded-sm">
-                  <Link href={`${statusConfig[item.status].route}/${item.id}`} className="flex items-center gap-2 flex-1 min-w-0">
+                  <Link href={`${(statusConfig[item.status] || defaultStatusEntry).route}/${item.id}`} className="flex items-center gap-2 flex-1 min-w-0">
                     <div className="relative w-[33px] h-[33px] shrink-0 flex items-center justify-center">
                       <div 
                         className={cn(
@@ -558,7 +541,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <div className="divide-y divide-gray-200/50">
               {unpinnedItems.map((item) => (
                 <div key={item.id} className="flex items-start gap-2 p-3 bg-white hover:bg-gray-100 cursor-pointer group transition-all rounded-sm">
-                  <Link href={`${statusConfig[item.status].route}/${item.id}`} className="flex items-center gap-2 flex-1 min-w-0">
+                  <Link href={`${(statusConfig[item.status] || defaultStatusEntry).route}/${item.id}`} className="flex items-center gap-2 flex-1 min-w-0">
                     <div className="relative w-[33px] h-[33px] shrink-0 flex items-center justify-center">
                       <div 
                         className={cn(
@@ -797,7 +780,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                    location.includes("research-failed") ? "Failed" :
                    location.includes("research-canceled") ? "Cancel" :
                    location.includes("in-progress") ? "in progress" :
-                   location.includes("research-success") ? "Reports" :
                    location.includes("sources") ? "Sources" :
                    location.includes("search") ? "Launcher" : 
                    location.includes("new") ? "Launcher" : "Page"}
@@ -819,8 +801,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                       <User className="w-5 h-5" />
                     </div>
                     <div className="flex flex-col items-start leading-none gap-0.5">
-                      <span className="text-xs font-bold text-gray-900">Ivan Petrov</span>
-                      <span className="text-[10px] text-gray-500">Company/Team name</span>
+                      <span className="text-xs font-bold text-gray-900">{currentUser?.name || "User"}</span>
+                      <span className="text-[10px] text-gray-500">{currentUser?.teamName || "Team"}</span>
                     </div>
                     <ChevronDown className="w-4 h-4 text-black ml-1 fill-black" />
                   </Button>
@@ -829,7 +811,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   <div className="p-3 border-b border-gray-200 bg-white rounded-t-md">
                      <p className="text-xs text-center font-semibold text-gray-500 mb-1">Balance</p>
                      <div className="bg-[#E8F5E9] border border-[#C8E6C9] rounded-md p-2 text-center">
-                       <span className="text-[#2E7D32] font-bold text-sm">5.8K available</span>
+                       <span className="text-[#2E7D32] font-bold text-sm">{currentUser?.balanceFormatted || "0 available"}</span>
 
                        <a href="#" className="text-[#008DA8] text-xs underline font-medium pl-[10px] pr-[10px]">buy more</a>
                      </div>

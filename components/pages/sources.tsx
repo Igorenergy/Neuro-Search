@@ -2,7 +2,6 @@
 
 import { useState, useRef } from "react";
 import { useParams } from "next/navigation";
-import Link from "next/link";
 import {
   MoreVertical,
   Download,
@@ -71,22 +70,28 @@ import AddFilesModal from "@/components/add-files-modal";
 import { ProjectContextMenu } from "@/components/project-context-menu";
 
 
-import type { SourceRow } from "@/lib/types";
+import type { SourceRow, ArtifactRow } from "@/lib/types";
+import { useProjectSources, useToggleSourceInclusion } from "@/hooks/use-project-sources";
+import { useProjectArtifacts, useDeleteArtifact } from "@/hooks/use-project-artifacts";
 
-const mockSources: SourceRow[] = [
-  { id: 1, title: "Strategic Audit Dashboard-Full Dataset...", domain: "parallelai.tech", favicon: "https://www.google.com/s2/favicons?domain=parallelai.tech&sz=16", date: "10.05.2025", location: "USA", language: "En", confidenceScore: 95, included: true, type: "web" },
-  { id: 2, title: "Strategic Audit Dashboard-Full Dataset...", domain: "parallel.ai", favicon: "https://www.google.com/s2/favicons?domain=parallel.ai&sz=16", date: "10.05.2025", location: "USA", language: "En", confidenceScore: 50, included: true, type: "web" },
-  { id: 3, title: "Strategic Audit Dashboard-Full Dataset...", domain: "medium.com", favicon: "https://www.google.com/s2/favicons?domain=medium.com&sz=16", date: "10.05.2025", location: "USA", language: "En", confidenceScore: 50, included: true, type: "web" },
-  { id: 4, title: "Market Analysis Report 2025: Bioplast...", domain: "mckinsey.com", favicon: "https://www.google.com/s2/favicons?domain=mckinsey.com&sz=16", date: "08.04.2025", location: "Global", language: "En", confidenceScore: 92, included: true, type: "pdf" },
-  { id: 5, title: "Industry Trends & Forecasts Q2 2025...", domain: "reuters.com", favicon: "https://www.google.com/s2/favicons?domain=reuters.com&sz=16", date: "15.03.2025", location: "UK", language: "En", confidenceScore: 88, included: false, type: "web" },
-  { id: 6, title: "Competitive Landscape Review: Enterprise...", domain: "gartner.com", favicon: "https://www.google.com/s2/favicons?domain=gartner.com&sz=16", date: "22.04.2025", location: "USA", language: "En", confidenceScore: 85, included: true, type: "web" },
-  { id: 7, title: "Technology Stack Assessment for Growth...", domain: "techcrunch.com", favicon: "https://www.google.com/s2/favicons?domain=techcrunch.com&sz=16", date: "01.05.2025", location: "USA", language: "En", confidenceScore: 72, included: true, type: "web" },
-  { id: 8, title: "Financial Performance Data & Analytics...", domain: "bloomberg.com", favicon: "https://www.google.com/s2/favicons?domain=bloomberg.com&sz=16", date: "05.05.2025", location: "USA", language: "En", confidenceScore: 91, included: true, type: "web" },
-  { id: 9, title: "Regulatory Framework Update: EU Market...", domain: "ec.europa.eu", favicon: "https://www.google.com/s2/favicons?domain=ec.europa.eu&sz=16", date: "28.03.2025", location: "EU", language: "En", confidenceScore: 78, included: false, type: "pdf" },
-  { id: 10, title: "Consumer Behavior Insights: Digital Tran...", domain: "statista.com", favicon: "https://www.google.com/s2/favicons?domain=statista.com&sz=16", date: "12.04.2025", location: "Global", language: "En", confidenceScore: 82, included: true, type: "web" },
-  { id: 11, title: "Supply Chain Risk Assessment Report...", domain: "deloitte.com", favicon: "https://www.google.com/s2/favicons?domain=deloitte.com&sz=16", date: "18.04.2025", location: "USA", language: "En", confidenceScore: 87, included: true, type: "pdf" },
-  { id: 12, title: "Innovation Pipeline: Key Patents & R&D...", domain: "patents.google.com", favicon: "https://www.google.com/s2/favicons?domain=patents.google.com&sz=16", date: "20.04.2025", location: "Global", language: "En", confidenceScore: 69, included: false, type: "web" },
-];
+const FILE_TYPE_CONFIG: Record<string, { label: string; color: string }> = {
+  xlsx: { label: "XLS", color: "text-green-700" },
+  pdf: { label: "PDF", color: "text-red-600" },
+  docx: { label: "DOC", color: "text-blue-600" },
+  csv: { label: "CSV", color: "text-emerald-600" },
+  pptx: { label: "PPT", color: "text-orange-600" },
+  json: { label: "JSON", color: "text-purple-600" },
+  txt: { label: "TXT", color: "text-gray-600" },
+};
+
+function ArtifactFileIcon({ fileType }: { fileType: string }) {
+  const cfg = FILE_TYPE_CONFIG[fileType] || { label: fileType.toUpperCase().slice(0, 3), color: "text-gray-600" };
+  return (
+    <div className="w-8 h-10 rounded border border-gray-200 flex items-center justify-center shrink-0 bg-gray-50">
+      <span className={cn("text-[8px] font-bold leading-none", cfg.color)}>{cfg.label}</span>
+    </div>
+  );
+}
 
 function ConfidenceRing({ score, size = 28 }: { score: number; size?: number }) {
   const radius = (size - 4) / 2;
@@ -117,8 +122,14 @@ function ConfidenceRing({ score, size = 28 }: { score: number; size?: number }) 
 
 export default function SourcesPage() {
   const params = useParams<{ id: string }>();
+  const projectId = params.id || "1";
+
+  const { data: sources = [], isLoading: sourcesLoading } = useProjectSources(projectId);
+  const { data: artifacts = [], isLoading: artifactsLoading } = useProjectArtifacts(projectId);
+  const toggleInclusion = useToggleSourceInclusion(projectId);
+  const deleteArtifact = useDeleteArtifact(projectId);
+
   const [leftExpanded, setLeftExpanded] = useState(false);
-  const [sources, setSources] = useState(mockSources);
   const [searchQuery, setSearchQuery] = useState("");
   const [viewMode, setViewMode] = useState<"list" | "grid">("list");
   const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
@@ -135,7 +146,7 @@ export default function SourcesPage() {
   const [enhanceScope, setEnhanceScope] = useState<"web" | "files">("web");
   const [enhanceEngine, setEnhanceEngine] = useState("ultimate");
   const [enhanceLanguages, setEnhanceLanguages] = useState<string[]>([]);
-  const [enhanceFiles, setEnhanceFiles] = useState([
+  const [enhanceFiles, setEnhanceFiles] = useState<{ name: string; type: string; size: string }[]>([
     { name: "Market Analysis Q3.pdf", type: "PDF", size: "2.4 MB" },
     { name: "Competitor Report.docx", type: "DOCX", size: "1.8 MB" },
     { name: "Financial Projections.xlsx", type: "XLSX", size: "5.1 MB" },
@@ -143,6 +154,7 @@ export default function SourcesPage() {
   const [enhanceBudgetCap, setEnhanceBudgetCap] = useState(true);
   const [enhanceCostOpen, setEnhanceCostOpen] = useState(false);
   const [isAddFileModalOpen, setIsAddFileModalOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState<"sources" | "artifacts">("sources");
 
   const enhanceLanguageOptions = [
     { value: "auto", label: "Auto Detect" },
@@ -167,9 +179,8 @@ export default function SourcesPage() {
     ? config.query.slice(0, 80) + (config.query.length > 80 ? "..." : "")
     : "Реестр 402 Компаний: Полный анализ и стратегический обзор для инвесторов";
 
-  const sourcesCount = sources.length;
   const includedCount = sources.filter(s => s.included).length;
-  const totalCount = sources.length;
+  const excludedCount = sources.length - includedCount;
 
   const filteredSources = sources.filter(s =>
     s.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -211,23 +222,31 @@ export default function SourcesPage() {
           <ProjectContextMenu projectTitle={projectTitle} align="start" />
         </div>
 
-        <div className="flex items-center gap-2 shrink-0">
-          <Link href={`/research-success/${params.id || "1"}`}>
-            <button
-              className="px-4 py-1.5 text-xs font-bold rounded-sm bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors"
-              data-testid="button-tab-reports"
-            >
-              Reports
-            </button>
-          </Link>
-          <Link href={`/sources/${params.id || "1"}`}>
-            <button
-              className="px-4 py-1.5 text-xs font-bold rounded-sm bg-[#00802b] text-white"
-              data-testid="button-tab-sources"
-            >
-              Sources: {sourcesCount}
-            </button>
-          </Link>
+        <div className="flex items-center gap-0 shrink-0">
+          <button
+            className={cn(
+              "px-5 py-1.5 text-xs font-bold rounded-l-sm transition-colors",
+              activeTab === "sources"
+                ? "bg-[#008DA8] text-white"
+                : "bg-gray-200 text-gray-600 hover:bg-gray-300"
+            )}
+            onClick={() => setActiveTab("sources")}
+            data-testid="button-tab-sources"
+          >
+            Sources: {sources.length}
+          </button>
+          <button
+            className={cn(
+              "px-5 py-1.5 text-xs font-bold rounded-r-sm transition-colors",
+              activeTab === "artifacts"
+                ? "bg-[#00802b] text-white"
+                : "bg-gray-200 text-gray-600 hover:bg-gray-300"
+            )}
+            onClick={() => setActiveTab("artifacts")}
+            data-testid="button-tab-artifacts"
+          >
+            Artifacts: {artifacts.length}
+          </button>
         </div>
 
         <div className="flex items-center gap-1.5 shrink-0">
@@ -246,6 +265,7 @@ export default function SourcesPage() {
         </div>
       </div>
 
+      {activeTab === "sources" && (<>
       {/* Enhance Research + Progress */}
       <div className="flex items-center gap-4 px-4 py-2 border-b border-gray-200 bg-white shrink-0">
         <Button variant="outline" size="sm" className="h-7 text-xs font-bold text-[#008DA8] border-[#008DA8] hover:bg-[#008DA8]/5 px-3" data-testid="button-enhance-research" onClick={() => setShowEnhanceModal(true)}>
@@ -299,7 +319,7 @@ export default function SourcesPage() {
         <div className="w-px h-5 bg-gray-300" />
 
         <span className="text-xs font-bold text-gray-700">
-          Included ({includedCount}), Excluded ({totalCount - includedCount})
+          Included ({includedCount}), Excluded ({excludedCount})
         </span>
 
         <div className="flex-1" />
@@ -454,7 +474,7 @@ export default function SourcesPage() {
                           <Shield className="w-4 h-4" /> Confidence Score
                         </DropdownMenuItem>
                         <DropdownMenuItem className="gap-2" onClick={() => {
-                          setSources(prev => prev.map(s => s.id === source.id ? { ...s, included: !s.included } : s));
+                          toggleInclusion.mutate({ sourceId: source.id, included: !source.included });
                         }}>
                           {source.included ? (
                             <><XCircle className="w-4 h-4 text-orange-400" /> Exclude</>
@@ -548,7 +568,7 @@ export default function SourcesPage() {
                           <Shield className="w-4 h-4" /> Confidence Score
                         </DropdownMenuItem>
                         <DropdownMenuItem className="gap-2" onClick={() => {
-                          setSources(prev => prev.map(s => s.id === source.id ? { ...s, included: !s.included } : s));
+                          toggleInclusion.mutate({ sourceId: source.id, included: !source.included });
                         }}>
                           {source.included ? (
                             <><XCircle className="w-4 h-4 text-orange-400" /> Exclude</>
@@ -565,6 +585,135 @@ export default function SourcesPage() {
           ))}
         </div>
       </div>
+      </>)}
+
+      {activeTab === "artifacts" && (<>
+      {/* Artifacts Toolbar */}
+      <div className="flex items-center gap-3 px-4 py-2 border-b border-gray-200 bg-[#F0F8F0] shrink-0 flex-wrap">
+        <button className="flex items-center gap-1.5 text-xs" data-testid="button-artifacts-select-all">
+          <Square className="w-4 h-4 text-gray-400" />
+          <span className="font-medium text-gray-600">selected: 0</span>
+        </button>
+
+        <div className="w-px h-5 bg-gray-300" />
+
+        <div className="flex items-center gap-1.5">
+          <button className="w-6 h-6 rounded-sm flex items-center justify-center bg-gray-100 hover:bg-blue-100 transition-colors">
+            <RefreshCw className="w-3.5 h-3.5 text-gray-500" />
+          </button>
+          <button className="w-6 h-6 rounded-sm flex items-center justify-center bg-gray-100 hover:bg-red-100 transition-colors">
+            <XCircle className="w-3.5 h-3.5 text-red-500" />
+          </button>
+        </div>
+
+        <div className="w-px h-5 bg-gray-300" />
+
+        <button className="flex items-center gap-1.5 text-xs font-bold text-[#008DA8]">
+          <Filter className="w-3.5 h-3.5" />
+          Filters: no
+        </button>
+
+        <div className="flex-1" />
+
+        <div className="flex items-center gap-1 bg-white border border-gray-300 rounded-sm px-2 py-1">
+          <Search className="w-3.5 h-3.5 text-gray-400" />
+          <input
+            type="text"
+            placeholder="search artifacts"
+            className="text-xs bg-transparent outline-none w-28 placeholder:text-gray-400"
+          />
+        </div>
+
+        <div className="w-px h-5 bg-gray-300" />
+
+        <Button
+          className="bg-[#008DA8] hover:bg-[#007590] text-white font-bold h-7 px-4 text-xs rounded-sm"
+        >
+          + Create new
+        </Button>
+      </div>
+
+      {/* Artifacts Grid */}
+      <div className="flex-1 overflow-y-auto p-4">
+        {artifactsLoading ? (
+          <div className="flex items-center justify-center h-32 text-sm text-gray-400">Loading artifacts...</div>
+        ) : artifacts.length === 0 ? (
+          <div className="flex flex-col items-center justify-center h-32 text-sm text-gray-400">
+            <FileText className="w-8 h-8 mb-2 text-gray-300" />
+            No artifacts yet
+          </div>
+        ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {artifacts.map((artifact) => (
+            <div
+              key={artifact.id}
+              className="bg-white border border-gray-200 rounded-lg p-4 flex items-start gap-3 hover:shadow-md transition-shadow"
+            >
+              <div className="shrink-0 mt-0.5">
+                {artifact.status === "ready" ? (
+                  <CheckCircle className="w-6 h-6 text-[#00802b]" />
+                ) : artifact.status === "failed" ? (
+                  <XCircle className="w-6 h-6 text-red-500" />
+                ) : (
+                  <RefreshCw className="w-5 h-5 text-[#008DA8] animate-spin" />
+                )}
+              </div>
+
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-1">
+                  <ArtifactFileIcon fileType={artifact.fileType} />
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-medium text-gray-900 truncate">{artifact.name}</p>
+                    <div className="flex items-center gap-2 mt-0.5">
+                      <button className="p-0.5 hover:bg-gray-100 rounded transition-colors">
+                        <ExternalLink className="w-3 h-3 text-[#008DA8]" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-4 text-[11px] text-gray-500 mt-2">
+                  <span className="flex items-center gap-1"><FileText className="w-3 h-3" />{artifact.createdAt}</span>
+                  <span>File size: {artifact.fileSize}</span>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-1 shrink-0">
+                <button className="flex items-center gap-1">
+                  <Square className="w-4 h-4 text-gray-300" />
+                </button>
+              </div>
+
+              <div className="flex flex-col items-center gap-1 shrink-0">
+                {artifact.downloadUrl && (
+                  <a href={artifact.downloadUrl} className="p-1 hover:bg-gray-100 rounded transition-colors" title="Download">
+                    <Download className="w-4 h-4 text-[#008DA8]" />
+                  </a>
+                )}
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button className="p-1 hover:bg-gray-100 rounded transition-colors">
+                      <MoreVertical className="w-4 h-4 text-gray-500" />
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    {artifact.downloadUrl && (
+                      <DropdownMenuItem className="gap-2" asChild>
+                        <a href={artifact.downloadUrl}><Download className="w-4 h-4" /> Download</a>
+                      </DropdownMenuItem>
+                    )}
+                    <DropdownMenuItem className="gap-2"><ExternalLink className="w-4 h-4" /> Open</DropdownMenuItem>
+                    <DropdownMenuItem className="gap-2 text-red-600" onClick={() => deleteArtifact.mutate(artifact.id)}>
+                      <Trash2 className="w-4 h-4" /> Delete
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+            </div>
+          ))}
+        </div>
+        )}
+      </div>
+      </>)}
 
       </div>
       {/* Modal: Select Action */}
@@ -621,13 +770,16 @@ export default function SourcesPage() {
               <Button 
                 className="bg-[#00802b] hover:bg-[#006622] text-white px-10 h-9 font-bold text-sm rounded-md"
                 onClick={() => {
-                  setSources(prev => prev.map(s => {
-                    if (!selectedIds.has(s.id)) return s;
-                    if (selectedAction === "include") return { ...s, included: true };
-                    if (selectedAction === "exclude") return { ...s, included: false };
-                    if (selectedAction === "reverse") return { ...s, included: !s.included };
-                    return s;
-                  }));
+                  sources.forEach(s => {
+                    if (!selectedIds.has(s.id)) return;
+                    let newIncluded = s.included;
+                    if (selectedAction === "include") newIncluded = true;
+                    else if (selectedAction === "exclude") newIncluded = false;
+                    else if (selectedAction === "reverse") newIncluded = !s.included;
+                    if (newIncluded !== s.included) {
+                      toggleInclusion.mutate({ sourceId: s.id, included: newIncluded });
+                    }
+                  });
                   setShowActionModal(false);
                 }}
               >
@@ -796,7 +948,7 @@ export default function SourcesPage() {
                 </div>
                 <div className="flex items-center gap-2">
                   <Switch id="conf-excluded" className="data-[state=checked]:bg-[#00802b]" />
-                  <label htmlFor="conf-excluded" className="text-xs font-medium text-gray-700">Excluded sources: {totalCount - includedCount}</label>
+                  <label htmlFor="conf-excluded" className="text-xs font-medium text-gray-700">Excluded sources: {excludedCount}</label>
                 </div>
               </div>
 
