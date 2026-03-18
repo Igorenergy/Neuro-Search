@@ -818,14 +818,18 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   </div>
                   <div className="p-1 space-y-0.5 bg-[#F5F5F7]">
                     {[
-                      { label: "Profile & Settings", icon: User },
-                      { label: "Files & Attachments: 123", icon: FileText },
-                      { label: "Integrations", icon: Zap },
-                      { label: "Billing & Usage", icon: MoreVertical },
-                      { label: "Export Hub: 26", icon: Search },
-                      { label: "Log out", icon: PanelLeftClose }
+                      { label: "Profile & Settings", icon: User, href: "/profile" },
+                      { label: "Files & Attachments: 123", icon: FileText, href: "/files-attachments" },
+                      { label: "Integrations", icon: Zap, href: null },
+                      { label: "Billing & Usage", icon: MoreVertical, href: null },
+                      { label: "Export Hub: 26", icon: Search, href: null },
+                      { label: "Log out", icon: PanelLeftClose, href: null }
                     ].map((item, idx) => (
-                      <DropdownMenuItem key={idx} className="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 focus:bg-gray-200 focus:text-black cursor-pointer rounded-sm">
+                      <DropdownMenuItem
+                        key={idx}
+                        className="flex items-center gap-2 px-3 py-2 text-sm text-gray-700 focus:bg-gray-200 focus:text-black cursor-pointer rounded-sm"
+                        onSelect={() => { if (item.href) navigate(item.href); }}
+                      >
                         <item.icon className="w-4 h-4 text-gray-500" />
                         {item.label}
                       </DropdownMenuItem>

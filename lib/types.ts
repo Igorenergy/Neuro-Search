@@ -157,6 +157,38 @@ export interface AttachedFile {
   step: "step1" | "step2";
 }
 
+// ─── Profile & Settings ─────────────────────────────
+export interface NotificationPreferences {
+  emailNotifications: boolean;
+  researchCompleted: boolean;
+  researchFailed: boolean;
+  weeklyDigest: boolean;
+  teamMentions: boolean;
+}
+
+export interface ActiveSession {
+  id: string;
+  browser: string;
+  os: string;
+  lastActive: string;
+  isCurrent: boolean;
+}
+
+export interface ProfileSettings {
+  id: string;
+  fullName: string;
+  email: string;
+  role: string;
+  teamName: string;
+  avatarUrl: string | null;
+  twoFactorEnabled: boolean;
+  notifications: NotificationPreferences;
+  theme: "light" | "dark" | "system";
+  language: string;
+  compactMode: boolean;
+  sessions: ActiveSession[];
+}
+
 // ─── Project Detail ──────────────────────────────────
 export interface ProjectDetail {
   id: string;
