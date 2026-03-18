@@ -61,6 +61,7 @@ npm run dev             # http://localhost:3000
 │   ├── research-failed/        # Error handling / action required
 │   ├── research-canceled/      # Canceled research
 │   ├── files-attachments/      # Data repository
+│   ├── profile/                # Profile & Settings
 │   └── smart-search/new/       # Smart search launcher
 │
 ├── components/
@@ -72,7 +73,8 @@ npm run dev             # http://localhost:3000
 │   │   ├── search-in-progress.tsx  # AI thought stream
 │   │   ├── smart-search-failed.tsx # Error scenarios
 │   │   ├── action-required.tsx     # Partial report review
-│   │   └── assets-repository.tsx   # File/folder manager
+│   │   ├── assets-repository.tsx   # File/folder manager
+│   │   └── profile-settings.tsx   # Profile & Settings (profile, password)
 │   ├── ui/                     # shadcn/ui primitives
 │   ├── layout.tsx              # App shell (sidebar, header)
 │   ├── create-project-modal.tsx    # Multi-step project creation
@@ -91,7 +93,8 @@ npm run dev             # http://localhost:3000
 │   ├── use-action-required.ts  # Partial report data
 │   ├── use-data-repository.ts  # Folders, files, storage stats
 │   ├── use-current-user.ts     # Auth / user profile
-│   └── use-source-details.ts   # Source preview + raw files
+│   ├── use-source-details.ts   # Source preview + raw files
+│   └── use-profile-settings.ts # Profile settings + update mutation
 │
 ├── lib/
 │   ├── types.ts                # All shared TypeScript interfaces
@@ -153,6 +156,12 @@ All endpoints return JSON. Standard REST conventions.
 | PATCH | `/api/artifacts/:id` | Update artifact |
 | DELETE | `/api/artifacts/:id` | Remove artifact |
 
+### Profile
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/profile/settings` | Get profile & preferences |
+| PATCH | `/api/profile/settings` | Update profile & preferences |
+
 ### Other
 | Method | Endpoint | Description |
 |--------|----------|-------------|
@@ -186,6 +195,8 @@ Every page component consumes data through a dedicated React Query hook. Hooks c
 | `useDataRepository()` | `GET /api/data-repository` | Mock folders/files |
 | `useCurrentUser()` | `GET /api/user/me` | Mock user profile |
 | `useSourceDetails(id)` | `GET /api/sources/:id/details` | Mock preview content |
+| `useProfileSettings()` | `GET /api/profile/settings` | Mock profile data |
+| `useUpdateProfile()` | `PATCH /api/profile/settings` | — |
 
 ### How to integrate a real backend endpoint
 
@@ -213,6 +224,7 @@ All data interfaces live in `lib/types.ts`. Key types:
 - `FailedSourceItem` — source with error info
 - `CurrentUser` — user profile + balance
 - `DataRepositoryData` — folders, files, storage stats
+- `ProfileSettings` — profile info, security, preferences
 
 ## Data Access Layer
 
