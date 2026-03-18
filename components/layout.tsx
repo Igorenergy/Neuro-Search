@@ -43,6 +43,7 @@ import FinishEarlyModal from "@/components/finish-early-modal";
 import ResearchDetailsModal from "@/components/research-details-modal";
 import ExportProjectModal from "@/components/export-project-modal";
 import ShareProjectModal from "@/components/share-project-modal";
+import CreateProjectModal from "@/components/create-project-modal";
 
 type ResearchStatus = "success" | "in-progress" | "failed" | "canceled";
 
@@ -60,6 +61,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const [isPinned, setIsPinned] = useState(false);
   const [exportOpen, setExportOpen] = useState(false);
   const [shareOpen, setShareOpen] = useState(false);
+  const [createOpen, setCreateOpen] = useState(false);
 
   const statusConfig: Record<ResearchStatus, { hoverBorder: string; dotColor: string; route: string }> = {
     "success": { hoverBorder: "hover:border-green-500", dotColor: "bg-green-500", route: "/research-success" },
@@ -156,11 +158,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     return (
       <div className="flex flex-col items-center h-full overflow-hidden">
         <div className="flex flex-col items-center gap-4 shrink-0 pt-4">
-          <Link href="/smart-search/new">
-            <Button size="icon" variant="ghost" className="h-10 w-10 text-[#006E7D] hover:bg-[#006E7D]/10 transition-colors">
-              <Plus className="w-[30px] h-[30px]" />
-            </Button>
-          </Link>
+          <Button size="icon" variant="ghost" className="h-10 w-10 text-[#006E7D] hover:bg-[#006E7D]/10 transition-colors" onClick={() => setCreateOpen(true)}>
+            <Plus className="w-[30px] h-[30px]" />
+          </Button>
           <Link href="/research/search">
             <Button size="icon" variant="ghost" className="h-10 w-10 text-[#5F8D4E] hover:bg-[#5F8D4E]/10 transition-colors">
               <Search className="w-[30px] h-[30px]" />
@@ -398,11 +398,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <>
         <div className="p-2 space-y-2">
           <div className="flex items-center gap-2">
-            <Link href="/smart-search/new" className="flex-1">
-              <Button variant="outline" className="w-full justify-center bg-white border-gray-400 text-[#006E7D] font-bold hover:bg-gray-50 h-9 rounded-sm gap-1">
-                <Plus className="w-4 h-4 stroke-[3]" /> Start new search
-              </Button>
-            </Link>
+            <Button variant="outline" className="flex-1 justify-center bg-white border-gray-400 text-[#006E7D] font-bold hover:bg-gray-50 h-9 rounded-sm gap-1" onClick={() => setCreateOpen(true)}>
+              <Plus className="w-4 h-4 stroke-[3]" /> Start new search
+            </Button>
             
             <Link href="/research/search">
               <Button size="icon" className="h-9 w-9 bg-[#5F8D4E] hover:bg-[#4d753e] rounded-sm shrink-0">
@@ -895,6 +893,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         open={shareOpen}
         onOpenChange={setShareOpen}
         title={selectedItem?.title ?? ""}
+      />
+      <CreateProjectModal
+        open={createOpen}
+        onOpenChange={setCreateOpen}
       />
     </>
   );

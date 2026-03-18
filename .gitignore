@@ -5,3 +5,4 @@ dist
 *.tar.gz
 .env
 next-env.d.ts
+Acuras (archive)/

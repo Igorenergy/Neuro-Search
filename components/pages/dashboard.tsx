@@ -44,10 +44,12 @@ import ResearchDetailsModal from "@/components/research-details-modal";
 import RemoveProjectModal from "@/components/remove-project-modal";
 import ExportProjectModal from "@/components/export-project-modal";
 import ShareProjectModal from "@/components/share-project-modal";
+import CreateProjectModal from "@/components/create-project-modal";
 const rocketIcon = "/images/image_1771405092616.png";
 
 export default function Dashboard() {
   const [showBanner, setShowBanner] = useState(true);
+  const [createOpen, setCreateOpen] = useState(false);
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [removeDefaultMode, setRemoveDefaultMode] = useState<"archive" | "delete">("archive");
@@ -293,15 +295,17 @@ export default function Dashboard() {
       {/* Research Tiles Grid */}
       <div ref={activeGridRef} className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
         {/* Create Research Tile */}
-        <div className="bg-white rounded-lg border border-gray-200 shadow-sm p-4 flex flex-col items-center justify-center min-h-[180px]" data-testid="card-create-research">
+        <div
+          className="bg-white rounded-lg border border-gray-200 shadow-sm p-4 flex flex-col items-center justify-center min-h-[180px] cursor-pointer hover:shadow-md transition-shadow"
+          data-testid="card-create-research"
+          onClick={() => setCreateOpen(true)}
+        >
           <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center mb-3">
             <Plus className="w-5 h-5 text-[#008DA8]" />
           </div>
-          <Link href="/smart-search/new">
-            <Button variant="ghost" className="h-9 gap-2 text-[#008DA8] hover:bg-[#008DA8]/5 font-bold text-sm px-4" data-testid="button-smart-search">
-              Start new search
-            </Button>
-          </Link>
+          <Button variant="ghost" className="h-9 gap-2 text-[#008DA8] hover:bg-[#008DA8]/5 font-bold text-sm px-4" data-testid="button-smart-search">
+            Start new search
+          </Button>
         </div>
 
         {/* Research Item Tiles — in-progress first */}
@@ -577,6 +581,11 @@ export default function Dashboard() {
       open={shareOpen}
       onOpenChange={setShareOpen}
       title={selectedItem?.title ?? ""}
+    />
+
+    <CreateProjectModal
+      open={createOpen}
+      onOpenChange={setCreateOpen}
     />
   </>
   );
