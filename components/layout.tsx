@@ -360,7 +360,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <DropdownMenuItem asChild className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer">
                 <Link href="/files-attachments">
                   <FileText className="w-4 h-4 text-gray-400" />
-                  Files & Attachments
+                  Data Repository
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer" data-testid="collapsed-menu-archived-projects">
@@ -680,7 +680,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <DropdownMenuItem asChild className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer">
                 <Link href="/files-attachments">
                   <FileText className="w-4 h-4 text-gray-400" />
-                  Files & Attachments
+                  Data Repository
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild className="flex items-center gap-2 text-sm text-gray-300 hover:text-white focus:text-white focus:bg-[#333] cursor-pointer" data-testid="menu-archived-projects">
@@ -776,7 +776,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                  {
                    location === "/" ? "Dashboard" : 
                    location.includes("dashboard") ? "Overview" :
-                   location.includes("files-attachments") ? "Files & Attachments" :
+                   location.includes("files-attachments") ? "Data Repository" :
                    location.includes("research-failed") ? "Failed" :
                    location.includes("research-canceled") ? "Cancel" :
                    location.includes("in-progress") ? "in progress" :
@@ -819,7 +819,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   <div className="p-1 space-y-0.5 bg-[#F5F5F7]">
                     {[
                       { label: "Profile & Settings", icon: User, href: "/profile" },
-                      { label: "Files & Attachments: 123", icon: FileText, href: "/files-attachments" },
+                      { label: "Data Repository", icon: FileText, href: "/files-attachments" },
                       { label: "Integrations", icon: Zap, href: null },
                       { label: "Billing & Usage", icon: MoreVertical, href: null },
                       { label: "Export Hub: 26", icon: Search, href: null },
