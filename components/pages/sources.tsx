@@ -64,8 +64,8 @@ import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { loadLaunchConfig } from "@/lib/launch-config";
 import { usePreviewStore } from "@/lib/preview-store";
-import ResearchBriefingPanel from "@/components/research-briefing-panel";
 import { SourceDetailsDrawer } from "@/components/source-details-drawer";
+import { ArtifactPreviewDrawer } from "@/components/artifact-preview-drawer";
 import AddFilesModal from "@/components/add-files-modal";
 import { ProjectContextMenu } from "@/components/project-context-menu";
 
@@ -155,6 +155,8 @@ export default function SourcesPage() {
   const [enhanceCostOpen, setEnhanceCostOpen] = useState(false);
   const [isAddFileModalOpen, setIsAddFileModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<"sources" | "artifacts">("sources");
+  const [artifactDrawerOpen, setArtifactDrawerOpen] = useState(false);
+  const [selectedArtifact, setSelectedArtifact] = useState<ArtifactRow | null>(null);
 
   const enhanceLanguageOptions = [
     { value: "auto", label: "Auto Detect" },
@@ -208,7 +210,6 @@ export default function SourcesPage() {
 
   return (
     <div className="-m-6 md:-m-8 flex h-[calc(100vh-64px)] w-[calc(100%+48px)] md:w-[calc(100%+64px)] bg-white" data-testid="sources-page">
-      <ResearchBriefingPanel expanded={leftExpanded} onToggle={() => setLeftExpanded(!leftExpanded)} />
       <div className="flex-1 flex flex-col overflow-hidden min-w-0">
       {/* Context Header */}
       <div className="flex items-center justify-between px-4 py-2.5 border-b border-gray-200 bg-[#F5F5F7] shrink-0">
@@ -647,7 +648,8 @@ export default function SourcesPage() {
           {artifacts.map((artifact) => (
             <div
               key={artifact.id}
-              className="bg-white border border-gray-200 rounded-lg p-4 flex items-start gap-3 hover:shadow-md transition-shadow"
+              className="bg-white border border-gray-200 rounded-lg p-4 flex items-start gap-3 hover:shadow-md transition-shadow cursor-pointer"
+              onClick={() => { setSelectedArtifact(artifact); setArtifactDrawerOpen(true); }}
             >
               <div className="shrink-0 mt-0.5">
                 {artifact.status === "ready" ? (
@@ -793,6 +795,27 @@ export default function SourcesPage() {
         source={drawerSource}
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
+        onOpenArtifact={(artifact) => {
+          setDrawerOpen(false);
+          const mapped: ArtifactRow = {
+            id: Date.now(),
+            projectId,
+            name: artifact.name,
+            fileType: artifact.type.toLowerCase() as ArtifactRow["fileType"],
+            fileSize: "",
+            status: "ready",
+            downloadUrl: null,
+            createdAt: artifact.date,
+            updatedAt: artifact.date,
+          };
+          setSelectedArtifact(mapped);
+          setTimeout(() => setArtifactDrawerOpen(true), 200);
+        }}
+      />
+      <ArtifactPreviewDrawer
+        artifact={selectedArtifact}
+        open={artifactDrawerOpen}
+        onClose={() => setArtifactDrawerOpen(false)}
       />
       <Dialog open={showDeepExtractModal} onOpenChange={setShowDeepExtractModal}>
         <DialogContent className="max-w-[400px] p-0 overflow-hidden border-none bg-white rounded-lg shadow-2xl [&>button]:hidden">

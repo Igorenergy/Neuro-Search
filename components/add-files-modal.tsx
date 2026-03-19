@@ -10,7 +10,10 @@ import {
   Link as LinkIcon,
   X,
   Check,
+  ExternalLink,
+  HardDrive,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -40,7 +43,8 @@ const repoFiles = [
 ];
 
 export default function AddFilesModal({ open, onOpenChange, onSave }: AddFilesModalProps) {
-  const [activeTab, setActiveTab] = useState<"upload" | "repository">("upload");
+  const router = useRouter();
+  const [activeTab, setActiveTab] = useState<"upload" | "gdrive" | "repository">("upload");
   const [selectedRepoFiles, setSelectedRepoFiles] = useState<string[]>([]);
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -131,53 +135,56 @@ export default function AddFilesModal({ open, onOpenChange, onSave }: AddFilesMo
               <div className={cn("w-3 h-3 rounded-full border bg-white flex items-center justify-center", activeTab === "upload" ? "border-[4px] border-gray-500 ring-1 ring-gray-500" : "border-gray-300")} />
               <span className={cn(activeTab === "upload" ? "text-gray-900 font-bold" : "text-gray-500")}>Upload new</span>
             </label>
+            <label className="flex items-center gap-2 cursor-pointer" onClick={() => setActiveTab("gdrive")}>
+              <div className={cn("w-3 h-3 rounded-full border bg-white flex items-center justify-center", activeTab === "gdrive" ? "border-[4px] border-gray-500 ring-1 ring-gray-500" : "border-gray-300")} />
+              <span className={cn("flex items-center gap-1", activeTab === "gdrive" ? "text-gray-900 font-bold" : "text-gray-500")}>
+                From
+                <svg width="12" height="12" viewBox="0 0 87.3 78" xmlns="http://www.w3.org/2000/svg" className="inline-block">
+                  <path d="m6.6 66.85 3.85 6.65c.8 1.4 1.95 2.5 3.3 3.3l13.75-23.8h-27.5c0 1.55.4 3.1 1.2 4.5z" fill="#0066da"/>
+                  <path d="m43.65 25-13.75-23.8c-1.35.8-2.5 1.9-3.3 3.3l-20.4 35.3c-.8 1.4-1.2 2.95-1.2 4.5h27.5z" fill="#00ac47"/>
+                  <path d="m73.55 76.8c1.35-.8 2.5-1.9 3.3-3.3l1.6-2.75 7.65-13.25c.8-1.4 1.2-2.95 1.2-4.5h-27.502l5.852 11.5z" fill="#ea4335"/>
+                  <path d="m43.65 25 13.75-23.8c-1.35-.8-2.9-1.2-4.5-1.2h-18.5c-1.6 0-3.15.45-4.5 1.2z" fill="#00832d"/>
+                  <path d="m59.8 53h-32.3l-13.75 23.8c1.35.8 2.9 1.2 4.5 1.2h50.8c1.6 0 3.15-.45 4.5-1.2z" fill="#2684fc"/>
+                  <path d="m73.4 26.5-10.1-17.5c-.8-1.4-1.95-2.5-3.3-3.3l-13.75 23.8 16.15 23.8h27.45c0-1.55-.4-3.1-1.2-4.5z" fill="#ffba00"/>
+                </svg>
+                <span className="text-[#008DA8]">G. Drive</span>
+              </span>
+            </label>
             <label className="flex items-center gap-2 cursor-pointer" onClick={() => setActiveTab("repository")}>
               <div className={cn("w-3 h-3 rounded-full border bg-white flex items-center justify-center", activeTab === "repository" ? "border-[4px] border-gray-500 ring-1 ring-gray-500" : "border-gray-300")} />
-              <span className={cn(activeTab === "repository" ? "text-gray-900 font-bold" : "text-gray-500")}>Select From <span className="text-blue-700">Assets Repository (100)</span></span>
+              <span className={cn(activeTab === "repository" ? "text-gray-900 font-bold" : "text-gray-500")}>From <span className="text-blue-700">Data Repository (100)</span></span>
             </label>
           </div>
 
-          {activeTab === "upload" ? (
-            <>
-              <div className="grid grid-cols-3 gap-3">
-                <div className="bg-white p-3 rounded-md border border-gray-200 shadow-sm flex flex-col gap-2 cursor-pointer hover:border-blue-300 hover:shadow-md transition-all" data-testid="card-google-workspace">
-                  <div className="flex items-center gap-2 text-gray-700 font-medium text-xs">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" className="w-4 h-4" alt="Google" />
-                    <span>Google Workspace</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="px-2 py-0.5 bg-blue-50 text-blue-600 rounded-sm text-[10px] font-bold border border-blue-100 flex items-center gap-1">
-                      <Database className="w-2.5 h-2.5" /> Google Disk
-                    </span>
-                  </div>
-                </div>
-                <div className="bg-white p-3 rounded-md border border-gray-200 shadow-sm flex flex-col gap-2 cursor-pointer hover:border-blue-300 hover:shadow-md transition-all" data-testid="card-add-link">
-                  <div className="flex items-center gap-2 text-gray-700 font-medium text-xs">
-                    <LinkIcon className="w-3.5 h-3.5" />
-                    <span>Add link</span>
-                  </div>
-                  <div className="flex items-center gap-1 flex-wrap">
-                    <span className="px-2 py-0.5 bg-blue-50 text-blue-600 rounded-sm text-[10px] font-bold border border-blue-100 flex items-center gap-1">
-                      <Globe className="w-2.5 h-2.5" /> Site
-                    </span>
-                    <span className="px-2 py-0.5 bg-blue-50 text-blue-600 rounded-sm text-[10px] font-bold border border-blue-100 flex items-center gap-1">
-                      <Play className="w-2.5 h-2.5" /> YouTube
-                    </span>
-                  </div>
-                </div>
-                <div className="bg-white p-3 rounded-md border border-gray-200 shadow-sm flex flex-col gap-2 cursor-pointer hover:border-blue-300 hover:shadow-md transition-all" data-testid="card-paste-text">
-                  <div className="flex items-center gap-2 text-gray-700 font-medium text-xs">
-                    <FileText className="w-3.5 h-3.5" />
-                    <span>Paste text</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="px-2 py-0.5 bg-blue-50 text-blue-600 rounded-sm text-[10px] font-bold border border-blue-100 flex items-center gap-1">
-                      <FileText className="w-2.5 h-2.5" /> Copied text
-                    </span>
-                  </div>
-                </div>
+          {activeTab === "gdrive" ? (
+            <div className="border-2 border-dashed border-gray-300 rounded-lg bg-gray-50 h-48 flex flex-col items-center justify-center gap-3">
+              <div className="w-12 h-12 rounded-xl bg-white border border-gray-200 flex items-center justify-center shadow-sm">
+                <svg width="20" height="20" viewBox="0 0 87.3 78" xmlns="http://www.w3.org/2000/svg">
+                  <path d="m6.6 66.85 3.85 6.65c.8 1.4 1.95 2.5 3.3 3.3l13.75-23.8h-27.5c0 1.55.4 3.1 1.2 4.5z" fill="#0066da"/>
+                  <path d="m43.65 25-13.75-23.8c-1.35.8-2.5 1.9-3.3 3.3l-20.4 35.3c-.8 1.4-1.2 2.95-1.2 4.5h27.5z" fill="#00ac47"/>
+                  <path d="m73.55 76.8c1.35-.8 2.5-1.9 3.3-3.3l1.6-2.75 7.65-13.25c.8-1.4 1.2-2.95 1.2-4.5h-27.502l5.852 11.5z" fill="#ea4335"/>
+                  <path d="m43.65 25 13.75-23.8c-1.35-.8-2.9-1.2-4.5-1.2h-18.5c-1.6 0-3.15.45-4.5 1.2z" fill="#00832d"/>
+                  <path d="m59.8 53h-32.3l-13.75 23.8c1.35.8 2.9 1.2 4.5 1.2h50.8c1.6 0 3.15-.45 4.5-1.2z" fill="#2684fc"/>
+                  <path d="m73.4 26.5-10.1-17.5c-.8-1.4-1.95-2.5-3.3-3.3l-13.75 23.8 16.15 23.8h27.45c0-1.55-.4-3.1-1.2-4.5z" fill="#ffba00"/>
+                </svg>
               </div>
-
+              <div className="text-center">
+                <p className="text-sm font-semibold text-gray-800">Google Drive is not connected</p>
+                <p className="text-xs text-gray-500 mt-0.5">Connect your account to import files</p>
+              </div>
+              <Button
+                className="bg-[#008DA8] hover:bg-[#007a94] text-white text-xs h-8 px-4 gap-1.5"
+                onClick={() => {
+                  onOpenChange(false);
+                  router.push("/integrations");
+                }}
+              >
+                <ExternalLink className="w-3 h-3" />
+                Connect in Integrations
+              </Button>
+            </div>
+          ) : activeTab === "upload" ? (
+            <>
               <input
                 ref={fileInputRef}
                 type="file"

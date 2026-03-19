@@ -37,6 +37,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 interface CreateProjectModalProps {
   open: boolean;
@@ -44,6 +45,7 @@ interface CreateProjectModalProps {
 }
 
 export default function CreateProjectModal({ open, onOpenChange }: CreateProjectModalProps) {
+  const router = useRouter();
   const [step, setStep] = useState(1);
 
   // Step 1 state
@@ -473,8 +475,17 @@ export default function CreateProjectModal({ open, onOpenChange }: CreateProject
                             onChange={() => setUploadSource("gdrive")}
                             className="accent-[#008DA8]"
                           />
-                          <span className={cn("font-medium", uploadSource === "gdrive" ? "text-gray-800" : "text-gray-500")}>
-                            From <span className="text-[#008DA8]">G. Drive</span>
+                          <span className={cn("font-medium flex items-center gap-1", uploadSource === "gdrive" ? "text-gray-800" : "text-gray-500")}>
+                            From{" "}
+                            <svg className="w-3.5 h-3.5 inline-block" viewBox="0 0 87.3 78" xmlns="http://www.w3.org/2000/svg">
+                              <path d="m6.6 66.85 3.85 6.65c.8 1.4 1.95 2.5 3.3 3.3l13.75-23.8h-27.5c0 1.55.4 3.1 1.2 4.5z" fill="#0066da"/>
+                              <path d="m43.65 25-13.75-23.8c-1.35.8-2.5 1.9-3.3 3.3l-20.4 35.3c-.8 1.4-1.2 2.95-1.2 4.5h27.5z" fill="#00ac47"/>
+                              <path d="m73.55 76.8c1.35-.8 2.5-1.9 3.3-3.3l1.6-2.75 7.65-13.25c.8-1.4 1.2-2.95 1.2-4.5h-27.5l5.85 13.25z" fill="#ea4335"/>
+                              <path d="m43.65 25 13.75-23.8c-1.35-.8-2.9-1.2-4.5-1.2h-18.5c-1.6 0-3.15.45-4.5 1.2z" fill="#00832d"/>
+                              <path d="m59.8 53h-32.3l-13.75 23.8c1.35.8 2.9 1.2 4.5 1.2h50.8c1.6 0 3.15-.45 4.5-1.2z" fill="#2684fc"/>
+                              <path d="m73.4 26.5-10.1-17.5c-.8-1.4-1.95-2.5-3.3-3.3l-13.75 23.8 16.15 23.5h27.45c0-1.55-.4-3.1-1.2-4.5z" fill="#ffba00"/>
+                            </svg>
+                            <span className="text-[#008DA8]">G. Drive</span>
                           </span>
                         </label>
                         <label className="flex items-center gap-1.5 cursor-pointer">
@@ -491,40 +502,60 @@ export default function CreateProjectModal({ open, onOpenChange }: CreateProject
                         </label>
                       </div>
 
-                      {/* Drop zone */}
-                      <div
-                        onDrop={handleDrop}
-                        onDragOver={handleDragOver}
-                        onDragLeave={handleDragLeave}
-                        onClick={() => fileInputRef.current?.click()}
-                        className={cn(
-                          "border-2 border-dashed rounded-lg p-8 flex flex-col items-center justify-center cursor-pointer transition-colors min-h-[140px] bg-white",
-                          isDragging ? "border-[#008DA8] bg-[#e6f7fa]" : "border-gray-300 hover:border-gray-400"
-                        )}
-                      >
-                        <Upload className="w-8 h-8 text-gray-300 mb-2" />
-                        <p className="text-xs text-gray-500 mb-1">Загрузите источники</p>
-                        <p className="text-xs text-[#008DA8]">Выберите файл или перетащите его сюда.</p>
-                        <input
-                          ref={fileInputRef}
-                          type="file"
-                          multiple
-                          className="hidden"
-                          onChange={handleFileSelect}
-                        />
-                        {droppedFiles.length > 0 && (
-                          <div className="mt-3 space-y-1 w-full">
-                            {droppedFiles.map((f, i) => (
-                              <div key={i} className="flex items-center justify-between bg-gray-50 rounded px-2 py-1">
-                                <span className="text-xs text-gray-700 truncate">{f.name}</span>
-                                <button onClick={(e) => { e.stopPropagation(); setDroppedFiles(prev => prev.filter((_, idx) => idx !== i)); }}>
-                                  <X className="w-3 h-3 text-gray-400" />
-                                </button>
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                      </div>
+                      {uploadSource === "gdrive" ? (
+                        <div className="border-2 border-dashed rounded-lg p-8 flex flex-col items-center justify-center min-h-[140px] bg-white border-gray-300">
+                          <svg className="w-10 h-10 mb-3 opacity-40" viewBox="0 0 87.3 78" xmlns="http://www.w3.org/2000/svg">
+                            <path d="m6.6 66.85 3.85 6.65c.8 1.4 1.95 2.5 3.3 3.3l13.75-23.8h-27.5c0 1.55.4 3.1 1.2 4.5z" fill="#0066da"/>
+                            <path d="m43.65 25-13.75-23.8c-1.35.8-2.5 1.9-3.3 3.3l-20.4 35.3c-.8 1.4-1.2 2.95-1.2 4.5h27.5z" fill="#00ac47"/>
+                            <path d="m73.55 76.8c1.35-.8 2.5-1.9 3.3-3.3l1.6-2.75 7.65-13.25c.8-1.4 1.2-2.95 1.2-4.5h-27.5l5.85 13.25z" fill="#ea4335"/>
+                            <path d="m43.65 25 13.75-23.8c-1.35-.8-2.9-1.2-4.5-1.2h-18.5c-1.6 0-3.15.45-4.5 1.2z" fill="#00832d"/>
+                            <path d="m59.8 53h-32.3l-13.75 23.8c1.35.8 2.9 1.2 4.5 1.2h50.8c1.6 0 3.15-.45 4.5-1.2z" fill="#2684fc"/>
+                            <path d="m73.4 26.5-10.1-17.5c-.8-1.4-1.95-2.5-3.3-3.3l-13.75 23.8 16.15 23.5h27.45c0-1.55-.4-3.1-1.2-4.5z" fill="#ffba00"/>
+                          </svg>
+                          <p className="text-xs text-gray-500 mb-3">Google Drive is not connected</p>
+                          <Button
+                            size="sm"
+                            className="bg-[#008DA8] hover:bg-[#007a94] text-white text-xs"
+                            onClick={() => { onOpenChange(false); router.push("/integrations"); }}
+                          >
+                            Connect in Integrations
+                          </Button>
+                        </div>
+                      ) : (
+                        <div
+                          onDrop={handleDrop}
+                          onDragOver={handleDragOver}
+                          onDragLeave={handleDragLeave}
+                          onClick={() => fileInputRef.current?.click()}
+                          className={cn(
+                            "border-2 border-dashed rounded-lg p-8 flex flex-col items-center justify-center cursor-pointer transition-colors min-h-[140px] bg-white",
+                            isDragging ? "border-[#008DA8] bg-[#e6f7fa]" : "border-gray-300 hover:border-gray-400"
+                          )}
+                        >
+                          <Upload className="w-8 h-8 text-gray-300 mb-2" />
+                          <p className="text-xs text-gray-500 mb-1">Загрузите источники</p>
+                          <p className="text-xs text-[#008DA8]">Выберите файл или перетащите его сюда.</p>
+                          <input
+                            ref={fileInputRef}
+                            type="file"
+                            multiple
+                            className="hidden"
+                            onChange={handleFileSelect}
+                          />
+                          {droppedFiles.length > 0 && (
+                            <div className="mt-3 space-y-1 w-full">
+                              {droppedFiles.map((f, i) => (
+                                <div key={i} className="flex items-center justify-between bg-gray-50 rounded px-2 py-1">
+                                  <span className="text-xs text-gray-700 truncate">{f.name}</span>
+                                  <button onClick={(e) => { e.stopPropagation(); setDroppedFiles(prev => prev.filter((_, idx) => idx !== i)); }}>
+                                    <X className="w-3 h-3 text-gray-400" />
+                                  </button>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      )}
 
                       <p className="text-[10px] text-gray-400 text-center leading-relaxed">
                         Поддерживаемые типы файлов: PDF, txt, Markdown, аудио (например, MP3-файлы),

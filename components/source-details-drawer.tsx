@@ -37,6 +37,7 @@ interface SourceDetailsDrawerProps {
   source: SourceRow | null;
   open: boolean;
   onClose: () => void;
+  onOpenArtifact?: (artifact: { name: string; type: string; date: string }) => void;
 }
 
 const DRAWER_WIDTH_KEY = "user_drawer_width";
@@ -83,7 +84,7 @@ function ConfidenceRingLarge({ score }: { score: number }) {
   );
 }
 
-export function SourceDetailsDrawer({ source, open, onClose }: SourceDetailsDrawerProps) {
+export function SourceDetailsDrawer({ source, open, onClose, onOpenArtifact }: SourceDetailsDrawerProps) {
   const { data: sourceDetails } = useSourceDetails(source?.id ?? null);
   const previewContent = sourceDetails?.content ?? "";
   const rawFiles = sourceDetails?.rawFiles ?? [];
@@ -466,22 +467,33 @@ export function SourceDetailsDrawer({ source, open, onClose }: SourceDetailsDraw
           )}
 
           {activeTab === "artifacts" && (
-            <div className="p-6 space-y-3">
-              <p className="text-xs text-gray-500 mb-4">Generated artifacts from this source:</p>
-              {sourceArtifacts.map((artifact, i) => (
-                <div
-                  key={i}
-                  className="flex items-center gap-3 p-3 border border-gray-200 rounded-md hover:bg-gray-50 cursor-pointer transition-colors"
-                  data-testid={`artifact-${i}`}
-                >
-                  <FileText className="w-5 h-5 text-[#008DA8] shrink-0" />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-gray-800 truncate">{artifact.name}</p>
-                    <p className="text-[11px] text-gray-500">{artifact.type} - {artifact.date}</p>
+            <div className="p-6 space-y-4">
+              <p className="text-sm text-gray-600">Generated artifacts from this source:</p>
+              <div className="space-y-2">
+                {sourceArtifacts.map((artifact, i) => (
+                  <div
+                    key={i}
+                    className="flex items-center gap-3 p-4 border border-gray-200 rounded-lg hover:border-[#008DA8]/40 hover:bg-[#F0F9FB] cursor-pointer transition-all group"
+                    onClick={() => onOpenArtifact?.(artifact)}
+                    data-testid={`artifact-${i}`}
+                  >
+                    <div className="w-9 h-9 rounded-md bg-gray-100 flex items-center justify-center shrink-0 group-hover:bg-[#E0F4F7] transition-colors">
+                      <FileText className="w-4.5 h-4.5 text-[#008DA8]" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-gray-900 truncate">{artifact.name}</p>
+                      <p className="text-xs text-gray-500 mt-0.5">{artifact.type} &middot; {artifact.date}</p>
+                    </div>
+                    <ExternalLink className="w-4 h-4 text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity" />
                   </div>
-                  <ExternalLink className="w-4 h-4 text-gray-400" />
+                ))}
+              </div>
+              {sourceArtifacts.length === 0 && (
+                <div className="text-center py-8 text-sm text-gray-400">
+                  <FileText className="w-8 h-8 mx-auto mb-2 text-gray-300" />
+                  No artifacts generated from this source yet
                 </div>
-              ))}
+              )}
             </div>
           )}
 
