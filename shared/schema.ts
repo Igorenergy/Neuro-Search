@@ -33,6 +33,35 @@ export const researchPlans = pgTable("research_plans", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+export const projectSources = pgTable("project_sources", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  projectId: varchar("project_id").notNull(),
+  title: text("title").notNull(),
+  domain: text("domain").notNull().default(""),
+  favicon: text("favicon").default(""),
+  url: text("url").default(""),
+  date: text("date").default(""),
+  location: text("location").default(""),
+  language: text("language").default("En"),
+  confidenceScore: integer("confidence_score").default(0),
+  included: boolean("included").notNull().default(true),
+  type: text("type").notNull().default("web"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const projectArtifacts = pgTable("project_artifacts", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  projectId: varchar("project_id").notNull(),
+  name: text("name").notNull(),
+  fileType: text("file_type").notNull().default("pdf"),
+  fileSize: text("file_size").default("0"),
+  status: text("status").notNull().default("processing"),
+  downloadUrl: text("download_url"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
 export const researchFiles = pgTable("research_files", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   projectId: varchar("project_id").notNull(),
@@ -62,6 +91,18 @@ export const insertResearchFileSchema = createInsertSchema(researchFiles).omit({
   createdAt: true,
 });
 
+export const insertProjectSourceSchema = createInsertSchema(projectSources).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertProjectArtifactSchema = createInsertSchema(projectArtifacts).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
 export type InsertResearchProject = z.infer<typeof insertResearchProjectSchema>;
@@ -70,3 +111,7 @@ export type InsertResearchPlan = z.infer<typeof insertResearchPlanSchema>;
 export type ResearchPlan = typeof researchPlans.$inferSelect;
 export type InsertResearchFile = z.infer<typeof insertResearchFileSchema>;
 export type ResearchFile = typeof researchFiles.$inferSelect;
+export type InsertProjectSource = z.infer<typeof insertProjectSourceSchema>;
+export type ProjectSource = typeof projectSources.$inferSelect;
+export type InsertProjectArtifact = z.infer<typeof insertProjectArtifactSchema>;
+export type ProjectArtifact = typeof projectArtifacts.$inferSelect;
