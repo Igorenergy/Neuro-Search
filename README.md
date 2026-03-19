@@ -51,6 +51,8 @@ npm run dev             # http://localhost:3000
 │   │   ├── sources/[id]/       # PATCH/DELETE individual source
 │   │   ├── artifacts/[id]/     # PATCH/DELETE individual artifact
 │   │   ├── files/[id]/         # DELETE individual file
+│   │   ├── exports/            # GET exported files
+│   │   ├── profile/settings/   # GET/PATCH profile settings
 │   │   └── seed/               # Seed endpoint
 │   ├── research/
 │   │   ├── dashboard/          # Main dashboard
@@ -62,6 +64,8 @@ npm run dev             # http://localhost:3000
 │   ├── research-canceled/      # Canceled research
 │   ├── files-attachments/      # Data repository
 │   ├── profile/                # Profile & Settings
+│   ├── export-hub/             # Export Hub (exported files list)
+│   ├── integrations/           # Integrations (Google Drive, etc.)
 │   └── smart-search/new/       # Smart search launcher
 │
 ├── components/
@@ -74,11 +78,14 @@ npm run dev             # http://localhost:3000
 │   │   ├── smart-search-failed.tsx # Error scenarios
 │   │   ├── action-required.tsx     # Partial report review
 │   │   ├── assets-repository.tsx   # File/folder manager
-│   │   └── profile-settings.tsx   # Profile & Settings (profile, password)
+│   │   ├── profile-settings.tsx   # Profile & Settings (profile, password)
+│   │   ├── export-hub.tsx         # Export Hub (list, sort, filter, re-export)
+│   │   └── integrations.tsx       # Integrations management (Google Drive)
 │   ├── ui/                     # shadcn/ui primitives
 │   ├── layout.tsx              # App shell (sidebar, header)
 │   ├── create-project-modal.tsx    # Multi-step project creation
 │   ├── source-details-drawer.tsx   # Source preview side panel
+│   ├── artifact-preview-drawer.tsx # Artifact content preview (table/document)
 │   ├── export-project-modal.tsx
 │   ├── share-project-modal.tsx
 │   └── ...
@@ -94,7 +101,8 @@ npm run dev             # http://localhost:3000
 │   ├── use-data-repository.ts  # Folders, files, storage stats
 │   ├── use-current-user.ts     # Auth / user profile
 │   ├── use-source-details.ts   # Source preview + raw files
-│   └── use-profile-settings.ts # Profile settings + update mutation
+│   ├── use-profile-settings.ts # Profile settings + update mutation
+│   └── use-exports.ts          # Export Hub data
 │
 ├── lib/
 │   ├── types.ts                # All shared TypeScript interfaces
@@ -162,6 +170,11 @@ All endpoints return JSON. Standard REST conventions.
 | GET | `/api/profile/settings` | Get profile & preferences |
 | PATCH | `/api/profile/settings` | Update profile & preferences |
 
+### Exports
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/exports` | List exported files |
+
 ### Other
 | Method | Endpoint | Description |
 |--------|----------|-------------|
@@ -197,6 +210,7 @@ Every page component consumes data through a dedicated React Query hook. Hooks c
 | `useSourceDetails(id)` | `GET /api/sources/:id/details` | Mock preview content |
 | `useProfileSettings()` | `GET /api/profile/settings` | Mock profile data |
 | `useUpdateProfile()` | `PATCH /api/profile/settings` | — |
+| `useExports()` | `GET /api/exports` | Mock export items |
 
 ### How to integrate a real backend endpoint
 
@@ -225,6 +239,7 @@ All data interfaces live in `lib/types.ts`. Key types:
 - `CurrentUser` — user profile + balance
 - `DataRepositoryData` — folders, files, storage stats
 - `ProfileSettings` — profile info, security, preferences
+- `ExportItem` — exported file entry (name, format, status, download URL)
 
 ## Data Access Layer
 
