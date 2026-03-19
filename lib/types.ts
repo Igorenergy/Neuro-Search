@@ -189,6 +189,22 @@ export interface ProfileSettings {
   sessions: ActiveSession[];
 }
 
+// ─── Export Hub ──────────────────────────────────────
+export type ExportFormat = "pdf" | "xlsx" | "csv" | "docx" | "json" | "zip";
+export type ExportStatus = "ready" | "processing" | "expired" | "failed";
+
+export interface ExportItem {
+  id: string;
+  name: string;
+  projectName: string;
+  format: ExportFormat;
+  fileSize: string;
+  status: ExportStatus;
+  exportedAt: string;
+  expiresAt: string;
+  downloadUrl: string | null;
+}
+
 // ─── Project Detail ──────────────────────────────────
 export interface ProjectDetail {
   id: string;

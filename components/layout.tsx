@@ -822,7 +822,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                       { label: "Data Repository", icon: FileText, href: "/files-attachments" },
                       { label: "Integrations", icon: Zap, href: null },
                       { label: "Billing & Usage", icon: MoreVertical, href: null },
-                      { label: "Export Hub: 26", icon: Search, href: null },
+                      { label: "Export Hub: 26", icon: Search, href: "/export-hub" },
                       { label: "Log out", icon: PanelLeftClose, href: null }
                     ].map((item, idx) => (
                       <DropdownMenuItem
