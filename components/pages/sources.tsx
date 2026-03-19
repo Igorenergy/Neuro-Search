@@ -64,7 +64,6 @@ import { cn } from "@/lib/utils";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { loadLaunchConfig } from "@/lib/launch-config";
 import { usePreviewStore } from "@/lib/preview-store";
-import ResearchBriefingPanel from "@/components/research-briefing-panel";
 import { SourceDetailsDrawer } from "@/components/source-details-drawer";
 import { ArtifactPreviewDrawer } from "@/components/artifact-preview-drawer";
 import AddFilesModal from "@/components/add-files-modal";
@@ -211,7 +210,6 @@ export default function SourcesPage() {
 
   return (
     <div className="-m-6 md:-m-8 flex h-[calc(100vh-64px)] w-[calc(100%+48px)] md:w-[calc(100%+64px)] bg-white" data-testid="sources-page">
-      <ResearchBriefingPanel expanded={leftExpanded} onToggle={() => setLeftExpanded(!leftExpanded)} />
       <div className="flex-1 flex flex-col overflow-hidden min-w-0">
       {/* Context Header */}
       <div className="flex items-center justify-between px-4 py-2.5 border-b border-gray-200 bg-[#F5F5F7] shrink-0">
